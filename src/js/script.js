@@ -85,7 +85,7 @@ function save(){
 }
 
 function deletePermanent(iid){
-    var r = confirm("Êtes-vous sûr de vouloir supprimer définitivement la note \""+document.getElementById("inp"+iid).value+"\" ? Elle sera perdue à jamais !");
+    var r = confirm("Are you sure you want to permanently delete the note? \""+document.getElementById("inp"+iid).value+"\"? It will be lost forever!");
     if (r == true) {
         $.post( "permanentDelete.php", {pass: app_pass, id:iid})
         .done(function(data) {

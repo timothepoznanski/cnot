@@ -37,7 +37,7 @@ session_start();
 	</script>
 </head>
 <body style="background:#0066cc;">
-	<h2 style="text-align:center; font-weight:500; color: #fff">Corbeille</h2>
+	<h2 style="text-align:center; font-weight:500; color: #fff">Trash</h2>
 	<?php
 		if($search!='')
 		{

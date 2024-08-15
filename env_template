@@ -1,0 +1,10 @@
+MYSQL_HOST=dbserver                                  # Don't change it
+MYSQL_USER=XXXX                                      # For exemple `userdb`
+MYSQL_ROOT_PASSWORD=XXXX                             # For exemple `rootpass`
+MYSQL_PASSWORD=XXXX                                  # For exemple `yourowndatabasepassword`
+MYSQL_DATABASE=cnot_db                               # No need to change it but if you need you can
+HTTPS_PORT=8076                                      # No need to change it but if you need you can
+PHPMYADMIN_PORT=8074                                 # No need to change it but if you need you can
+APP_PASSWORD=XXXX                                    # For exemple `yourownapppassword`
+JOURNAL_NAME=XXXX                                    # For exemple `CnoT` - Provide your own app name
+SERVER_NAME=XXXX                                     # Provide your server name

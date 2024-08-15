@@ -95,9 +95,11 @@ To get started, follow these steps:
 
     Connect with the password you provided in the .env file.
 
-## Updates - ⚠️ Needs to be tested and verified
+## Updates
 
-If you want to keep your container but change something into the config file (your password for example), stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application). This will launch a new web container from the image already present on your host but will also use the new .env config file.
+If you want to change your password or your server name, stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application). This will launch a new web container from the image already present on your host but will also use the new .env config file.
+
+If you want to change configs that are related to the database, you will have to stop and remove your running web and databases containers (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application).
 
 ## Contributing 🙏
 
@@ -125,3 +127,7 @@ Three possible reasons to this error:
    
 Wait a few seconds, visit another web page and come back.
 
+**Case 2**
+
+You cannot open the application or you have been able to run it but you have problems saving your notes. 
+Are you sure you did step 4 ?

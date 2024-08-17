@@ -8,7 +8,7 @@ Among the many note taking tools already available, it's not always easy to find
 
 ## Screenshot
 
-![image](https://github.com/user-attachments/assets/ad0a475d-60b1-461c-b882-c1a376a88ed3)
+![img](https://github.com/user-attachments/assets/454a14b0-c2b1-410d-9dd1-94a474670474)
 
 CnoT remains simple but covers the essentials. The idea was to have a clean interface and to no longer organize notes in a hierarchical structure.
 

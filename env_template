@@ -8,3 +8,5 @@ PHPMYADMIN_PORT=8074                                 # No need to change it but 
 APP_PASSWORD=XXXX                                    # For exemple `yourownapppassword`
 JOURNAL_NAME=XXXX                                    # For exemple `CnoT` - Provide your own app name
 SERVER_NAME=XXXX                                     # Provide your server name
+ENTRIES_DATA_PATH=XXXX                               # Provide your entries data path - For exemple `C:\Users\tim\Desktop\cnot\ENTRIES_DATA`
+DB_DATA_PATH=XXXX                                    # Provide your db data path - For exemple `C:\Users\tim\Desktop\cnot\DB_DATA`

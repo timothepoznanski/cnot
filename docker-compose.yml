@@ -24,11 +24,7 @@ services:
       - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"  
     volumes:
-<<<<<<< HEAD
-      - "entries_data:/var/www/html/entries"  
-=======
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
->>>>>>> c96d567 (Change db and entries data path)
 
   # DATABASE
   dbserver:

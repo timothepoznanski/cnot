@@ -34,19 +34,19 @@ body {
 .icon_download{
     margin-left: 15px;	
     margin-top: 7px;
-    color: #0066cc;
+    color: #007DB8;
 }
 
 .icon_save{
     margin-left: 20px;	
     margin-top: 7px;
-    color: #0066cc;
+    color: #007DB8;
 }
 
 .icon_trash{
     margin-left: 15px;	
     margin-top: 7px;	
-    color: #0066cc;
+    color: #007DB8;
 }
 
 .icon_trash_trash{
@@ -73,7 +73,7 @@ body {
     padding: 0px;
     display: inline-block;
     width: 30%;
-    color: #0066cc;
+    color: #007DB8;
 }
 
 .form_search_tags{
@@ -81,7 +81,7 @@ body {
     padding: 0px;
     display: inline-block;
     width: 30%;
-    color: #0066cc;
+    color: #007DB8;
 }
 
 .contains_doss_tags
@@ -152,7 +152,7 @@ form{
 	cursor: pointer;
     height:20px;
     margin: 5px;
-	color: #0066cc;
+	color: #007DB8;
 	font-size: 17px;
 }
 

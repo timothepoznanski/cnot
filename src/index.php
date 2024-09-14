@@ -68,7 +68,7 @@ session_start();
 <body>   
 
     <!-- Notification popup -->
-    <div id="notificationPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #fff; background-color:#0066cc; border:1px solid #fff; z-index:1000; font-size: 1.5em; text-align: center;"></div>
+    <div id="notificationPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #fff; background-color:#007DB8; border:1px solid #fff; z-index:1000; font-size: 1.5em; text-align: center;"></div>
     
     <!-- LEFT COLUMN -->	
     <div id="left_col">
@@ -131,7 +131,7 @@ session_start();
         </div>
         
         <!-- Download popup -->
-        <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#0066cc; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
+        <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
            Please wait while the archive is being created...
         </div>
         
@@ -172,21 +172,21 @@ session_start();
             if($tags_search != '') // If we have searched within the tags, we want to display the notes that contain those tags.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#0066cc;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
             if($search != '') // If we have searched within the notes, we want to display the notes that contain the searched words.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#0066cc;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
             if($tags_search == '' && $search == '') // If we were viewing all notes and click on a note
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#0066cc;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
@@ -197,7 +197,7 @@ session_start();
     </div>
 	
     <!-- RIGHT COLUMN -->	
-    <div id="right_col" style="background:#0066cc;">
+    <div id="right_col" style="background:#007DB8;">
     
         <!-- Search -->
 
@@ -269,7 +269,7 @@ session_start();
                         <hr>                        
                         <hr>
                         
-                        <h4><input class="margin-title" style="color:#0066cc" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Titre ?" value="'.$row['heading'].'"></input></h4>
+                        <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Titre ?" value="'.$row['heading'].'"></input></h4>
                         
                         <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
                         

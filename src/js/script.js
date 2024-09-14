@@ -66,7 +66,8 @@ function newnote(){
         if(data=='1') 
         {
             $(window).scrollTop(0);
-            location.reload(true);
+            //location.reload(true);
+            window.location.href = "index.php";
         }
         else alert(data);
     });    

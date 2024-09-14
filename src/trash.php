@@ -36,7 +36,7 @@ session_start();
 		var app_pass = '<?php echo APP_PASSWORD;?>';
 	</script>
 </head>
-<body style="background:#0066cc;">
+<body style="background:#007DB8;">
 	<h2 style="text-align:center; font-weight:500; color: #fff">Trash</h2>
 	<?php
 		if($search!='')

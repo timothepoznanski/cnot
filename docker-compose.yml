@@ -24,7 +24,8 @@ services:
       - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"  
     volumes:
-      - "entries_data:/var/www/html/entries"  
+      # - "entries_data:/var/www/html/entries"  
+      - "C:/Users/timothe.poznanski.SAAS05/Desktop/Octave/CNOT/ENTRIES:/var/www/html/entries"
 
   # DATABASE
   dbserver:

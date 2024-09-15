@@ -39,7 +39,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
 1. **Clone the repository:**
 
-   Create a folder (for instance 'CNOT') where you will store your project.
+   Create a folder (e.g., 'CNOT') where you will store your project.
 
    Open powershell in this folder and clone the project : 
 
@@ -62,7 +62,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
     
    Copy the `env_template` file to a `.env` file.
 
-   With a Notepad, modify the `.env` file with your settings following instructions commented in the file.
+   Using Notepad, edit the .env file with your settings, following the instructions provided in the file's comments.
 
 
 5. **Add your SSL certificate and private key for HTTPS:** 🌏
@@ -73,7 +73,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
    openssl req -x509 -out ssl/fullchain.pem -keyout ssl/privkey.pem -newkey rsa:2048 -nodes -sha256 -days 36500 -subj "/CN=localhost/O=CNOT" -addext "subjectAltName=DNS:localhost" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=serverAuth"
    ```
 
-   Install the fullchain.pem into the Web browser certificate store (🔧 I need to write more details about this part).
+   Install the fullchain.pem into the web browser's certificate store. (🔧 Working on additional details on this process.)
 
    Restart your web browser.
 
@@ -103,28 +103,34 @@ If you want to change configs that are related to the database, you will have to
 
 ## Backup and Restore
 
-If you want to be able to restore your notes from a backup, you need : 
+To be able to restore your notes from a backup, you need:
 
 - Your notes exported.
 - A dump of your database.
 
-To backup your notes : 
+**To backup your notes:**
 
-Export your notes from inside CnoT as a zip file for offline viewing. 
-Or you can also access to your html notes in the ENTRIES_DATA_PATH path.
+Export your notes from inside CnoT as a zip file for offline viewing.
 
-To backup the database :
+Alternatively, you can access your HTML notes in the ENTRIES_DATA_PATH directory.
 
-Two ways to create a dump for a local CnoT instance running on Docker Desktop :
+**To backup the database:**
 
-1. Connect to phpmyadmin at http://localhost:8074/ and export your database.
+There are two ways to create a dump for a local CnoT instance running on Docker Desktop:
 
-2. With git bash (I got enconding problems with powershell), run another container to create a dump :
+1. Using phpMyAdmin:
+
+Connect to phpMyAdmin at http://localhost:8074/ and export your database.
+
+2. Using Git Bash (preferred over PowerShell due to encoding issues):
+
+Run another container to create a dump.
 
   ```
    $ docker run --rm --network container:MYSQL_DATABASE mysql:latest mysqldump -h127.0.0.1 -uroot -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE > 'C:\Users\XXXXXX\Desktop\dump.sql'
    ```
-To restore : 
+
+**To restore :**
 
 - Copy all the html notes into your ENTRIES_DATA_PATH
 - Import your sql dump. Two ways :

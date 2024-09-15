@@ -2,9 +2,9 @@
 
 Welcome to the CnoT Project ! 👋 CnoT is a note taking web app. 📝
 
-Among the many note taking tools already available, it's not always easy to find one that suits our needs. Options are either overloaded with features or lack essentials. CnoT was therefore designed with an emphasis on simplicity and the essentials for effective note taking management.
+Among the many note taking tools already available, it's not always easy to find one that suits our needs. Options are either overloaded with features or lack essentials. CnoT was therefore designed with an emphasis on simplicity and the essentials for effective note taking management. The key difference is that we don’t organize notes into folders. Instead, all notes are searchable using multiple tags and keywords. 
 
-⚠️ CnoT is designed for **offline** use on a **single computer**, and it does not synchronize across multiple devices. Although it can be installed on a server and accessed over the internet, we do not recommend this approach due to its limited security, as it is protected only by a password. For enhanced security, we suggest installing CnoT on Docker Desktop for Windows and accessing it locally through a web browser. This method ensures better protection for your notes. Therefore, the following procedure applies within the context of this recommendation (Docker Desktop on Windows).
+⚠️ CnoT is designed for **offline** use on a **single computer**, and it does not synchronize across multiple devices. Although it can be installed on a server and accessed over the internet, we do not recommend this approach due to its limited security, as it is protected only by a password. For enhanced security, we suggest installing CnoT on Docker Desktop for Windows and accessing it locally through a web browser. This method ensures better protection for your notes. Therefore, the following procedure applies within the context of this recommendation (Docker Desktop on Windows). That said, if you still prefer to install it on a server, it functions smoothly. 
 
 ## Screenshot
 

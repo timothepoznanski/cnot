@@ -134,14 +134,14 @@ To restore :
   1. Import with Phpmyadmin.
   2. Copy your dump into your docker instance :
 
-     ```bash
-     $ docker cp /c/Users/XXXXX/Desktop/dump.sql MYSQL_DATABASE:/tmp/dump.sql
+     ```
+     $ docker cp C:\Users\XXXXX\Desktop\dump.sql cnot_db:/tmp/dump.sql
      ```
 
-     and enter your docker instance and import your dump (example with git bash) :
+     and enter your docker instance and import your dump :
      
-     ```bash
-      $ winpty docker exec -it MYSQL_DATABASE bash
+     ```
+      $ docker exec -it MYSQL_DATABASE bash
       bash-5.1# mysql -u root -ppoiuytreza MYSQL_DATABASE < /tmp/dump.sql
      ```
 

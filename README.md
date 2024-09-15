@@ -1,8 +1,6 @@
 # CnoT
 
-Welcome to the CnoT Project ! 👋
-
-CnoT is a note taking web app. 📝
+Welcome to the CnoT Project ! 👋 CnoT is a note taking web app. 📝
 
 Among the many note taking tools already available, it's not always easy to find one that suits our needs. Options are either overloaded with features or lack essentials. CnoT was therefore designed with an emphasis on simplicity and the essentials for effective note taking management.
 

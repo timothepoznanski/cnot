@@ -6,6 +6,8 @@ CnoT is a note taking web app. 📝
 
 Among the many note taking tools already available, it's not always easy to find one that suits our needs. Options are either overloaded with features or lack essentials. CnoT was therefore designed with an emphasis on simplicity and the essentials for effective note taking management.
 
+⚠️ CnoT is designed for offline use on a single computer, and it does not synchronize across multiple devices. Although it can be installed on a server and accessed over the internet, we do not recommend this approach due to its limited security, as it is protected only by a password. For enhanced security, we suggest installing CnoT on Docker Desktop for Windows and accessing it locally through a web browser. This method ensures better protection for your notes. Therefore, the following procedure applies within the context of this recommendation (Docker Desktop on Windows).
+
 ## Screenshot
 
 ![screen](https://github.com/user-attachments/assets/e7332ba1-7f48-43ff-99b4-44a63ba5b0df)
@@ -37,69 +39,67 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
 ## Installation
 
-To get started, follow these steps:
-
 1. **Clone the repository:**
 
-    ```bash
+   Create a folder (for instance 'CNOT') where you will store your project.
+
+   Open powershell in this folder and clone the project : 
+
+    ```
     git clone https://github.com/timothepoznanski/cnot.git
+    ```
+    or
+   
+    ```
+    git clone git@github.com:timothepoznanski/cnot.git
     ```
 
 2. **Navigate to the project directory:**
  
-    ```bash
+    ```
     cd cnot
     ```
 
 3. **Create your configuration:**
     
-    Copy the `env_template` file to a `.env` file.
-    
-    Modify the `.env` file with your settings following instructions commented in the file.
+   Copy the `env_template` file to a `.env` file.
+
+   With a Notepad, modify the `.env` file with your settings following instructions commented in the file.
 
 
-4. **Add your SSL certificate and private key for HTTPS:** 🌏
-    
-    Add your `privkey.pem` and `fullchain.pem` files to the `ssl` folder. 
-    
-    ⚠️ They have to be named exactly `privkey.pem` and `fullchain.pem`. The private key should not have a passphrase.
+5. **Add your SSL certificate and private key for HTTPS:** 🌏
 
-   To create them :
+   So that the browser doesn't complain about security, run the following command to create a ssl certificate :
 
-   ```bash
-   openssl genpkey -algorithm RSA -out privkey.pem
-   openssl req -new -key privkey.pem -out demande_csr.csr
-   openssl x509 -req -days 365 -in demande_csr.csr -signkey privkey.pem -out fullchain.pem
    ```
+   openssl req -x509 -out ssl/fullchain.pem -keyout ssl/privkey.pem -newkey rsa:2048 -nodes -sha256 -days 36500 -subj "/CN=localhost/O=CNOT" -addext "subjectAltName=DNS:localhost" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=serverAuth"
+   ```
+
+   Install the fullchain.pem into the Web browser certificate store (🔧 I need to write more details about this part).
+
    
-6. **Run the application:** 🚀
+5. **Run the application:** 🚀
    
-     ```bash
-    docker compose up -d --build
+   ```
+   docker compose up -d --build   
+   ```
 
-    or
-
-    podman-compose up -d --build
-   
-    ```
-
-    Now, the CnoT application should be up and running. 
-
-7. **Open the application:**
+6. **Open the application:**
 
     Open your web browser and visit:
 
-    `https://YOUR-SERVER-DOMAIN:YOUR-HTTPS-PORT`
+    `https://localhost:YOUR-HTTPS-PORT`
+   
 
-8. **Connect to the application:**
+7. **Connect to the application:**
 
     Connect with the password you provided in the .env file.
 
 ## Updates
 
-If you want to change your password or your server name, stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application). This will launch a new web container from the image already present on your host but will also use the new .env config file.
+If you want to change a setting for example your application password, stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the application. This will launch a new web container from the image already present on your host but will also use the new .env config file.
 
-If you want to change configs that are related to the database, you will have to stop and remove your running web and databases containers (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application).
+If you want to change configs that are related to the database, you will have to stop and remove your running web and databases containers (don't worry, your data are stored on your host), update your .env file and run the application.
 
 ## Backup and Restore
 
@@ -108,23 +108,30 @@ Export your notes from inside CnoT as a zip file for offline viewing.
 If you want to be able to restore your notes from a backup, you need : 
 
 - Your notes exported or access to your ENTRIES_DATA_PATH path where you will find all your html notes.
-- A dump of your database. Here is how to create a dump for a local CnoT instance running on Docker Desktop :
+- A dump of your database.
 
-  ```bash
+Two ways to create a dump for a local CnoT instance running on Docker Desktop :
+
+1. Connect to phpmyadmin at http://localhost:8074/ and export your database.
+
+2. With git bash (I got enconding problems with powershell), run another container to create a dumb :
+
+  ```
    $ docker run --rm --network container:MYSQL_DATABASE mysql:latest mysqldump -h127.0.0.1 -uroot -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE > 'C:\Users\XXXXXX\Desktop\dump.sql'
    ```
 To restore : 
 
 - Copy all the html notes into your ENTRIES_DATA_PATH
-- Import your sql dump :
+- Import your sql dump. Two ways :
 
-  1. Copy your dump into your docker instance :
+  1. Import with Phpmyadmin.
+  2. Copy your dump into your docker instance :
 
      ```bash
      $ docker cp /c/Users/XXXXX/Desktop/dump.sql MYSQL_DATABASE:/tmp/dump.sql
      ```
 
-  2. Enter your docker instance and import your dump (example with git bash) :
+     and enter your docker instance and import your dump (example with git bash) :
      
      ```bash
       $ winpty docker exec -it MYSQL_DATABASE bash
@@ -156,8 +163,3 @@ Three possible reasons to this error:
 4. The server runs out of memory
    
 Wait a few seconds, visit another web page and come back.
-
-**Case 2**
-
-You cannot open the application or you have been able to run it but you have problems saving your notes. 
-Are you sure you did step 4 ?

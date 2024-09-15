@@ -69,7 +69,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
 5. **Add your SSL certificate and private key for HTTPS:** 🌏
 
-   So that the browser doesn't complain about security, run the following command to create a ssl certificate :
+   Run the following command to create a ssl certificate :
 
    ```
    openssl req -x509 -out ssl/fullchain.pem -keyout ssl/privkey.pem -newkey rsa:2048 -nodes -sha256 -days 36500 -subj "/CN=localhost/O=CNOT" -addext "subjectAltName=DNS:localhost" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=serverAuth"

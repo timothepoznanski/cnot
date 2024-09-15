@@ -65,7 +65,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
    Using Notepad, edit the .env file with your settings, following the instructions provided in the file's comments.
 
 
-5. **Add your SSL certificate and private key for HTTPS:** 🌏
+5. **Add a SSL certificate for HTTPS:** 🌏
 
    Run the following command to create a ssl certificate :
 
@@ -73,9 +73,16 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
    openssl req -x509 -out ssl/fullchain.pem -keyout ssl/privkey.pem -newkey rsa:2048 -nodes -sha256 -days 36500 -subj "/CN=localhost/O=CNOT" -addext "subjectAltName=DNS:localhost" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=serverAuth"
    ```
 
-   Install the fullchain.pem into the web browser's certificate store. (🔧 Working on additional details on this process.)
+   Here's how you can install the fullchain.pem into your web browser's certificate store:
 
-   Restart your web browser.
+   On Chrome (I haven't tried other web browsers):
+   
+   - Open chrome://settings/security.
+   - Go to Manage certificates.
+   - Navigate to the "Trusted Root Certification Authorities" tab.
+   - Click Import.
+   - Locate the .pem file generated earlier (it won’t appear unless you select "All Files").
+   - Restart your web browser.
 
    
 5. **Run the application:** 🚀

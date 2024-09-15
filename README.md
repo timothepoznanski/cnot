@@ -77,6 +77,8 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
    Install the fullchain.pem into the Web browser certificate store (🔧 I need to write more details about this part).
 
+   Restart your web browser.
+
    
 5. **Run the application:** 🚀
    

@@ -121,14 +121,14 @@ To restore :
   1. Copy your dump into your docker instance :
 
      ```bash
-     $ docker cp /c/Users/XXXXX/Desktop/dump.sql cnot_db:/tmp/dump.sql
+     $ docker cp /c/Users/XXXXX/Desktop/dump.sql MYSQL_DATABASE:/tmp/dump.sql
      ```
 
   2. Enter your docker instance and import your dump (example with git bash) :
      
      ```bash
-      $ winpty docker exec -it cnot_db bash
-      bash-5.1# mysql -u root -ppoiuytreza cnot_db < /tmp/dump.sql
+      $ winpty docker exec -it MYSQL_DATABASE bash
+      bash-5.1# mysql -u root -ppoiuytreza MYSQL_DATABASE < /tmp/dump.sql
      ```
 
 ## Contributing 🙏

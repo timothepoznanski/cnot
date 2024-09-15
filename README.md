@@ -102,11 +102,25 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
     Connect with the password you provided in the .env file.
 
-## Updates
+## Change settings
 
-If you want to change a setting for example your application password, stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the application. This will launch a new web container from the image already present on your host but will also use the new .env config file.
+If you want to change: 
 
-If you want to change settings that are related to the database, you will have to stop and remove your running web and database containers (don't worry, your data are stored on your host), update your .env file and run the application.
+- APP_PASSWORD
+- JOURNAL_NAME
+- HTTPS_PORT
+
+stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the application. This will launch a new web container from the image already present on your host but will also use the new .env config file.
+
+If you want to change: 
+
+- ENTRIES_DATA_PATH
+- DB_DATA_PATH
+
+Update your .env file and run the application. ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it.
+
+If you want to change database settings, simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first, then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data. 
+
 
 ## Backup and Restore
 

@@ -17,11 +17,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
       APP_PASSWORD: ${APP_PASSWORD}
-      SSL_CERT_FILE: ${SSL_CERT_FILE}
-      SSL_KEY_FILE: ${SSL_KEY_FILE}
       SERVER_NAME: ${SERVER_NAME}
     ports:       
-      - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"  
     volumes:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"

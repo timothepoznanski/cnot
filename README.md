@@ -121,7 +121,7 @@ Two ways to create a dump for a local CnoT instance running on Docker Desktop :
 
 1. Connect to phpmyadmin at http://localhost:8074/ and export your database.
 
-2. With git bash (I got enconding problems with powershell), run another container to create a dumb :
+2. With git bash (I got enconding problems with powershell), run another container to create a dump :
 
   ```
    $ docker run --rm --network container:MYSQL_DATABASE mysql:latest mysqldump -h127.0.0.1 -uroot -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE > 'C:\Users\XXXXXX\Desktop\dump.sql'

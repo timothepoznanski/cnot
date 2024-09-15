@@ -105,12 +105,17 @@ If you want to change configs that are related to the database, you will have to
 
 ## Backup and Restore
 
-Export your notes from inside CnoT as a zip file for offline viewing.
-
 If you want to be able to restore your notes from a backup, you need : 
 
-- Your notes exported or access to your ENTRIES_DATA_PATH path where you will find all your html notes.
+- Your notes exported.
 - A dump of your database.
+
+For the notes : 
+
+Export your notes from inside CnoT as a zip file for offline viewing. 
+Or you can also access to your html notes in the ENTRIES_DATA_PATH path.
+
+For the database :
 
 Two ways to create a dump for a local CnoT instance running on Docker Desktop :
 

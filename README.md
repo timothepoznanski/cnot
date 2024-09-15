@@ -106,7 +106,7 @@ CnoT remains simple but covers the essentials. The idea was to have a clean inte
 
 If you want to change a setting for example your application password, stop and remove your running web container (don't worry, your data are stored on your host), update your .env file and run the application. This will launch a new web container from the image already present on your host but will also use the new .env config file.
 
-If you want to change configs that are related to the database, you will have to stop and remove your running web and databases containers (don't worry, your data are stored on your host), update your .env file and run the application.
+If you want to change settings that are related to the database, you will have to stop and remove your running web and database containers (don't worry, your data are stored on your host), update your .env file and run the application.
 
 ## Backup and Restore
 

@@ -101,7 +101,7 @@ If you want to change your password or your server name, stop and remove your ru
 
 If you want to change configs that are related to the database, you will have to stop and remove your running web and databases containers (don't worry, your data are stored on your host), update your .env file and run the step 5 (Run the application).
 
-## Backup
+## Backup and Restore
 
 Export your notes from inside CnoT as a zip file for offline viewing.
 
@@ -113,6 +113,23 @@ If you want to be able to restore your notes from a backup, you need :
   ```bash
    $ docker run --rm --network container:MYSQL_DATABASE mysql:latest mysqldump -h127.0.0.1 -uroot -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE > 'C:\Users\XXXXXX\Desktop\dump.sql'
    ```
+To restore : 
+
+- Copy all the html notes into your ENTRIES_DATA_PATH
+- Import your sql dump :
+
+  1. Copy your dump into your docker instance :
+
+     ```bash
+     $ docker cp /c/Users/XXXXX/Desktop/dump.sql cnot_db:/tmp/dump.sql
+     ```
+
+  2. Enter your docker instance and import your dump (example with git bash) :
+     
+     ```bash
+      $ winpty docker exec -it cnot_db bash
+      bash-5.1# mysql -u root -ppoiuytreza cnot_db < /tmp/dump.sql
+     ```
 
 ## Contributing 🙏
 

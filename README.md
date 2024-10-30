@@ -191,7 +191,7 @@ Create temporarily another container to create a dump where you run the command:
       bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
      ```
 
-## Contributing 🙏
+## Contributing 👩‍💻
 
 If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
 

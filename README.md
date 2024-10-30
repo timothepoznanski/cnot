@@ -44,24 +44,18 @@ Iwanttotestcnot2024!
 
 ## Installation
 
-1. **Clone the repository:**
-
-   Create a folder (e.g., 'cnot') where you will store your Cnot instance and clone the repository.
-
-2. **Navigate to the project directory:**
+1. **Clone the repository and configure the application:**
  
     ```
+    mkdir cnot-project
+    cd cnot-project
+    git clone https://github.com/timothepoznanski/cnot.git
     cd cnot
+    cp env_template .env
+    vi .env  # Edit following the instructions provided in the file's comments.
     ```
 
-3. **Create your configuration:**
-    
-   Copy the `env_template` file to a `.env` file.
-
-   Edit the .env file with your settings, following the instructions provided in the file's comments.
-
-
-5. **Add a SSL certificate for HTTPS:** 🌏
+2. **Add a SSL certificate for HTTPS:** 🌏
 
    Choose the setup that best suits your environment:
 
@@ -100,26 +94,26 @@ Iwanttotestcnot2024!
    </p> </details>
 
    
-5. **Run the application:** 🚀
+3. **Run the application:** 🚀
    
    ```
    docker compose up -d --build   
    ```
 
-6. **Open the application:**
+4. **Open the application:**
 
     Open your web browser and visit:
 
     `https://SERVER_NAME:YOUR-HTTPS-PORT`
    
 
-7. **Connect to the application:**
+5. **Connect to the application:**
 
     Connect with the password you provided in the .env file.
 
-## Change settings
+## Update settings
 
-**If you want to change:** 
+**If you want to change the following settings:** 
 
 - APP_PASSWORD
 - JOURNAL_NAME
@@ -129,7 +123,7 @@ Iwanttotestcnot2024!
 just update your .env file and run the application (docker compose up -d --build). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
 </p></details>
 
-**If you want to change:** 
+**If you want to change the following settings:** 
 
 - ENTRIES_DATA_PATH
 - DB_DATA_PATH
@@ -138,9 +132,7 @@ just update your .env file and run the application (docker compose up -d --build
 Update your .env file and run the application (docker compose up -d --build). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
 </p></details>
 
-**If you want to change:**
-
-- database settings
+**If you want to change some database settings:**
 
 <details><summary>See instructions here</summary><p><p>
 simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first (see next section), then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data (see next section). 
@@ -148,7 +140,7 @@ simply updating the `.env` file and deleting the database container will not be 
 
 ## Backup and Restore
 
-To be able to restore all your notes from a backup, you need only two things:
+To be able to restore all your notes, you need only two things:
 
 - Your notes exported as html files.
 - A dump SQL of your database.
@@ -159,7 +151,7 @@ Export your notes directly from CnoT as a zip file for offline viewing:
 
 ![image](https://github.com/user-attachments/assets/04229b68-0f61-4e19-9c08-489d33357fcb)
 
-Remember also that you can always access, access, copy or modify your notes from the ENTRIES_DATA_PATH directory defined in your .env config file.
+Remember also that you can always access, copy or modify your notes from the ENTRIES_DATA_PATH directory defined in your .env config file.
 
 **To backup the database:**
 

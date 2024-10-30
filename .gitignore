@@ -1,0 +1,5 @@
+src/entries/*
+!src/entries/index.php
+.env
+ssl/*
+!ssl/.gitkeep

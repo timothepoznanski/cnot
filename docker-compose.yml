@@ -1,0 +1,63 @@
+version: '3.1'       
+services:  
+  
+  # WEB      
+  webserver:       
+    container_name: cnot_web
+    build:
+      context: . # Use the current directory as the build context
+      dockerfile: Dockerfile # Specify the Dockerfile to use
+    restart: always      
+    depends_on:
+      - dbserver
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}  
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      JOURNAL_NAME: ${JOURNAL_NAME}
+      APP_PASSWORD: ${APP_PASSWORD}
+      SERVER_NAME: ${SERVER_NAME}
+    ports:       
+      - "${HTTPS_PORT}:443"
+    volumes:
+      - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
+    command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
+
+  # DATABASE
+  dbserver:
+    container_name: cnot_db
+    image: mysql
+    restart: always
+    volumes:
+      - "${DB_DATA_PATH}:/var/lib/mysql"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}  
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+  # PHPMYADMIN
+  phpmyadmin:
+    container_name: cnot_phpmyadmin
+    image: phpmyadmin
+    links:
+      - dbserver
+    environment:
+      PMA_HOST: dbserver
+    restart: always
+    expose: 
+      - 80 # Expose port 80 to the Nginx container only
+      
+  # NGINX REVERSE PROXY FOR PHPMYADMIN HTTPS
+  nginx:
+    image: nginx:latest
+    container_name: cnot_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    ports:
+      - ${PHPMYADMIN_PORT}:443
+    depends_on:
+      - phpmyadmin
+    restart: always

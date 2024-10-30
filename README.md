@@ -15,9 +15,6 @@ Here is a demo [link](https://cnot.timpoz.com/index.php) with the following pass
 ```
 Iwanttotestcnot2024!
 ```
-
-![image](https://github.com/user-attachments/assets/32093637-d338-4261-a28c-7f31bcc13599)
-
 <details> <summary><strong>See all features here</strong></summary> <p>
 
 - Highlight in multiple colors
@@ -42,6 +39,8 @@ Iwanttotestcnot2024!
 - Filter by tags
 
 </p> </details>
+
+![image](https://github.com/user-attachments/assets/32093637-d338-4261-a28c-7f31bcc13599)
 
 ## Installation
 

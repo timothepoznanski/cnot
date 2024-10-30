@@ -119,7 +119,7 @@ Iwanttotestcnot2024!
 
 ## Change settings
 
-If you want to change: 
+**If you want to change:** 
 
 - APP_PASSWORD
 - JOURNAL_NAME
@@ -129,7 +129,7 @@ If you want to change:
 just update your .env file and run the application (docker compose up -d --build). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
 </p></details>
 
-If you want to change: 
+**If you want to change:** 
 
 - ENTRIES_DATA_PATH
 - DB_DATA_PATH
@@ -138,7 +138,7 @@ If you want to change:
 Update your .env file and run the application (docker compose up -d --build). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
 </p></details>
 
-If you want to change:
+**If you want to change:**
 
 - database settings
 

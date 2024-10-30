@@ -15,7 +15,7 @@ Here’s a demo [link](https://cnot.timpoz.com/index.php) with the password prov
 ```
 Iwanttotestcnot2024!
 ```
-<details> <summary><strong>See all features here</strong></summary> <p>
+<details><summary>See all features here</summary><p>
 
 - Highlight in multiple colors
 - Underline
@@ -145,7 +145,7 @@ To be able to restore all your notes, you need only two things:
 - Your notes exported as html files.
 - A dump SQL of your database.
 
-**To backup your notes:**
+<details><summary>Backup your notes</summary><p><p>
 
 Export your notes directly from CnoT as a zip file for offline viewing:
 
@@ -153,7 +153,9 @@ Export your notes directly from CnoT as a zip file for offline viewing:
 
 Remember also that you can always access, copy or modify your notes from the ENTRIES_DATA_PATH directory defined in your .env config file.
 
-**To backup the database:**
+</p></details>
+
+<details><summary>Backup your database</summary><p><p>
 
 There are two ways to create a dump:
 
@@ -170,8 +172,9 @@ Create temporarily another container to create a dump where you run the command:
   ```
    $ docker run --rm --network container:MYSQL_DATABASE -e MYSQL_PWD=MYSQL_ROOT_PASSWORD mysql:latest mysqldump -h127.0.0.1 -uroot MYSQL_DATABASE > dump.sql
    ```
+</p></details>
 
-**To restore :**
+<details><summary>Restore your notes</summary><p><p>
 
 - Copy all the html notes into your ENTRIES_DATA_PATH
 - Import your sql dump. Two ways :
@@ -189,6 +192,7 @@ Create temporarily another container to create a dump where you run the command:
       $ docker exec -it MYSQL_DATABASE bash
       bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
      ```
+</p></details>
 
 ## Contributing 👩‍💻
 

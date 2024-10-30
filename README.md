@@ -6,9 +6,7 @@ Among the many note taking tools already available, it's not always easy to find
 
 CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
 
-## Screenshot
-
-![screen](https://github.com/user-attachments/assets/e7332ba1-7f48-43ff-99b4-44a63ba5b0df)
+## Features
 
 <details> <summary><strong>See all features here</strong></summary> <p>
 
@@ -34,6 +32,10 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 - Filter by tags
 
 </p> </details>
+
+The best way to see what it’s worth is to test it out. Here is the demo link with the password "Iwanttotestcnot2024!" :
+
+https://cnot.timpoz.com/index.php
 
 ## Installation
 

@@ -59,7 +59,7 @@ Iwanttotestcnot2024!
 
    Choose the setup that best suits your environment:
 
-   <details> <summary><strong>Local Windows Installation with Docker Desktop</strong></summary> <p>
+   <details> <summary>Local Windows Installation with Docker Desktop</summary> <p>
 
    Open Powershell and cd into your cloned repository.
 
@@ -88,7 +88,7 @@ Iwanttotestcnot2024!
      chrome://restart
      ```
 
-   </p> </details> <details> <summary><strong>Linux Server Installation with Docker</strong></summary> <p><p>
+   </p> </details><details><summary>Linux Server Installation with Docker</summary> <p><p>
    Create fullchain.pem and privkey.pem for your domain and copy them to the ssl folder.
    
    </p> </details>

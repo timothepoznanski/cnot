@@ -35,7 +35,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 
 The best way to see what it’s worth is to test it out. Here is the demo link with the password "Iwanttotestcnot2024!" :
 
-https://cnot.timpoz.com/index.php
+<a href="https://cnot.timpoz.com/index.php" target="_blank">Demo CnoT site</a>
 
 ## Installation
 

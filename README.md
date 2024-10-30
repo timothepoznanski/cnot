@@ -2,9 +2,11 @@
 
 Welcome to the CnoT Project ! 👋 CnoT is a note taking web app. 📝
 
-Among the many note taking tools already available, it's not always easy to find one that suits our needs. Options are either overloaded with features or lack essentials. CnoT was therefore designed with an emphasis on simplicity and the essentials for effective note taking management while also providing users with control over their data. The key differences are that we don’t organize notes into folders, all notes are searchable using multiple tags and keywords, and they are saved in HTML format. 
+With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features. CnoT focuses on simplicity, essentials, and user data control. Unlike others, it doesn’t use folders—instead, all notes are searchable by tags and keywords and are saved in HTML format.
 
 CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
+
+⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone (although it is possible to view your notes in landscape mode). 
 
 ## Features
 

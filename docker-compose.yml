@@ -41,6 +41,7 @@ services:
       - dbserver
     environment:
       PMA_HOST: dbserver
+      UPLOAD_LIMIT: 250M
     restart: always
     expose: 
       - 80 # Expose port 80 to the Nginx container only

@@ -42,7 +42,7 @@ Iwanttotestcnot2024!
 
 ⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone although it is possible to view your notes in landscape mode:
 
-![2024-10-31_15h14_45](https://github.com/user-attachments/assets/36359bd4-8769-4dc7-b0e8-a61203087111)
+![image](https://github.com/user-attachments/assets/c8d67d3d-1657-412f-a4dd-fcf5bf7cc158)
 
 ## Installation
 

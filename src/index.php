@@ -122,33 +122,7 @@ session_start();
 
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span style="text-align:center;"><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
-        <div class="list_tags" onclick="window.location = 'listtags.php';"><span style="text-align:center;"><span title="List the tags" class="fas fa-tags"></span></span></div>
-        <!-- Button to export all notes -->
-        <div class="exportAllButton" onclick="startDownload();">
-            <span style="text-align:center;">
-                <span title="Export the notes as a zip file for offline viewing" class="fas fa-download"></span>
-            </span>
-        </div>
-        
-        <!-- Download popup -->
-        <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
-           Please wait while the archive is being created...
-        </div>
-        
-        <script>
-            function startDownload() {
-                // Show the popup
-                document.getElementById('downloadPopup').style.display = 'block';
-        
-                // Start the download
-                window.location = 'exportEntries.php';
-        
-                // Hide the popup after a certain amount of time
-                setTimeout(function() {
-                    document.getElementById('downloadPopup').style.display = 'none';
-                }, 4000); // Hide after 4 seconds
-            }
-        </script>
+        <div class="list_tags" onclick="window.location = 'listtags.php';"><span style="text-align:center;"><span title="List the tags" class="fas fa-tags"></span></span></div>       
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <div class="logoutbutton" onclick="window.location = 'logout.php';"><span style="text-align:center;"><span title="Log out" class="fas fa-sign-out-alt"></span></span></div>
 

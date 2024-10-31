@@ -153,7 +153,7 @@ To be able to restore all your notes, you need only two things:
 
 Export your notes directly from CnoT as a zip file for offline viewing:
 
-![image](https://github.com/user-attachments/assets/04229b68-0f61-4e19-9c08-489d33357fcb)
+![2024-10-30_06h09_10](https://github.com/user-attachments/assets/c1666379-0448-48e4-a52f-8fe6eaf01f08)
 
 Remember also that you can always access, copy or modify your notes from the ENTRIES_DATA_PATH directory defined in your .env config file.
 

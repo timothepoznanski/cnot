@@ -95,9 +95,11 @@ Iwanttotestcnot2024!
 
    
 3. **Run the application:** 🚀
+
+   Note: Define a project name like "mycnot" in case one day you want to run several cnot instances on the same server.
    
    ```
-   docker compose up -d --build   
+   docker compose -p yourprojectname up -d --build   
    ```
 
 4. **Open the application:**

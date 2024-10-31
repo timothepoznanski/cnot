@@ -1,9 +1,7 @@
-version: '3.1'       
 services:  
   
   # WEB      
   webserver:       
-    container_name: cnot_web
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
@@ -26,7 +24,6 @@ services:
 
   # DATABASE
   dbserver:
-    container_name: cnot_db
     image: mysql
     restart: always
     volumes:
@@ -39,7 +36,6 @@ services:
 
   # PHPMYADMIN
   phpmyadmin:
-    container_name: cnot_phpmyadmin
     image: phpmyadmin
     links:
       - dbserver
@@ -51,8 +47,7 @@ services:
       
   # NGINX REVERSE PROXY FOR PHPMYADMIN HTTPS
   nginx:
-    image: nginx:latest
-    container_name: cnot_nginx
+    image: nginx:latest 
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./ssl:/etc/nginx/ssl

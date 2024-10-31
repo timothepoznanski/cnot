@@ -32,7 +32,6 @@ Iwanttotestcnot2024!
 - Automatic or manual saving
 - View on phone or tablet in landscape mode
 - Export a note in HTML format
-- Export all notes in HTML format with an index and with images directly embedded in the HTML page for offline viewing or backup
 - Trash with recoverable notes
 - Filter by tags
 
@@ -146,13 +145,12 @@ simply updating the `.env` file and deleting the database container will not be 
 
 To be able to restore all your notes, you need only two things:
 
-- Your notes exported as html files.
+- Your notes as html files.
 - A dump SQL of your database.
 
 <details><summary>Backup your notes</summary><p><p>
 
 Get your html files from the ENTRIES_DATA_PATH directory defined in your .env config file.
-You can, for example, create a zip file with all your notes.
 
 </p></details>
 
@@ -177,7 +175,7 @@ Create temporarily another container to create a dump where you run the command:
 
 <details><summary>Restore your notes</summary><p><p>
 
-- Copy all the html notes into your ENTRIES_DATA_PATH
+- Copy all your html files into your ENTRIES_DATA_PATH
 - Import your sql dump. Two ways :
 
   1. Import with Phpmyadmin.

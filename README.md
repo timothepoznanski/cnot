@@ -167,7 +167,7 @@ There are two ways to create a dump:
 
 Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at https://SERVER_NAME:8074/ and export your database:
 
-![image](https://github.com/user-attachments/assets/35543084-1bf1-48d5-9ce7-931b48d6863d)
+![2024-10-30_06h57_03](https://github.com/user-attachments/assets/63558d9a-bb30-4fce-9308-a1b51929d98c)
 
 2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux:
 

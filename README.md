@@ -4,8 +4,6 @@ With so many note-taking tools out there, finding the right one can be tough. Ma
 
 CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
 
-⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone (although it is possible to view your notes in landscape mode). 
-
 ## Features
 
 The best way to see what it’s worth is to test it out.<p>
@@ -41,6 +39,10 @@ Iwanttotestcnot2024!
 </p> </details>
 
 ![image](https://github.com/user-attachments/assets/32093637-d338-4261-a28c-7f31bcc13599)
+
+⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone although it is possible to view your notes in landscape mode:
+
+![2024-10-31_15h14_45](https://github.com/user-attachments/assets/36359bd4-8769-4dc7-b0e8-a61203087111)
 
 ## Installation
 

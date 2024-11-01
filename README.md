@@ -233,7 +233,7 @@ Possible reasons to these errors:
    
 Solution: Wait a few seconds, visit another web page and come back.
 
-## Thanks 🙏
+## Inspired from 🙏
 
 https://github.com/arkanath/SleekArchive
 https://github.com/kenshin54/popline

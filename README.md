@@ -39,6 +39,8 @@ Iwanttotestcnot2024!
 
 ![image](https://github.com/user-attachments/assets/32093637-d338-4261-a28c-7f31bcc13599)
 
+![image](https://github.com/user-attachments/assets/bd37c668-beb3-43df-b7c1-9631b0cddc0e)
+
 ⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone although it is possible to view your notes in landscape mode:
 
 ![image](https://github.com/user-attachments/assets/c8d67d3d-1657-412f-a4dd-fcf5bf7cc158)

@@ -227,4 +227,4 @@ Possible reasons to these errors:
 3. It is a browser cache issue
 4. The server runs out of memory
    
-Wait a few seconds, visit another web page and come back.
+Solution: Wait a few seconds, visit another web page and come back.

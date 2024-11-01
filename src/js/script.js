@@ -81,10 +81,6 @@ function emptytrash(){
     }
 }
 
-function save(){
-    alert('saved');
-}
-
 function deletePermanent(iid){
     var r = confirm("Are you sure you want to permanently delete the note? \""+document.getElementById("inp"+iid).value+"\"? It will be lost forever!");
     if (r == true) {
@@ -162,18 +158,18 @@ function update(){
     var curdate = new Date();
     var curtime = curdate.getTime();
     lastudpdate = curtime;
-    displayEditionEnCours(); // We display that an action has been taken to edit the note.
+    displayEditInProgress(); // We display that an action has been taken to edit the note.
 }
 
-function displayEnregistrementEnCours(){
+function displaySavingInProgress(){
     $('#lastupdated'+noteid).html('<b><span style="color:#FF0000";>Saving in progress...</span></b>');
 }
 
-function displayModificationsApportees(){
+function displayModificationsDone(){
     $('#lastupdated'+noteid).html('<b><span style="color:#FF0000";>Note modified</span></b>');
 }
 
-function displayEditionEnCours(){
+function displayEditInProgress(){
     $('#lastupdated'+noteid).html('<span>Editing in progress...</span>');
 }
 
@@ -183,8 +179,8 @@ $( document ).ready(function() {
        setInterval(function(){
            checkedit(); 
            console.log("editedButNotSaved = " + editedButNotSaved); 
-           if(editedButNotSaved==1){displayModificationsApportees();} 
-           if(updateNoteEnCours==1){displayEnregistrementEnCours();} 
+           if(editedButNotSaved==1){displayModificationsDone();} 
+           if(updateNoteEnCours==1){displaySavingInProgress();} 
         }, 2000);
    }
 });
@@ -197,7 +193,7 @@ function checkedit(){
     //if(editedButNotSaved==1 && curtime-lastudpdate > 5000)  // If we don't control the `updateNoteEnCours` flag, it will create excessive requests if the network is slow.
     if(updateNoteEnCours==0 && editedButNotSaved==1 && curtime-lastudpdate > 15000)  
     { 
-        displayEnregistrementEnCours();
+        displaySavingInProgress();
         updatenote();
     }
     else{
@@ -215,7 +211,7 @@ function saveFocusedNoteJS(){
     console.log("updateNoteEnCours = " + editedButNotSaved / "editedButNotSaved = " + editedButNotSaved); 
     if(updateNoteEnCours==0 && editedButNotSaved==1)  
     { 
-        displayEnregistrementEnCours();
+        displaySavingInProgress();
         updatenote();
     }
     else{

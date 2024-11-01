@@ -39,7 +39,6 @@ session_start();
 	<link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 	<link type="text/css" rel="stylesheet" href="css/style.css"/> 
-	<script src="js/jquery.min.js"></script> 
     <link rel="stylesheet" href="css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="css/page.css" />
     

@@ -138,7 +138,7 @@ Update your .env file and run the application (docker compose up -d --build). �
 **If you want to change some database settings:**
 
 <details><summary>See instructions here</summary><p><p>
-simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first (see next section), then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data (see next section). 
+Simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first (see next section), then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data (see next section). 
 </p></details>
 
 ## Backup and Restore
@@ -158,19 +158,26 @@ Get your html files from the ENTRIES_DATA_PATH directory defined in your .env co
 
 There are two ways to create a dump:
 
-1. Using phpMyAdmin:
+**1. Using phpMyAdmin:**
 
 Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at https://SERVER_NAME:8074/ and export your database:
 
 ![2024-10-30_06h57_03](https://github.com/user-attachments/assets/63558d9a-bb30-4fce-9308-a1b51929d98c)
 
-2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux:
+**2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux:**
 
 Create temporarily another container to create a dump where you run the command:
 
+  Get your database container name:
   ```
-   $ docker run --rm --network container:MYSQL_DATABASE -e MYSQL_PWD=MYSQL_ROOT_PASSWORD mysql:latest mysqldump -h127.0.0.1 -uroot MYSQL_DATABASE > dump.sql
-   ```
+   $ docker ps -a
+  ```
+
+  Export a backup sql of your database: 
+  
+  ```
+   $ docker run --rm --network container:DATABASE_CONTAINER_NAME -e MYSQL_PWD=MYSQL_ROOT_PASSWORD mysql:latest mysqldump -h127.0.0.1 -uroot MYSQL_DATABASE > dump.sql
+  ```
 </p></details>
 
 <details><summary>Restore your notes</summary><p><p>
@@ -181,14 +188,19 @@ Create temporarily another container to create a dump where you run the command:
   1. Import with Phpmyadmin.
   2. Copy your dump into your docker instance :
 
+     Get your database container name:
      ```
-     $ docker cp dump.sql cnot_db:/tmp/dump.sql
+      $ docker ps -a
      ```
 
-     and enter your docker instance and import your dump :
+     ```
+      $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
+     ```
+
+     and enter your database docker instance and import your dump :
      
      ```
-      $ docker exec -it MYSQL_DATABASE bash
+      $ docker exec -it DATABASE_CONTAINER_NAME bash
       bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
      ```
 </p></details>
@@ -198,8 +210,6 @@ Create temporarily another container to create a dump where you run the command:
 If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
 
 ## Possible errors ☢️
-
-**Case 1**
 
  ```bash
 BDD connection error : Connection refused
@@ -211,7 +221,7 @@ or
 Fatal error: Uncaught Error: Call to a member function execute()
  ```
 
-Three possible reasons to this error:
+Possible reasons to these errors:
 
 1. The database is still initializing
 3. It is a browser cache issue

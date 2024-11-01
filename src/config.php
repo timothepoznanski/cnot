@@ -1,5 +1,4 @@
 <?php
-
     $MYSQL_HOST = $_ENV['MYSQL_HOST'];
     $MYSQL_USER = $_ENV['MYSQL_USER'];
     $MYSQL_DATABASE = $_ENV['MYSQL_DATABASE'];

@@ -210,8 +210,10 @@ session_start();
 			// Right-side list based on the query created earlier //		
 		
             $res_right = $con->query($query_right);
+            $notes = 0;
             while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC))
             {
+                $notes ++;
                 $filename = "entries/".$row["id"].".html";
                 $titre = $row['heading'];             
                 $handle = fopen($filename, "r");
@@ -257,6 +259,48 @@ session_start();
 <!-- Do not place this block at the top, otherwise Popline will no longer work -->
 <script src="js/script.js"></script>
 <script> $(".noteentry").popline(); </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
-
-
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script>
+    var notes = '<?=$notes?>';
+    for (i =0; i< notes;i++){
+        var index = i + 1;
+        const tagifyInstance = new Tagify(document.getElementById('tags' + index), {
+            placeholder: "Type something",
+        });
+        tagifyInstance.on('add', (e) => {
+            noteid = tagifyInstance.DOM.originalInput.closest('div.name_tags').querySelector('input').dataset.id;
+            update();
+        });
+        tagifyInstance.on('remove', (e) => {
+            noteid = tagifyInstance.DOM.originalInput.closest('div.name_tags').querySelector('input').dataset.id;
+            update();
+        });
+        tagifyInstance.on('input', (e) => {
+            const searchTerm = e.detail.value;
+            tagifyInstance.whitelist = null;
+            tagifyInstance.loading(true);
+            mockAjax(searchTerm)
+                .then(function(result){
+                    tagifyInstance.settings.whitelist = result.concat(tagifyInstance.value)
+                    tagifyInstance
+                        .loading(false)
+                        .dropdown.show(e.detail.value);
+                })
+                .catch(err => tagifyInstance.dropdown.hide())
+        });
+    }
+    var mockAjax = function(searchTerm) {
+        return new Promise(function(resolve, reject) {
+            fetch('tags.php?search='+ encodeURIComponent(searchTerm))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => resolve(data))
+                .catch(err => reject(err));
+        });
+    };
+</script>
 </html>

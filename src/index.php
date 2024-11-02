@@ -41,7 +41,7 @@ session_start();
 	<link type="text/css" rel="stylesheet" href="css/style.css"/> 
     <link rel="stylesheet" href="css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="css/page.css" />
-    
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" />
     <!-- jQuery Popline library for the bar that appears when selecting text in a note / see in "js/plugins" -->
 	<link rel="stylesheet" type="text/css" href="css/popline.css" /> <!-- CSS for the Popline -->
     <!-- Remove the lines for the functions that we do not want to appear in the bar. -->

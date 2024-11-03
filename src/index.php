@@ -57,7 +57,11 @@ session_start();
 	<script type="text/javascript" src="js/plugins/jquery.popline.textcolor.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.backgroundcolor.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.fontsize.js"></script>
-
+    <style>
+        .tagify{
+            border: 0;
+        }
+    </style>
 	<script>
 		var app_pass = '<?php echo APP_PASSWORD;?>';
 	</script>

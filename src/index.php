@@ -221,7 +221,7 @@ session_start();
             {
             
                 $filename = "entries/".$row["id"].".html";
-                $titre = $row['heading'];             
+                $title = $row['heading'];             
                 $handle = fopen($filename, "r");
                 $contents = fread($handle, filesize($filename));
                 $entryfinal = $contents;
@@ -234,7 +234,7 @@ session_start();
 
                         <span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>
                         
-                        <a href="'.$filename.'" download="'.$titre.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
+                        <a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
 
                         <span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>
 
@@ -250,7 +250,7 @@ session_start();
                         <hr>                        
                         <hr>
                         
-                       <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Titre ?" value="'.$row['heading'].'"></input></h4>
+                       <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
                         
                         <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
                         

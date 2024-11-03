@@ -3,12 +3,12 @@ var lastudpdate;
 var noteid=-1;
 var updateNoteEnCours = 0;
 
-function updateidsearch(el) 
+function updateidsearch(el)
 {
     noteid = el.id.substr(5);
 }
 
-function updateidhead(el) 
+function updateidhead(el)
 {
     noteid = el.id.substr(3); // 3 stands for inp
 }
@@ -20,7 +20,7 @@ function updateidtags(el)
 
 function updateident(el)
 {
-    noteid = el.id.substr(5); 
+    noteid = el.id.substr(5);
 }
 
 window.onbeforeunload = function(){
@@ -35,14 +35,18 @@ function updatenote(){
     var ent = $("#entry"+noteid).html();  // Retrieve the content of the note and convert it to HTML (images are converted to base64) to save it in a file (using fwrite in updatenote.php)
 
     // console.log("RESULT :" + ent);
-    
+
     var ent = ent.replace(/<br\s*[\/]?>/gi, "&nbsp;<br>");  // Replace empty lines with &nbsp; so that if we format it as code, the line break is preserved
     var entcontent = $("#entry"+noteid).text(); // Retrieve the text content of the note to save it in the database (in updatenote.php)
     // console.log("entcontent:" + entcontent);
     // console.log("ent:" + ent);
     var tags = document.getElementById("tags"+noteid).value;
-
-    $.post( "updatenote.php", {pass: app_pass, id: noteid, tags: tags, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
+    var concatenatedValues = null;
+    if (tags.trim()){
+        var tagsArray = JSON.parse(tags);
+         concatenatedValues = tagsArray.map(tag => tag.value).join(',');
+    }
+    $.post( "updatenote.php", {pass: app_pass, id: noteid, tags: concatenatedValues, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {  // We retrieved the date and time in updatenote.php and stored it in "data".
         if(data=='1')
         {
@@ -60,18 +64,18 @@ function updatenote(){
 }
 
 function newnote(){
-        
+
     $.post( "insertnew.php", {pass: app_pass, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {
-        if(data=='1') 
+        if(data=='1')
         {
             $(window).scrollTop(0);
             //location.reload(true);
             window.location.href = "index.php";
         }
         else alert(data);
-    });    
-}                  
+    });
+}
 
 function emptytrash(){
     var r = confirm("Are you sure you want to permanently delete all notes from the trash? They will be lost forever!");
@@ -115,9 +119,9 @@ function deleteNote(iid){
 $('body').on( 'keyup', '.name_doss', function (){
     if(updateNoteEnCours==1){
         //alert("Save in progress.")
-        showNotificationPopup("Save in progress."); 
+        showNotificationPopup("Save in progress.");
     }
-    else{        
+    else{
         update();
     }
 });
@@ -125,9 +129,9 @@ $('body').on( 'keyup', '.name_doss', function (){
 $('body').on( 'keyup', '.noteentry', function (){
     if(updateNoteEnCours==1){
         //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note."); 
+        showNotificationPopup("Automatic save in progress, please do not modify the note.");
     }
-    else{        
+    else{
         update();
     }
 });
@@ -135,9 +139,9 @@ $('body').on( 'keyup', '.noteentry', function (){
 $('body').on( 'click', '.popline-btn', function (){
     if(updateNoteEnCours==1){
         //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note."); 
+        showNotificationPopup("Automatic save in progress, please do not modify the note.");
     }
-    else{        
+    else{
         update();
     }
 });
@@ -145,9 +149,9 @@ $('body').on( 'click', '.popline-btn', function (){
 $('body').on( 'keyup', 'input', function (){
     if(updateNoteEnCours==1){
         //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note."); 
+        showNotificationPopup("Automatic save in progress, please do not modify the note.");
     }
-    else{        
+    else{
         update();
     }
 });
@@ -177,10 +181,10 @@ function displayEditInProgress(){
 $( document ).ready(function() {
    if(editedButNotSaved==0){
        setInterval(function(){
-           checkedit(); 
-           console.log("editedButNotSaved = " + editedButNotSaved); 
-           if(editedButNotSaved==1){displayModificationsDone();} 
-           if(updateNoteEnCours==1){displaySavingInProgress();} 
+           checkedit();
+          // console.log("editedButNotSaved = " + editedButNotSaved);
+           if(editedButNotSaved==1){displayModificationsDone();}
+           if(updateNoteEnCours==1){displaySavingInProgress();}
         }, 2000);
    }
 });
@@ -191,36 +195,36 @@ function checkedit(){
     var curtime = curdate.getTime();
     // If there has been a modification and more than X seconds (1000 = 1s) have passed, and the note is not currently being saved (update), then update the note in the database and the HTML file.
     //if(editedButNotSaved==1 && curtime-lastudpdate > 5000)  // If we don't control the `updateNoteEnCours` flag, it will create excessive requests if the network is slow.
-    if(updateNoteEnCours==0 && editedButNotSaved==1 && curtime-lastudpdate > 15000)  
-    { 
+    if(updateNoteEnCours==0 && editedButNotSaved==1 && curtime-lastudpdate > 15000)
+    {
         displaySavingInProgress();
         updatenote();
     }
     else{
-        //alert("test"); 
+        //alert("test");
     }
 }
 
 function saveFocusedNoteJS(){
-    console.log("noteid = " + noteid); 
+    //console.log("noteid = " + noteid);
     //if(noteid==-1) return ;
-    if(noteid==-1){ 
-        showNotificationPopup("Click anywhere in the note to be saved, then try again."); 
+    if(noteid == -1){
+        showNotificationPopup("Click anywhere in the note to be saved, then try again.");
         return ;
     }
-    console.log("updateNoteEnCours = " + editedButNotSaved / "editedButNotSaved = " + editedButNotSaved); 
-    if(updateNoteEnCours==0 && editedButNotSaved==1)  
-    { 
+    //console.log("updateNoteEnCours = " + editedButNotSaved / "editedButNotSaved = " + editedButNotSaved);
+    if(updateNoteEnCours==0 && editedButNotSaved==1)
+    {
         displaySavingInProgress();
         updatenote();
     }
     else{
         if(updateNoteEnCours==1){
-            showNotificationPopup("Save already in progress."); 
+            showNotificationPopup("Save already in progress.");
         }
         else{
             if(editedButNotSaved==0){showNotificationPopup("Nothing to save.");}
-        }        
+        }
     }
 }
 
@@ -229,7 +233,7 @@ function showNotificationPopup(message) {
     popup.innerText = message;
     popup.style.display = 'block';
 
-    // Hide the popup after a certain amount of time 
+    // Hide the popup after a certain amount of time
     setTimeout(function() {
         popup.style.display = 'none';
     }, 4000); // Hide after 4 seconds.

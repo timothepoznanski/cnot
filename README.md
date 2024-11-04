@@ -8,11 +8,8 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 
 The best way to see what it’s worth is to test it out.<p>
 
-Here’s a demo [link](https://democnot.timpoz.com/index.php) with the password provided below for access:
+Here’s a demo [link](https://democnot.timpoz.com/index.php) with the password "password" for access:
 
-```
-Iwanttotestcnot2024!
-```
 <details><summary>See all features here</summary><p>
 
 - Highlight in multiple colors

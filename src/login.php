@@ -12,7 +12,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
-<body onload="$('#pass').focus();">
+<body onload="document.getElementById('pass').focus();">
 	<br>
 	<br>
 	<h1 style="text-align:center"><img width="30" height="30" class="imagelogin" src="favicon.ico" alt="favicon cnot3"></h1>
@@ -20,7 +20,9 @@
 	<hr>
 	<br>
 	<form action="loginAction.php" method="POST">
-		<h2><input autocomplete="off" spellcheck="false" id="pass" style="text-align:center" name="pass" type="password" placeholder="Password?"></input></h2>
+		<h2>
+			<input autocomplete="off" spellcheck="false" id="pass" style="text-align:center" name="pass" type="password" placeholder="Password?">
+		</h2>
 	</form>
 </body>
 </html>

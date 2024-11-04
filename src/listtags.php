@@ -22,7 +22,7 @@ session_start();
 
 	while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))
 	{   
-		$delimiter = ' ';
+		$delimiter = ',';
 		$words = explode($delimiter, $row[tags]);
 
 		foreach($words as $word)

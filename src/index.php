@@ -248,8 +248,8 @@ session_start();
 			            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
                         </div>
                         
-                        <hr>                        
-                        <hr>
+                        <!--<hr>-->                        
+                        <!--<hr>--> 
                         
                        <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
                         

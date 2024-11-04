@@ -17,7 +17,7 @@
 	<br>
 	<h1 style="text-align:center"><img width="30" height="30" class="imagelogin" src="favicon.ico" alt="favicon cnot3"></h1>
 	<h1 style="text-align:center"><?php echo JOURNAL_NAME;?></h1>
-	<hr>
+	<!--<hr>-->
 	<br>
 	<form action="loginAction.php" method="POST">
 		<h2>

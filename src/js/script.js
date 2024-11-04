@@ -91,14 +91,10 @@ function emptytrash() {
         })
         .then(response => response.text())
         .then(data => {
-            if (data === '1') {
-                // If successful, redirect after a short delay
-                setTimeout(function() { 
-                    window.location.href = "trash.php"; 
-                }, 1000);
-            } else {
-                alert(data); // Show error message
-            }
+            // If successful, redirect after a short delay
+            setTimeout(function() { 
+                window.location.href = "trash.php"; 
+            }, 1000);
         })
         .catch(error => {
             console.error('Error:', error); // Log any errors

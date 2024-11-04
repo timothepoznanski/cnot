@@ -62,8 +62,8 @@ session_start();
     <style>
         .tagify{
             border: 0;
+            --tag-bg: #F1F1F1;
         }
-       
     </style>
 	<script>
 		var app_pass = '<?php echo APP_PASSWORD;?>';

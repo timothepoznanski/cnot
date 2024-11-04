@@ -1,14 +1,11 @@
 # CnoT
 
-With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features. CnoT focuses on simplicity, essentials, and user data control. Unlike others, it doesn’t use folders, instead, all notes are searchable by tags and keywords and are saved in HTML format.
-
-CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
+With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features. 
+CnoT focuses on simplicity, essentials, effective search, and user data control. Unlike others, it doesn’t use folders; instead, all notes are searchable by tags and keywords and are saved in HTML format, making them easy to save and view offline.
 
 ## Features
 
-The best way to see what it’s worth is to test it out.<p>
-
-Here’s a demo [link](https://democnot.timpoz.com/index.php) with the password "password" for access:
+Public demonstration can be found [here](https://democnot.timpoz.com/index.php), use "password" as the password.
 
 <details><summary>See all features here</summary><p>
 
@@ -37,6 +34,8 @@ Here’s a demo [link](https://democnot.timpoz.com/index.php) with the password 
 ⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone although it is possible to view your notes in landscape mode.
 
 ## Installation
+
+CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
 
 1. **Clone the repository and configure the application:**
  

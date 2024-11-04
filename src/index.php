@@ -244,7 +244,7 @@ session_start();
                         
                         <div class="contain_doss_tags">
 							
-			            
+			            <div class="icon_tag"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
 			            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
                         </div>
                         

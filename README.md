@@ -1,8 +1,7 @@
 # CnoT
 
-With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features. 
+With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features.<p>
 CnoT focuses on simplicity, essentials, effective search, and user data control. Unlike others, it doesn’t use folders; instead, all notes are searchable by tags and keywords and are saved in HTML format, making them easy to save and view offline.
-
 
 ## Features
 

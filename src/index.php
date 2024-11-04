@@ -27,6 +27,8 @@ session_start();
 	}
     
 	include 'db_connect.php';	
+    /*$updateQuery = "UPDATE entries SET tags =  REPLACE(tags,' ',',')";
+    $update = $con->query($updateQuery);*/
 ?>
 
 <html>
@@ -61,6 +63,7 @@ session_start();
         .tagify{
             border: 0;
         }
+       
     </style>
 	<script>
 		var app_pass = '<?php echo APP_PASSWORD;?>';
@@ -214,12 +217,12 @@ session_start();
 			// Right-side list based on the query created earlier //		
 		
             $res_right = $con->query($query_right);
-            $notes = 0;
+           
             while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC))
             {
-                $notes ++;
+            
                 $filename = "entries/".$row["id"].".html";
-                $titre = $row['heading'];             
+                $title = $row['heading'];             
                 $handle = fopen($filename, "r");
                 $contents = fread($handle, filesize($filename));
                 $entryfinal = $contents;
@@ -232,7 +235,7 @@ session_start();
 
                         <span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>
                         
-                        <a href="'.$filename.'" download="'.$titre.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
+                        <a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
 
                         <span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>
 
@@ -241,14 +244,14 @@ session_start();
                         
                         <div class="contain_doss_tags">
 							
-			            <div class="icon_tag"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-			            <div class="name_tags"><span><input class="add-margin-left" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
+			            
+			            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
                         </div>
                         
                         <hr>                        
                         <hr>
                         
-                        <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Titre ?" value="'.$row['heading'].'"></input></h4>
+                       <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
                         
                         <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
                         
@@ -265,10 +268,10 @@ session_start();
 <script> $(".noteentry").popline(); </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
 <script src="https://unpkg.com/@yaireo/tagify"></script>
 <script>
-    var notes = '<?=$notes?>';
-    for (i =0; i< notes;i++){
-        var index = i + 1;
-        const tagifyInstance = new Tagify(document.getElementById('tags' + index), {
+   
+    $('.tag-clsss').each(function () {
+        var id = $(this).data('id');
+        const tagifyInstance = new Tagify(document.getElementById('tags' + id), {
             placeholder: "Type something",
         });
         tagifyInstance.on('add', (e) => {
@@ -292,7 +295,9 @@ session_start();
                 })
                 .catch(err => tagifyInstance.dropdown.hide())
         });
-    }
+    })
+    //just a moment
+    
     var mockAjax = function(searchTerm) {
         return new Promise(function(resolve, reject) {
             fetch('tags.php?search='+ encodeURIComponent(searchTerm))

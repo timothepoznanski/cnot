@@ -77,30 +77,83 @@ function newnote(){
     });
 }
 
-function emptytrash(){
+function emptytrash() {
     var r = confirm("Are you sure you want to permanently delete all notes from the trash? They will be lost forever!");
     if (r == true) {
-        $.post( "emptytrash.php", {pass: app_pass})
-        setTimeout(function(){ window.location.href = "trash.php"; }, 1000);
-    }
-}
+        // Create a new FormData object to send the data
+        const formData = new FormData();
+        formData.append('pass', app_pass);
 
-function deletePermanent(iid){
-    var r = confirm("Are you sure you want to permanently delete the note? \""+document.getElementById("inp"+iid).value+"\"? It will be lost forever!");
-    if (r == true) {
-        $.post( "permanentDelete.php", {pass: app_pass, id:iid})
-        .done(function(data) {
-            if(data=='1') $('#note'+iid).hide();
-            else alert(data);
+        // Use the fetch API to send a POST request
+        fetch('emptytrash.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data === '1') {
+                // If successful, redirect after a short delay
+                setTimeout(function() { 
+                    window.location.href = "trash.php"; 
+                }, 1000);
+            } else {
+                alert(data); // Show error message
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error); // Log any errors
         });
     }
 }
 
-function putBack(iid){
-    $.post( "putback.php", {pass: app_pass, id:iid})
-    .done(function(data) {
-        if(data=='1') $('#note'+iid).hide();
-        else alert(data);
+function deletePermanent(iid) {
+    var r = confirm("Are you sure you want to permanently delete the note? \"" + document.getElementById("inp" + iid).value + "\"? It will be lost forever!");
+    if (r == true) {
+        // Create a new FormData object to send the data
+        const formData = new FormData();
+        formData.append('pass', app_pass);
+        formData.append('id', iid);
+
+        // Use the fetch API to send a POST request
+        fetch('permanentDelete.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data === '1') {
+                document.getElementById('note' + iid).style.display = 'none'; // Hide the note
+            } else {
+                alert(data); // Show error message
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error); // Log any errors
+        });
+    }
+}
+
+function putBack(iid) {
+    // Create a new FormData object to send the data
+    const formData = new FormData();
+    formData.append('pass', app_pass);
+    formData.append('id', iid);
+
+    // Use the fetch API to send a POST request
+    fetch('putback.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data === '1') {
+            document.getElementById('note' + iid).style.display = 'none'; // Hide the note
+        } else {
+            alert(data); // Show error message
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error); // Log any errors
     });
 }
 

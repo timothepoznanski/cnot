@@ -9,10 +9,10 @@
           var span = document.createElement("span");
 
           span.style.fontFamily = "Consolas, monospace";
-          span.style.backgroundColor = "#f9f9f9";
+          span.style.backgroundColor = "#F7F6F3";
           span.style.fontSize = "12px";
-          span.style.border = "1px solid #ddd";
-          span.style.padding = "10px";
+          span.style.border = "0px solid #ddd";
+          span.style.padding = "20px";
           span.style.display = "block";
           span.style.borderRadius = "4px";
           span.style.whiteSpace = "pre-wrap";

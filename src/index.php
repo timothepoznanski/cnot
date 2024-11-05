@@ -195,11 +195,11 @@ session_start();
             <?php
             if($search!='') // We arrive here after a search; it will display the search results along with a small cross icon to exit the search.
             { 
-                echo '<span style="cursor:pointer;font-weight:00;" onclick="window.location=\'index.php\'"><span style="color:#fff" class="fa fa-times"></span></span>';
+                echo '<span style="cursor:pointer;font-weight:00;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span></span>';
             }
             else if($tags_search!='') // We arrive here after a tag search; it will display the search results along with a small cross icon to exit the search.
             {
-                echo '<span style="cursor:pointer;font-weight:700;" onclick="window.location=\'index.php\'"><span style="color:#fff" class="fa fa-times"></span></span>';
+                echo '<span style="cursor:pointer;font-weight:700;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span></span>';
             }
 			else // Otherwise, it means it's not a search, so we simply display a message indicating that the first X notes have been displayed on the right.
 			{

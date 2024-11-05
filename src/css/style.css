@@ -48,6 +48,10 @@ body {
     overflow-x: hidden; /* Disable horizontal scrolling */
 } 
 
+.icon_grey{
+    color: #91918E;
+}
+
 .icon_download{
     margin-left: 15px;	
     margin-top: 7px;

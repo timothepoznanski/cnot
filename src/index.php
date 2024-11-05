@@ -187,7 +187,7 @@ session_start();
         <div class="contains_forms_search">
 			<form class="form_search" action="index.php" method="POST">          
 				<div class="right-inner-addon">
-					<i class="fas fa-search"></i>
+					<i class="fas fa-search icon_grey"></i>
                     <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($search); ?>"/>
                 </div>
 			</form>
@@ -209,7 +209,7 @@ session_start();
 
 			<form class="form_search_tags" action="index.php" method="POST">          
 				<div class="right-inner-addon">
-					<i class="fas fa-tags"></i>
+					<i class="fas fa-tags icon_grey"></i>
                     <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($tags_search); ?>"/>
                 </div>  
 			</form>                 

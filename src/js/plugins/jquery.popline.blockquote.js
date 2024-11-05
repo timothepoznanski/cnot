@@ -8,14 +8,16 @@
           var range = selection.getRangeAt(0);
           var span = document.createElement("span");
 
-          span.style.fontFamily = "Consolas, monospace";
+          span.style.fontFamily = "SFMono-Regular, Consolas, monospace";
           span.style.backgroundColor = "#F7F6F3";
-          span.style.fontSize = "12px";
+          span.style.fontSize = "90%";
           span.style.border = "0px solid #ddd";
-          span.style.padding = "20px";
+          span.style.padding = "34px 16px 32px 32px";
           span.style.display = "block";
           span.style.borderRadius = "4px";
           span.style.whiteSpace = "pre-wrap";
+          span.style.minHeight = "1em";
+          span.style.Color = "rgb(55, 53, 47)";
 
           span.textContent = selection.toString();
           

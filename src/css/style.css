@@ -30,11 +30,11 @@ body {
     padding-top:10px;
     padding-right:10px;
     /*padding-right:210px;*/
-    background-color:#FFFFFF;
+    background-color:#F7F7F5;
     overflow:auto;
     /*column-width: auto;*/
-    font-size: 13px;
-	border-right: solid #FFFFFF 1px;
+    font-size: 14px;
+	border-right: solid #a59d9d 1px;
 }
 
 #right_col{
@@ -215,7 +215,7 @@ div[contentEditable=true]:empty:before{
 	/*width:90%;*/
 	margin: 1%;
 	margin-bottom:20px;
-	box-shadow: 1px 1px 10px #888888;
+	/* box-shadow: 1px 1px 10px #888888; */
     /*border: 1px solid #ccc;*/
 	background: white;
     border-radius: 5px; /* Adjust the value according to the desired degree of rounding */
@@ -271,11 +271,13 @@ input{
 	margin:5px;
 }
 
-.margin-title{
-    margin-top:4px;
+.css-title{
+    margin-top:10px;
+    margin-bottom:10px;
 	margin-left:-3px;
-    font-size: 20px;
-    /* font-weight: 600; */
+    font-size: 24px;
+    font-weight: 600;
+    color: #37352F;
 }
 
 input:focus{
@@ -312,3 +314,13 @@ hr{
 	font-style: normal;
 	font-weight: 300;
 }
+
+.selected-note {
+    background-color: #EFEFED;
+    border-radius: 8px;    
+    padding: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    /* display: flex; */
+}
+

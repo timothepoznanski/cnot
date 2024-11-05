@@ -12,8 +12,8 @@ session_start();
     $tags_search = isset($_POST['tags_search']) ? $_POST['tags_search'] : (isset($_GET['tags_search']) ? $_GET['tags_search'] : '');
     $note = $_GET['note'];
 
-    $limit_display_right = 15;
-    $limit_display_right_all_notes = 9;
+    $limit_display_right = 1;
+    $limit_display_right_all_notes = 1;
 
 
     if (isset($tags_search_from_list))
@@ -100,7 +100,7 @@ session_start();
             foreach ($tags_search_terms as $tag_term) {
                 $query_right .= ' AND tags LIKE \'%' . htmlspecialchars($tag_term, ENT_QUOTES) . '%\'';
             }
-            $query_right .= ' ORDER BY updated DESC';
+            $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
         else // Otherwise, it's a search within the notes, so we only want to display notes that contain the searched words.
         {
@@ -149,24 +149,27 @@ session_start();
  		
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) 
         {       
+            // Check if note is selected
+            $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
+
             if($tags_search != '') // If we have searched within the tags, we want to display the notes that contain those tags.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
             if($search != '') // If we have searched within the notes, we want to display the notes that contain the searched words.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
             if($tags_search == '' && $search == '') // If we were viewing all notes and click on a note
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class=links_arbo_left href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
@@ -177,7 +180,7 @@ session_start();
     </div>
 	
     <!-- RIGHT COLUMN -->	
-    <div id="right_col" style="background:#007DB8;">
+    <div id="right_col" style="background:#FFFFF;">
     
         <!-- Search -->
 
@@ -251,7 +254,7 @@ session_start();
                         <!--<hr>-->                        
                         <!--<hr>--> 
                         
-                       <h4><input class="margin-title" style="color:#007DB8" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
+                       <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
                         
                         <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
                         

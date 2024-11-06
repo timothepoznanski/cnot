@@ -34,12 +34,12 @@ a:active { color: #2E8CFA; }
 blockquote {
   /* The blockquote here overrides the one from bootstrap.css */
   /* background: #eee; */
-  background: #fbfaf8;
-  border-radius: 5px;
-  margin: 0px;
-  font-size: 12px;
-  padding: 10px;
-  border: 1px solid #ddd;
+  /* background: #fbfaf8; */
+  /* border-radius: 5px; */
+  /* margin: 0px; */
+  /* font-size: 12px; */
+  /* padding: 10px; */
+  /* border: 1px solid #ddd; */
 }
 
 img {

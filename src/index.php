@@ -52,6 +52,7 @@ session_start();
 	<script type="text/javascript" src="js/plugins/jquery.popline.link.js"></script>
 	<script type="text/javascript" src="js/plugins/jquery.popline.decoration.js"></script>
 	<script type="text/javascript" src="js/plugins/jquery.popline.blockquote.js"></script>
+	<script type="text/javascript" src="js/plugins/jquery.popline.blockcode.js"></script>
 	<script type="text/javascript" src="js/plugins/jquery.popline.list.js"></script>
 	<!--<script type="text/javascript" src="js/plugins/jquery.popline.justify.js"></script> -->
 	<!--<script type="text/javascript" src="js/plugins/jquery.popline.blockformat.js"></script> -->

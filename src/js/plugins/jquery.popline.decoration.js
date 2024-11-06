@@ -48,8 +48,7 @@
         // document.execCommand('insertHorizontalRule');
         document.execCommand('insertHTML', false, "<br><hr><br>"); // This may not be supported by Internet Explorer.
       }
-    },
-    
+    },    
     
     simplifytext: {
       iconClass: "fas fa-won-sign",
@@ -59,11 +58,11 @@
       }
     },
 
-    roboto: {
+    inter: {
       iconClass: "fas fa-font",
       mode: "edit",
       action: function(event) {
-        document.execCommand('fontName', false, "Roboto");
+        document.execCommand('fontName', false, "Inter");
       }
     }
 

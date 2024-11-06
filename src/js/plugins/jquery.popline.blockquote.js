@@ -6,19 +6,24 @@
         var selection = window.getSelection();
         if (selection.rangeCount > 0) {
           var range = selection.getRangeAt(0);
-          var span = document.createElement("span");
 
+          // Create the span for the code formatting
+          var span = document.createElement("span");
           span.style.fontFamily = "Consolas, monospace";
-          span.style.backgroundColor = "#f9f9f9";
-          span.style.fontSize = "12px";
-          span.style.border = "1px solid #ddd";
-          span.style.padding = "10px";
+          span.style.backgroundColor = "#F7F6F3";
+          span.style.fontSize = "90%";
+          span.style.border = "0px solid #ddd";
+          span.style.padding = "34px 16px 32px 32px";
           span.style.display = "block";
           span.style.borderRadius = "4px";
           span.style.whiteSpace = "pre-wrap";
+          span.style.minHeight = "1em";
+          span.style.color = "rgb(55, 53, 47)";
 
+          // Set text content of span
           span.textContent = selection.toString();
-          
+
+          // Insert the formatted span in place of the selection
           range.deleteContents();
           range.insertNode(span);
         }
@@ -33,12 +38,21 @@
             node = node.parentNode;
           }
           if (node.tagName === "SPAN" && node.style.fontFamily === "Consolas, monospace") {
+            // Reset all the inline styles
             node.style.fontFamily = "";
             node.style.backgroundColor = "";
+            node.style.fontSize = "";  // Ensure font-size is reset to default
             node.style.border = "";
             node.style.padding = "";
             node.style.display = "";
             node.style.borderRadius = "";
+            node.style.minHeight = "";
+            node.style.color = "";
+
+            // After resetting, ensure the span is not an empty tag and remove it if it's empty
+            if (node.textContent.trim() === "") {
+              node.remove();
+            }
           }
         }
       }
@@ -57,6 +71,8 @@
         } else {
           quoteUtils().quote();
         }
+        // Hide the popline menu after the action
+        popline.hide();
       }
     }
   });

@@ -342,7 +342,7 @@
         if (typeof(hideFunc) === "function") {
           var _this = this;
           var position = parseInt(_this.bar.css('left')) + _this.bar.width() / 2;
-          _this.bar.animate({ opacity: 0, marginTop: -_this.bar.height() + 'px' }, 5, function() { // Le 5 correspond au deuxième paramètre optionnel (si je ne le met pas ça fait un effet lent...) de la fonction animate qui est le temps d'animation en ms
+          _this.bar.animate({ opacity: 0, marginTop: -_this.bar.height() + 'px' }, 5, function() { // Le 5 correspond au deuxiï¿½me paramï¿½tre optionnel (si je ne le met pas ï¿½a fait un effet lent...) de la fonction animate qui est le temps d'animation en ms
             hideFunc.call(this);
             button.removeClass('popline-hover').addClass('popline-boxed').show();
             _this.bar.css("margin-top", _this.bar.height() + "px")

@@ -297,7 +297,7 @@ hr{
 .lastupdated{
 	float:right;
 	font-size: 12px;
-	font-family: 'Roboto' !important;
+	font-family: 'Inter' !important;
 	font-style: italic;
 	font-weight: 400;
     margin-top: 7px;	
@@ -314,7 +314,7 @@ hr{
 .created{
 	float:right;
 	font-size: 15px;
-	font-family: 'Roboto' !important;
+	font-family: 'Inter' !important;
 	font-style: normal;
 	font-weight: 300;
 }

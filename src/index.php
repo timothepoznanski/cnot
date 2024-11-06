@@ -39,7 +39,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
 	<title><?php echo JOURNAL_NAME;?></title>
 	<link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
-	<link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+	<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
 	<link type="text/css" rel="stylesheet" href="css/style.css"/> 
     <link rel="stylesheet" href="css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="css/page.css" />

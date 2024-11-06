@@ -16,7 +16,7 @@ Public demonstration can be found [here](https://democnot.timpoz.com/index.php),
 - Strikethrough
 - Create links
 - Format code
-- Highlight or change color within a code block
+- Change text color within a code block
 - Paste images directly from the clipboard
 - Define tags
 - Create bulleted or numbered lists

@@ -4,10 +4,7 @@
   Version: 1.0.0
   Updated: Sep 10th, 2014
 
-  (c) 2014 by kenshin54
-  
-  TPO : I use the blockquote to have background color for code format
-  
+  (c) 2014 by kenshin54  
 */
 ;(function($) {
 

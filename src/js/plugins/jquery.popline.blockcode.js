@@ -1,4 +1,4 @@
-;(function($) {
+(function($) {
 
   var quoteUtils = function() {
     return {
@@ -26,6 +26,12 @@
           // Insert the formatted span in place of the selection
           range.deleteContents();
           range.insertNode(span);
+
+          // Create a blank line (br) element after the span
+          var br = document.createElement("br");
+          
+          // Insert the <br> after the span
+          span.parentNode.insertBefore(br, span.nextSibling);
         }
       },
       unquote: function() {

@@ -51,7 +51,7 @@
     },    
     
     simplifytext: {
-      iconClass: "fas fa-won-sign",
+      iconClass: "fas fa-eraser",
       mode: "edit",
       action: function(event) {
         document.execCommand('removeFormat');

@@ -1,11 +1,19 @@
 # CnoT
 
-With so many note-taking tools out there, finding the right one can be tough. Many are either too complex or miss key features.<p>
-CnoT focuses on simplicity, essentials, effective search, and user data control. Unlike others, it doesn’t use folders; instead, all notes are searchable by tags and keywords and are saved in HTML format, making them easy to save and view offline.
+I created CnoT (from the French “c'est noté,” meaning “noted”) because I wanted a note-taking software that met four main criteria:
+
+- **Simplicity**. No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
+- **Self-hosted**. I wanted control over my data, with the ability to export and back it up easily and freely whenever I choose. I didn’t want to rely on any software just to access my notes, even offline. Additionally, I wanted to deploy and redeploy it on any OS, whether locally or on a server, and re-import my data with ease.
+- **Efficient search**. I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks. Doing this is a waste of time from my perspective. 
+- **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
+
+I use it exclusively on a computer for technical notes, so I haven’t focused on making it mobile-friendly as I simply don’t need it to be. It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs.
 
 ## Features
 
 Public demonstration can be found [here](https://democnot.timpoz.com/index.php), use "password" as the password.
+
+![image](https://github.com/user-attachments/assets/c86ed3d6-88cd-4ac4-8921-4163b47058a7)
 
 <details><summary>See all features here</summary><p>
 
@@ -31,7 +39,7 @@ Public demonstration can be found [here](https://democnot.timpoz.com/index.php),
 
 </p> </details>
 
-⚠️ The application has been optimized for use on a computer with a browser, not on a mobile phone although it is possible to view your notes in landscape mode.
+⚠️ The application has been optimized for use on a computer screen with a browser, not on a mobile phone although it is possible to view your notes in landscape mode (and for better display, check "Version for computer" in the browser options).
 
 ## Installation
 

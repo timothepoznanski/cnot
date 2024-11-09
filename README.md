@@ -7,7 +7,7 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 - **Efficient search**. I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks. Doing this is a waste of time from my perspective. 
 - **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
-I use it exclusively on a computer for technical notes, so I haven’t focused on making it mobile-friendly as I simply don’t need it to be. It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs.
+I use it exclusively on a computer for technical notes, so I haven’t focused on making it mobile-friendly as I simply don’t need it to be. It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
 
 ## Features
 

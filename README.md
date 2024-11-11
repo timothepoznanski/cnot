@@ -8,9 +8,11 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 - **Efficient search**.🔎 I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks. Doing this is a waste of time from my perspective. 
 - **Open source**.⛓️‍💥 I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
-I use it exclusively on a computer for technical notes, so I haven’t focused on making it mobile-friendly as I simply don’t need it to be. It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
+It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
 
 ## Features
+
+⚠️ Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
 
 Public demonstration can be found [here](https://democnot.timpoz.com/index.php), use "password" as the password.
 
@@ -39,8 +41,6 @@ Public demonstration can be found [here](https://democnot.timpoz.com/index.php),
 - Filter by tags
 
 </p> </details>
-
-⚠️ The application has been optimized for use on a computer screen with a browser, not on a mobile phone although it is possible to view your notes in landscape mode (and for better display, check "Version for computer" in the browser options).
 
 ## Installation
 

@@ -234,12 +234,14 @@ session_start();
            
                 // Display the notes
                 echo '<div id="note'.$row['id'].'" class="notecard">
-                    <div class="innernote">
+                    <div class="innernote">';
                     
+                        // Don't display trash icon if note is the demo note
+                        if ($row['heading'] != "Welcome to CnoT") {
+                            echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
+                        } 
 
-                        <span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>
-                        
-                        <a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
+                        echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
 
                         <span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>
 

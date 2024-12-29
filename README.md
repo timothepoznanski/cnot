@@ -212,6 +212,8 @@ If you want to contribute to the code, don't hesitate to open a pull request. Th
 
 ## Possible errors ☢️
 
+### When openning Cnot after first install
+ 
  ```bash
 BDD connection error : Connection refused
  ```
@@ -230,6 +232,7 @@ Possible reasons to these errors:
    
 Solution: Wait a few seconds, visit another web page and come back.
 
+### When saving a note
 
 ![image](https://github.com/user-attachments/assets/ab68d476-68bc-4d16-b5b7-dfc41480bef9)
 

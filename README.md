@@ -183,7 +183,7 @@ Create temporarily another container to create a dump where you run the command:
 
 <details><summary>Restore your notes</summary><p><p>
 
-- Copy all your html files into your ENTRIES_DATA_PATH
+- Copy all your HTML files to your ENTRIES_DATA_PATH directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
 - Import your sql dump. Two ways :
 
   1. Import with Phpmyadmin.

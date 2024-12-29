@@ -230,6 +230,15 @@ Possible reasons to these errors:
    
 Solution: Wait a few seconds, visit another web page and come back.
 
+
+![image](https://github.com/user-attachments/assets/ab68d476-68bc-4d16-b5b7-dfc41480bef9)
+
+Solution:
+
+ ```bash
+chown -R www-data: ENTRIES_DATA
+ ```
+
 ## Inspired from 🙏
 
 https://github.com/arkanath/SleekArchive

@@ -19,8 +19,7 @@
           span.style.whiteSpace = "pre-wrap";
           span.style.minHeight = "1em";
           span.style.color = "rgb(55, 53, 47)";
-          span.style.position = "relative"; // Make relative for button positioning
-
+ 
           // Set text content of span
           span.textContent = selection.toString();
 
@@ -29,13 +28,10 @@
           range.insertNode(span);
 
           // Create a blank line (br) element after the span
-          var br = document.createElement("br");
+          // var br = document.createElement("br");
           
           // Insert the <br> after the span
-          span.parentNode.insertBefore(br, span.nextSibling);
-
-          // Add the copy button
-          addCopyButton(span);
+          // span.parentNode.insertBefore(br, span.nextSibling);
 
           // Clear selection after transformation
           window.getSelection().removeAllRanges();
@@ -62,12 +58,6 @@
             node.style.minHeight = "";
             node.style.color = "";
 
-            // Remove the copy button when unquoting
-            var copyButton = node.querySelector(".copy-button");
-            if (copyButton) {
-              copyButton.remove();
-            }
-
             // After resetting, ensure the span is not an empty tag and remove it if it's empty
             if (node.textContent.trim() === "") {
               node.remove();
@@ -77,49 +67,6 @@
       }
     };
   };
-
-  // Function to add the copy button to the code block
-  function addCopyButton(span) {
-    var copyButton = document.createElement("button");
-    copyButton.textContent = "Copy";
-    copyButton.classList.add("copy-button"); // Add a class for easy selection
-    copyButton.style.position = "absolute";
-    copyButton.style.top = "8px";
-    copyButton.style.right = "8px";
-    copyButton.style.fontSize = "12px";
-    copyButton.style.padding = "4px 8px";
-    copyButton.style.cursor = "pointer";
-    copyButton.style.border = "1px solid #ccc";
-    copyButton.style.borderRadius = "4px";
-    copyButton.style.backgroundColor = "#fff";
-    copyButton.style.color = "#333";
-
-    // Prevent the cursor from appearing inside the button
-    copyButton.style.userSelect = "none";  // Prevent text selection
-    copyButton.style.outline = "none";     // Remove focus outline
-    copyButton.style.pointerEvents = "auto"; // Ensure button is clickable
-
-    span.appendChild(copyButton);
-
-    // Add the copy functionality using Clipboard API
-    copyButton.addEventListener("click", function() {
-      // Get the text content and remove "Copy" using replace
-      var textToCopy = span.textContent.replace("Copy", "");
-
-      if (navigator.clipboard) {
-        // Use Clipboard API to copy the modified text
-        navigator.clipboard.writeText(textToCopy).then(function() {
-          // Optionally, give feedback to the user, e.g., change button text or style
-          copyButton.textContent = "Copied!";
-          setTimeout(function() {
-            copyButton.textContent = "Copy"; // Reset the button text after a delay
-          }, 1500);
-        }).catch(function(err) {
-          console.error("Clipboard write failed", err);
-        });
-      }
-    });
-  }
 
   $.popline.addButton({
     blockcode: {

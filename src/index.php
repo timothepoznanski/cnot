@@ -233,37 +233,38 @@ session_start();
                 fclose($handle);
            
                 // Display the notes
-                echo '<div id="note'.$row['id'].'" class="notecard">
+                    echo '<div id="note'.$row['id'].'" class="notecard">
                     <div class="innernote">';
-                    
+
                         // Don't display trash icon if note is the demo note
                         if ($row['heading'] != "Welcome to CnoT") {
                             echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
-                        } 
+                        }
 
-                        echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>
+                        echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>';
 
-                        <span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>
+                        // Don't display save icon and last updated text if note is the demo note
+                        if ($row['heading'] != "Welcome to CnoT") {
+                            echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>';
+                            echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
+                        }
 
+                        echo '<div class="contain_doss_tags">
 
-                        <div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>
-                        
-                        <div class="contain_doss_tags">
-							
-			            <div class="icon_tag"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-			            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
+                            <div class="icon_tag"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
+                            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
                         </div>
-                        
-                        <!--<hr>-->                        
-                        <!--<hr>--> 
-                        
-                       <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
-                        
+
+                        <!--<hr>-->
+                        <!--<hr>-->
+
+                    <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
+
                         <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
-                        
+
                         <div style="height:30px;"></div>
                     </div>
-                </div>';
+                    </div>';
             }
         ?>        
     </div>

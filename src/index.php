@@ -241,6 +241,8 @@ session_start();
                             echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
                         }
 
+                        echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note number: '.$row['id'].'\')" class="fas fa-info-circle pull-right icon_info"></span>';
+
                         echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>';
 
                         // Don't display save icon and last updated text if note is the demo note
@@ -251,7 +253,9 @@ session_start();
 
                         echo '<div class="contain_doss_tags">
 
-                            <div class="icon_tag"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
+                            <!--<span>Note '.$row['id'].' </span>-->
+
+                            <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
                             <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
                         </div>
 

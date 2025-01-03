@@ -12,7 +12,7 @@ It’s far from perfect, of course, but I’ve been using it long enough now to 
 
 ## Try it!
 
-⚠️ Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
+Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
 
 Public demonstration can be found [here](https://timpoz.com:8076), use "demopassword!" as the password.
 

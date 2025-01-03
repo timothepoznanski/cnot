@@ -2,45 +2,19 @@
 
 I created CnoT (from the French “c'est noté,” meaning “noted”) because I wanted a note-taking software that met four main criteria:
 
-- **Simplicity**.👌 No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
+- **Simplicity**. No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
  
-- **Self-hosted**.💻 I wanted control over my data, with the ability to export and back it up easily and freely whenever I choose. I didn’t want to rely on any software just to access my notes, even offline. Additionally, I wanted to deploy and redeploy it on any OS, whether locally or on a server, and re-import my data with ease.
-- **Efficient search**.🔎 I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks. Doing this is a waste of time from my perspective. 
-- **Open source**.⛓️‍💥 I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
+- **Self-hosted**. I wanted control over my data, with the ability to export and back it up easily and freely whenever I choose. I didn’t want to rely on any software just to access my notes, even offline. Additionally, I wanted to deploy and redeploy it on any OS, whether locally or on a server, and re-import my data with ease.
+- **Efficient search**. I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks.
+- **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
 It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
 
-## Features
+## Try it!
 
 ⚠️ Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
 
-Public demonstration can be found [here](https://timpoz.com:8076), use "password" as the password.
-
-![image](https://github.com/user-attachments/assets/c86ed3d6-88cd-4ac4-8921-4163b47058a7)
-
-<details><summary>See all features here</summary><p>
-
-- Highlight in multiple colors
-- Underline
-- Change text color and size
-- Bold or italicize text
-- Strikethrough
-- Create links
-- Format code
-- Change text color within a code block
-- Paste images directly from the clipboard
-- Define tags
-- Create bulleted or numbered lists
-- Add a separator
-- Search for multiple words across all tags
-- Search for multiple words in all titles and content
-- Automatic or manual saving
-- View on phone or tablet in landscape mode
-- Export a note in HTML format
-- Trash with recoverable notes
-- Filter by tags
-
-</p> </details>
+Public demonstration can be found [here](https://timpoz.com:8076), use "demopassword!" as the password.
 
 ## Installation
 
@@ -57,7 +31,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
     vi .env  # Edit following the instructions provided in the file's comments.
     ```
 
-2. **Add a SSL certificate for HTTPS:** 🌏
+2. **Add a SSL certificate for HTTPS:** 
 
    Choose the setup that best suits your environment:
 
@@ -96,7 +70,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
    </p> </details>
 
    
-3. **Run the application:** 🚀
+3. **Run the application:** 
 
    Define a project name, for example "mycnot", in case one day you want to run several cnot instances on the same server.
    
@@ -206,11 +180,11 @@ Create temporarily another container to create a dump where you run the command:
      ```
 </p></details>
 
-## Contributing 👩‍💻
+## Contributing 
 
 If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
 
-## Possible errors ☢️
+## Possible errors
 
 ### When openning Cnot after first install
  
@@ -242,7 +216,7 @@ Solution:
 chown -R www-data: ENTRIES_DATA
  ```
 
-## Inspired from 🙏
+## Inspired from
 
 https://github.com/arkanath/SleekArchive
  

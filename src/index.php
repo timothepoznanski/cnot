@@ -241,7 +241,7 @@ session_start();
                             echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
                         }
 
-                        echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note number: '.$row['id'].'\')" class="fas fa-info-circle pull-right icon_info"></span>';
+                        echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle pull-right icon_info"></span>';
 
                         echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>';
 

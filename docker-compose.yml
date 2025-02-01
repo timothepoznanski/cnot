@@ -17,7 +17,7 @@ services:
       APP_PASSWORD: ${APP_PASSWORD}
       SERVER_NAME: ${SERVER_NAME}
     ports:       
-      - "${HTTPS_PORT}:443"
+      - "${HTTPS_PORT}:80"
     volumes:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
@@ -37,23 +37,11 @@ services:
   # PHPMYADMIN
   phpmyadmin:
     image: phpmyadmin
-    links:
+    depends_on:
       - dbserver
     environment:
       PMA_HOST: dbserver
       UPLOAD_LIMIT: 250M
     restart: always
-    expose: 
-      - 80 # Expose port 80 to the Nginx container only
-      
-  # NGINX REVERSE PROXY FOR PHPMYADMIN HTTPS
-  nginx:
-    image: nginx:latest 
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl:/etc/nginx/ssl
-    ports:
-      - ${PHPMYADMIN_PORT}:443
-    depends_on:
-      - phpmyadmin
-    restart: always
+    ports: 
+      - "${PHPMYADMIN_PORT}:80"

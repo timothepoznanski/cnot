@@ -31,43 +31,9 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
     vi .env  # Edit following the instructions provided in the file's comments.
     ```
 
-2. **Add a SSL certificate for HTTPS:** 
+2. **SSL certificate for HTTPS:**  
 
-   Choose the setup that best suits your environment:
-
-   <details> <summary>Local Windows Installation with Docker Desktop</summary> <p>
-
-   Open Powershell and cd into your cloned repository.
-
-   Run the following command :
-
-   ```
-   & "C:\Program Files\Git\usr\bin\openssl.exe" req -x509 -out ssl/fullchain.pem -keyout ssl/privkey.pem -newkey rsa:2048 -nodes -sha256 -days 36500 -subj "/CN=localhost/O=CNOT" -addext "subjectAltName=DNS:localhost" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=serverAuth"
-   ```
-
-   Install the fullchain.pem into your web browser's certificate store:
-
-   On Chrome (I haven't tried other web browsers):
-   
-   - Open the following url in Google Chrome:
-     ```
-     chrome://settings/security
-     ```
-   - Go to 'Manage certificates'.
-   - Go to 'Manage imported certificates from Windows'.
-   - Navigate to the "Trusted Root Certification Authorities" tab.
-   - Click Import.
-   - Locate the fullchain.pem file generated earlier (it won’t appear unless you select "All Files").
-   - Next, next, next... (leave default choice)
-   - Open the following url in Google Chrome:
-     ```
-     chrome://restart
-     ```
-
-   </p> </details><details><summary>Linux Server Installation with Docker</summary> <p><p>
-   Create fullchain.pem and privkey.pem for your domain and copy them to the ssl folder.
-   
-   </p> </details>
+   I manage the certificates with ["Nginx Proxy Manager"](https://nginxproxymanager.com/)
 
    
 3. **Run the application:** 

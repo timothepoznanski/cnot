@@ -30,13 +30,8 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
     cp env_template .env
     vi .env  # Edit following the instructions provided in the file's comments.
     ```
-
-2. **SSL certificate for HTTPS:**  
-
-   I manage the certificates with ["Nginx Proxy Manager"](https://nginxproxymanager.com/)
-
    
-3. **Run the application:** 
+2. **Run the application:** 
 
    Define a project name, for example "mycnot", in case one day you want to run several cnot instances on the same server.
    
@@ -44,12 +39,15 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
    docker compose -p YOURPROJECTNAME up -d --build   
    ```
 
-4. **Open the application:**
+3. **Open the application:**
 
     Open your web browser and visit:
 
-    `https://SERVER_NAME:YOUR-HTTPS-PORT`
+    `http://SERVER_NAME:YOUR-HTTP-PORT`
    
+4. **SSL certificate for HTTPS:**  
+
+   To be able to open site with https, I manage the certificates with ["Nginx Proxy Manager"](https://nginxproxymanager.com/)
 
 5. **Connect to the application:**
 

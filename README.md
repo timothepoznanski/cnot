@@ -82,12 +82,6 @@ Update your .env file and run the application (docker compose up -d --build). âš
 Simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first (see next section), then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data (see next section). 
 </p></details>
 
-**If you want to renew your SSL certificate:**
-
-<details><summary>See instructions here</summary><p><p>
-Copy your new certificate and private key to the SSL folder and execute the docker compose command.
-</p></details>
-
 ## Backup and Restore
 
 To be able to restore all your notes, you need only two things:

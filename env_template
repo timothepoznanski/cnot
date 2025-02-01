@@ -29,7 +29,7 @@ DB_DATA_PATH='../DB_DATA'  # (don't forget the single quotes)
 MYSQL_DATABASE=cnot_db                         
       
 # No need to change it but if you need you can
-HTTPS_PORT=8076                          
+HTTP_PORT=8076                          
             
 # No need to change it but if you need you can
 PHPMYADMIN_PORT=8074     

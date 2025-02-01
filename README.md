@@ -61,7 +61,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 
 - APP_PASSWORD
 - JOURNAL_NAME
-- HTTPS_PORT
+- HTTP_PORT
 
 <details><summary>See instructions here</summary><p><p>
 just update your .env file and run the application (docker compose up -d --build). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).

@@ -25,5 +25,3 @@ RUN chown -R www-data:www-data /var/www/html/
 
 # Expose port HTTP and HTTPS
 EXPOSE 80
-EXPOSE 443
-

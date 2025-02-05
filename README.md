@@ -72,7 +72,7 @@ docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d -
 
 Configured you DNS to point to your reverse proxy.
 
-Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates
+Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates.
 
 ## Update settings
 

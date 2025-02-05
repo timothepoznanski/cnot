@@ -153,6 +153,12 @@ If you want to contribute to the code, don't hesitate to open a pull request. Th
 BDD connection error : Connection refused
  ```
 
+or
+
+ ```bash
+Connection failed: Connection refused
+ ```
+
 or 
 
  ```bash

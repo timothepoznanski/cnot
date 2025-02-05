@@ -14,8 +14,6 @@ It’s far from perfect, of course, but I’ve been using it long enough now to 
 
 Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
 
-Public demonstration can be found at this link [democnot.timpoz.com](https://democnot.timpoz.com/), use "demopassword!" as the password.
-
 ## Installation
 
 CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
@@ -23,8 +21,6 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 1. **Clone the repository and configure the application:**
  
     ```
-    mkdir cnot-project
-    cd cnot-project
     git clone https://github.com/timothepoznanski/cnot.git
     cd cnot
     cp env_template .env
@@ -32,22 +28,21 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
     ```
    
 2. **Run the application:** 
-
-   Define a project name, for example "mycnot", in case one day you want to run several cnot instances on the same server.
    
    ```
-   docker compose -p YOURPROJECTNAME up -d --build   
+   docker compose -p cnot up -d --build   
    ```
 
 3. **Open the application:**
 
     Open your web browser and visit:
 
-    `http://SERVER_NAME:YOUR-HTTP-PORT`
+    `http://SERVER_NAME:HTTP_WEBSERVER_PORT`
    
 4. **SSL certificate for HTTPS:**  
 
-   To be able to open site with https, I manage the certificates with ["Nginx Proxy Manager"](https://nginxproxymanager.com/)
+  To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
+  If you are using a reverse proxy (NPM or other), make sure to comment out HTTP_WEBSERVER_PORT and HTTP_PHPMYADMIN_PORT to prevent exposing them.
 
 5. **Connect to the application:**
 
@@ -59,10 +54,11 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 
 - APP_PASSWORD
 - JOURNAL_NAME
-- HTTP_PORT
+- HTTP_WEBSERVER_PORT
+- HTTP_PHPMYADMIN_PORT
 
 <details><summary>See instructions here</summary><p><p>
-just update your .env file and run the application (docker compose up -d --build). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
+just update your .env file and run the application (docker compose command). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
 </p></details>
 
 **If you want to change the following settings:** 
@@ -71,7 +67,7 @@ just update your .env file and run the application (docker compose up -d --build
 - DB_DATA_PATH
 
 <details><summary>See instructions here</summary><p><p>
-Update your .env file and run the application (docker compose up -d --build). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
+Update your .env file and run the application (docker compose command). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
 </p></details>
 
 **If you want to change some database settings:**
@@ -99,7 +95,7 @@ There are two ways to create a dump:
 
 **1. Using phpMyAdmin:**
 
-Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at https://SERVER_NAME:8074/ and export your database:
+Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and export your database:
 
 ![2024-10-30_06h57_03](https://github.com/user-attachments/assets/63558d9a-bb30-4fce-9308-a1b51929d98c)
 

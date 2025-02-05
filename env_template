@@ -9,11 +9,16 @@ MYSQL_PASSWORD=XXXX
                    
 # Provide the password that will be asked when you will open Cnot                        
 APP_PASSWORD=XXXX    
-                             
-# Provide your server name - `localhost` if not used on a server but localy (default).
-SERVER_NAME=localhost
 
 ########## NO NEED TO CHANGE THE FOLLOWING VALUES BUT IF YOU NEED YOU CAN
+
+# HTTP port for the web service
+# The user can uncomment this line and set a port (e.g., 8080)
+# HTTP_WEBSERVER_PORT=8080
+
+# HTTP port for phpmyadmin
+# The user can uncomment this line and set a port (e.g., 8081)
+# HTTP_PHPMYADMIN_PORT=8081
                               
 # Your notes will be stored where you cloned the repository but if you need you can provide your entries own data path.
 # For a Windows host for example 'C:\Users\user\Desktop\cnot\ENTRIES_DATA'
@@ -23,19 +28,10 @@ ENTRIES_DATA_PATH='../ENTRIES_DATA'  # (don't forget the single quotes)
 # Your database data will be stored where you cloned the repository but if you need you can provide your own database data path.
 # For a Windows host for example 'C:\Users\user\Desktop\cnot\DB_DATA'
 # For a Linux host for example '/home/user/cnot/DB_DATA'
-DB_DATA_PATH='../DB_DATA'  # (don't forget the single quotes)    
-
-# No need to change it but if you need you can
-MYSQL_DATABASE=cnot_db                         
-      
-# No need to change it but if you need you can
-HTTP_PORT=8076                          
-            
-# No need to change it but if you need you can
-PHPMYADMIN_PORT=8074     
+DB_DATA_PATH='../DB_DATA'  # (don't forget the single quotes)                             
 
 # No need to change it but if you need you can - Provide your own app name (default to `Cnot`)
-JOURNAL_NAME=Cnot   
+JOURNAL_NAME=Cnot
 
-# Don't change it
-MYSQL_HOST=dbserver  
+# No need to change it but if you need you can
+MYSQL_DATABASE=cnot_db  

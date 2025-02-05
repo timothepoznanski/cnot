@@ -23,5 +23,5 @@ COPY ./src/ /var/www/html/
 # Give permissions to apache
 RUN chown -R www-data:www-data /var/www/html/
 
-# Expose port HTTP and HTTPS
+# Expose port HTTP
 EXPOSE 80

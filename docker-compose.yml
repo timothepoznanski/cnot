@@ -1,15 +1,15 @@
 services:  
   
   # WEB      
-  cnot_webserver:       
+  webserver:       
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: always      
     depends_on:
-      - cnot_dbserver
+      - dbserver
     environment:
-      MYSQL_HOST: cnot_dbserver
+      MYSQL_HOST: dbserver
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -19,13 +19,12 @@ services:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
     networks:
-      - cnot_internal_net # Connection with other services in this stack 
-      - cnot_npm_net  # Connection with NPM
-    ports:
-      - "${HTTP_WEBSERVER_PORT:-}"  # No port exposed by default (if empty or commented)
+      - internal-net # Connection with other services in this stack 
+      - npm-net  # Connection with NPM
+    ports: ["${HTTP_WEB_PORT}:80"]  # Comment if a reverse proxy is used
 
   # DATABASE
-  cnot_dbserver:
+  dbserver:
     image: mysql
     restart: always
     volumes:
@@ -36,25 +35,23 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
-      - cnot_internal_net # Connection with other services in this stack 
+      - internal-net # Connection with other services in this stack 
 
-  # PHPMYADMIN
-  cnot_phpmyadmin:
+  # PHPMYADMIN (PMA)
+  pma:
     image: phpmyadmin
     depends_on:
-      - cnot_dbserver
+      - dbserver
     environment:
-      PMA_HOST: cnot_dbserver
+      PMA_HOST: dbserver
       UPLOAD_LIMIT: 250M
     restart: always
     networks:
-      - cnot_internal_net # Connection with other services in this stack 
-      - cnot_npm_net  # Connection with NPM
-    ports:
-      - "${HTTP_PHPMYADMIN_PORT:-}"  # No port exposed by default (if empty or commented)
+      - internal-net # Connection with other services in this stack 
+      - npm-net  # Connection with NPM
+    ports: ["${HTTP_PMA_PORT}:80"]  # Comment if a reverse proxy is used
 
 networks:
-  cnot_internal_net:  # Network specific to this stack
-    driver: bridge
-  cnot_npm_net:  # Network defined in NPM docker-compose.yml
-    name: cnot_npm_net  # Docker will bind this service to the network without needing to create it manually
+  internal-net:  # Network specific to this stack
+  npm-net:  # Network defined in NPM docker-compose.yml
+    external: true

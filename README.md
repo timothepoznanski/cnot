@@ -30,7 +30,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 2. **Run the application:** 
    
    ```
-   docker compose -p cnot up -d --build   
+   docker compose up -d --build   
    ```
 
 3. **Open the application:**

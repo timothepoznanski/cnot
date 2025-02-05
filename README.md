@@ -21,6 +21,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 1. **Clone the repository and configure the application:**
  
     ```
+    docker network create npm-net
     git clone https://github.com/timothepoznanski/cnot.git
     cd cnot
     cp env_template .env
@@ -42,7 +43,7 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
 4. **SSL certificate for HTTPS:**  
 
   To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
-  If you are using a reverse proxy (NPM or other), make sure to comment out HTTP_WEBSERVER_PORT and HTTP_PHPMYADMIN_PORT to prevent exposing them.
+  If you are using a reverse proxy (NPM or other), make sure to comment out ports in .env and docker-compose.yml to prevent exposing them.
 
 5. **Connect to the application:**
 

@@ -50,27 +50,28 @@ To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy 
 
 So that NPM can connect to Cnot containers, they have to be on the same private network. 
 
-Create it :
+Create it:
 
-   ```
-   docker network create npm-net
-   ```
+```
+docker network create npm-net
+```
 
-Here is the network configuration I added to my NPM docker-compose.yml :
+Here is the network configuration I added to my NPM docker-compose.yml:
 
-    ```
-    networks:
-        npm-net:
-            external: true
-    ```
+```
+networks:
+    npm-net:
+        external: true
+```
 
 Then, run the Cnot application:
 
-    ```
-    docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
-    ```
+```
+docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
+```
 
 Configured you DNS to point to your reverse proxy.
+
 Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates.
 
 Open your web browser and visit:

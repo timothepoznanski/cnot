@@ -10,9 +10,6 @@ MYSQL_PASSWORD=XXXX
 # Provide the password that will be asked when you will open Cnot
 APP_PASSWORD=XXXX
 
-# Set to true if you use a reverse proxy (like Nginx Proxy Manager)
-USE_REVERSE_PROXY=false  
-
 # If you don't use a reverse proxy, change http port if you don't want to use the default port 8077
 HTTP_WEB_PORT = 8077
 

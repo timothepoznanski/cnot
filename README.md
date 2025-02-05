@@ -58,24 +58,10 @@ Create it :
 
 Here is the network configuration I added to my NPM docker-compose.yml :
 
-   ```
-    services:
-        service:
-            image: 'docker.io/jc21/nginx-proxy-manager:latest'
-            restart: unless-stopped
-            ports:
-            - '80:80'
-            - '81:81'
-            - '443:443'
-            volumes:
-            - ./data:/data
-            - ./letsencrypt:/etc/letsencrypt
-            networks:
-            - npm-net
-
-    networks:
-        npm-net:
-            external: true
+    ```
+        networks:
+            npm-net:
+                external: true
     ```
 
 Then, run the Cnot application:

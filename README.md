@@ -74,7 +74,7 @@ Configured you DNS to point to your reverse proxy.
 
 Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates:
 
-![image](https://github.com/user-attachments/assets/84a0bb23-d612-4e03-9867-77f4afd0bfea)
+![image](https://github.com/user-attachments/assets/14bc2f12-8f3d-405b-a38f-81fb5d05eac2)
 
 Open your web browser and visit:
 

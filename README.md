@@ -17,11 +17,11 @@ Please note that this application is primarily designed for desktop use, as I re
 ## Installation
 
 CnoT can be installed on Windows via Docker Desktop (use Git Bash) for offline note-taking or deployed on a Linux server using Docker for online access.
+It can be used with a reverse proxy (for https connections) or without (http connections).
 
 1. **Clone the repository and configure the application:**
  
     ```
-    docker network create npm-net
     git clone https://github.com/timothepoznanski/cnot.git
     cd cnot
     cp env_template .env
@@ -31,7 +31,7 @@ CnoT can be installed on Windows via Docker Desktop (use Git Bash) for offline n
 2. **Run the application:** 
    
    ```
-   docker compose up -d --build   
+   docker compose -f docker-compose.yml -f docker-compose-no-reverse-proxy.yml up -d --build   
    ```
 
 3. **Open the application:**
@@ -39,15 +39,57 @@ CnoT can be installed on Windows via Docker Desktop (use Git Bash) for offline n
     Open your web browser and visit:
 
     `http://SERVER_NAME:HTTP_WEBSERVER_PORT`
-   
-4. **SSL certificate for HTTPS:**  
 
-    To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
-    If you are using a reverse proxy (NPM or other), make sure to comment out ports in .env and docker-compose.yml to prevent exposing them.
-
-5. **Connect to the application:**
+4. **Connect to the application:**
 
     Connect with the password you provided in the .env file.
+
+## REVERSE PROXY
+
+To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
+So that NPM can connect to Cnot containers, they have to be on the same private network. 
+
+Create it :
+
+   ```
+   docker network create npm-net
+   ```
+
+Here is the network configuration I added to my NPM docker-compose.yml :
+
+   ```
+    services:
+        service:
+            image: 'docker.io/jc21/nginx-proxy-manager:latest'
+            restart: unless-stopped
+            ports:
+            - '80:80'
+            - '81:81'
+            - '443:443'
+            volumes:
+            - ./data:/data
+            - ./letsencrypt:/etc/letsencrypt
+            networks:
+            - npm-net
+
+    networks:
+        npm-net:
+            external: true
+    ```
+
+Then, run the Cnot application:
+
+    ```
+        docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
+    ```
+
+Configured you DNS to point to your reverse proxy.
+Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates.
+
+Open your web browser and visit:
+
+    `https://cnot.yourdomain.com`
+
 
 ## Update settings
 

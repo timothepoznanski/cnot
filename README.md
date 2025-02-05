@@ -47,6 +47,7 @@ It can be used with a reverse proxy (for https connections) or without (http con
 ## Reverse Proxy and HTTPS certicates
 
 To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
+
 So that NPM can connect to Cnot containers, they have to be on the same private network. 
 
 Create it :

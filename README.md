@@ -59,15 +59,15 @@ Create it :
 Here is the network configuration I added to my NPM docker-compose.yml :
 
     ```
-        networks:
-            npm-net:
-                external: true
+    networks:
+        npm-net:
+            external: true
     ```
 
 Then, run the Cnot application:
 
     ```
-        docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
+    docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
     ```
 
 Configured you DNS to point to your reverse proxy.
@@ -75,7 +75,7 @@ Then configured NPM proxy to redirect requests to the Cnot web container on port
 
 Open your web browser and visit:
 
-    `https://cnot.yourdomain.com`
+`https://cnot.yourdomain.com`
 
 
 ## Update settings

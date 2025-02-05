@@ -10,12 +10,13 @@ MYSQL_PASSWORD=XXXX
 # Provide the password that will be asked when you will open Cnot
 APP_PASSWORD=XXXX
 
-# Comment if you use a reverse proxy (like Nginx Proxy Manager) and comment also the port in docker-compose.ymlHTTP_WEBSERVER_PORT = XXXX
-# Change port if you don't want to use the default port 8077
+# Set to true if you use a reverse proxy (like Nginx Proxy Manager)
+USE_REVERSE_PROXY=false  
+
+# If you don't use a reverse proxy, change http port if you don't want to use the default port 8077
 HTTP_WEB_PORT = 8077
 
-# Comment if you use a reverse proxy (like Nginx Proxy Manager) and comment also the port in docker-compose.yml
-# Change port if you don't want to use the default port 8078
+# If you don't use a reverse proxy, change http port if you don't want to use the default port 8078
 HTTP_PMA_PORT = 8078
 
 # Your notes will be stored where you cloned the repository but if you need you can provide your entries own data path.

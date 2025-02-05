@@ -1,0 +1,12 @@
+services:
+  webserver:
+    networks:
+      - npm-net
+
+  pma:
+    networks:
+      - npm-net
+
+networks:
+  npm-net:
+    external: true

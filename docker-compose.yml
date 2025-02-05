@@ -20,8 +20,6 @@ services:
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
     networks:
       - internal-net # Connection with other services in this stack 
-      - npm-net  # Connection with NPM
-    ports: ["${HTTP_WEB_PORT}:80"]  # Comment if a reverse proxy is used
 
   # DATABASE
   dbserver:
@@ -48,10 +46,6 @@ services:
     restart: always
     networks:
       - internal-net # Connection with other services in this stack 
-      - npm-net  # Connection with NPM
-    ports: ["${HTTP_PMA_PORT}:80"]  # Comment if a reverse proxy is used
 
 networks:
   internal-net:  # Network specific to this stack
-  npm-net:  # Network defined in NPM docker-compose.yml
-    external: true

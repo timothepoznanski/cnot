@@ -10,8 +10,6 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 
 It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
 
-## Try it!
-
 Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser.
 
 ![image](https://github.com/user-attachments/assets/9238dfcd-76e1-42d5-aa43-adee9132e3e9)

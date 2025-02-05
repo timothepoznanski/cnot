@@ -16,7 +16,7 @@ Please note that this application is primarily designed for desktop use, as I re
 
 ## Installation
 
-CnoT can be installed on Windows via Docker Desktop for offline note-taking or deployed on a Linux server using Docker for online access.
+CnoT can be installed on Windows via Docker Desktop (use Git Bash) for offline note-taking or deployed on a Linux server using Docker for online access.
 
 1. **Clone the repository and configure the application:**
  
@@ -42,8 +42,8 @@ CnoT can be installed on Windows via Docker Desktop for offline note-taking or d
    
 4. **SSL certificate for HTTPS:**  
 
-  To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
-  If you are using a reverse proxy (NPM or other), make sure to comment out ports in .env and docker-compose.yml to prevent exposing them.
+    To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
+    If you are using a reverse proxy (NPM or other), make sure to comment out ports in .env and docker-compose.yml to prevent exposing them.
 
 5. **Connect to the application:**
 

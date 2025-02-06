@@ -2,13 +2,21 @@ services:
   webserver:
     networks:
       - npm-cnot-webserver-net
+      - internal-net
+
+  dbserver:
+    networks:
+      - internal-net
 
   pma:
     networks:
       - npm-cnot-pma-net
+      - internal-net
 
 networks:
   npm-cnot-webserver-net:
     external: true
   npm-cnot-pma-net:
     external: true
+  internal-net:
+    #external: true

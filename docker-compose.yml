@@ -18,8 +18,8 @@ services:
     volumes:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
-    networks:
-      - internal-net # Connection with other services in this stack 
+#    networks:
+#      - internal-net # Connection with other services in this stack 
 
   # DATABASE
   dbserver:
@@ -32,8 +32,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-    networks:
-      - internal-net # Connection with other services in this stack 
+#    networks:
+#      - internal-net # Connection with other services in this stack 
 
   # PHPMYADMIN (PMA)
   pma:
@@ -44,8 +44,8 @@ services:
       PMA_HOST: dbserver
       UPLOAD_LIMIT: 250M
     restart: always
-    networks:
-      - internal-net # Connection with other services in this stack 
+#    networks:
+#      - internal-net # Connection with other services in this stack 
 
-networks:
-  internal-net:  # Network specific to this stack
+#networks:
+#  internal-net:  # Network specific to this stack

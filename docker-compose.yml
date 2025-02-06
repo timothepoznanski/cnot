@@ -5,7 +5,7 @@ services:
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
-    restart: always      
+    restart: unless-stopped      
     depends_on:
       - dbserver
     environment:
@@ -22,7 +22,7 @@ services:
   # DATABASE
   dbserver:
     image: mysql
-    restart: always
+    restart: unless-stopped
     volumes:
       - "${DB_DATA_PATH}:/var/lib/mysql"
     environment:
@@ -39,4 +39,4 @@ services:
     environment:
       PMA_HOST: dbserver
       UPLOAD_LIMIT: 250M
-    restart: always
+    restart: unless-stopped

@@ -45,35 +45,6 @@ It can be used with a reverse proxy (for https connections) or without (http con
 
     Connect with the password you provided in the .env file.
 
-## Reverse Proxy and HTTPS certicates
-
-To enable HTTPS for the site, I manage the SSL certificates using ["Nginx Proxy Manager"](https://nginxproxymanager.com/).
-
-So that NPM can connect to Cnot containers, they have to be on the same private network. 
-
-Create it:
-
-```
-docker network create npm-net
-```
-
-Here is the network configuration I added to my NPM docker-compose.yml:
-
-```
-networks:
-    npm-net:
-        external: true
-```
-
-Then, run the Cnot application:
-
-```
-docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build   
-```
-
-Configured you DNS to point to your reverse proxy.
-
-Then configured NPM proxy to redirect requests to the Cnot web container on port 80 and configured SSL certificates.
 
 ## Update settings
 

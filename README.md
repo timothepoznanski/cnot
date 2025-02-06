@@ -17,9 +17,6 @@ Please note that this application is primarily designed for desktop use, as I re
 
 ## Installation
 
-CnoT can be installed on Windows via Docker Desktop (use Git Bash) for offline note-taking or deployed on a Linux server using Docker for online access.
-It can be used with a reverse proxy (for https connections) or without (http connections).
-
 1. **Clone the repository and configure the application:**
  
     ```

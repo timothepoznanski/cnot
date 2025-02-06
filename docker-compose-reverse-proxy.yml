@@ -19,4 +19,3 @@ networks:
   npm-cnot-pma-net:
     external: true
   internal-net:
-    #external: true

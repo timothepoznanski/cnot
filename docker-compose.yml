@@ -30,6 +30,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - grafana-cnotmysql-net
 
   # PHPMYADMIN (PMA)
   pma:
@@ -40,3 +42,7 @@ services:
       PMA_HOST: dbserver
       UPLOAD_LIMIT: 250M
     restart: unless-stopped
+
+networks:
+  grafana-cnotmysql-net:
+    external: true

@@ -32,6 +32,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
       - grafana-cnotmysql-net
+      - prometheus-cnotmysql-net
 
   # PHPMYADMIN (PMA)
   pma:
@@ -45,4 +46,6 @@ services:
 
 networks:
   grafana-cnotmysql-net:
+    external: true
+  prometheus-cnotmysql-net:
     external: true

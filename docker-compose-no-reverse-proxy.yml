@@ -1,8 +1,0 @@
-services:
-  webserver:
-    ports:
-      - "${HTTP_WEB_PORT}:80"
-
-  pma:
-    ports:
-      - "${HTTP_PMA_PORT}:80"

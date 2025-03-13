@@ -5,7 +5,9 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 - **Simplicity**. No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
  
 - **Self-hosted**. I wanted control over my data, with the ability to export and back it up easily and freely whenever I choose. I didn’t want to rely on any software just to access my notes, even offline. Additionally, I wanted to deploy and redeploy it on any OS, whether locally or on a server, and re-import my data with ease.
+ 
 - **Efficient search**. I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks.
+ 
 - **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
 It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
@@ -29,7 +31,7 @@ Please note that this application is primarily designed for desktop use, as I re
 2. **Run the application:** 
    
    ```
-   docker compose -f docker-compose.yml -f docker-compose-no-reverse-proxy.yml up -d --build   
+   docker compose up -d --build   
    ```
 
 3. **Open the application:**

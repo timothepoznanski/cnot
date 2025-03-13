@@ -1,15 +1,15 @@
 services:  
   
   # WEB      
-  webserver:       
+  webservercnotperso:       
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: unless-stopped      
     depends_on:
-      - dbserver
+      - dbservercnotperso
     environment:
-      MYSQL_HOST: dbserver
+      MYSQL_HOST: dbservercnotperso
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -20,7 +20,7 @@ services:
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
 
   # DATABASE
-  dbserver:
+  dbservercnotperso:
     image: mysql
     restart: unless-stopped
     volumes:
@@ -31,21 +31,21 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
-      - grafana-cnotmysql-net
-      - prometheus-cnotmysql-net
+      - grafana-cnotpersomysql-net
+      - prometheus-cnotpersomysql-net
 
   # PHPMYADMIN (PMA)
-  pma:
+  pmacnotperso:
     image: phpmyadmin
     depends_on:
-      - dbserver
+      - dbservercnotperso
     environment:
-      PMA_HOST: dbserver
+      PMA_HOST: dbservercnotperso
       UPLOAD_LIMIT: 250M
     restart: unless-stopped
 
 networks:
-  grafana-cnotmysql-net:
+  grafana-cnotpersomysql-net:
     external: true
-  prometheus-cnotmysql-net:
+  prometheus-cnotpersomysql-net:
     external: true

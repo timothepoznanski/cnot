@@ -45,7 +45,16 @@ Please note that this application is primarily designed for desktop use, as I re
     Connect with the password you provided in the .env file.
 
 
-## Update settings
+## Update app or settings
+
+**If you want to update CNOT version:** 
+
+- ENTRIES_DATA_PATH
+- DB_DATA_PATH
+
+<details><summary>See instructions here</summary><p><p>
+Just remove the 3 existing containers and run the docker compose command. Your data are normally untouched but always make a backup first (see next section).
+</p></details>
 
 **If you want to change the following settings:** 
 

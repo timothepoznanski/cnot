@@ -25,7 +25,7 @@ Please note that this application is primarily designed for desktop use, as I re
     git clone https://github.com/timothepoznanski/cnot.git
     cd cnot
     cp env_template .env
-    vi .env  # Edit following the instructions provided in the file's comments.
+    vi .env
     ```
    
 2. **Run the application:** 

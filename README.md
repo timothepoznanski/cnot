@@ -50,7 +50,7 @@ Please note that this application is primarily designed for desktop use, as I re
 **If you want to update CNOT version:** 
 
 <details><summary>See instructions here</summary><p><p>
-Just remove the 3 existing containers and run the docker compose command. Your data are normally untouched but always make a backup first (see next section).
+Just remove the 3 existing containers, git pull the latest repository version and run the application (docker compose command). Your data are normally untouched but always make a backup first (see next section).
 </p></details>
 
 **If you want to change the following settings:** 

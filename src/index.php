@@ -21,11 +21,6 @@ session_start();
         $tags_search = $tags_search_from_list;
     }
     
-	if($pass!=APP_PASSWORD)
-	{
-		header('Location: ./login.php');
-	}
-    
 	include 'db_connect.php';	
     /*$updateQuery = "UPDATE entries SET tags =  REPLACE(tags,' ',',')";
     $update = $con->query($updateQuery);*/
@@ -131,7 +126,6 @@ session_start();
         <div class="newbutton" onclick="newnote();"><span style="text-align:center;"><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
         <div class="list_tags" onclick="window.location = 'listtags.php';"><span style="text-align:center;"><span title="List the tags" class="fas fa-tags"></span></span></div>       
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
-        <div class="logoutbutton" onclick="window.location = 'logout.php';"><span style="text-align:center;"><span title="Log out" class="fas fa-sign-out-alt"></span></span></div>
 
     </div> 
         

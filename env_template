@@ -7,9 +7,6 @@ MYSQL_USER=XXXX
 # Provide a password for the MySQL user - For example `yourowndatabasepassword`
 MYSQL_PASSWORD=XXXX
 
-# Provide the password that will be asked when you will open Cnot
-APP_PASSWORD=XXXX
-
 # Change http port if you don't want to use the default port 8077
 HTTP_WEB_PORT = 8077
 

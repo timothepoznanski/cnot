@@ -40,11 +40,6 @@ Please note that this application is primarily designed for desktop use, as I re
 
     `http://SERVER_NAME:HTTP_WEBSERVER_PORT`
 
-4. **Connect to the application:**
-
-    Connect with the password you provided in the .env file.
-
-
 ## Update app or settings
 
 **If you want to update CNOT version:** 
@@ -55,7 +50,6 @@ Just remove the 3 existing containers, git pull the latest repository version an
 
 **If you want to change the following settings:** 
 
-- APP_PASSWORD
 - JOURNAL_NAME
 - HTTP_WEBSERVER_PORT
 - HTTP_PHPMYADMIN_PORT

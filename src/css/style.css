@@ -176,7 +176,7 @@ form{
     padding:0px;
 }
 
-.newbutton, .trashnotebutton, .logoutbutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton{
+.newbutton, .trashnotebutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton{
 	display: inline-block;
 	width:30px;
 	cursor: pointer;

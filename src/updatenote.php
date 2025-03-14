@@ -6,14 +6,7 @@
                        
 	date_default_timezone_set('UTC');
 	include 'functions.php';
-	require 'config.php';
-	$pass=$_POST['pass'];
-
-	if($pass!=APP_PASSWORD)
-	{
-		die('Password Incorrect');
-	}
-        
+	require 'config.php';        
 	include 'db_connect.php';
 	$id = $_POST['id'];
 	$heading = $_POST['heading'];

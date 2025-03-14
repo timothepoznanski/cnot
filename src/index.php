@@ -6,7 +6,6 @@ session_start();
     require 'config.php';
     include 'functions.php';
     require 'config.php';
-    $pass=$_SESSION['pass'];
     $search = isset($_POST['search']) ? $_POST['search'] : (isset($_GET['search']) ? $_GET['search'] : '');
     $tags_search_from_list = $_GET['tags_search_from_list'];  // if we clicked on a tag in the tag list
     $tags_search = isset($_POST['tags_search']) ? $_POST['tags_search'] : (isset($_GET['tags_search']) ? $_GET['tags_search'] : '');
@@ -61,9 +60,6 @@ session_start();
             --tag-bg: #F1F1F1;
         }
     </style>
-	<script>
-		var app_pass = '<?php echo APP_PASSWORD;?>';
-	</script>
     
 </head>
 

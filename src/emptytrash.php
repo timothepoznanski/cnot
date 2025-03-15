@@ -1,7 +1,14 @@
 <?php
 	date_default_timezone_set('UTC');
 	include 'functions.php';
-    require 'config.php';    
+    require 'config.php';
+	$pass=$_POST['pass'];
+	if($pass!=APP_PASSWORD)
+	{
+		die('Password Incorrect');
+	}
+	include 'db_connect.php';
+    
     $query1 = 'SELECT id FROM entries WHERE trash = 1';
     $res = $con->query($query1);
     while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))

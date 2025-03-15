@@ -41,7 +41,7 @@ function updatenote(){
     // console.log("entcontent:" + entcontent);
     // console.log("ent:" + ent);
     var tags = document.getElementById("tags"+noteid).value;
-    $.post( "updatenote.php", {id: noteid, tags: tags, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
+    $.post( "updatenote.php", {pass: app_pass, id: noteid, tags: tags, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {  // We retrieved the date and time in updatenote.php and stored it in "data".
         if(data=='1')
         {
@@ -60,7 +60,7 @@ function updatenote(){
 
 function newnote(){
 
-    $.post( "insertnew.php", {now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
+    $.post( "insertnew.php", {pass: app_pass, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {
         if(data=='1')
         {
@@ -77,6 +77,7 @@ function emptytrash() {
     if (r == true) {
         // Create a new FormData object to send the data
         const formData = new FormData();
+        formData.append('pass', app_pass);
 
         // Use the fetch API to send a POST request
         fetch('emptytrash.php', {
@@ -101,6 +102,7 @@ function deletePermanent(iid) {
     if (r == true) {
         // Create a new FormData object to send the data
         const formData = new FormData();
+        formData.append('pass', app_pass);
         formData.append('id', iid);
 
         // Use the fetch API to send a POST request
@@ -125,6 +127,7 @@ function deletePermanent(iid) {
 function putBack(iid) {
     // Create a new FormData object to send the data
     const formData = new FormData();
+    formData.append('pass', app_pass);
     formData.append('id', iid);
 
     // Use the fetch API to send a POST request
@@ -146,7 +149,7 @@ function putBack(iid) {
 }
 
 function deleteNote(iid){
-        $.post( "deletenote.php", {id:iid})
+        $.post( "deletenote.php", {pass: app_pass, id:iid})
         .done(function(data) {
             if(data=='1') $('#note'+iid).hide();
             else alert(data);

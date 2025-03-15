@@ -125,7 +125,7 @@ session_start();
         <!-- Button to export all notes -->
         <div class="exportAllButton" onclick="startDownload();">
             <span style="text-align:center;">
-                <span title="Export the notes as a zip file for offline viewing" class="fas fa-download"></span>
+                <span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span>
             </span>
         </div>
         

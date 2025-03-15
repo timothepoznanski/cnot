@@ -1,4 +1,8 @@
 <?php
+@ob_start();
+session_start(); 
+?>
+<?php
     require 'config.php';
     include 'functions.php';
     require 'config.php';

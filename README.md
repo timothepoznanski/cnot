@@ -79,7 +79,7 @@ There are two ways to create a database dump:
 
 **1. Using phpMyAdmin**
 
-Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and export your database:
+Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and export your database.
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 
@@ -114,21 +114,21 @@ Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env conf
 
 Copy your dump into the docker instance :
 
-    Get your database container name:
-    ```
-    $ docker ps -a
-    ```
+  Get your database container name:
+  ```
+  $ docker ps -a
+  ```
 
-    ```
-    $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
-    ```
+  ```
+  $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
+  ```
 
-    and enter your database docker instance and import your dump :
-    
-    ```
-    $ docker exec -it DATABASE_CONTAINER_NAME bash
-    bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
-    ```
+  and enter your database docker instance and import your dump :
+  
+  ```
+  $ docker exec -it DATABASE_CONTAINER_NAME bash
+  bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
+  ```
 
 ## Possible errors
 

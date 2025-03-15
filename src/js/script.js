@@ -215,14 +215,14 @@ function displaySavingInProgress(){
 }
 
 function displayModificationsDone(){
-    $('#lastupdated'+noteid).html('<span style="color:#FF0000";>Automatic recording in 15 seconds</span>');
+    $('#lastupdated'+noteid).html('<span style="color:#FF0000";>Modified</span>');
 }
 
 function displayEditInProgress(){
     $('#lastupdated'+noteid).html('<span>Editing in progress...</span>');
 }
 
-// Every X seconds (5000 = 5s), we call the `checkedit()` function and display "Automatic recording in 15 seconds" if there have been changes, or "Saving in progress..." if the note is being saved.
+// Every X seconds (5000 = 5s), we call the `checkedit()` function and display "Modified" if there have been changes, or "Saving in progress..." if the note is being saved.
 $( document ).ready(function() {
    if(editedButNotSaved==0){
        setInterval(function(){

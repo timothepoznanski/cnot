@@ -10,9 +10,7 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
  
 - **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
-It’s far from perfect, of course, but I’ve been using it long enough now to see that it meets most of my essential needs. And maybe yours. 😉
-
-Please note that this application is primarily designed for desktop use, as I rely on it exclusively for taking technical notes when working on my computer. For this reason, I haven't prioritized mobile optimization. Please open it in a desktop browser. 
+Please note that this web app is mainly made for desktop since I use it to take technical notes while working on my computer. So, I haven't really focused on mobile optimization. It’s best to use it on a desktop browser, but I do sometimes open it in landscape mode on my phone.
 
 ## Installation
 
@@ -46,9 +44,7 @@ Please note that this application is primarily designed for desktop use, as I re
 
 **If you want to update CNOT version:** 
 
-<details><summary>See instructions here</summary><p><p>
 Just remove the 3 existing containers, git pull the latest repository version and run the application (docker compose command). Your data are normally untouched but always make a backup first (see next section).
-</p></details>
 
 **If you want to change the following settings:** 
 
@@ -57,49 +53,35 @@ Just remove the 3 existing containers, git pull the latest repository version an
 - HTTP_WEBSERVER_PORT
 - HTTP_PHPMYADMIN_PORT
 
-<details><summary>See instructions here</summary><p><p>
 just update your .env file and run the application (docker compose command). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
-</p></details>
 
 **If you want to change the following settings:** 
 
 - ENTRIES_DATA_PATH
 - DB_DATA_PATH
 
-<details><summary>See instructions here</summary><p><p>
 Update your .env file and run the application (docker compose command). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
-</p></details>
 
 **If you want to change some database settings:**
 
-<details><summary>See instructions here</summary><p><p>
 Simply updating the `.env` file and deleting the database container will not be enough, as the settings and data are stored in a volume. You will also need to delete the volume to recreate the database with the new settings, but this will result in data loss. To avoid losing your data, export the database contents first (see next section), then delete the `DB_DATA_PATH` volume. After running the application again to create a new database, you can re-import the data (see next section). 
-</p></details>
 
-## Backup and Restore
+## Export or backup
 
-To be able to restore all your notes, you need only two things:
-
-- Your notes as html files.
-- A dump SQL of your database.
-
-<details><summary>Backup your notes</summary><p><p>
+### Export your notes ###
 
 Get your html files from the ENTRIES_DATA_PATH directory defined in your .env config file.
+You can also export all your notes using the export button. This method adds an index file to the zip export.
 
-</p></details>
+### Export your database ###
 
-<details><summary>Backup your database</summary><p><p>
+There are two ways to create a database dump:
 
-There are two ways to create a dump:
-
-**1. Using phpMyAdmin:**
+**1. Using phpMyAdmin**
 
 Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and export your database:
 
-![2024-10-30_06h57_03](https://github.com/user-attachments/assets/63558d9a-bb30-4fce-9308-a1b51929d98c)
-
-**2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux:**
+**2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 
 Create temporarily another container to create a dump where you run the command:
 
@@ -113,36 +95,40 @@ Create temporarily another container to create a dump where you run the command:
   ```
    $ docker run --rm --network container:DATABASE_CONTAINER_NAME -e MYSQL_PWD=MYSQL_ROOT_PASSWORD mysql:latest mysqldump -h127.0.0.1 -uroot MYSQL_DATABASE > dump.sql
   ```
-</p></details>
 
-<details><summary>Restore your notes</summary><p><p>
+## Import or restore
 
-- Copy all your HTML files to your ENTRIES_DATA_PATH directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
-- Import your sql dump. Two ways :
+### Import your notes ### 
 
-  1. Import with Phpmyadmin.
-  2. Copy your dump into your docker instance :
+Copy all your HTML files to your ENTRIES_DATA_PATH directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
 
-     Get your database container name:
-     ```
-      $ docker ps -a
-     ```
+### Import your database ### 
 
-     ```
-      $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
-     ```
+There are two ways to import a database dump:
 
-     and enter your database docker instance and import your dump :
-     
-     ```
-      $ docker exec -it DATABASE_CONTAINER_NAME bash
-      bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
-     ```
-</p></details>
+**1. Using phpMyAdmin**
 
-## Contributing 
+Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and import your database.
 
-If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
+**2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
+
+Copy your dump into the docker instance :
+
+    Get your database container name:
+    ```
+    $ docker ps -a
+    ```
+
+    ```
+    $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
+    ```
+
+    and enter your database docker instance and import your dump :
+    
+    ```
+    $ docker exec -it DATABASE_CONTAINER_NAME bash
+    bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
+    ```
 
 ## Possible errors
 
@@ -167,10 +153,13 @@ Fatal error: Uncaught Error: Call to a member function execute()
 Possible reasons to these errors:
 
 1. The database is still initializing
-3. It is a browser cache issue
-4. The server runs out of memory
-   
+2. It is a browser cache issue
+
 Solution: Wait a few seconds, visit another web page and come back.
+
+3. The server runs out of memory
+   
+Solution: Check and increase your server resources if needed.
 
 ### When saving a note
 
@@ -181,6 +170,10 @@ Solution:
  ```bash
 chown -R www-data: ENTRIES_DATA
  ```
+
+## Contributing 
+
+If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
 
 ## Inspired from
 

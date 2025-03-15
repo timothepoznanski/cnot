@@ -86,6 +86,7 @@ Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env conf
 Create temporarily another container to create a dump where you run the command:
 
   Get your database container name:
+
   ```
    $ docker ps -a
   ```
@@ -112,18 +113,19 @@ Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env conf
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 
-Copy your dump into the docker instance :
-
   Get your database container name:
+
   ```
   $ docker ps -a
   ```
+
+  Copy your dump into the docker instance:
 
   ```
   $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
   ```
 
-  and enter your database docker instance and import your dump :
+  Enter your database docker instance and import your dump :
   
   ```
   $ docker exec -it DATABASE_CONTAINER_NAME bash

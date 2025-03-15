@@ -14,6 +14,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
+      APP_PASSWORD: ${APP_PASSWORD}
     volumes:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"

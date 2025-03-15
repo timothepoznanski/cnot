@@ -14,7 +14,7 @@
 	$entrycontent = $_POST['entrycontent']; // Save the text content (without images) in the database.
 	$now = $_POST['now'];
 	$seconds = $now;
-    $tags = $_POST['tags'];	
+    $tags = str_replace(' ', ',', $_POST['tags']);	
 	
 	$query="SELECT * from entries WHERE id=".$id;
 	$res = $con->query($query);

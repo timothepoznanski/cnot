@@ -184,5 +184,3 @@ chown -R www-data: ENTRIES_DATA
 https://github.com/arkanath/SleekArchive
  
 https://github.com/kenshin54/popline
-
-https://github.com/yairEO/tagify

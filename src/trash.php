@@ -1,8 +1,4 @@
 <?php
-@ob_start();
-session_start();
-?>
-<?php
 	include 'functions.php';
 	require 'config.php';
 	$search = $_POST['search'];

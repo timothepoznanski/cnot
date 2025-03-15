@@ -41,12 +41,8 @@ function updatenote(){
     // console.log("entcontent:" + entcontent);
     // console.log("ent:" + ent);
     var tags = document.getElementById("tags"+noteid).value;
-    var concatenatedValues = null;
-    if (tags.trim()){
-        var tagsArray = JSON.parse(tags);
-         concatenatedValues = tagsArray.map(tag => tag.value).join(',');
-    }
-    $.post( "updatenote.php", {id: noteid, tags: concatenatedValues, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
+    
+    $.post( "updatenote.php", {id: noteid, tags: tags, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {  // We retrieved the date and time in updatenote.php and stored it in "data".
         if(data=='1')
         {

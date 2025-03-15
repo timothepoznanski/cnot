@@ -1,8 +1,4 @@
 <?php
-@ob_start();
-session_start(); 
-?>
-<?php
     require 'config.php';
     include 'functions.php';
     require 'config.php';
@@ -37,7 +33,6 @@ session_start();
 	<link type="text/css" rel="stylesheet" href="css/style.css"/> 
     <link rel="stylesheet" href="css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="css/page.css" />
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" />
     <!-- jQuery Popline library for the bar that appears when selecting text in a note / see in "js/plugins" -->
 	<link rel="stylesheet" type="text/css" href="css/popline.css" /> <!-- CSS for the Popline -->
     <!-- Remove the lines for the functions that we do not want to appear in the bar. -->
@@ -53,14 +48,7 @@ session_start();
 	<script type="text/javascript" src="js/plugins/jquery.popline.social.js"></script>
 	<script type="text/javascript" src="js/plugins/jquery.popline.textcolor.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.backgroundcolor.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.fontsize.js"></script>
-    <style>
-        .tagify{
-            border: 0;
-            --tag-bg: #F1F1F1;
-        }
-    </style>
-    
+    <script type="text/javascript" src="js/plugins/jquery.popline.fontsize.js"></script>    
 </head>
 
 <body>   
@@ -246,7 +234,7 @@ session_start();
                             <!--<span>Note '.$row['id'].' </span>-->
 
                             <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-                            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.$row['tags'].'"></input></span></div>
+                            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="150px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.str_replace(',', ' ', $row['tags']).'"></input></span></div>
                         </div>
 
                         <!--<hr>-->
@@ -267,50 +255,4 @@ session_start();
 <!-- Do not place this block at the top, otherwise Popline will no longer work -->
 <script src="js/script.js"></script>
 <script> $(".noteentry").popline(); </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script>
-   
-    $('.tag-clsss').each(function () {
-        var id = $(this).data('id');
-        const tagifyInstance = new Tagify(document.getElementById('tags' + id), {
-            placeholder: "Type something",
-        });
-        tagifyInstance.on('add', (e) => {
-            noteid = tagifyInstance.DOM.originalInput.closest('div.name_tags').querySelector('input').dataset.id;
-            update();
-        });
-        tagifyInstance.on('remove', (e) => {
-            noteid = tagifyInstance.DOM.originalInput.closest('div.name_tags').querySelector('input').dataset.id;
-            update();
-        });
-        tagifyInstance.on('input', (e) => {
-            const searchTerm = e.detail.value;
-            tagifyInstance.whitelist = null;
-            tagifyInstance.loading(true);
-            mockAjax(searchTerm)
-                .then(function(result){
-                    tagifyInstance.settings.whitelist = result.concat(tagifyInstance.value)
-                    tagifyInstance
-                        .loading(false)
-                        .dropdown.show(e.detail.value);
-                })
-                .catch(err => tagifyInstance.dropdown.hide())
-        });
-    })
-    //just a moment
-    
-    var mockAjax = function(searchTerm) {
-        return new Promise(function(resolve, reject) {
-            fetch('tags.php?search='+ encodeURIComponent(searchTerm))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => resolve(data))
-                .catch(err => reject(err));
-        });
-    };
-</script>
 </html>

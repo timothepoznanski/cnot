@@ -19,9 +19,9 @@
 	<h1 style="text-align:center"><?php echo JOURNAL_NAME;?></h1>
 	<!--<hr>-->
 	<br>
-	<form action="loginAction.php" method="POST">
+	<form action="loginAction.php" method="POST" style="text-align:center;">
 		<h2>
-			<input autocomplete="off" spellcheck="false" id="pass" style="text-align:center" name="pass" type="password" placeholder="Password?">
+			<input autocomplete="off" spellcheck="false" id="pass" style="text-align:center; width: 400px;" name="pass" type="password" placeholder="Password?">
 		</h2>
 	</form>
 </body>

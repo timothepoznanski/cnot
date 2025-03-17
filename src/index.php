@@ -251,42 +251,36 @@ session_start();
                 fclose($handle);
            
                 // Display the notes
-                    echo '<div id="note'.$row['id'].'" class="notecard">
-                    <div class="innernote">';
+                echo '<div id="note'.$row['id'].'" class="notecard">
+                <div class="innernote">';
 
-                        // Don't display trash icon if note is the demo note
-                        if ($row['heading'] != "Welcome to CnoT") {
-                            echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
-                        }
+                    echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash"></span>';
 
-                        echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle pull-right icon_info"></span>';
+                    echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle pull-right icon_info"></span>';
 
-                        echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>';
+                    echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download pull-right icon_download"></span></a>';
 
-                        // Don't display save icon and last updated text if note is the demo note
-                        if ($row['heading'] != "Welcome to CnoT") {
-                            echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>';
-                            echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
-                        }
+                    echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save pull-right icon_save"></span>';
 
-                        echo '<div class="contain_doss_tags">
+                    echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
 
-                            <!--<span>Note '.$row['id'].' </span>-->
+                    echo '<div class="contain_doss_tags">
 
-                            <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-                            <div class="name_tags"><span><input class="add-margin-left tag-clsss" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" data-id="'.$row['id'].'" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.str_replace(',', ' ', $row['tags']).'"></input></span></div>
-                        </div>
+                        <!--<span>Note '.$row['id'].' </span>-->
 
-                        <!--<hr>-->
-                        <!--<hr>-->
+                        <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
+                        <div class="name_tags"><span><input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.str_replace(',', ' ', $row['tags']).'"></input></span></div>                    </div>
+
+                    <!--<hr>-->
+                    <!--<hr>-->
 
                     <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
 
-                        <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
+                    <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
 
-                        <div style="height:30px;"></div>
-                    </div>
-                    </div>';
+                    <div style="height:30px;"></div>
+                </div>
+                </div>';
             }
         ?>        
     </div>

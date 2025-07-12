@@ -7,7 +7,8 @@ services:
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: unless-stopped      
     depends_on:
-      - dbservercnotperso
+      dbservercnotperso:
+        condition: service_healthy
     environment:
       MYSQL_HOST: dbservercnotperso
       MYSQL_USER: ${MYSQL_USER}
@@ -20,7 +21,7 @@ services:
 
   # DATABASE
   dbservercnotperso:
-    image: mysql
+    image: mysql:9.3.0
     restart: unless-stopped
     volumes:
       - "${DB_DATA_PATH}:/var/lib/mysql"
@@ -29,15 +30,22 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      interval: 10s
+      retries: 10
+      start_period: 40s
     networks:
       - grafana-cnotpersomysql-net
       - prometheus-cnotpersomysql-net
 
   # PHPMYADMIN (PMA)
   pmacnotperso:
-    image: phpmyadmin
+    image: phpmyadmin:5.2.2
     depends_on:
-      - dbservercnotperso
+      dbservercnotperso:
+        condition: service_healthy
     environment:
       PMA_HOST: dbservercnotperso
       UPLOAD_LIMIT: 250M

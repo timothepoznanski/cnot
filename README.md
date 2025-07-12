@@ -19,14 +19,14 @@ Access control is handled externally — in my case, through the Access List fea
 
 ## Installation
  
-    ```
-    git clone https://github.com/timothepoznanski/cnot.git
-    docker compose up -d --build
-    ```
+```
+git clone https://github.com/timothepoznanski/cnot.git
+docker compose up -d --build
+```
 
-    Open your web browser and visit:
+Open your web browser and visit:
 
-    `http://SERVER_NAME:HTTP_WEBSERVER_PORT`
+`http://SERVER_NAME:HTTP_WEBSERVER_PORT`
 
 
 ## Update app or settings

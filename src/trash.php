@@ -1,16 +1,10 @@
 <?php
 @ob_start();
-session_start(); 
 ?>
 <?php
 	include 'functions.php';
 	require 'config.php';
-	$pass=$_SESSION['pass'];
 	$search = $_POST['search'];
-	if($pass!=APP_PASSWORD)
-	{
-		die('Incorrect password');
-	}
 	include 'db_connect.php';	
 ?>
 
@@ -27,9 +21,6 @@ session_start();
 	<link rel="stylesheet" type="text/css" href="css/popeline.css" />
 	<link rel="stylesheet" type="text/css" href="css/page.css" />
 
-	<script>
-		var app_pass = '<?php echo APP_PASSWORD;?>';
-	</script>
 </head>
 <body style="background:#007DB8;">
 	<h2 style="text-align:center; font-weight:500; color: #fff">Trash</h2>

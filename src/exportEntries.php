@@ -1,16 +1,10 @@
 <?php
 @ob_start();
-session_start();
 ?>
 <?php
     include 'functions.php';
     require 'config.php';
-    $pass=$_SESSION['pass'];
     
-	if($pass!=APP_PASSWORD)
-	{
-		header('Location: ./login.php');
-	}
 	include 'db_connect.php';	
 ?>
 
@@ -30,10 +24,6 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
 	<title><?php echo JOURNAL_NAME;?></title>
 
-	<script>
-		var app_pass = '<?php echo APP_PASSWORD;?>';
-	</script>
-    
 </head>
 <body>
             

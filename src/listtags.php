@@ -1,16 +1,10 @@
 <?php
 @ob_start();
-session_start(); 
 ?>
 <?php
 	include 'functions.php';
 	require 'config.php';
-	$pass=$_SESSION['pass'];
 	$search = $_POST['search'];
-	if($pass!=APP_PASSWORD)
-	{
-		die('Incorrect password');
-	}
 	include 'db_connect.php';	
 
 	$query_tags = 'SELECT tags FROM entries';	

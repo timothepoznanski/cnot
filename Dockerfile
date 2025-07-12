@@ -4,7 +4,7 @@ FROM php:8.3-apache
 # Install (but also activate mysqli extension)
 RUN docker-php-ext-install mysqli
 
-# Installer les dépendances nécessaires
+# Install necessary dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \

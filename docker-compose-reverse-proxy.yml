@@ -1,14 +1,14 @@
 services:
-  webservercnotperso:
+  webservercnot:
     networks:
       - npm-cnotperso-webserver-net
       - internal-net
 
-  dbservercnotperso:
+  dbservercnot:
     networks:
       - internal-net
 
-  pmacnotperso:
+  pmacnot:
     networks:
       - npm-cnotperso-pma-net
       - internal-net

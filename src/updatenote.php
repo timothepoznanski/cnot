@@ -9,94 +9,66 @@
 	require 'config.php';
         
 	include 'db_connect.php';
-	// Validation et sécurisation des données d'entrée
-	$id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
-	if ($id === false || $id <= 0) {
-		die('Invalid ID');
+	
+	if (!isset($_POST['id'])) {
+		die("No ID provided");
 	}
 	
+	$id = $_POST['id'];
 	$heading = trim($_POST['heading'] ?? '');
 	$entry = $_POST['entry'] ?? ''; // Save the HTML content (including images) in an HTML file.
 	$entrycontent = $_POST['entrycontent'] ?? ''; // Save the text content (without images) in the database.
 	
-	$now = filter_var($_POST['now'], FILTER_VALIDATE_FLOAT);
-	if ($now === false || $now <= 0) {
-		die('Invalid timestamp');
-	}
+	$now = $_POST['now'];
 	$seconds = (int)$now;
 	
     $tags = str_replace(' ', ',', $_POST['tags'] ?? '');	
 	
-	// Requête préparée pour récupérer la note existante
-	$stmt = $con->prepare("SELECT * FROM entries WHERE id = ?");
-	if (!$stmt) {
-		die('Prepare failed');
-	}
-	
-	$stmt->bind_param("i", $id);
-	$stmt->execute();
-	$res = $stmt->get_result();
+	$query = "SELECT * FROM entries WHERE id = $id";
+	$res = $con->query($query);
 	$row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-	$stmt->close();
 	
 	if (!$row) {
 		die('Note not found');
 	}
 	
-	// Sécurisation du chemin de fichier
     $filename = "entries/" . $id . ".html";
-	// Vérification que le fichier est dans le bon répertoire
-	$basepath = realpath("entries/");
-	if (!$basepath) {
-		die('Invalid entries directory');
+	
+	// Read existing content first before opening in write mode
+	$str = '';
+	if (file_exists($filename)) {
+		$str = file_get_contents($filename); // Read the existing content from the HTML file saved on disk.
 	}
-	    
-	$handle = fopen($filename, 'w+'); 
-
-	// ATTENTION !!! $str is always empty so this part never works !!!!" 	
-	$filesize = filesize($filename);
-	if ($filesize > 0) {
-	    $str = fread($handle, $filesize); // Read the file in binary mode. Read the existing content from the HTML file saved on disk.
-	} else {
-	    $str = '';
-	}
+	
+	$handle = fopen($filename, 'w+');
     
-	// If there have been no changes to the note, exit the script
-	if(htmlspecialchars($heading)==$row['heading'] && $entry==$str && htmlspecialchars($tags)==$row['tags'])
-	{
-		die('No changes to the note.');  // Stop the execution of the script and display the message provided.
-	}
+	// Temporary fix: always save (remove change detection for now)
+	// if($heading==$row['heading'] && $entry==$str && $tags==$row['tags'])
+	// {
+	//	fclose($handle);
+	//	die('No changes to the note.');
+	// }
             
     if ($entry != '') // If the note is empty and we only changed the title, then do not try to write an empty entry in the html file
  	{
-		if (!fwrite($handle, $entry)){//;  // Writes a file in binary mode.
+		if (!fwrite($handle, $entry)) { // Writes a file in binary mode.
+			fclose($handle);
 			die("Error writing html file");
 		}  
-	}  
+	} else {
+		// If entry is empty, still need to clear the file
+		ftruncate($handle, 0);
+	}
   
 	fclose($handle);
     
 	$updated_date = date("Y-m-d H:i:s", $seconds);
 	
-	// Requête préparée pour la mise à jour
-	$stmt = $con->prepare("UPDATE entries SET heading = ?, entry = ?, created = created, updated = ?, tags = ? WHERE id = ?");
-	if (!$stmt) {
-		die('Prepare failed');
-	}
-	
-	$stmt->bind_param("ssssi", 
-		htmlspecialchars($heading),
-		htmlspecialchars($entrycontent),
-		$updated_date,
-		htmlspecialchars($tags),
-		$id
-	);
+	$query = "UPDATE entries SET heading = '" . mysqli_real_escape_string($con, $heading) . "', entry = '" . mysqli_real_escape_string($con, $entrycontent) . "', created = created, updated = '$updated_date', tags = '" . mysqli_real_escape_string($con, $tags) . "' WHERE id = $id";
     
-	if($stmt->execute()) {
-		echo die(formatDateTime(strtotime($updated_date))); // If writing the query in base is ok then we exit
+	if($con->query($query)) {
+		die(formatDateTime(strtotime($updated_date))); // If writing the query in base is ok then we exit
 	} else {
-		error_log("Database error in updatenote.php: " . $stmt->error);
-		echo 'Database error occurred';
+		die('Database error occurred');
 	}
-	
-	$stmt->close();
+?>

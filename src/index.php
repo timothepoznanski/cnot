@@ -71,28 +71,20 @@
             // Break the string into individual words.
             $tags_search_terms = explode(' ', trim($tags_search));
 
-            // Construct the SQL query for left column using prepared statements
+            // Construct the SQL query for left column
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
-            $params_left = array();
-            $types_left = '';
             foreach ($tags_search_terms as $tag_term) {
                 if (!empty(trim($tag_term))) {
-                    $query_left .= ' AND tags LIKE ?';
-                    $params_left[] = '%' . trim($tag_term) . '%';
-                    $types_left .= 's';
+                    $query_left .= " AND tags LIKE '%" . trim($tag_term) . "%'";
                 }
             }
             $query_left .= ' ORDER BY updated DESC';
 
-            // Construct the SQL query for right column using prepared statements
+            // Construct the SQL query for right column
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
-            $params_right = array();
-            $types_right = '';
             foreach ($tags_search_terms as $tag_term) {
                 if (!empty(trim($tag_term))) {
-                    $query_right .= ' AND tags LIKE ?';
-                    $params_right[] = '%' . trim($tag_term) . '%';
-                    $types_right .= 's';
+                    $query_right .= " AND tags LIKE '%" . trim($tag_term) . "%'";
                 }
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
@@ -102,30 +94,20 @@
             // Break the string into individual words.
             $search_terms = explode(' ', trim($search));
 
-            // Construct the SQL query for left column using prepared statements
+            // Construct the SQL query for left column
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
-            $params_left = array();
-            $types_left = '';
             foreach ($search_terms as $term) {
                 if (!empty(trim($term))) {
-                    $query_left .= ' AND (heading LIKE ? OR entry LIKE ?)';
-                    $params_left[] = '%' . trim($term) . '%';
-                    $params_left[] = '%' . trim($term) . '%';
-                    $types_left .= 'ss';
+                    $query_left .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
                 }
             }
             $query_left .= ' ORDER BY updated DESC';
 
-            // Construct the SQL query for right column using prepared statements
+            // Construct the SQL query for right column
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
-            $params_right = array();
-            $types_right = '';
             foreach ($search_terms as $term) {
                 if (!empty(trim($term))) {
-                    $query_right .= ' AND (heading LIKE ? OR entry LIKE ?)';
-                    $params_right[] = '%' . trim($term) . '%';
-                    $params_right[] = '%' . trim($term) . '%';
-                    $types_right .= 'ss';
+                    $query_right .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
                 }
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
@@ -174,28 +156,12 @@
   
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
         {          
-	        // Utiliser une requête préparée pour la recherche par titre
-            $stmt_note = $con->prepare('SELECT * FROM entries WHERE trash = 0 AND heading = ?');
-            if ($stmt_note) {
-                $stmt_note->bind_param("s", $note);
-                $stmt_note->execute();
-                $res_right = $stmt_note->get_result();
-                $stmt_note->close();
-            }
+	        $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '$note'";
+            $res_right = $con->query($query_note);
         }
 		
-        // Exécution de la requête pour la colonne de gauche avec requêtes préparées
-        if (!empty($params_left)) {
-            $stmt_left = $con->prepare($query_left);
-            if ($stmt_left) {
-                $stmt_left->bind_param($types_left, ...$params_left);
-                $stmt_left->execute();
-                $res_query_left = $stmt_left->get_result();
-                $stmt_left->close();
-            }
-        } else {
-            $res_query_left = $con->query($query_left);
-        }
+        // Exécution de la requête pour la colonne de gauche
+        $res_query_left = $con->query($query_left);
  		
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) 
         {       
@@ -205,14 +171,14 @@
             if($tags_search != '') // If we have searched within the tags, we want to display the notes that contain those tags.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
             if($search != '') // If we have searched within the notes, we want to display the notes that contain the searched words.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
                 </form>";
             }
 
@@ -238,7 +204,7 @@
 			<form class="form_search" action="index.php" method="POST">          
 				<div class="right-inner-addon">
 					<i class="fas fa-search icon_grey"></i>
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($search); ?>"/>
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo $search; ?>"/>
                 </div>
 			</form>
 
@@ -260,7 +226,7 @@
 			<form class="form_search_tags" action="index.php" method="POST">          
 				<div class="right-inner-addon">
 					<i class="fas fa-tags icon_grey"></i>
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($tags_search); ?>"/>
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" onfocus="updateidsearch(this);" value="<?php echo $tags_search; ?>"/>
                 </div>  
 			</form>                 
 		</div> 
@@ -269,16 +235,8 @@
 			
 			// Right-side list based on the query created earlier //		
             
-            // Exécution de la requête pour la colonne de droite avec requêtes préparées
-            if (!empty($params_right) && !isset($res_right)) {
-                $stmt_right = $con->prepare($query_right);
-                if ($stmt_right) {
-                    $stmt_right->bind_param($types_right, ...$params_right);
-                    $stmt_right->execute();
-                    $res_right = $stmt_right->get_result();
-                    $stmt_right->close();
-                }
-            } elseif (!isset($res_right)) {
+            // Exécution de la requête pour la colonne de droite
+            if (!isset($res_right)) {
                 $res_right = $con->query($query_right);
             }
            

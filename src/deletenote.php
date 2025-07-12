@@ -4,26 +4,13 @@
 	require 'config.php';
 	include 'db_connect.php';
 	
-	// Validation et sécurisation de l'ID
-	$id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
-	if ($id === false || $id <= 0) {
-		die('Invalid ID');
-	}
+	$id = $_POST['id'];
 	
-	// Requête préparée pour éviter l'injection SQL
-	$stmt = $con->prepare("UPDATE entries SET trash = 1 WHERE id = ?");
-	if (!$stmt) {
-		die('Prepare failed');
-	}
+	$query = "UPDATE entries SET trash = 1 WHERE id = $id";
 	
-	$stmt->bind_param("i", $id);
-	
-	if($stmt->execute()) {
+	if($con->query($query)) {
 		echo 1;
 	} else {
-		error_log("Database error in deletenote.php: " . $stmt->error);
 		echo 'Database error occurred';
 	}
-	
-	$stmt->close();
 ?>

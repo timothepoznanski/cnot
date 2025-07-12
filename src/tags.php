@@ -6,7 +6,6 @@ $search = isset($_POST['search']) ? $_POST['search'] : '';
 $tags = [];
 $tagSql = "SELECT tags FROM entries WHERE tags IS NOT NULL AND tags != ''";
 if (!empty($search)) {
-    $search = $con->real_escape_string($search);
     $tagSql .= " AND tags LIKE '%$search%'";
 }
 
@@ -25,3 +24,4 @@ if (!empty($tags)) {
 
 header('Content-Type: application/json');
 echo json_encode(array_values($tags)); 
+?>

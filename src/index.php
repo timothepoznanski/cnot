@@ -6,9 +6,9 @@
     include 'functions.php';
     require 'config.php';
     $search = isset($_POST['search']) ? $_POST['search'] : (isset($_GET['search']) ? $_GET['search'] : '');
-    $tags_search_from_list = $_GET['tags_search_from_list'];  // if we clicked on a tag in the tag list
+    $tags_search_from_list = isset($_GET['tags_search_from_list']) ? $_GET['tags_search_from_list'] : '';
     $tags_search = isset($_POST['tags_search']) ? $_POST['tags_search'] : (isset($_GET['tags_search']) ? $_GET['tags_search'] : '');
-    $note = $_GET['note'];
+    $note = isset($_GET['note']) ? $_GET['note'] : '';
 
     $limit_display_right = 1;
     $limit_display_right_all_notes = 1;
@@ -74,14 +74,14 @@
             // Construct the SQL query for left column.
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
             foreach ($tags_search_terms as $tag_term) {
-                $query_left .= ' AND tags LIKE \'%' . htmlspecialchars($tag_term, ENT_QUOTES) . '%\'';
+                $query_left .= ' AND tags LIKE \'%' . mysqli_real_escape_string($con, $tag_term) . '%\'';
             }
             $query_left .= ' ORDER BY updated DESC';
 
             // Construct the SQL query for right column.
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
             foreach ($tags_search_terms as $tag_term) {
-                $query_right .= ' AND tags LIKE \'%' . htmlspecialchars($tag_term, ENT_QUOTES) . '%\'';
+                $query_right .= ' AND tags LIKE \'%' . mysqli_real_escape_string($con, $tag_term) . '%\'';
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
@@ -93,14 +93,14 @@
             // Construct the SQL query for left column.
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
             foreach ($search_terms as $term) {
-                $query_left .= ' AND (heading LIKE \'%' . htmlspecialchars($term, ENT_QUOTES) . '%\' OR entry LIKE \'%' . htmlspecialchars($term, ENT_QUOTES) . '%\')';
+                $query_left .= ' AND (heading LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\' OR entry LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\')';
             }
             $query_left .= ' ORDER BY updated DESC';
 
             // Construct the SQL query for right column.
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
             foreach ($search_terms as $term) {
-                $query_right .= ' AND (heading LIKE \'%' . htmlspecialchars($term, ENT_QUOTES) . '%\' OR entry LIKE \'%' . htmlspecialchars($term, ENT_QUOTES) . '%\')';
+                $query_right .= ' AND (heading LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\' OR entry LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\')';
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
@@ -148,36 +148,35 @@
   
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
         {          
-	        $note = str_replace("&#039;", "'", $note); // We replace the single quotes `'` because they are stored in the database as `&#039;`.
-	        $note = str_replace("&quot;", "\"", $note); // We replace the single quotes `"` because they are stored in the database as `&quot;`.	
-            $query_right = 'SELECT * FROM entries WHERE trash = 0 AND (heading = \''.htmlspecialchars($note,ENT_QUOTES).'\')';     
+	        // Chercher avec le titre tel qu'il vient de l'URL (encore encodé)
+            $query_right = 'SELECT * FROM entries WHERE trash = 0 AND heading = "'.mysqli_real_escape_string($con, $note).'"';
         }
 		
         $res_query_left = $con->query($query_left);
  		
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) 
         {       
-            // Check if note is selected
+            // Check if note is selected - compare original encoded versions
             $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
 
             if($tags_search != '') // If we have searched within the tags, we want to display the notes that contain those tags.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
                 </form>";
             }
 
             if($search != '') // If we have searched within the notes, we want to display the notes that contain the searched words.
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
                 </form>";
             }
 
             if($tags_search == '' && $search == '') // If we were viewing all notes and click on a note
             {
                 echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
+                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
                 </form>";
             }
 
@@ -267,12 +266,12 @@
                         <!--<span>Note '.$row['id'].' </span>-->
 
                         <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-                        <div class="name_tags"><span><input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.str_replace(',', ' ', $row['tags']).'"></input></span></div>                    </div>
+                        <div class="name_tags"><span><input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(html_entity_decode(str_replace(',', ' ', $row['tags']), ENT_QUOTES)).'"></input></span></div>                    </div>
 
                     <!--<hr>-->
                     <!--<hr>-->
 
-                    <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input></h4>
+                    <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars(html_entity_decode($row['heading'], ENT_QUOTES)).'"></input></h4>
 
                     <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
 

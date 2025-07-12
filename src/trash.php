@@ -45,11 +45,27 @@
     
 	<br>
 	<?php
-		$query = 'SELECT * FROM entries WHERE trash = 1 AND (heading like \'%'.htmlspecialchars($search,ENT_QUOTES).'%\' OR entry like \'%'.htmlspecialchars($search,ENT_QUOTES).'%\') ORDER by updated DESC LIMIT 50';
-		$res = $con->query($query);
+		// Validation et sécurisation de la recherche
+		$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
+		
+		if (!empty($search)) {
+			// Requête préparée pour éviter l'injection SQL
+			$stmt = $con->prepare('SELECT * FROM entries WHERE trash = 1 AND (heading LIKE ? OR entry LIKE ?) ORDER BY updated DESC LIMIT 50');
+			if ($stmt) {
+				$search_param = '%' . $search . '%';
+				$stmt->bind_param("ss", $search_param, $search_param);
+				$stmt->execute();
+				$res = $stmt->get_result();
+				$stmt->close();
+			}
+		} else {
+			// Si pas de recherche, afficher toutes les notes dans la corbeille
+			$res = $con->query('SELECT * FROM entries WHERE trash = 1 ORDER BY updated DESC LIMIT 50');
+		}
+		
 		while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))
 		{
-			$filename = "./entries/".$row["id"].".html";
+			$filename = "./entries/" . intval($row["id"]) . ".html";
 			$handle = fopen($filename, "r");
 			if ($handle !== false) {
 				$filesize = filesize($filename);
@@ -58,19 +74,25 @@
 				} else {
 					$contents = '';
 				}
-				$entryfinal = $contents;
+				$entryfinal = htmlspecialchars($contents); // Échappement pour éviter XSS
 				fclose($handle);
 			} else {
 				$entryfinal = '';
 			}
-			echo '<div id="note'.$row['id'].'" class="notecard">
+			
+			// Échappement des données pour éviter XSS
+			$safe_id = intval($row['id']);
+			$safe_heading = htmlspecialchars(html_entity_decode($row['heading'], ENT_QUOTES));
+			$safe_updated = htmlspecialchars(formatDateTime(strtotime($row['updated'])));
+			
+			echo '<div id="note'.$safe_id.'" class="notecard">
             <div class="innernote">
-                <span title="Permanently delete" onclick="deletePermanent(\''.$row['id'].'\')" class="fas fa-trash pull-right icon_trash_trash" style="cursor: pointer;"></span>
-                <span title="Restore this note" onclick="putBack(\''.$row['id'].'\')" class="fa fa-trash-restore-alt pull-right icon_restore_trash" style="margin-right:20px; cursor: pointer;"></span>
-                <div id="lastupdated'.$row['id'].'" class="lastupdated">Last modified on '.formatDateTime(strtotime($row['updated'])).'</div>
-                <h3><input id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.$row['heading'].'"></input> </h3>
+                <span title="Permanently delete" onclick="deletePermanent(\''.$safe_id.'\')" class="fas fa-trash pull-right icon_trash_trash" style="cursor: pointer;"></span>
+                <span title="Restore this note" onclick="putBack(\''.$safe_id.'\')" class="fa fa-trash-restore-alt pull-right icon_restore_trash" style="margin-right:20px; cursor: pointer;"></span>
+                <div id="lastupdated'.$safe_id.'" class="lastupdated">Last modified on '.$safe_updated.'</div>
+                <h3><input id="inp'.$safe_id.'" type="text" placeholder="Title ?" value="'.$safe_heading.'"></input> </h3>
                 <hr>
-                <div class="noteentry" onload="initials(this);" id="entry'.$row['id'].'" data-ph="Enter text or images here" contenteditable="true">'.$entryfinal.'</div>
+                <div class="noteentry" onload="initials(this);" id="entry'.$safe_id.'" data-ph="Enter text or images here" contenteditable="true">'.$entryfinal.'</div>
                 <div style="height:30px;"></div>
             </div>
             </div>';

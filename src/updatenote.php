@@ -9,19 +9,47 @@
 	require 'config.php';
         
 	include 'db_connect.php';
-	$id = $_POST['id'];
-	$heading = $_POST['heading'];
-	$entry = $_POST['entry']; // Save the HTML content (including images) in an HTML file.
-	$entrycontent = $_POST['entrycontent']; // Save the text content (without images) in the database.
-	$now = $_POST['now'];
-	$seconds = $now;
-    $tags = str_replace(' ', ',', $_POST['tags']);	
+	// Validation et sécurisation des données d'entrée
+	$id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+	if ($id === false || $id <= 0) {
+		die('Invalid ID');
+	}
 	
-	$query="SELECT * from entries WHERE id=".$id;
-	$res = $con->query($query);
-	$row = mysqli_fetch_array($res,MYSQLI_ASSOC);
-    
-    $filename = "entries/".$id.".html";
+	$heading = trim($_POST['heading'] ?? '');
+	$entry = $_POST['entry'] ?? ''; // Save the HTML content (including images) in an HTML file.
+	$entrycontent = $_POST['entrycontent'] ?? ''; // Save the text content (without images) in the database.
+	
+	$now = filter_var($_POST['now'], FILTER_VALIDATE_FLOAT);
+	if ($now === false || $now <= 0) {
+		die('Invalid timestamp');
+	}
+	$seconds = (int)$now;
+	
+    $tags = str_replace(' ', ',', $_POST['tags'] ?? '');	
+	
+	// Requête préparée pour récupérer la note existante
+	$stmt = $con->prepare("SELECT * FROM entries WHERE id = ?");
+	if (!$stmt) {
+		die('Prepare failed');
+	}
+	
+	$stmt->bind_param("i", $id);
+	$stmt->execute();
+	$res = $stmt->get_result();
+	$row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+	$stmt->close();
+	
+	if (!$row) {
+		die('Note not found');
+	}
+	
+	// Sécurisation du chemin de fichier
+    $filename = "entries/" . $id . ".html";
+	// Vérification que le fichier est dans le bon répertoire
+	$basepath = realpath("entries/");
+	if (!$basepath) {
+		die('Invalid entries directory');
+	}
 	    
 	$handle = fopen($filename, 'w+'); 
 
@@ -34,7 +62,7 @@
 	}
     
 	// If there have been no changes to the note, exit the script
-	if(htmlspecialchars($heading,ENT_QUOTES)==$row['heading'] && $entry==$str && htmlspecialchars($tags,ENT_QUOTES)==$row['tags'])
+	if(htmlspecialchars($heading)==$row['heading'] && $entry==$str && htmlspecialchars($tags)==$row['tags'])
 	{
 		die('No changes to the note.');  // Stop the execution of the script and display the message provided.
 	}
@@ -48,7 +76,27 @@
   
 	fclose($handle);
     
-	$query="UPDATE entries SET heading = '".htmlspecialchars($heading,ENT_QUOTES)."', entry = '".htmlspecialchars($entrycontent,ENT_QUOTES)."', created = created, updated = '".date("Y-m-d H:i:s", $seconds)."', tags = '".htmlspecialchars($tags,ENT_QUOTES)."' WHERE id=".$id;
+	$updated_date = date("Y-m-d H:i:s", $seconds);
+	
+	// Requête préparée pour la mise à jour
+	$stmt = $con->prepare("UPDATE entries SET heading = ?, entry = ?, created = created, updated = ?, tags = ? WHERE id = ?");
+	if (!$stmt) {
+		die('Prepare failed');
+	}
+	
+	$stmt->bind_param("ssssi", 
+		htmlspecialchars($heading),
+		htmlspecialchars($entrycontent),
+		$updated_date,
+		htmlspecialchars($tags),
+		$id
+	);
     
-	if($con->query($query)) echo die(formatDateTime(strtotime(date("Y-m-d H:i:s", $seconds)))); // If writing the query in base is ok then we exit
-	else echo 'Error mysql : '.mysqli_error($con); // Otherwise we display the SQL error
+	if($stmt->execute()) {
+		echo die(formatDateTime(strtotime($updated_date))); // If writing the query in base is ok then we exit
+	} else {
+		error_log("Database error in updatenote.php: " . $stmt->error);
+		echo 'Database error occurred';
+	}
+	
+	$stmt->close();

@@ -113,40 +113,22 @@ $note = $_GET['note'] ?? '';
   
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
         {          
-	        $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '$note'";
+	        $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
             $res_right = $con->query($query_note);
         }
 		
         // Exécution de la requête pour la colonne de gauche
         $res_query_left = $con->query($query_left);
  		
-        while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) 
-        {       
-            // Check if note is selected - compare original encoded versions
+        while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {       
             $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
+            $link_params = $tags_search ? "&tags_search=" . urlencode($tags_search) : ($search ? "&search=" . urlencode($search) : '');
+            
+            echo "<form action=index.php><input type=hidden name=note>                        
+            <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . $link_params . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>
+            </form>";
 
-            if($tags_search != '') // If we have searched within the tags, we want to display the notes that contain those tags.
-            {
-                echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&tags_search=" . urlencode("$tags_search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
-                </form>";
-            }
-
-            if($search != '') // If we have searched within the notes, we want to display the notes that contain the searched words.
-            {
-                echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "&search=" . urlencode("$search") . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . $row1["heading"] . "</a>
-                </form>";
-            }
-
-            if($tags_search == '' && $search == '') // If we were viewing all notes and click on a note
-            {
-                echo "<form action=index.php><input type=hidden name=note>                        
-                <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . htmlspecialchars(html_entity_decode($row1["heading"], ENT_QUOTES)) . "</a>
-                </form>";
-            }
-
-            echo "<div id=pxbetweennotes; style='height: 0px'></div>";  // To adjust the distance between the notes	 
+            echo "<div id=pxbetweennotes; style='height: 0px'></div>";
         }
         		 
     ?>
@@ -166,18 +148,9 @@ $note = $_GET['note'] ?? '';
 			</form>
 
             <?php
-            if($search!='') // We arrive here after a search; it will display the search results along with a small cross icon to exit the search.
-            { 
-                echo '<span style="cursor:pointer;font-weight:00;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span></span>';
-            }
-            else if($tags_search!='') // We arrive here after a tag search; it will display the search results along with a small cross icon to exit the search.
-            {
+            if($search != '' || $tags_search != '') {
                 echo '<span style="cursor:pointer;font-weight:700;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span></span>';
             }
-			else // Otherwise, it means it's not a search, so we simply display a message indicating that the first X notes have been displayed on the right.
-			{
-				//echo '<br><div style="text-align:center; font-weight:300;">Only the '.$limit_display_right.' first notes are displayed below.</span></span></div><br>';
-			}
 			?>
 
 			<form class="form_search_tags" action="index.php" method="POST">          
@@ -202,19 +175,7 @@ $note = $_GET['note'] ?? '';
             
                 $filename = "entries/".$row["id"].".html";
                 $title = $row['heading'];             
-                $handle = fopen($filename, "r");
-                if ($handle !== false) {
-                    $filesize = filesize($filename);
-                    if ($filesize > 0) {
-                        $contents = fread($handle, $filesize);
-                    } else {
-                        $contents = '';
-                    }
-                    $entryfinal = $contents;
-                    fclose($handle);
-                } else {
-                    $entryfinal = '';
-                }
+                $entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
            
                 // Display the notes
                 echo '<div id="note'.$row['id'].'" class="notecard">
@@ -235,12 +196,12 @@ $note = $_GET['note'] ?? '';
                         <!--<span>Note '.$row['id'].' </span>-->
 
                         <div class="icon_tag" style="margin-left: 10px;"><span style="text-align:center; font-size:12px;" class="fa fa-tag"></div>
-                        <div class="name_tags"><span><input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(html_entity_decode(str_replace(',', ' ', $row['tags']), ENT_QUOTES)).'"></input></span></div>                    </div>
+                        <div class="name_tags"><span><input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"></input></span></div>                    </div>
 
                     <!--<hr>-->
                     <!--<hr>-->
 
-                    <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars(html_entity_decode($row['heading'], ENT_QUOTES)).'"></input></h4>
+                    <h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars($row['heading'] ?: 'Untitled note', ENT_QUOTES).'"></input></h4>
 
                     <div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>
 

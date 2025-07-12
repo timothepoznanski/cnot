@@ -1,48 +1,33 @@
 <?php
-@ob_start();
+require 'config.php';
+include 'db_connect.php';
+
+$res = $con->query('SELECT tags FROM entries');
+$tags_list = [];
+$count_tags = 0;
+
+while($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {   
+    $words = explode(',', $row['tags']);
+    foreach($words as $word) {
+        $count_tags++;
+        if (!in_array($word, $tags_list)) {
+            $tags_list[] = $word;
+        }		
+    }
+}
+
+sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 ?>
+
+<input type="text" id="myInputFiltrerTags" onkeyup="myFunctionFiltrerTags()" placeholder="Filter tags list..." title="Filter on tags"><br>
+<br>There are <?php echo $count_tags; ?> tags :<br>
+<ul id='myULFiltrerTags' style='list-style-type:none'>
 <?php
-	include 'functions.php';
-	require 'config.php';    $search = isset($_POST['search']) ? $_POST['search'] : '';
-	include 'db_connect.php';	
-
-	$query_tags = 'SELECT tags FROM entries';	
-	$res = $con->query($query_tags);
-
-	$tags_list = array();
-
-	$count_tags = 0;
-
-	while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))
-	{   
-		$delimiter = ',';
-		$words = explode($delimiter, $row['tags']);
-
-		foreach($words as $word)
-		{
-			$count_tags++;
-
-			if (!in_array($word, $tags_list))
-			{
-				$tags_list[] = $word;
-			}		
-		}
-
-	}
-
-	sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
-
-	?><input type="text" id="myInputFiltrerTags" onkeyup="myFunctionFiltrerTags()" placeholder="Filter tags list..." title="Filter on tags"><br><?php
-
-	echo"<br>There are $count_tags tags :<br>";
-
-	echo "<ul id='myULFiltrerTags' style='list-style-type:none'>";
-
-	foreach($tags_list as $tag)
-	{
-		echo "<li><a href='index.php?tags_search_from_list=".$tag."' style='text-decoration:none; color:#333'>".$tag."</a></li>";
-	}
+foreach($tags_list as $tag) {
+    echo "<li><a href='index.php?tags_search_from_list=$tag' style='text-decoration:none; color:#333'>$tag</a></li>";
+}
 ?>
+</ul>
 
 <script>
 	function myFunctionFiltrerTags() {

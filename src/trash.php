@@ -45,27 +45,14 @@
 	<br>
 	<?php
 		$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
-		
-		if (!empty($search)) {
-			$query = "SELECT * FROM entries WHERE trash = 1 AND (heading LIKE '%$search%' OR entry LIKE '%$search%') ORDER BY updated DESC LIMIT 50";
-		} else {
-			$query = "SELECT * FROM entries WHERE trash = 1 ORDER BY updated DESC LIMIT 50";
-		}
-		
-		$res = $con->query($query);
+		$search_condition = $search ? " AND (heading LIKE '%$search%' OR entry LIKE '%$search%')" : '';
+		$res = $con->query("SELECT * FROM entries WHERE trash = 1$search_condition ORDER BY updated DESC LIMIT 50");
 		
 		if ($res && $res->num_rows > 0) {
-		
-		while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))
-		{
+		while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))		{
 			$id = $row['id'];
 			$filename = "./entries/" . $id . ".html";
-			
-			$entryfinal = '';
-			if (file_exists($filename) && is_readable($filename)) {
-				$entryfinal = file_get_contents($filename);
-			}
-			
+			$entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
 			$heading = $row['heading'];
 			$updated = formatDateTime(strtotime($row['updated']));
 			
@@ -74,7 +61,7 @@
                 <span title="Permanently delete" onclick="deletePermanent(\''.$id.'\')" class="fas fa-trash pull-right icon_trash_trash" style="cursor: pointer;"></span>
                 <span title="Restore this note" onclick="putBack(\''.$id.'\')" class="fa fa-trash-restore-alt pull-right icon_restore_trash" style="margin-right:20px; cursor: pointer;"></span>
                 <div id="lastupdated'.$id.'" class="lastupdated">Last modified on '.$updated.'</div>
-                <h3><input id="inp'.$id.'" type="text" placeholder="Title ?" value="'.$heading.'"></input> </h3>
+                <h3><input id="inp'.$id.'" type="text" placeholder="Title ?" value="'.htmlspecialchars($heading, ENT_QUOTES).'"></input> </h3>
                 <hr>
                 <div class="noteentry" onload="initials(this);" id="entry'.$id.'" data-ph="Enter text or images here" contenteditable="true">'.$entryfinal.'</div>
                 <div style="height:30px;"></div>

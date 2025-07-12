@@ -15,7 +15,7 @@ if ($conn->query($sql) === TRUE) {
 }
 $conn->close();
 $con = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE); 
-if (mysqli_connect_errno($con)){
+if (mysqli_connect_errno()){
 	echo 'Could not connect: ' . mysqli_connect_error();
 }
 $con->query("SET NAMES 'utf8';");

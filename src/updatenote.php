@@ -26,7 +26,12 @@
 	$handle = fopen($filename, 'w+'); 
 
 	// ATTENTION !!! $str is always empty so this part never works !!!!" 	
-	$str = fread($handle, filesize($filename)); // Read the file in binary mode. Read the existing content from the HTML file saved on disk.
+	$filesize = filesize($filename);
+	if ($filesize > 0) {
+	    $str = fread($handle, $filesize); // Read the file in binary mode. Read the existing content from the HTML file saved on disk.
+	} else {
+	    $str = '';
+	}
     
 	// If there have been no changes to the note, exit the script
 	if(htmlspecialchars($heading,ENT_QUOTES)==$row['heading'] && $entry==$str && htmlspecialchars($tags,ENT_QUOTES)==$row['tags'])

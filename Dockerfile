@@ -1,5 +1,5 @@
 # Dockerfile used by docker-compose.yml
-FROM php:7.4-apache
+FROM php:8.3-apache
 
 # Install (but also activate mysqli extension)
 RUN docker-php-ext-install mysqli

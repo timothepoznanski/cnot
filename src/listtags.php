@@ -17,7 +17,7 @@
 	while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))
 	{   
 		$delimiter = ',';
-		$words = explode($delimiter, $row[tags]);
+		$words = explode($delimiter, $row['tags']);
 
 		foreach($words as $word)
 		{

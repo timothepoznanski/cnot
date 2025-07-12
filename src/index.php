@@ -235,9 +235,18 @@
                 $filename = "entries/".$row["id"].".html";
                 $title = $row['heading'];             
                 $handle = fopen($filename, "r");
-                $contents = fread($handle, filesize($filename));
-                $entryfinal = $contents;
-                fclose($handle);
+                if ($handle !== false) {
+                    $filesize = filesize($filename);
+                    if ($filesize > 0) {
+                        $contents = fread($handle, $filesize);
+                    } else {
+                        $contents = '';
+                    }
+                    $entryfinal = $contents;
+                    fclose($handle);
+                } else {
+                    $entryfinal = '';
+                }
            
                 // Display the notes
                 echo '<div id="note'.$row['id'].'" class="notecard">

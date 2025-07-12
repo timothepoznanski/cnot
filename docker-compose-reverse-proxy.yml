@@ -1,7 +1,7 @@
 services:
   webservercnot:
     networks:
-      - npm-cnotperso-webserver-net
+      - npm-cnot-webserver-net
       - internal-net
 
   dbservercnot:
@@ -10,12 +10,12 @@ services:
 
   pmacnot:
     networks:
-      - npm-cnotperso-pma-net
+      - npm-cnot-pma-net
       - internal-net
 
 networks:
-  npm-cnotperso-webserver-net:
+  npm-cnot-webserver-net:
     external: true
-  npm-cnotperso-pma-net:
+  npm-cnot-pma-net:
     external: true
   internal-net:

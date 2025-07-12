@@ -1,27 +1,12 @@
 <?php
 @ob_start();
-?>
-<?php
-    require 'config.php';
-    include 'functions.php';
-    require 'config.php';
-    $search = isset($_POST['search']) ? $_POST['search'] : (isset($_GET['search']) ? $_GET['search'] : '');
-    $tags_search_from_list = isset($_GET['tags_search_from_list']) ? $_GET['tags_search_from_list'] : '';
-    $tags_search = isset($_POST['tags_search']) ? $_POST['tags_search'] : (isset($_GET['tags_search']) ? $_GET['tags_search'] : '');
-    $note = isset($_GET['note']) ? $_GET['note'] : '';
+require 'config.php';
+include 'functions.php';
+include 'db_connect.php';
 
-    $limit_display_right = 1;
-    $limit_display_right_all_notes = 1;
-
-
-    if (!empty($tags_search_from_list))
-    {
-        $tags_search = $tags_search_from_list;
-    }
-    
-	include 'db_connect.php';	
-    /*$updateQuery = "UPDATE entries SET tags =  REPLACE(tags,' ',',')";
-    $update = $con->query($updateQuery);*/
+$search = $_POST['search'] ?? $_GET['search'] ?? '';
+$tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
+$note = $_GET['note'] ?? '';
 ?>
 
 <html>
@@ -65,54 +50,26 @@
     <!-- Depending on the cases, we create the queries. -->  
         
     <?php
-        
-        if($tags_search!='') // It's a search within the tags, so we only want to display notes that contain the tags.
-        {
-            // Break the string into individual words.
-            $tags_search_terms = explode(' ', trim($tags_search));
-
-            // Construct the SQL query for left column
-            $query_left = 'SELECT heading FROM entries WHERE trash = 0';
-            foreach ($tags_search_terms as $tag_term) {
-                if (!empty(trim($tag_term))) {
-                    $query_left .= " AND tags LIKE '%" . trim($tag_term) . "%'";
-                }
+    // Build search conditions
+    $search_condition = '';
+    if ($tags_search) {
+        $terms = explode(' ', trim($tags_search));
+        foreach ($terms as $term) {
+            if (!empty(trim($term))) {
+                $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
             }
-            $query_left .= ' ORDER BY updated DESC';
-
-            // Construct the SQL query for right column
-            $query_right = 'SELECT * FROM entries WHERE trash = 0';
-            foreach ($tags_search_terms as $tag_term) {
-                if (!empty(trim($tag_term))) {
-                    $query_right .= " AND tags LIKE '%" . trim($tag_term) . "%'";
-                }
-            }
-            $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
-        else // Otherwise, it's a search within the notes, so we only want to display notes that contain the searched words.
-        {
-            // Break the string into individual words.
-            $search_terms = explode(' ', trim($search));
-
-            // Construct the SQL query for left column
-            $query_left = 'SELECT heading FROM entries WHERE trash = 0';
-            foreach ($search_terms as $term) {
-                if (!empty(trim($term))) {
-                    $query_left .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
-                }
+    } elseif ($search) {
+        $terms = explode(' ', trim($search));
+        foreach ($terms as $term) {
+            if (!empty(trim($term))) {
+                $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
             }
-            $query_left .= ' ORDER BY updated DESC';
-
-            // Construct the SQL query for right column
-            $query_right = 'SELECT * FROM entries WHERE trash = 0';
-            foreach ($search_terms as $term) {
-                if (!empty(trim($term))) {
-                    $query_right .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
-                }
-            }
-            $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
-        
+    }
+    
+    $query_left = "SELECT heading FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC";
+    $query_right = "SELECT * FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC LIMIT 1";
     ?>
     
     <!-- MENU -->

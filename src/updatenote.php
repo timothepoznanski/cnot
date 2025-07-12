@@ -5,9 +5,8 @@
 // error_reporting(-1);
                        
 	date_default_timezone_set('UTC');
-	include 'functions.php';
 	require 'config.php';
-        
+	include 'functions.php';
 	include 'db_connect.php';
 	
 	if (!isset($_POST['id'])) {
@@ -34,33 +33,8 @@
 	
     $filename = "entries/" . $id . ".html";
 	
-	// Read existing content first before opening in write mode
-	$str = '';
-	if (file_exists($filename)) {
-		$str = file_get_contents($filename); // Read the existing content from the HTML file saved on disk.
-	}
-	
-	$handle = fopen($filename, 'w+');
-    
-	// Temporary fix: always save (remove change detection for now)
-	// if($heading==$row['heading'] && $entry==$str && $tags==$row['tags'])
-	// {
-	//	fclose($handle);
-	//	die('No changes to the note.');
-	// }
-            
-    if ($entry != '') // If the note is empty and we only changed the title, then do not try to write an empty entry in the html file
- 	{
-		if (!fwrite($handle, $entry)) { // Writes a file in binary mode.
-			fclose($handle);
-			die("Error writing html file");
-		}  
-	} else {
-		// If entry is empty, still need to clear the file
-		ftruncate($handle, 0);
-	}
-  
-	fclose($handle);
+	// Write HTML content to file
+	file_put_contents($filename, $entry);
     
 	$updated_date = date("Y-m-d H:i:s", $seconds);
 	

@@ -26,7 +26,7 @@ docker compose up -d --build
 
 Open your web browser and visit:
 
-`http://SERVER_NAME:HTTP_WEBSERVER_PORT`
+`http://YOUT_SERVER_NAME:8077`
 
 
 ## Update app or settings

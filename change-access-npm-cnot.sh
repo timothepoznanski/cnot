@@ -7,6 +7,7 @@
 
 NPM_HOST="http://localhost:81"
 PROXY_ID=14
+LOGIN="tim.poznanski@gmail.com"
 
 # Gestion des paramètres
 if [ "$1" == "admin" ]; then
@@ -17,9 +18,7 @@ else
     echo "🌐 Mode: Public (pas d'access list)"
 fi
 
-# Demander les informations de connexion
-echo -n "Login (email): "
-read LOGIN
+# Demander le mot de passe de façon sécurisée (ne s'affiche pas)
 echo -n "Mot de passe NPM: "
 read -s PASSWORD
 echo

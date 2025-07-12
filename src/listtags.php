@@ -3,8 +3,7 @@
 ?>
 <?php
 	include 'functions.php';
-	require 'config.php';
-	$search = $_POST['search'];
+	require 'config.php';    $search = isset($_POST['search']) ? $_POST['search'] : '';
 	include 'db_connect.php';	
 
 	$query_tags = 'SELECT tags FROM entries';	

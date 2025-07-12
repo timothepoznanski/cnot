@@ -14,7 +14,7 @@
     $limit_display_right_all_notes = 1;
 
 
-    if (isset($tags_search_from_list))
+    if (!empty($tags_search_from_list))
     {
         $tags_search = $tags_search_from_list;
     }
@@ -69,38 +69,64 @@
         if($tags_search!='') // It's a search within the tags, so we only want to display notes that contain the tags.
         {
             // Break the string into individual words.
-            $tags_search_terms = explode(' ', $tags_search);
+            $tags_search_terms = explode(' ', trim($tags_search));
 
-            // Construct the SQL query for left column.
+            // Construct the SQL query for left column using prepared statements
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
+            $params_left = array();
+            $types_left = '';
             foreach ($tags_search_terms as $tag_term) {
-                $query_left .= ' AND tags LIKE \'%' . mysqli_real_escape_string($con, $tag_term) . '%\'';
+                if (!empty(trim($tag_term))) {
+                    $query_left .= ' AND tags LIKE ?';
+                    $params_left[] = '%' . trim($tag_term) . '%';
+                    $types_left .= 's';
+                }
             }
             $query_left .= ' ORDER BY updated DESC';
 
-            // Construct the SQL query for right column.
+            // Construct the SQL query for right column using prepared statements
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
+            $params_right = array();
+            $types_right = '';
             foreach ($tags_search_terms as $tag_term) {
-                $query_right .= ' AND tags LIKE \'%' . mysqli_real_escape_string($con, $tag_term) . '%\'';
+                if (!empty(trim($tag_term))) {
+                    $query_right .= ' AND tags LIKE ?';
+                    $params_right[] = '%' . trim($tag_term) . '%';
+                    $types_right .= 's';
+                }
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
         else // Otherwise, it's a search within the notes, so we only want to display notes that contain the searched words.
         {
             // Break the string into individual words.
-            $search_terms = explode(' ', $search);
+            $search_terms = explode(' ', trim($search));
 
-            // Construct the SQL query for left column.
+            // Construct the SQL query for left column using prepared statements
             $query_left = 'SELECT heading FROM entries WHERE trash = 0';
+            $params_left = array();
+            $types_left = '';
             foreach ($search_terms as $term) {
-                $query_left .= ' AND (heading LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\' OR entry LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\')';
+                if (!empty(trim($term))) {
+                    $query_left .= ' AND (heading LIKE ? OR entry LIKE ?)';
+                    $params_left[] = '%' . trim($term) . '%';
+                    $params_left[] = '%' . trim($term) . '%';
+                    $types_left .= 'ss';
+                }
             }
             $query_left .= ' ORDER BY updated DESC';
 
-            // Construct the SQL query for right column.
+            // Construct the SQL query for right column using prepared statements
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
+            $params_right = array();
+            $types_right = '';
             foreach ($search_terms as $term) {
-                $query_right .= ' AND (heading LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\' OR entry LIKE \'%' . mysqli_real_escape_string($con, $term) . '%\')';
+                if (!empty(trim($term))) {
+                    $query_right .= ' AND (heading LIKE ? OR entry LIKE ?)';
+                    $params_right[] = '%' . trim($term) . '%';
+                    $params_right[] = '%' . trim($term) . '%';
+                    $types_right .= 'ss';
+                }
             }
             $query_right .= ' ORDER BY updated DESC LIMIT ' . $limit_display_right_all_notes;
         }
@@ -148,11 +174,28 @@
   
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
         {          
-	        // Chercher avec le titre tel qu'il vient de l'URL (encore encodé)
-            $query_right = 'SELECT * FROM entries WHERE trash = 0 AND heading = "'.mysqli_real_escape_string($con, $note).'"';
+	        // Utiliser une requête préparée pour la recherche par titre
+            $stmt_note = $con->prepare('SELECT * FROM entries WHERE trash = 0 AND heading = ?');
+            if ($stmt_note) {
+                $stmt_note->bind_param("s", $note);
+                $stmt_note->execute();
+                $res_right = $stmt_note->get_result();
+                $stmt_note->close();
+            }
         }
 		
-        $res_query_left = $con->query($query_left);
+        // Exécution de la requête pour la colonne de gauche avec requêtes préparées
+        if (!empty($params_left)) {
+            $stmt_left = $con->prepare($query_left);
+            if ($stmt_left) {
+                $stmt_left->bind_param($types_left, ...$params_left);
+                $stmt_left->execute();
+                $res_query_left = $stmt_left->get_result();
+                $stmt_left->close();
+            }
+        } else {
+            $res_query_left = $con->query($query_left);
+        }
  		
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) 
         {       
@@ -225,8 +268,19 @@
         <?php        
 			
 			// Right-side list based on the query created earlier //		
-		
-            $res_right = $con->query($query_right);
+            
+            // Exécution de la requête pour la colonne de droite avec requêtes préparées
+            if (!empty($params_right) && !isset($res_right)) {
+                $stmt_right = $con->prepare($query_right);
+                if ($stmt_right) {
+                    $stmt_right->bind_param($types_right, ...$params_right);
+                    $stmt_right->execute();
+                    $res_right = $stmt_right->get_result();
+                    $stmt_right->close();
+                }
+            } elseif (!isset($res_right)) {
+                $res_right = $con->query($query_right);
+            }
            
             while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC))
             {

@@ -4,7 +4,6 @@
 <?php
 	include 'functions.php';
 	require 'config.php';
-	$search = $_POST['search'];
 	include 'db_connect.php';	
 ?>
 
@@ -74,7 +73,8 @@
 				} else {
 					$contents = '';
 				}
-				$entryfinal = htmlspecialchars($contents); // Échappement pour éviter XSS
+				// Ne pas échapper le contenu HTML pour préserver les images et le formatage
+				$entryfinal = $contents;
 				fclose($handle);
 			} else {
 				$entryfinal = '';

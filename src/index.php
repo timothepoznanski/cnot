@@ -224,13 +224,13 @@ $note = $_GET['note'] ?? '';
                 echo '<div class="note-tags-row" style="display:flex;align-items:center;gap:8px;overflow:hidden;margin-top:12px;">';
                 echo '<span class="fa fa-tag icon_tag" style="font-size:15px;margin-right:8px;flex-shrink:0;"></span>';
                 echo '<span class="name_tags" style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'
-                    .'<input class="add-margin-left" style="width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"/>'
+                    .'<input class="add-margin-left" style="width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/>'
                 .'</span>';
                 echo '</div>';
                 // Titre
-                echo '<h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars($row['heading'] ?: 'Untitled note', ENT_QUOTES).'"/></h4>';
+                echo '<h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars($row['heading'] ?: 'Untitled note', ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/></h4>';
                 // Contenu de la note
-                echo '<div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="true">'.$entryfinal.'</div>';
+                echo '<div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="'.($is_mobile ? 'false' : 'true').'">'.$entryfinal.'</div>';
                 echo '<div style="height:30px;"></div>';
                 echo '</div>';
                 echo '</div>';

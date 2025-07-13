@@ -20,15 +20,39 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 ?>
 
 <style>
+@media (max-width: 600px) {
+  .tags-list-container {
+	max-width: 100vw !important;
+	padding: 8px 2vw !important;
+  }
   #myInputFiltrerTags {
-	width: 96vw;
-	max-width: 700px;
-	margin: 0 auto 16px auto;
+	font-size: 1.7em !important;
+	padding: 22px 14px !important;
+	width: 98vw !important;
+	max-width: 98vw !important;
+  }
+  #myULFiltrerTags {
+	gap: 14px !important;
+	flex-wrap: wrap !important;
+	justify-content: center !important;
+  }
+  #myULFiltrerTags a {
+	font-size: 1.5em !important;
+	padding: 20px 20px !important;
+	min-width: 48vw !important;
+	text-align: center !important;
+	line-height: 1.2 !important;
+  }
+}
+  #myInputFiltrerTags {
+	width: 100%;
+	max-width: 500px;
+	margin: 12px auto 16px auto;
 	display: block;
-	padding: 14px 18px;
+	padding: 10px 14px;
 	border: 1px solid #ccc;
 	border-radius: 6px;
-	font-size: 1.25em;
+	font-size: 1em;
 	box-sizing: border-box;
   }
   @media (max-width: 600px) {
@@ -42,20 +66,41 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 </style>
 <style>
   .tags-list-container {
-	max-width: 100vw;
-	margin: 0 auto;
-	padding: 8px 0;
+	max-width: 500px;
+	margin: 24px auto 0 auto;
+	padding: 16px;
 	background: #fff;
 	border-radius: 10px;
 	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
+  @media (max-width: 700px) {
+	.tags-list-container {
+	  max-width: 100vw;
+	  padding: 8px 2vw;
+	}
+	#myInputFiltrerTags {
+	  font-size: 1.5em !important;
+	  padding: 18px 12px !important;
+	  width: 98vw !important;
+	  max-width: 98vw !important;
+	}
+	#myULFiltrerTags {
+	  gap: 10px !important;
+	}
+	#myULFiltrerTags a {
+	  font-size: 1.35em !important;
+	  padding: 16px 18px !important;
+	  min-width: 44vw !important;
+	  text-align: center !important;
+	}
+  }
   #myInputFiltrerTags {
 	width: 100%;
-	padding: 14px 18px;
+	padding: 10px 14px;
 	margin-bottom: 16px;
 	border: 1px solid #ccc;
 	border-radius: 6px;
-	font-size: 1.25em;
+	font-size: 1em;
 	box-sizing: border-box;
   }
   .tags-list-info {
@@ -78,32 +123,19 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
   }
   #myULFiltrerTags a {
 	display: inline-block;
-	padding: 10px 20px;
+	padding: 6px 14px;
 	border-radius: 16px;
 	background: #f2f2f2;
 	color: #333;
 	text-decoration: none;
-	font-size: 1.18em;
+	font-size: 1em;
 	transition: background 0.2s, color 0.2s;
   }
   #myULFiltrerTags a:hover {
 	background: #007DB8;
 	color: #fff;
   }
-  @media (max-width: 600px) {
-	.tags-list-container {
-	  max-width: 100vw;
-	  padding: 4px;
-	}
-	#myInputFiltrerTags {
-	  font-size: 1.15em;
-	  padding: 12px 10px;
-	}
-	#myULFiltrerTags a {
-	  font-size: 1.08em;
-	  padding: 10px 10px;
-	}
-  }
+  /* Supprimé car remplacé par la media query plus large ci-dessus */
 </style>
 <div class="tags-list-container">
   <input type="text" id="myInputFiltrerTags" onkeyup="myFunctionFiltrerTags()" placeholder="Filter tags list..." title="Filter on tags">

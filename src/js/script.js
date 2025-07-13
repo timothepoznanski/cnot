@@ -63,13 +63,18 @@ function newnote(){
 
     $.post( "insertnew.php", {now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
     .done(function(data) {
-        if(data=='1')
-        {
-            $(window).scrollTop(0);
-            //location.reload(true);
-            window.location.href = "index.php";
+        try {
+            var res = typeof data === 'string' ? JSON.parse(data) : data;
+            if(res.status === 1) {
+                $(window).scrollTop(0);
+                // Redirige vers la nouvelle note (par heading, car c'est ce que index.php attend)
+                window.location.href = "index.php?note=" + encodeURIComponent(res.heading);
+            } else {
+                alert(res.error || data);
+            }
+        } catch(e) {
+            alert('Erreur lors de la création de la note: ' + data);
         }
-        else alert(data);
     });
 }
 
@@ -147,12 +152,15 @@ function putBack(iid) {
 }
 
 function deleteNote(iid){
-        $.post( "deletenote.php", {id:iid})
-        .done(function(data) {
-            if(data=='1') $('#note'+iid).hide();
-            else alert(data);
-        });
-		setTimeout(function(){ window.location.reload(); }, 1000);
+    $.post( "deletenote.php", {id:iid})
+    .done(function(data) {
+        if(data=='1') {
+            // Redirige vers le menu sans note sélectionnée
+            window.location.href = "index.php";
+        } else {
+            alert(data);
+        }
+    });
 }
 
 

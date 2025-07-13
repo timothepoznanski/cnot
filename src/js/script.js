@@ -23,11 +23,6 @@ function updateident(el)
     noteid = el.id.substr(5);
 }
 
-window.onbeforeunload = function(){
-    if(editedButNotSaved!=0){
-        return 'We are still attempting to save something...';
-    }
-};
 
 function updatenote(){
     updateNoteEnCours = 1;

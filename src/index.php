@@ -216,7 +216,7 @@ $note = $_GET['note'] ?? '';
                 echo '</div>';
                 echo '</div>';
                 // Ligne 2 : icône tag + tags
-                echo '<div class="note-tags-row" style="display:flex;align-items:center;gap:8px;overflow:hidden;">';
+                echo '<div class="note-tags-row" style="display:flex;align-items:center;gap:8px;overflow:hidden;margin-top:12px;">';
                 echo '<span class="fa fa-tag icon_tag" style="font-size:15px;margin-right:8px;flex-shrink:0;"></span>';
                 echo '<span class="name_tags" style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'
                     .'<input class="add-margin-left" style="width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"/>'

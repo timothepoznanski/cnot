@@ -152,7 +152,7 @@ function deleteNote(iid){
             if(data=='1') $('#note'+iid).hide();
             else alert(data);
         });
-		setTimeout(function(){ window.location.reload(); }, 1000);
+        setTimeout(function(){ window.location.reload(); }, 1000);
 }
 
 
@@ -206,6 +206,14 @@ function update(){
     lastudpdate = curtime;
     displayEditInProgress(); // We display that an action has been taken to edit the note.
 }
+// Prevent beforeunload popup when submitting search forms
+$(document).ready(function() {
+    // For all search forms (desktop and mobile)
+    $("form.form_search, form.form_search_tags").on("submit", function() {
+        editedButNotSaved = 0;
+        window.onbeforeunload = null;
+    });
+});
 
 function displaySavingInProgress(){
     $('#lastupdated'+noteid).html('<span style="color:#FF0000";>Saving in progress...</span>');

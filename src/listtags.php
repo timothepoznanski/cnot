@@ -21,14 +21,14 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 
 <style>
   #myInputFiltrerTags {
-	width: 100%;
-	max-width: 500px;
-	margin: 12px auto 16px auto;
+	width: 96vw;
+	max-width: 700px;
+	margin: 0 auto 16px auto;
 	display: block;
-	padding: 10px 14px;
+	padding: 14px 18px;
 	border: 1px solid #ccc;
 	border-radius: 6px;
-	font-size: 1em;
+	font-size: 1.25em;
 	box-sizing: border-box;
   }
   @media (max-width: 600px) {
@@ -42,20 +42,20 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 </style>
 <style>
   .tags-list-container {
-	max-width: 500px;
-	margin: 24px auto 0 auto;
-	padding: 16px;
+	max-width: 100vw;
+	margin: 0 auto;
+	padding: 8px 0;
 	background: #fff;
 	border-radius: 10px;
 	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   #myInputFiltrerTags {
 	width: 100%;
-	padding: 10px 14px;
+	padding: 14px 18px;
 	margin-bottom: 16px;
 	border: 1px solid #ccc;
 	border-radius: 6px;
-	font-size: 1em;
+	font-size: 1.25em;
 	box-sizing: border-box;
   }
   .tags-list-info {
@@ -78,12 +78,12 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
   }
   #myULFiltrerTags a {
 	display: inline-block;
-	padding: 6px 14px;
+	padding: 10px 20px;
 	border-radius: 16px;
 	background: #f2f2f2;
 	color: #333;
 	text-decoration: none;
-	font-size: 1em;
+	font-size: 1.18em;
 	transition: background 0.2s, color 0.2s;
   }
   #myULFiltrerTags a:hover {
@@ -92,16 +92,16 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
   }
   @media (max-width: 600px) {
 	.tags-list-container {
-	  max-width: 98vw;
-	  padding: 8px;
+	  max-width: 100vw;
+	  padding: 4px;
 	}
 	#myInputFiltrerTags {
-	  font-size: 1em;
-	  padding: 8px 10px;
+	  font-size: 1.15em;
+	  padding: 12px 10px;
 	}
 	#myULFiltrerTags a {
-	  font-size: 0.98em;
-	  padding: 6px 10px;
+	  font-size: 1.08em;
+	  padding: 10px 10px;
 	}
   }
 </style>

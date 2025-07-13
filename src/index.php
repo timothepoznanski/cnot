@@ -52,25 +52,23 @@ $note = $_GET['note'] ?? '';
         <!-- Search forms for mobile - displayed at top of left column -->
         <div class="mobile-search-container">
             <div class="contains_forms_search">
-                <form class="form_search" action="index.php" method="POST">          
+                <form class="form_search" action="index.php" method="POST" style="display:inline-block;width:48%;vertical-align:top;">          
                     <div class="right-inner-addon">
                         <i class="fas fa-search icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search-left" type="search" name="search" class="search form-control" placeholder="Rechercher dans les notes" value="<?php echo $search; ?>"/>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search-left" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" value="<?php echo $search; ?>" style="width: 230px; max-width: 100%; min-width: 120px;"/>
                     </div>
                 </form>
-
-                <form class="form_search_tags" action="index.php" method="POST">          
+                <form class="form_search_tags" action="index.php" method="POST" style="display:inline-block;width:48%;vertical-align:top;">          
                     <div class="right-inner-addon">
                         <i class="fas fa-tags icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search-left" type="search" name="tags_search" class="search form-control" placeholder="Rechercher par tags" value="<?php echo $tags_search; ?>"/>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search-left" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" value="<?php echo $tags_search; ?>" style="width: 210px; max-width: 100%; min-width: 120px;"/>
                     </div>  
                 </form>
-
                 <?php
                 if($search != '' || $tags_search != '') {
-                    echo '<div class="clear-search"><span style="cursor:pointer;font-weight:700;margin:10px;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span> Effacer</span></div>';
+                    echo '<div style="width:100%;text-align:center;margin-top:8px;"><span style="cursor:pointer;font-weight:700;display:inline-block;margin:0 6px;position:relative;top:0;" onclick="window.location=\'index.php\'"><span style="color:#007DB8;font-size:20px;" class="fa fa-times"></span></span></div>';
                 }
-                ?>                  
+                ?>
             </div>
         </div>
 
@@ -167,23 +165,25 @@ $note = $_GET['note'] ?? '';
         <!-- Search -->
 
         <div class="contains_forms_search">
-            <form class="form_search" action="index.php" method="POST">          
-                <div class="right-inner-addon">
-                    <i class="fas fa-search icon_grey"></i>
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Rechercher dans les notes" onfocus="updateidsearch(this);" value="<?php echo $search; ?>"/>
-                </div>
-            </form>
-            <form class="form_search_tags" action="index.php" method="POST">          
-                <div class="right-inner-addon">
-                    <i class="fas fa-tags icon_grey"></i>
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Rechercher par tags" onfocus="updateidsearch(this);" value="<?php echo $tags_search; ?>"/>
-                </div>  
-            </form>
-            <?php
-            if($search != '' || $tags_search != '') {
-                echo '<span style="cursor:pointer;font-weight:700;" onclick="window.location=\'index.php\'"><span style="color:#007DB8" class="fa fa-times"></span></span>';
-            }
-            ?>
+            <div style="display:flex;align-items:center;gap:12px;justify-content:center;">
+                <form class="form_search" action="index.php" method="POST" style="display:inline-block;vertical-align:top;">          
+                    <div class="right-inner-addon">
+                        <i class="fas fa-search icon_grey"></i>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo $search; ?>" style="width:350px;"/>
+                    </div>
+                </form>
+                <?php
+                if($search != '' || $tags_search != '') {
+                    echo '<span style="cursor:pointer;font-weight:700;display:inline-block;vertical-align:middle;margin:0 6px;position:relative;top:0;" onclick="window.location=\'index.php\'"><span style="color:#007DB8;font-size:22px;" class="fa fa-times"></span></span>';
+                }
+                ?>
+                <form class="form_search_tags" action="index.php" method="POST" style="display:inline-block;vertical-align:top;">          
+                    <div class="right-inner-addon">
+                        <i class="fas fa-tags icon_grey"></i>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" onfocus="updateidsearch(this);" value="<?php echo $tags_search; ?>" style="width:350px;"/>
+                    </div>  
+                </form>
+            </div>
         </div> 
         
         <?php        

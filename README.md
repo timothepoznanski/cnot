@@ -10,8 +10,6 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
  
 - **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
 
-Please note that this web app is mainly made for desktop since I use it to take technical notes while working on my computer. So, I haven't really focused on mobile optimization. It’s best to use it on a desktop browser, but I do sometimes open it in landscape mode on my phone.
-
 ⚠️ **Disclaimer**
 
 This application was not designed for online use, but rather to run inside a local container (I run it on WSL or Virtualbox). For the sake of simplicity and minimalism, I have deliberately (because I access from local) removed typical security features (such as SQL injection protection and authentication) to keep the code as clean and straightforward as possible.

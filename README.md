@@ -12,9 +12,9 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 
 Please note that this web app is mainly made for desktop since I use it to take technical notes while working on my computer. So, I haven't really focused on mobile optimization. It’s best to use it on a desktop browser, but I do sometimes open it in landscape mode on my phone.
 
-**Disclaimer**
+⚠️ **Disclaimer**
 
-This application was not designed for online use, but rather to run inside a local container (I run it on WSL or Virtualbox). For the sake of simplicity and minimalism, I have deliberately removed typical security features (such as SQL injection protection and authentication) to keep the code as clean and straightforward as possible.
+This application was not designed for online use, but rather to run inside a local container (I run it on WSL or Virtualbox). For the sake of simplicity and minimalism, I have deliberately (because I access from local) removed typical security features (such as SQL injection protection and authentication) to keep the code as clean and straightforward as possible.
 Access control is handled externally — in my case, through the Access List feature of Nginx Proxy Manager.
 
 ## Installation
@@ -41,14 +41,14 @@ Just remove the 3 existing containers, git pull the latest repository version an
 - HTTP_WEBSERVER_PORT
 - HTTP_PHPMYADMIN_PORT
 
-just update your .env file and run the application (docker compose command). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
+just update your `.env` file and run the application (docker compose command). This will restart the web container with the new .env config file. Your data are normally untouched but always make a backup first (see next section).
 
 **If you want to change the following settings:** 
 
 - ENTRIES_DATA_PATH
 - DB_DATA_PATH
 
-Update your .env file and run the application (docker compose command). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
+Update your `.env` file and run the application (docker compose command). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
 
 **If you want to change some database settings:**
 
@@ -66,7 +66,7 @@ There are two ways to create a database dump:
 
 **1. Using phpMyAdmin**
 
-Connect with user "mysqluser" and password "mysqlpassword" to phpMyAdmin at http://YOUR_SERVER_NAME:8078/ and export your database.
+Connect with user `mysqluser` and password `mysqlpassword` to phpMyAdmin at `http://YOUR_SERVER_NAME:8078/` and export your database.
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 
@@ -82,7 +82,7 @@ Create temporarily another container to create a dump where you run the command:
 
 ### Import your notes ### 
 
-Copy all your HTML files to '../ENTRIES_DATA' directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
+Copy all your HTML files to `../ENTRIES_DATA` directory and ensure that both the user and group ownership are set to `www-data` for all html files (chown -R www-data: ENTRIES_DATA)
 
 ### Import your database ### 
 
@@ -90,7 +90,7 @@ There are two ways to import a database dump:
 
 **1. Using phpMyAdmin**
 
-Connect with "mysqluser" and "mysqlpassword" to phpMyAdmin at http://YOUR_SERVER_NAME:8078/ and import your database.
+Connect with `mysqluser` and `mysqlpassword` to phpMyAdmin at `http://YOUR_SERVER_NAME:8078/` and import your database.
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 

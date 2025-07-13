@@ -139,6 +139,26 @@ $note = $_GET['note'] ?? '';
         ?>
     </div>
     <?php endif; ?>
+
+    <?php if ($is_mobile && $note != ''): ?>
+    <div class="mobile-menu-bar" style="display:flex;justify-content:center;margin:10px 0;">
+        <div class="btn-menu" style="background:#007DB8;color:#fff;border-radius:8px;padding:7px 16px;font-size:1.1em;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);" onclick="window.location='index.php'" title="Retour à la liste des notes">
+            <span class="fa fa-home" style="font-size:1.2em;"></span>
+        </div>
+    </div>
+    <script>
+    // Corrige le comportement du bouton maison pour supprimer tous les paramètres d'URL
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.querySelector('.mobile-menu-bar .btn-menu');
+        if(btn) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'index.php';
+            };
+        }
+    });
+    </script>
+    <?php endif; ?>
         
     <hr><br>
             
@@ -217,6 +237,13 @@ $note = $_GET['note'] ?? '';
                     echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle icon_info"></span>';
                     echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download icon_download"></span></a>';
                     echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save icon_save"></span>';
+                    echo '</div>';
+                } else {
+                    // Bouton maison sur mobile, à la place des actions
+                    echo '<div class="note-icons-mobile">';
+                    echo '<span style="background:#007DB8;color:#fff;border-radius:7px;padding:4px 11px;font-size:0.95em;display:inline-flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin:0 auto;" onclick="window.location=\'index.php\'" title="Retour à la liste des notes">';
+                    echo '<span class="fa fa-home" style="font-size:1em;"></span>';
+                    echo '</span>';
                     echo '</div>';
                 }
                 echo '</div>';

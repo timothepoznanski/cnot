@@ -64,11 +64,6 @@ $note = $_GET['note'] ?? '';
                         <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search-left" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" value="<?php echo $tags_search; ?>" style="width: 210px; max-width: 100%; min-width: 120px;"/>
                     </div>  
                 </form>
-                <?php
-                if($search != '' || $tags_search != '') {
-                    echo '<div style="width:100%;text-align:center;margin-top:8px;"><span style="cursor:pointer;font-weight:700;display:inline-block;margin:0 6px;position:relative;top:0;" onclick="window.location=\'index.php\'"><span style="color:#007DB8;font-size:20px;" class="fa fa-times"></span></span></div>';
-                }
-                ?>
             </div>
         </div>
 
@@ -129,6 +124,11 @@ $note = $_GET['note'] ?? '';
             }
         </script>
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
+        <?php
+        if($search != '' || $tags_search != '') {
+            echo '<div class="newbutton" style="cursor:pointer;margin-left:8px;" onclick="window.location=\'index.php\'" title="Clear search"><span style="color:#d32f2f;font-size:22px;" class="fa fa-times"></span></div>';
+        }
+        ?>
 
     </div> 
         
@@ -172,11 +172,6 @@ $note = $_GET['note'] ?? '';
                         <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo $search; ?>" style="width:350px;"/>
                     </div>
                 </form>
-                <?php
-                if($search != '' || $tags_search != '') {
-                    echo '<span style="cursor:pointer;font-weight:700;display:inline-block;vertical-align:middle;margin:0 6px;position:relative;top:0;" onclick="window.location=\'index.php\'"><span style="color:#007DB8;font-size:22px;" class="fa fa-times"></span></span>';
-                }
-                ?>
                 <form class="form_search_tags" action="index.php" method="POST" style="display:inline-block;vertical-align:top;">          
                     <div class="right-inner-addon">
                         <i class="fas fa-tags icon_grey"></i>

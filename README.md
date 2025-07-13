@@ -26,7 +26,7 @@ docker compose up -d --build
 
 Open your web browser and visit:
 
-`http://YOUT_SERVER_NAME:8077`
+`http://YOUR_SERVER_NAME:8077`
 
 
 ## Update app or settings
@@ -58,8 +58,7 @@ Simply updating the `.env` file and deleting the database container will not be 
 
 ### Export your notes ###
 
-Get your html files from the ENTRIES_DATA_PATH directory defined in your .env config file.
-You can also export all your notes using the export button. This method adds an index file to the zip export.
+Get your html files from '../ENTRIES_DATA'. You can also export all your notes using the export button. This method adds an index file to the zip export.
 
 ### Export your database ###
 
@@ -67,29 +66,23 @@ There are two ways to create a database dump:
 
 **1. Using phpMyAdmin**
 
-Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and export your database.
+Connect with user "mysqluser" and password "mysqlpassword" to phpMyAdmin at http://YOUR_SERVER_NAME:8078/ and export your database.
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
 
 Create temporarily another container to create a dump where you run the command:
 
-  Get your database container name:
-
-  ```
-   $ docker ps -a
-  ```
-
   Export a backup sql of your database: 
   
   ```
-   $ docker run --rm --network container:DATABASE_CONTAINER_NAME -e MYSQL_PWD=MYSQL_ROOT_PASSWORD mysql:latest mysqldump -h127.0.0.1 -uroot MYSQL_DATABASE > dump.sql
+   $ docker run --rm --network container:dbservercnot -e MYSQL_PWD=mysqrootpassword mysql:latest mysqldump -h127.0.0.1 -uroot cnot_db > dump.sql
   ```
 
 ## Import or restore
 
 ### Import your notes ### 
 
-Copy all your HTML files to your ENTRIES_DATA_PATH directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
+Copy all your HTML files to '../ENTRIES_DATA' directory and ensure that both the user and group ownership are set to www-data for all html files (chown -R www-data: ENTRIES_DATA)
 
 ### Import your database ### 
 
@@ -97,27 +90,21 @@ There are two ways to import a database dump:
 
 **1. Using phpMyAdmin**
 
-Connect with your MYSQL_USER and MYSQL_PASSWORD credentials (from your .env config file) to phpMyAdmin at http://SERVER_NAME:HTTP_PHPMYADMIN_PORT/ and import your database.
+Connect with "mysqluser" and "mysqlpassword" to phpMyAdmin at http://YOUR_SERVER_NAME:8078/ and import your database.
 
 **2. Using Git Bash on Windows (preferred over PowerShell due to encoding issues) or bash on Linux**
-
-  Get your database container name:
-
-  ```
-  $ docker ps -a
-  ```
 
   Copy your dump into the docker instance:
 
   ```
-  $ docker cp dump.sql DATABASE_CONTAINER_NAME:/tmp/dump.sql
+  $ docker cp dump.sql dbservercnot:/tmp/dump.sql
   ```
 
   Enter your database docker instance and import your dump :
   
   ```
-  $ docker exec -it DATABASE_CONTAINER_NAME bash
-  bash-5.1# mysql -u root -pMYSQL_ROOT_PASSWORD MYSQL_DATABASE < /tmp/dump.sql
+  $ docker exec -it dbservercnot bash
+  bash-5.1# mysql -u root -pmysqlrootpassword cnot_db < /tmp/dump.sql
   ```
 
 ## Possible errors

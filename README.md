@@ -12,8 +12,11 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 
 ⚠️ **Disclaimer**
 
-This application was not designed for online use, but rather to run inside a local container (I run it on WSL or Virtualbox). For the sake of simplicity and minimalism, I have deliberately (because I access from local) removed typical security features (such as SQL injection protection and authentication) to keep the code as clean and straightforward as possible.
-Access control is handled externally — in my case, through the Access List feature of Nginx Proxy Manager.
+This application was designed to run locally — typically inside a container (e.g., on WSL or VirtualBox) — and not for public-facing or online use.
+
+To keep the codebase as minimal and easy to understand as possible, I’ve intentionally stripped out common security mechanisms like SQL injection protection or authentication, since the data is only accessible from localhost in my setup.
+
+Access control is expected to be managed externally. Personally, I rely on Nginx Proxy Manager's Access List feature, but you’re free to implement your own access restrictions however you see fit.
 
 ## Installation
  

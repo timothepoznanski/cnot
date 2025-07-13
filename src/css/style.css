@@ -16,8 +16,8 @@
 
 
 body {
-	font-family: 'Inter', sans-serif;
-	font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
 }
 
 #left_col{
@@ -34,7 +34,7 @@ body {
     overflow:auto;
     /*column-width: auto;*/
     font-size: 14px;
-	border-right: solid #CCCCCC 1px;
+    border-right: solid #CCCCCC 1px;
 }
 
 #right_col{
@@ -146,17 +146,17 @@ body {
 }
 
 .name_tags {
-	/* font-style: italic; */
+    /* font-style: italic; */
     font-size: 13px;
 }
 
 
 .icon_doss, .name_doss, .name_tags, .icon_tag, .icon_sousdoss, .name_sousdoss {
-	display: inline-block;
+    display: inline-block;
 }
 
 .name_doss, .name_tags, .name_sousdoss {
-	margin-left: 0px;
+    margin-left: 0px;
 }
 
 
@@ -177,13 +177,13 @@ form{
 }
 
 .newbutton, .trashnotebutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton{
-	display: inline-block;
-	width:30px;
-	cursor: pointer;
+    display: inline-block;
+    width:30px;
+    cursor: pointer;
     height:20px;
     margin: 5px;
-	color: #007DB8;
-	font-size: 17px;
+    color: #007DB8;
+    font-size: 17px;
 }
 
 .right-inner-addon {
@@ -215,98 +215,98 @@ div[contentEditable=true]:empty:before{
 }
 
 .search:focus{
-	border-bottom: 1px solid #32a1ce;
+    border-bottom: 1px solid #32a1ce;
 }
 
 .searchtrash:focus{
-	border-bottom: 1px solid #32a1ce;
+    border-bottom: 1px solid #32a1ce;
 }
 
 .notecard{
-	/*width:90%;*/
-	margin: 1%;
-	margin-bottom:20px;
-	/* box-shadow: 1px 1px 10px #888888; */
+    /*width:90%;*/
+    margin: 1%;
+    margin-bottom:20px;
+    /* box-shadow: 1px 1px 10px #888888; */
     /*border: 1px solid #ccc;*/
-	background: white;
+    background: white;
     border-radius: 5px; /* Adjust the value according to the desired degree of rounding */
 
 }
 
 .innernote{
-	padding-left: 2%;
-	padding-top: 5px;
-	padding-right: 2%;
-	padding-bottom: 5px;
+    padding-left: 2%;
+    padding-top: 5px;
+    padding-right: 2%;
+    padding-bottom: 5px;
 }
 
 textarea{
-	padding: 0;
-	padding-top: 30px; 
-	width:100%;
-	border: 0 none white;
+    padding: 0;
+    padding-top: 30px; 
+    width:100%;
+    border: 0 none white;
     overflow: hidden;
     outline: none;
     resize: none;
 }
 
 textarea:focus{
-	border-bottom: 1px;
-	outline: 0;
+    border-bottom: 1px;
+    outline: 0;
 }
 
 .noteentry{
-	padding: 0;
-	padding-top: 5px; 
-	width:100%;
-	border: 0 none white;
+    padding: 0;
+    padding-top: 5px; 
+    width:100%;
+    border: 0 none white;
     /*overflow: auto;*/
-	/*word-break: break-all;*/
+    /*word-break: break-all;*/
     overflow-wrap: break-word;
     outline: none;
     resize: none;
 }
 
 .noteentry:focus{
-	border-bottom: 1px;
-	outline: 0;
+    border-bottom: 1px;
+    outline: 0;
 }
 
 input{
-	width:100%;
-	border:0px;
-	text-overflow: ellipsis;
+    width:100%;
+    border:0px;
+    text-overflow: ellipsis;
 }
 
 .add-margin-left{
-	margin:5px;
+    margin:5px;
 }
 
 .css-title{
     margin-top:10px;
     margin-bottom:10px;
-	margin-left:-3px;
+    margin-left:-3px;
     font-size: 24px;
     font-weight: 600;
     color: #37352F;
 }
 
 input:focus{
-	border-bottom: 1px;
-	outline: 0;
+    border-bottom: 1px;
+    outline: 0;
 }
 
 hr{
-	margin:0;
+    margin:0;
     border-top: 1px solid #ccc
 }
 
 .lastupdated{
-	float:right;
-	font-size: 12px;
-	font-family: 'Inter' !important;
-	font-style: italic;
-	font-weight: 400;
+    float:right;
+    font-size: 12px;
+    font-family: 'Inter' !important;
+    font-style: italic;
+    font-weight: 400;
     margin-top: 7px;	
 }
 
@@ -319,11 +319,11 @@ hr{
 } */
 
 .created{
-	float:right;
-	font-size: 15px;
-	font-family: 'Inter' !important;
-	font-style: normal;
-	font-weight: 300;
+    float:right;
+    font-size: 15px;
+    font-family: 'Inter' !important;
+    font-style: normal;
+    font-weight: 300;
 }
 
 .selected-note {
@@ -333,5 +333,252 @@ hr{
     font-weight: bold;
     font-size: 14px;
     /* display: flex; */
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    #left_col {
+        width: 100%;
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        border-right: none;
+    }
+    
+    #right_col {
+        margin-left: 0;
+        width: 100%;
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        display: none; /* Hidden by default on mobile */
+    }
+    
+    /* When a note is selected, show only right column */
+    body.note-selected #left_col {
+        display: none;
+    }
+    
+    body.note-selected #right_col {
+        display: block;
+    }
+    
+    /* Hide search in right column on mobile, show in left column */
+    #right_col .contains_forms_search {
+        display: none;
+    }
+    
+    .mobile-search-container {
+        display: block;
+        margin-bottom: 20px;
+        /* padding: 10px; */
+        background: transparent;
+        border-radius: 8px;
+        margin: 10px 5px 20px 5px;
+    }
+    
+    /* Mobile back button */
+    .mobile-back-button {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: #007DB8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    .mobile-back-button:hover {
+        background: #005a8a;
+    }
+    
+    /* Adjust search forms for mobile */
+    .contains_forms_search {
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+    
+    .form_search, .form_search_tags {
+        width: 100%;
+        margin: 5px 0;
+        display: block;
+    }
+    
+    .clear-search {
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    /* Better touch targets for mobile */
+    .links_arbo_left {
+        padding: 4px 4px;
+        margin: 1px 0;
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 1.2;
+    }
+    
+    .links_arbo_left:hover {
+        background-color: #f0f0f0;
+    }
+    
+    /* Larger buttons for mobile */
+    .newbutton, .trashnotebutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton {
+        width: 40px;
+        height: 30px;
+        font-size: 20px;
+        margin: 8px;
+    }
+    
+    /* Better note display on mobile */
+    .notecard {
+        margin: 5px;
+        border-radius: 8px;
+    }
+    
+    .innernote {
+        padding: 10px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .note-header-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        margin-bottom: 2px;
+    }
+
+    .lastupdated {
+        font-size: 13px;
+        font-style: italic;
+        font-weight: 400;
+        margin: 0;
+        color: #888;
+        white-space: nowrap;
+        flex: 1;
+    }
+
+    .note-icons-mobile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    .icon_save, .icon_trash, .icon_info, .icon_download {
+        margin: 0;
+        font-size: 16px;
+        color: #007DB8;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        vertical-align: middle;
+        transition: color 0.2s;
+    }
+    .icon_save:hover, .icon_trash:hover, .icon_info:hover, .icon_download:hover {
+        color: #005a8a;
+    }
+
+    .name_tags, .css-title {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
+    
+    /* Larger input fields for mobile */
+    .css-title {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    
+    .noteentry {
+        font-size: 16px;
+        line-height: 1.5;
+        min-height: 200px;
+    }
+    
+    /* Better icon spacing on mobile */
+    .icon_save, .icon_trash, .icon_info, .icon_download {
+        margin-left: 10px;
+        margin-top: 5px;
+        font-size: 18px;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+    .mobile-back-button {
+        display: none;
+    }
+    .mobile-search-container {
+        display: none;
+    }
+    #right_col .contains_forms_search {
+        display: block;
+    }
+    .note-header-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        margin-bottom: 2px;
+    }
+    .lastupdated {
+        font-size: 13px;
+        font-style: italic;
+        font-weight: 400;
+        margin: 0;
+        color: #888;
+        white-space: nowrap;
+        flex: 1;
+    }
+    .note-icons-mobile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+    .icon_save, .icon_trash, .icon_info, .icon_download {
+        margin: 0;
+        font-size: 16px;
+        color: #007DB8;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        vertical-align: middle;
+        transition: color 0.2s;
+    }
+    .icon_save:hover, .icon_trash:hover, .icon_info:hover, .icon_download:hover {
+        color: #005a8a;
+    }
+    .note-tags-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 2px;
+    }
+    .name_tags {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
 }
 

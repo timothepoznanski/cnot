@@ -1,4 +1,12 @@
+
 <?php
+// Détection mobile par user agent
+$is_mobile = false;
+if (isset($_SERVER['HTTP_USER_AGENT'])) {
+    $user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent);
+}
+
 @ob_start();
 require 'config.php';
 include 'functions.php';
@@ -94,6 +102,7 @@ $note = $_GET['note'] ?? '';
     
     <!-- MENU -->
 
+    <?php if (!$is_mobile): ?>
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span style="text-align:center;"><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
         <div class="list_tags" onclick="window.location = 'listtags.php';"><span style="text-align:center;"><span title="List the tags" class="fas fa-tags"></span></span></div>
@@ -103,20 +112,16 @@ $note = $_GET['note'] ?? '';
                 <span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span>
             </span>
         </div>
-        
         <!-- Download popup -->
         <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
            Please wait while the archive is being created...
         </div>
-        
         <script>
             function startDownload() {
                 // Show the popup
                 document.getElementById('downloadPopup').style.display = 'block';
-        
                 // Start the download
                 window.location = 'exportEntries.php';
-        
                 // Hide the popup after a certain amount of time
                 setTimeout(function() {
                     document.getElementById('downloadPopup').style.display = 'none';
@@ -132,8 +137,8 @@ $note = $_GET['note'] ?? '';
                 .'</div>';
         }
         ?>
-
-    </div> 
+    </div>
+    <?php endif; ?>
         
     <hr><br>
             
@@ -206,12 +211,14 @@ $note = $_GET['note'] ?? '';
                 // Ligne 1 : date à gauche, boutons à droite
                 echo '<div class="note-header-mobile">';
                 echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
-                echo '<div class="note-icons-mobile">';
-                echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash icon_trash"></span>';
-                echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle icon_info"></span>';
-                echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download icon_download"></span></a>';
-                echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save icon_save"></span>';
-                echo '</div>';
+                if (!$is_mobile) {
+                    echo '<div class="note-icons-mobile">';
+                    echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash icon_trash"></span>';
+                    echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle icon_info"></span>';
+                    echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download icon_download"></span></a>';
+                    echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save icon_save"></span>';
+                    echo '</div>';
+                }
                 echo '</div>';
                 // Ligne 2 : icône tag + tags
                 echo '<div class="note-tags-row" style="display:flex;align-items:center;gap:8px;overflow:hidden;margin-top:12px;">';

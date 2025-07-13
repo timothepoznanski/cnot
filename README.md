@@ -12,11 +12,15 @@ I created CnoT (from the French “c'est noté,” meaning “noted”) because 
 
 ⚠️ **Disclaimer**
 
-This application was designed to run locally — typically inside a container (e.g., on WSL or VirtualBox) — and not for public-facing or online use.
+This application can be used in two different ways:
 
-To keep the codebase as minimal and easy to understand as possible, I’ve intentionally stripped out common security mechanisms like SQL injection protection or authentication, since the data is only accessible from localhost in my setup.
+- **Locally**, in a container (e.g., Docker on WSL or VirtualBox), without being exposed to the internet. In this scenario, since the notes are only accessible from the local environment, there's no need for authentication or protection against common security threats like SQL injection.
 
-Access control is expected to be managed externally. Personally, I rely on Nginx Proxy Manager's Access List feature, but you’re free to implement your own access restrictions however you see fit.
+- **Online**, by exposing the application to the internet. In this case, security and access control become necessary — but instead of embedding these protections in the app itself, they are intentionally left out to keep the codebase clean and simple. You're expected to handle authentication and security externally using whatever method suits your setup best. For example, I run one instance of CnoT online and secure it using Nginx Proxy Manager’s Access List feature.
+
+Because external authentication (like Nginx Proxy Manager) acts as the primary gatekeeper, the application itself does not implement protections against SQL injection or similar attacks. This is acceptable only if all access points are properly secured by the external authentication layer and users are trusted. If this layer is bypassed or misconfigured, the application could become vulnerable.
+
+In both cases, standard security features have been intentionally removed to focus on simplicity and ease of understanding. If you choose to expose the app online, make sure to implement appropriate access controls on your side.
 
 ## Installation
  

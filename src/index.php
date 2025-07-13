@@ -126,7 +126,10 @@ $note = $_GET['note'] ?? '';
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
         if($search != '' || $tags_search != '') {
-            echo '<div class="newbutton" style="cursor:pointer;margin-left:8px;" onclick="window.location=\'index.php\'" title="Clear search"><span style="color:#d32f2f;font-size:22px;" class="fa fa-times"></span></div>';
+            // Use a FontAwesome solid times-circle for better alignment and size
+            echo '<div class="newbutton" style="cursor:pointer;margin-left:8px;" onclick="window.location=\'index.php\'" title="Clear search">'
+                .'<span style="color:#d32f2f;font-size:22px;display:flex;align-items:center;justify-content:center;" class="fas fa-times-circle"></span>'
+                .'</div>';
         }
         ?>
 

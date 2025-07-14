@@ -2,6 +2,8 @@
 
 I created CnoT as a simple, self-hosted, open-source note-taking tool with powerful search and full control over my data.
 
+<img width="1877" height="813" alt="cnot" src="https://github.com/user-attachments/assets/be9cceb0-b0c5-449c-acae-dc3e7986f897" />
+
 The mobile version is for viewing notes only — not editing.
 
 If you run the app online, be sure to handle access control yourself. I personally use Nginx Proxy Manager’s Access List for that.

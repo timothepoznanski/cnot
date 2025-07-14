@@ -1,6 +1,6 @@
-// Fichier extrait depuis index.php pour la logique JS principale (hors plugins jQuery)
+// File extracted from index.php for main UI logic (excluding jQuery plugins)
 
-// Placeholders anglais selon le mode
+// English placeholders depending on the mode
 function updatePlaceholders() {
     var mode = document.getElementById('search_mode');
     var input = document.getElementById('unified-search');
@@ -21,7 +21,7 @@ function updatePlaceholders() {
         }
     }
 }
-// Toggle pour desktop
+// Toggle for desktop
 document.getElementById('toggle-search-mode').onclick = function(e) {
     e.preventDefault();
     var mode = document.getElementById('search_mode');
@@ -40,7 +40,7 @@ document.getElementById('toggle-search-mode').onclick = function(e) {
         document.getElementById('unified-search').focus();
     }
 };
-// Toggle pour mobile
+// Toggle for mobile
 document.getElementById('toggle-search-mode-left').onclick = function(e) {
     e.preventDefault();
     var modeLeft = document.getElementById('search_mode_left');
@@ -59,7 +59,7 @@ document.getElementById('toggle-search-mode-left').onclick = function(e) {
         document.getElementById('unified-search-left').focus();
     }
 };
-// Soumission du formulaire sur entrée
+// Submit form on Enter key
 document.getElementById('unified-search').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         document.getElementById('unified-search-form').submit();
@@ -70,10 +70,10 @@ document.getElementById('unified-search-left').addEventListener('keydown', funct
         document.getElementById('unified-search-form-left').submit();
     }
 });
-// Initialiser le placeholder au chargement
+// Initialize placeholder on load
 updatePlaceholders();
 
-// Fonction de téléchargement (popup)
+// Download function (popup)
 function startDownload() {
     document.getElementById('downloadPopup').style.display = 'block';
     window.location = 'exportEntries.php';
@@ -82,7 +82,7 @@ function startDownload() {
     }, 4000);
 }
 
-// Corrige le comportement du bouton maison mobile
+// Fixes the behavior of the home button on mobile
 if (document.querySelector('.mobile-menu-bar .btn-menu')) {
     document.addEventListener('DOMContentLoaded', function() {
         var btn = document.querySelector('.mobile-menu-bar .btn-menu');

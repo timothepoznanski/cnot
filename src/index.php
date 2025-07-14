@@ -1,4 +1,3 @@
-
 <?php
 // Détection mobile par user agent
 $is_mobile = false;
@@ -60,17 +59,19 @@ $note = $_GET['note'] ?? '';
         <!-- Search forms for mobile - displayed at top of left column -->
         <div class="mobile-search-container">
             <div class="contains_forms_search">
-                <form class="form_search" action="index.php" method="POST" style="display:inline-block;width:48%;vertical-align:top;">          
-                    <div class="right-inner-addon">
-                        <i class="fas fa-search icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search-left" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" value="<?php echo $search; ?>" style="width: 230px; max-width: 100%; min-width: 120px;"/>
+                <form id="unified-search-form-left" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;">
+                    <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" style="width:100%; min-width: 120px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
+                        <input type="hidden" id="search_mode_left" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
+                        <button type="button" id="toggle-search-mode-left" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
+                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
+                        </button>
+                        <?php if (!empty($unified_search)): ?>
+                        <button type="button" id="clear-search-left" onclick="window.location='index.php';" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
+                            <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;"></span>
+                        </button>
+                        <?php endif; ?>
                     </div>
-                </form>
-                <form class="form_search_tags" action="index.php" method="POST" style="display:inline-block;width:48%;vertical-align:top;">          
-                    <div class="right-inner-addon">
-                        <i class="fas fa-tags icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search-left" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" value="<?php echo $tags_search; ?>" style="width: 210px; max-width: 100%; min-width: 120px;"/>
-                    </div>  
                 </form>
             </div>
         </div>
@@ -78,24 +79,23 @@ $note = $_GET['note'] ?? '';
     <!-- Depending on the cases, we create the queries. -->  
         
     <?php
-    // Build search conditions
+    // Build search conditions unified
     $search_condition = '';
-    if ($tags_search) {
-        $terms = explode(' ', trim($tags_search));
+    $search_mode = $_POST['search_mode'] ?? $_GET['search_mode'] ?? ($tags_search ? 'tags' : 'notes');
+    $unified_search = $_POST['unified_search'] ?? $_GET['unified_search'] ?? ($search ?: $tags_search);
+
+    if ($unified_search) {
+        $terms = explode(' ', trim($unified_search));
         foreach ($terms as $term) {
             if (!empty(trim($term))) {
-                $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
-            }
-        }
-    } elseif ($search) {
-        $terms = explode(' ', trim($search));
-        foreach ($terms as $term) {
-            if (!empty(trim($term))) {
-                $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
+                if ($search_mode === 'tags') {
+                    $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
+                } else {
+                    $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
+                }
             }
         }
     }
-    
     $query_left = "SELECT heading FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC";
     $query_right = "SELECT * FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC LIMIT 1";
     ?>
@@ -175,12 +175,13 @@ $note = $_GET['note'] ?? '';
         
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {       
             $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
-            $link_params = $tags_search ? "&tags_search=" . urlencode($tags_search) : ($search ? "&search=" . urlencode($search) : '');
-            
-            echo "<form action=index.php><input type=hidden name=note>                        
-            <a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . $link_params . "' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>
-            </form>";
-
+            // On récupère la recherche unifiée et le mode
+            $unified_search_param = isset($unified_search) && $unified_search !== '' ? "&unified_search=" . urlencode($unified_search) : '';
+            $search_mode_param = isset($search_mode) && $search_mode !== '' ? "&search_mode=" . urlencode($search_mode) : '';
+            $link_params = $unified_search_param . $search_mode_param;
+            echo "<form action=index.php><input type=hidden name=note>";
+            echo "<a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "$link_params' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
+            echo "</form>";
             echo "<div id=pxbetweennotes; style='height: 0px'></div>";
         }
                  
@@ -193,21 +194,21 @@ $note = $_GET['note'] ?? '';
         <!-- Search -->
 
         <div class="contains_forms_search">
-            <div style="display:flex;align-items:center;gap:12px;justify-content:center;">
-                <form class="form_search" action="index.php" method="POST" style="display:inline-block;vertical-align:top;">          
-                    <div class="right-inner-addon">
-                        <i class="fas fa-search icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="note-search" type="search" name="search" class="search form-control" placeholder="Search for one or more words within the notes" onfocus="updateidsearch(this);" value="<?php echo $search; ?>" style="width:350px;"/>
-                    </div>
-                </form>
-                <form class="form_search_tags" action="index.php" method="POST" style="display:inline-block;vertical-align:top;">          
-                    <div class="right-inner-addon">
-                        <i class="fas fa-tags icon_grey"></i>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="tags-search" type="search" name="tags_search" class="search form-control" placeholder="Search for one or more words in the tags" onfocus="updateidsearch(this);" value="<?php echo $tags_search; ?>" style="width:350px;"/>
-                    </div>  
-                </form>
-            </div>
-        </div> 
+            <form id="unified-search-form" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;justify-content:center;">
+                <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" style="width:350px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
+                    <input type="hidden" id="search_mode" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
+                    <button type="button" id="toggle-search-mode" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
+                        <span id="toggle-icon" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
+                    </button>
+                    <?php if (!empty($unified_search)): ?>
+                    <button type="button" id="clear-search" onclick="window.location='index.php';" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
+                        <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;"></span>
+                    </button>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
         
         <?php        
             
@@ -268,5 +269,71 @@ $note = $_GET['note'] ?? '';
     
 <!-- Do not place this block at the top, otherwise Popline will no longer work -->
 <script src="js/script.js"></script>
-<script> $(".noteentry").popline(); </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
+<script>
+// Placeholders anglais selon le mode
+function updatePlaceholders() {
+    var mode = document.getElementById('search_mode');
+    var input = document.getElementById('unified-search');
+    if (mode.value === 'tags') {
+        input.placeholder = 'Search for one or more words in the tags';
+    } else {
+        input.placeholder = 'Search for one or more words within the notes';
+    }
+    var modeLeft = document.getElementById('search_mode_left');
+    var inputLeft = document.getElementById('unified-search-left');
+    if (modeLeft.value === 'tags') {
+        inputLeft.placeholder = 'Search for one or more words in the tags';
+    } else {
+        inputLeft.placeholder = 'Search for one or more words within the notes';
+    }
+}
+// Toggle pour desktop
+document.getElementById('toggle-search-mode').onclick = function(e) {
+    e.preventDefault();
+    var mode = document.getElementById('search_mode');
+    var icon = document.getElementById('toggle-icon');
+    if (mode.value === 'notes') {
+        mode.value = 'tags';
+        icon.classList.remove('fa-file');
+        icon.classList.add('fa-tags');
+    } else {
+        mode.value = 'notes';
+        icon.classList.remove('fa-tags');
+        icon.classList.add('fa-file');
+    }
+    updatePlaceholders();
+    document.getElementById('unified-search').focus();
+};
+// Toggle pour mobile
+document.getElementById('toggle-search-mode-left').onclick = function(e) {
+    e.preventDefault();
+    var mode = document.getElementById('search_mode_left');
+    var icon = document.getElementById('toggle-icon-left');
+    if (mode.value === 'notes') {
+        mode.value = 'tags';
+        icon.classList.remove('fa-file');
+        icon.classList.add('fa-tags');
+    } else {
+        mode.value = 'notes';
+        icon.classList.remove('fa-tags');
+        icon.classList.add('fa-file');
+    }
+    updatePlaceholders();
+    document.getElementById('unified-search-left').focus();
+};
+// Soumission du formulaire sur entrée
+document.getElementById('unified-search').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('unified-search-form').submit();
+    }
+});
+document.getElementById('unified-search-left').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('unified-search-form-left').submit();
+    }
+});
+// Initialiser le placeholder au chargement
+updatePlaceholders();
+$(".noteentry").popline();
+</script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
 </html>

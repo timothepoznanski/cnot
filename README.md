@@ -1,6 +1,6 @@
 # CnoT
 
-I created CnoT (from the French “c'est noté,” meaning “noted”) because I wanted a note-taking software that met four main criteria:
+I created CnoT (from the French "c'est noté"  meaning "noted") because I wanted a note-taking software that met four main criteria:
 
 - **Simplicity**. No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
  

@@ -1,4 +1,3 @@
-
 <?php
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
@@ -26,10 +25,10 @@ $note = $_GET['note'] ?? '';
     <title><?php echo JOURNAL_NAME;?></title>
     <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
-    <link type="text/css" rel="stylesheet" href="css/style.css"/> 
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/inline-index.css" />
     <link rel="stylesheet" href="css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="css/page.css" />
-    <!-- jQuery Popline library for the bar that appears when selecting text in a note / see in "js/plugins" -->
     <link rel="stylesheet" type="text/css" href="css/popline.css" /> <!-- CSS for the Popline -->
     <!-- Remove the lines for the functions that we do not want to appear in the bar. -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -52,7 +51,7 @@ $note = $_GET['note'] ?? '';
 
 
     <!-- Notification popup -->
-    <div id="notificationPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #fff; background-color:#007DB8; border:1px solid #fff; z-index:1000; font-size: 1.5em; text-align: center;"></div>
+    <div id="notificationPopup"></div>
     
     <!-- LEFT COLUMN -->	
     <div id="left_col">
@@ -60,20 +59,19 @@ $note = $_GET['note'] ?? '';
         <!-- Search forms for mobile - displayed at top of left column -->
         <div class="mobile-search-container">
             <div class="contains_forms_search">
-                <form id="unified-search-form-left" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;">
-                    <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" style="width:100%; min-width: 120px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
+                <form id="unified-search-form-left" action="index.php" method="POST">
+                    <div>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
                         <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                        <button type="button" id="toggle-search-mode-left" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
+                        <button type="button" id="toggle-search-mode-left">
                             <?php
-                            // On force la classe de l'icône mobile à partir de $_POST['search_mode_left'] ou $_GET['search_mode_left']
                             $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
                             ?>
-                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
+                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
                         </button>
                         <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
-                        <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
-            <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;" onclick="window.location='index.php';"></span>
+                        <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();">
+            <span class="fas fa-times-circle" onclick="window.location='index.php';"></span>
                         </button>
                         <?php endif; ?>
                     </div>
@@ -109,25 +107,22 @@ $note = $_GET['note'] ?? '';
 
     <?php if (!$is_mobile): ?>
     <div class="containbuttons">
-        <div class="newbutton" onclick="newnote();"><span style="text-align:center;"><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
-        <div class="list_tags" onclick="window.location = 'listtags.php';"><span style="text-align:center;"><span title="List the tags" class="fas fa-tags"></span></span></div>
+        <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
+        <div class="list_tags" onclick="window.location = 'listtags.php';"><span><span title="List the tags" class="fas fa-tags"></span></span></div>
         <!-- Button to export all notes -->
         <div class="exportAllButton" onclick="startDownload();">
-            <span style="text-align:center;">
-                <span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span>
-            </span>
+            <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
         </div>
         <!-- Download popup -->
         <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
            Please wait while the archive is being created...
         </div>
         <!-- JS déplacé dans src/js/main-ui.js -->
-        <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
+        <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
         if($search != '' || $tags_search != '') {
-            // Use a FontAwesome solid times-circle for better alignment and size
-            echo '<div class="newbutton" style="cursor:pointer;margin-left:8px;" onclick="window.location=\'index.php\'" title="Clear search">'
-                .'<span style="color:#d32f2f;font-size:22px;display:flex;align-items:center;justify-content:center;" class="fas fa-times-circle"></span>'
+            echo '<div class="newbutton" onclick="window.location=\'index.php\'" title="Clear search"'
+                .'<span class="fas fa-times-circle"></span>'
                 .'</div>';
         }
         ?>
@@ -135,9 +130,9 @@ $note = $_GET['note'] ?? '';
     <?php endif; ?>
 
     <?php if ($is_mobile && $note != ''): ?>
-    <div class="mobile-menu-bar" style="display:flex;justify-content:center;margin:10px 0;">
-        <div class="btn-menu" style="background:#007DB8;color:#fff;border-radius:8px;padding:7px 16px;font-size:1.1em;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);" onclick="window.location='index.php'" title="Retour à la liste des notes">
-            <span class="fa fa-home" style="font-size:1.2em;"></span>
+    <div class="mobile-menu-bar">
+        <div class="btn-menu" onclick="window.location='index.php'" title="Retour à la liste des notes">
+            <span class="fa fa-home"></span>
         </div>
     </div>
     <!-- JS déplacé dans src/js/main-ui.js -->
@@ -165,28 +160,28 @@ $note = $_GET['note'] ?? '';
             echo "<form action=index.php><input type=hidden name=note>";
             echo "<a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "$link_params' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
             echo "</form>";
-            echo "<div id=pxbetweennotes; style='height: 0px'></div>";
+            echo "<div id=pxbetweennotes></div>";
         }
                  
     ?>
     </div>
     
     <!-- RIGHT COLUMN -->	
-    <div id="right_col" style="background:#FFFFF;">
+    <div id="right_col">
     
         <!-- Search -->
 
         <div class="contains_forms_search">
-            <form id="unified-search-form" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;justify-content:center;">
-                <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" style="width:350px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
+            <form id="unified-search-form" action="index.php" method="POST">
+                <div>
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" />
                     <input type="hidden" id="search_mode" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                    <button type="button" id="toggle-search-mode" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
-                        <span id="toggle-icon" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
+                    <button type="button" id="toggle-search-mode">
+                        <span id="toggle-icon" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>"></span>
                     </button>
                     <?php if (!empty($unified_search)): ?>
-                    <button type="button" id="clear-search" onclick="window.location='index.php';" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
-                        <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;"></span>
+                    <button type="button" id="clear-search" onclick="window.location='index.php';">
+                        <span class="fas fa-times-circle"></span>
                     </button>
                     <?php endif; ?>
                 </div>
@@ -222,20 +217,13 @@ $note = $_GET['note'] ?? '';
                     echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download icon_download"></span></a>';
                     echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save icon_save"></span>';
                     echo '</div>';
-                } else {
-                    // Bouton maison sur mobile, à la place des actions
-                    echo '<div class="note-icons-mobile">';
-                    echo '<span style="background:#007DB8;color:#fff;border-radius:7px;padding:4px 11px;font-size:0.95em;display:inline-flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin:0 auto;" onclick="window.location=\'index.php\'" title="Retour à la liste des notes">';
-                    echo '<span class="fa fa-home" style="font-size:1em;"></span>';
-                    echo '</span>';
-                    echo '</div>';
                 }
                 echo '</div>';
                 // Ligne 2 : icône tag + tags
-                echo '<div class="note-tags-row" style="display:flex;align-items:center;gap:8px;overflow:hidden;margin-top:12px;">';
-                echo '<span class="fa fa-tag icon_tag" style="font-size:15px;margin-right:8px;flex-shrink:0;"></span>';
-                echo '<span class="name_tags" style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'
-                    .'<input class="add-margin-left" style="width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/>'
+                echo '<div class="note-tags-row">';
+                echo '<span class="fa fa-tag icon_tag"></span>';
+                echo '<span class="name_tags">'
+                    .'<input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/>'
                 .'</span>';
                 echo '</div>';
                 // Titre

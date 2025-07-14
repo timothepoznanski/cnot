@@ -28,7 +28,6 @@
     align-items: center;
     justify-content: center;
 }
-/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */
 
 @font-face {
     font-family: 'Inter';
@@ -112,7 +111,6 @@ body {
     color: #007DB8;
 }
 
-/* --- Début fusion inline-index.css (popups et menu mobile) --- */
 #notificationPopup {
     display: none;
     position: fixed;
@@ -306,7 +304,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-/* --- Fin fusion inline-index.css (icônes, tags, search, etc.) --- */
 
 .icon_info{
     margin-left: 15px;	

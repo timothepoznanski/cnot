@@ -66,8 +66,8 @@ $note = $_GET['note'] ?? '';
                         <button type="button" id="toggle-search-mode-left" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
                             <span id="toggle-icon-left" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
                         </button>
-                        <?php if (!empty($unified_search)): ?>
-                        <button type="button" id="clear-search-left" onclick="window.location='index.php';" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
+                        <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
+                        <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
                             <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;"></span>
                         </button>
                         <?php endif; ?>
@@ -175,7 +175,7 @@ $note = $_GET['note'] ?? '';
         
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {       
             $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
-            // On récupère la recherche unifiée et le mode
+            // Always preserve search state in note links (mobile & desktop)
             $unified_search_param = isset($unified_search) && $unified_search !== '' ? "&unified_search=" . urlencode($unified_search) : '';
             $search_mode_param = isset($search_mode) && $search_mode !== '' ? "&search_mode=" . urlencode($search_mode) : '';
             $link_params = $unified_search_param . $search_mode_param;

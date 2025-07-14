@@ -1,17 +1,17 @@
 <?php
-// API pour créer une nouvelle note
+// API to create a new note
 header('Content-Type: application/json');
 require_once 'config.php';
 require_once 'db_connect.php';
 
-// Vérifie que la requête est POST
+// Check that the request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['error' => 'Méthode non autorisée']);
+    echo json_encode(['error' => 'Method not allowed']);
     exit;
 }
 
-// Récupère les données JSON envoyées
+// Get the JSON data sent
 $input = json_decode(file_get_contents('php://input'), true);
 
 $heading = isset($input['heading']) ? trim($input['heading']) : '';
@@ -19,7 +19,7 @@ $tags = isset($input['tags']) ? trim($input['tags']) : '';
 
 if ($heading === '') {
     http_response_code(400);
-    echo json_encode(['error' => 'Le champ heading est requis']);
+    echo json_encode(['error' => 'The heading field is required']);
     exit;
 }
 
@@ -30,6 +30,6 @@ if ($stmt->execute()) {
     echo json_encode(['success' => true, 'id' => $stmt->insert_id]);
 } else {
     http_response_code(500);
-    echo json_encode(['error' => 'Erreur lors de la création']);
+    echo json_encode(['error' => 'Error while creating the note']);
 }
 $stmt->close();

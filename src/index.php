@@ -121,18 +121,7 @@ $note = $_GET['note'] ?? '';
         <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
            Please wait while the archive is being created...
         </div>
-        <script>
-            function startDownload() {
-                // Show the popup
-                document.getElementById('downloadPopup').style.display = 'block';
-                // Start the download
-                window.location = 'exportEntries.php';
-                // Hide the popup after a certain amount of time
-                setTimeout(function() {
-                    document.getElementById('downloadPopup').style.display = 'none';
-                }, 4000); // Hide after 4 seconds
-            }
-        </script>
+        <!-- JS déplacé dans src/js/main-ui.js -->
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span style="text-align:center;"><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
         if($search != '' || $tags_search != '') {
@@ -151,18 +140,7 @@ $note = $_GET['note'] ?? '';
             <span class="fa fa-home" style="font-size:1.2em;"></span>
         </div>
     </div>
-    <script>
-    // Corrige le comportement du bouton maison pour supprimer tous les paramètres d'URL
-    document.addEventListener('DOMContentLoaded', function() {
-        var btn = document.querySelector('.mobile-menu-bar .btn-menu');
-        if(btn) {
-            btn.onclick = function(e) {
-                e.preventDefault();
-                window.location.href = 'index.php';
-            };
-        }
-    });
-    </script>
+    <!-- JS déplacé dans src/js/main-ui.js -->
     <?php endif; ?>
         
     <hr><br>
@@ -274,79 +252,9 @@ $note = $_GET['note'] ?? '';
     
 <!-- Do not place this block at the top, otherwise Popline will no longer work -->
 <script src="js/script.js"></script>
+<script src="js/main-ui.js"></script>
 <script>
-// Placeholders anglais selon le mode
-function updatePlaceholders() {
-    var mode = document.getElementById('search_mode');
-    var input = document.getElementById('unified-search');
-    if (mode && input) {
-        if (mode.value === 'tags') {
-            input.placeholder = 'Search for one or more words in the tags';
-        } else {
-            input.placeholder = 'Search for one or more words within the notes';
-        }
-    }
-    var modeLeft = document.getElementById('search_mode_left');
-    var inputLeft = document.getElementById('unified-search-left');
-    if (modeLeft && inputLeft) {
-        if (modeLeft.value === 'tags') {
-            inputLeft.placeholder = 'Search for one or more words in the tags';
-        } else {
-            inputLeft.placeholder = 'Search for one or more words within the notes';
-        }
-    }
-}
-// Toggle pour desktop
-document.getElementById('toggle-search-mode').onclick = function(e) {
-    e.preventDefault();
-    var mode = document.getElementById('search_mode');
-    var icon = document.getElementById('toggle-icon');
-    if (mode && icon) {
-        if (mode.value === 'notes') {
-            mode.value = 'tags';
-            icon.classList.remove('fa-file');
-            icon.classList.add('fa-tags');
-        } else {
-            mode.value = 'notes';
-            icon.classList.remove('fa-tags');
-            icon.classList.add('fa-file');
-        }
-        updatePlaceholders();
-        document.getElementById('unified-search').focus();
-    }
-};
-// Toggle pour mobile
-document.getElementById('toggle-search-mode-left').onclick = function(e) {
-    e.preventDefault();
-    var modeLeft = document.getElementById('search_mode_left');
-    var icon = document.getElementById('toggle-icon-left');
-    if (modeLeft && icon) {
-        if (modeLeft.value === 'notes') {
-            modeLeft.value = 'tags';
-            icon.classList.remove('fa-file');
-            icon.classList.add('fa-tags');
-        } else {
-            modeLeft.value = 'notes';
-            icon.classList.remove('fa-tags');
-            icon.classList.add('fa-file');
-        }
-        updatePlaceholders();
-        document.getElementById('unified-search-left').focus();
-    }
-};
-// Soumission du formulaire sur entrée
-document.getElementById('unified-search').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        document.getElementById('unified-search-form').submit();
-    }
-});
-document.getElementById('unified-search-left').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        document.getElementById('unified-search-form-left').submit();
-    }
-});
-// Initialiser le placeholder au chargement
-updatePlaceholders();
+// L'appel à Popline dépend de jQuery et doit rester ici tant que les plugins ne sont pas migrés
 $(".noteentry").popline();
 </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
 </html>

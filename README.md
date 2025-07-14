@@ -1,26 +1,8 @@
 # CnoT
 
-I created CnoT (from the French "c'est noté"  meaning "noted") because I wanted a note-taking software that met four main criteria:
-
-- **Simplicity**. No endless options that rarely get used; just a straightforward tool for taking notes, nothing more.
- 
-- **Self-hosted**. I wanted control over my data, with the ability to export and back it up easily and freely whenever I choose. I didn’t want to rely on any software just to access my notes, even offline. Additionally, I wanted to deploy and redeploy it on any OS, whether locally or on a server, and re-import my data with ease.
- 
-- **Efficient search**. I wanted to be able to search for multiple words within a note and, especially, to search by multiple tags so I wouldn’t have to organize my notes by folders or notebooks.
- 
-- **Open source**. I wanted to be able to share it with others, allowing anyone to create their own version or contribute to improving this one.
-
-📱Please note that the mobile version is for viewing only.
-
-🔒 This application can be used in two different ways:
-
-- **Locally**, in a container (e.g., Docker on WSL or VirtualBox), without being exposed to the internet. In this scenario, since the notes are only accessible from the local environment, there's no need for authentication or protection against common security threats like SQL injection.
-
-- **Online**, by exposing the application to the internet. In this case, security and access control become necessary — but instead of embedding these protections in the app itself, they are intentionally left out to keep the codebase clean and simple. You're expected to handle authentication and security externally using whatever method suits your setup best. For example, I run one instance of CnoT online and secure it using Nginx Proxy Manager’s Access List feature.
-
-📢 Because external authentication (like Nginx Proxy Manager) acts as the primary gatekeeper, the application itself does not implement protections against SQL injection or similar attacks. This is acceptable only if all access points are properly secured by the external authentication layer and users are trusted. If this layer is bypassed or misconfigured, the application could become vulnerable.
-
-In both cases, standard security features have been intentionally removed to focus on simplicity and ease of understanding. If you choose to expose the app online, make sure to implement appropriate access controls on your side.
+I created CnoT (from the French "c'est noté" meaning "noted") as a simple, self-hosted, open-source note-taking tool with powerful search and full control over my data.
+The mobile version is for viewing notes only — not editing.
+If you run the app online, be sure to handle access control yourself. I personally use Nginx Proxy Manager’s Access List for that -> https://nginxproxymanager.com/
 
 ## Installation
  

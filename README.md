@@ -1,6 +1,6 @@
 # CnoT
 
-I created CnoT (from the French "c'est noté" meaning "noted") as a simple, self-hosted, open-source note-taking tool with powerful search and full control over my data.
+I created CnoT as a simple, self-hosted, open-source note-taking tool with powerful search and full control over my data.
 
 The mobile version is for viewing notes only — not editing.
 

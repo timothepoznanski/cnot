@@ -98,50 +98,51 @@ Connect with `mysqluser` and `mysqlpassword` to phpMyAdmin at `http://YOUR_SERVE
   ```
 
 
+
 ## API
 
-### Lister les notes
+### List notes
 
-- **URL** : `/api_list_notes.php`
-- **Méthode** : `GET`
-- **Réponse** :
+- **URL**: `/api_list_notes.php`
+- **Method**: `GET`
+- **Response**:
     ```json
     [
       {
         "id": 1,
-        "heading": "Titre",
+        "heading": "Title",
         "tags": "tag1,tag2",
         "updated": "2025-07-14 20:00:00"
       }
     ]
     ```
 
-### Créer une note
+### Create a note
 
-- **URL** : `/api_create_note.php`
-- **Méthode** : `POST`
-- **Body (JSON)** :
+- **URL**: `/api_create_note.php`
+- **Method**: `POST`
+- **Body (JSON)**:
     ```json
     {
-      "heading": "Titre de la note",
+      "heading": "Note title",
       "tags": "tag1,tag2"
     }
     ```
-- **Réponse (succès)** :
+- **Response (success)**:
     ```json
     { "success": true, "id": 2 }
     ```
-- **Réponse (erreur)** :
+- **Response (error)**:
     ```json
-    { "error": "Le champ heading est requis" }
+    { "error": "The heading field is required" }
     ```
 
-### Exemple curl
+### Example curl
 
 ```bash
 curl -X POST http://YOUR_SERVER_NAME:8077/api_create_note.php \
   -H "Content-Type: application/json" \
-  -d '{"heading": "Ma nouvelle note", "tags": "perso,important"}'
+  -d '{"heading": "My new note", "tags": "personal,important"}'
 ```
 
 ---

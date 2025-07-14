@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    overflow: hidden;
 }
 /* Desktop searchbar styles for left column */
 .searchbar-desktop {
@@ -99,13 +100,13 @@ body {
 }
 
 #right_col{
-    height:100%;
+    height: 100%;
     margin-top:0px;
     margin-right:0px;
     margin-left:370px;
     /* padding:15px 10px 10px 10px; */
     background-color:#FFFFFF;
-    overflow-y: scroll; /* Enable vertical scrolling */
+    overflow-y: auto; /* Show vertical scroll only if needed */
     overflow-x: hidden; /* Disable horizontal scrolling */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
@@ -586,7 +587,7 @@ hr{
         overflow: auto;
     }
     body {
-        padding: 12px;
+        padding: 0;
         box-sizing: border-box;
     }
     #left_col {
@@ -612,10 +613,12 @@ hr{
         width: 100%;
         position: relative;
         height: auto;
-        min-height: 100vh;
+        min-height: 100%;
         display: none; /* Hidden by default on mobile */
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        padding: 12px;
+        box-sizing: border-box;
     }
     
     /* When a note is selected, show only right column */

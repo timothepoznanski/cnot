@@ -41,7 +41,7 @@ function updatenote(){
     .done(function(data) {  // We retrieved the date and time in updatenote.php and stored it in "data".
         if(data=='1')
         {
-            editied = 0;
+            editedButNotSaved = 0;
             $('#lastupdated'+noteid).html('Last Saved Today');
         }
         else

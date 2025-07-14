@@ -26,6 +26,7 @@ In both cases, standard security features have been intentionally removed to foc
  
 ```
 git clone https://github.com/timothepoznanski/cnot.git
+cd cnot
 docker compose up -d --build
 ```
 

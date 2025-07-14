@@ -1,5 +1,4 @@
 html, body {
-    overflow: hidden;
     height: 100%;
 }
 /* Desktop searchbar styles for left column */
@@ -583,6 +582,9 @@ hr{
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {
+    html, body {
+        overflow: auto;
+    }
     body {
         padding: 12px;
         box-sizing: border-box;
@@ -612,6 +614,8 @@ hr{
         height: auto;
         min-height: 100vh;
         display: none; /* Hidden by default on mobile */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     /* When a note is selected, show only right column */

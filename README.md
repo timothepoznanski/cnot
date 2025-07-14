@@ -97,6 +97,54 @@ Connect with `mysqluser` and `mysqlpassword` to phpMyAdmin at `http://YOUR_SERVE
   bash-5.1# mysql -u root -pmysqlrootpassword cnot_db < /tmp/dump.sql
   ```
 
+
+## API
+
+### Lister les notes
+
+- **URL** : `/api_list_notes.php`
+- **Méthode** : `GET`
+- **Réponse** :
+    ```json
+    [
+      {
+        "id": 1,
+        "heading": "Titre",
+        "tags": "tag1,tag2",
+        "updated": "2025-07-14 20:00:00"
+      }
+    ]
+    ```
+
+### Créer une note
+
+- **URL** : `/api_create_note.php`
+- **Méthode** : `POST`
+- **Body (JSON)** :
+    ```json
+    {
+      "heading": "Titre de la note",
+      "tags": "tag1,tag2"
+    }
+    ```
+- **Réponse (succès)** :
+    ```json
+    { "success": true, "id": 2 }
+    ```
+- **Réponse (erreur)** :
+    ```json
+    { "error": "Le champ heading est requis" }
+    ```
+
+### Exemple curl
+
+```bash
+curl -X POST http://YOUR_SERVER_NAME:8077/api_create_note.php \
+  -H "Content-Type: application/json" \
+  -d '{"heading": "Ma nouvelle note", "tags": "perso,important"}'
+```
+
+---
 ## Possible errors
 
 ### When openning Cnot after first install

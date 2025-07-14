@@ -6,18 +6,18 @@ function updatePlaceholders() {
     var input = document.getElementById('unified-search');
     if (mode && input) {
         if (mode.value === 'tags') {
-            input.placeholder = 'Search for one or more words in the tags';
+            input.placeholder = 'Search for words in the tags';
         } else {
-            input.placeholder = 'Search for one or more words within the notes';
+            input.placeholder = 'Search for words within the notes';
         }
     }
     var modeLeft = document.getElementById('search_mode_left');
     var inputLeft = document.getElementById('unified-search-left');
     if (modeLeft && inputLeft) {
         if (modeLeft.value === 'tags') {
-            inputLeft.placeholder = 'Search for one or more words in the tags';
+            inputLeft.placeholder = 'Search for words in the tags';
         } else {
-            inputLeft.placeholder = 'Search for one or more words within the notes';
+            inputLeft.placeholder = 'Search for words within the notes';
         }
     }
 }
@@ -48,20 +48,21 @@ var toggleMobile = document.getElementById('toggle-search-mode-left');
 if (toggleMobile) {
     toggleMobile.onclick = function(e) {
         e.preventDefault();
-        var modeLeft = document.getElementById('search_mode_left');
+        var mode = document.getElementById('search_mode');
         var icon = document.getElementById('toggle-icon-left');
-        if (modeLeft && icon) {
-            if (modeLeft.value === 'notes') {
-                modeLeft.value = 'tags';
+        if (mode && icon) {
+            if (mode.value === 'notes') {
+                mode.value = 'tags';
                 icon.classList.remove('fa-file');
                 icon.classList.add('fa-tags');
             } else {
-                modeLeft.value = 'notes';
+                mode.value = 'notes';
                 icon.classList.remove('fa-tags');
                 icon.classList.add('fa-file');
             }
             updatePlaceholders();
-            document.getElementById('unified-search-left').focus();
+            var input = document.getElementById('unified-search');
+            if (input) input.focus();
         }
     };
 }
@@ -97,6 +98,20 @@ if (clearSearchLeft) {
             inputLeft.value = '';
         }
         document.getElementById('unified-search-form-left').submit();
+    };
+}
+
+// Clear search for mobile
+var clearSearchMobile = document.getElementById('clear-search');
+if (clearSearchMobile) {
+    clearSearchMobile.onclick = function(e) {
+        e.preventDefault();
+        var input = document.getElementById('unified-search');
+        if (input) {
+            input.value = '';
+        }
+        var form = document.getElementById('unified-search-form');
+        if (form) form.submit();
     };
 }
 

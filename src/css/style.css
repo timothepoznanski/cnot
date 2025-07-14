@@ -88,6 +88,11 @@ body {
     /*column-width: auto;*/
     font-size: 14px;
     border-right: solid #CCCCCC 1px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+#left_col::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 #right_col{
@@ -99,7 +104,12 @@ body {
     background-color:#FFFFFF;
     overflow-y: scroll; /* Enable vertical scrolling */
     overflow-x: hidden; /* Disable horizontal scrolling */
-} 
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+#right_col::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
 
 .icon_grey{
     color: #91918E;

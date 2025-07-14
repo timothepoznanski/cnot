@@ -119,11 +119,11 @@ $note = $_GET['note'] ?? '';
             <div class="searchbar-row">
                 <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
                 <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                <button type="button" id="toggle-search-mode-left" title="Toggle search mode" class="searchbar-toggle">
+                <button type="button" id="toggle-search-mode" title="Toggle search mode" class="searchbar-toggle">
                     <?php
                     $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
                     ?>
-                    <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
+                    <span id="toggle-icon" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
                 </button>
                 <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
                 <button type="button" id="clear-search-left" title="Clear search" class="searchbar-clear">

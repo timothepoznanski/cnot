@@ -142,6 +142,58 @@ chown -R www-data: ENTRIES_DATA
 
 If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
 
+
+## API
+
+### Authentification
+
+Toutes les requêtes API nécessitent une authentification HTTP Basic (gérée par Nginx Proxy Manager).
+
+### Lister les notes
+
+- **URL** : `/api_list_notes.php`
+- **Méthode** : `GET`
+- **Réponse** :
+    ```json
+    [
+      {
+        "id": 1,
+        "heading": "Titre",
+        "tags": "tag1,tag2",
+        "updated": "2025-07-14 20:00:00"
+      }
+    ]
+    ```
+
+### Créer une note
+
+- **URL** : `/api_create_note.php`
+- **Méthode** : `POST`
+- **Body (JSON)** :
+    ```json
+    {
+      "heading": "Titre de la note",
+      "tags": "tag1,tag2"
+    }
+    ```
+- **Réponse (succès)** :
+    ```json
+    { "success": true, "id": 2 }
+    ```
+- **Réponse (erreur)** :
+    ```json
+    { "error": "Le champ heading est requis" }
+    ```
+
+### Exemple curl
+
+```bash
+curl -u 'utilisateur:motdepasse' -X POST https://cnot.timpoz.com/api_create_note.php \
+  -H "Content-Type: application/json" \
+  -d '{"heading": "Ma nouvelle note", "tags": "perso,important"}'
+```
+
+---
 ## Inspired from
 
 https://github.com/arkanath/SleekArchive

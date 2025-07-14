@@ -14,16 +14,13 @@
     font-style: normal;
 }
 
-/* --- Début fusion page.css (styles globaux) --- */
 body {
     padding: 0;
     margin: 0;
     background-color: #FFFFFF;
-}
-
-.varBranchColor{
    color: red;
    font-weight: bold;
+    border-radius: 5px;
    text-align: center;
 }
 
@@ -36,9 +33,6 @@ a:active { color: #2E8CFA; }
 img {
     max-width:100%; /* To prevent screenshots from exceeding their container when they are too large */
 }
-/* --- Fin fusion page.css (styles globaux) --- */
-
-/* --- Début fusion page.css (.switcher) --- */
 .switcher {
   width: 150px;
   position: fixed;
@@ -48,26 +42,6 @@ img {
   font-weight: bold;
   font-size: 15px;
 }
-
-.switcher .switch-toggle {
-  /* Ajoutez ici les styles spécifiques si besoin */
-}
-/* --- Fin fusion page.css (.switcher) --- */
-
-/* --- Début fusion page.css (blockquote, documentation) --- */
-/*
-blockquote {
-  /* The blockquote ici override celui de bootstrap.css */
-  /* background: #eee; */
-  /* background: #fbfaf8; */
-  /* border-radius: 5px; */
-  /* margin: 0px; */
-  /* font-size: 12px; */
-  /* padding: 10px; */
-  /* border: 1px solid #ddd; */
-}
-*/
-/* --- Fin fusion page.css (blockquote, documentation) --- */
 
 
 body {
@@ -171,9 +145,6 @@ body {
     gap: 25px;
     align-items: center;
 }
-/* --- Fin fusion inline-index.css (popups et menu mobile) --- */
-
-/* --- Début fusion inline-index.css (icônes, tags, search, etc.) --- */
 .note-icons-mobile .fa-home {
     background: #007DB8;
     color: #fff;
@@ -400,7 +371,6 @@ body {
 }
 
 .name_tags {
-    /* font-style: italic; */
     font-size: 13px;
 }
 
@@ -477,14 +447,10 @@ div[contentEditable=true]:empty:before{
 }
 
 .notecard{
-    /*width:90%;*/
     margin: 1%;
     margin-bottom:20px;
-    /* box-shadow: 1px 1px 10px #888888; */
-    /*border: 1px solid #ccc;*/
     background: white;
-    border-radius: 5px; /* Adjust the value according to the desired degree of rounding */
-
+    border-radius: 5px;
 }
 
 .innernote{
@@ -514,8 +480,6 @@ textarea:focus{
     padding-top: 5px; 
     width:100%;
     border: 0 none white;
-    /*overflow: auto;*/
-    /*word-break: break-all;*/
     overflow-wrap: break-word;
     outline: none;
     resize: none;
@@ -564,14 +528,6 @@ hr{
     margin-top: 7px;	
 }
 
-/* .{
-    float:left;
-    font-size: 13px;
-    font-family: 'Roboto' !important;
-    font-style: italic;
-    font-weight: 400;
-} */
-
 .created{
     float:right;
     font-size: 15px;
@@ -586,7 +542,6 @@ hr{
     padding: 5px;
     font-weight: bold;
     font-size: 14px;
-    /* display: flex; */
 }
 
 /* Mobile responsive styles */
@@ -824,8 +779,6 @@ hr{
     .note-tags-row {
         display: flex;
         align-items: center;
-        /* gap: 8px; */
-        /* margin-bottom: 2px; */
     }
     .name_tags {
         word-break: break-word;

@@ -26,9 +26,7 @@ $note = $_GET['note'] ?? '';
     <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
-    <link rel="stylesheet" href="css/inline-index.css" />
     <link rel="stylesheet" href="css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="css/page.css" />
     <link rel="stylesheet" type="text/css" href="css/popline.css" /> <!-- CSS for the Popline -->
     <!-- Remove the lines for the functions that we do not want to appear in the bar. -->
     <script type="text/javascript" src="js/jquery.min.js"></script>

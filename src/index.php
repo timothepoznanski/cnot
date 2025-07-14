@@ -1,9 +1,10 @@
+
 <?php
-// Détection mobile par user agent
+// Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
     $user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
-    $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent);
+    $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent) ? true : false;
 }
 
 @ob_start();
@@ -61,14 +62,14 @@ $note = $_GET['note'] ?? '';
             <div class="contains_forms_search">
                 <form id="unified-search-form-left" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;">
                     <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" style="width:100%; min-width: 120px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" style="width:100%; min-width: 120px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
                         <input type="hidden" id="search_mode_left" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
                         <button type="button" id="toggle-search-mode-left" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
                             <span id="toggle-icon-left" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
                         </button>
                         <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
                         <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
-                            <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;"></span>
+            <span class="fas fa-times-circle" style="color:#d32f2f;font-size:1.3em;" onclick="window.location='index.php';"></span>
                         </button>
                         <?php endif; ?>
                     </div>

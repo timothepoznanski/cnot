@@ -11,7 +11,7 @@
     gap: 10px;
 }
 .searchbar-input {
-    padding: 10px 14px;
+    padding: 8px 11px;
     font-size: 1em;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -271,7 +271,7 @@ body {
 }
 
 #toggle-icon-left, #toggle-icon {
-    font-size: 1.3em;
+    /* font-size: 1.3em; */
     color: #007DB8;
 }
 
@@ -337,7 +337,7 @@ body {
 .contains_forms_search
 {
     width:100%;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     margin-right: 5px;
     margin-bottom: 5px;
     text-align:center;
@@ -389,7 +389,8 @@ body {
 
 .containbuttons{
     text-align: center;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
+    padding-top: 5px;
 }
 
 .name_tags {
@@ -476,7 +477,7 @@ div[contentEditable=true]:empty:before{
 }
 
 .innernote{
-    padding-left: 2%;
+    padding-left: 5%;
     padding-top: 5px;
     padding-right: 2%;
     padding-bottom: 5px;
@@ -519,11 +520,11 @@ input{
 }
 
 .add-margin-left{
-    margin:5px;
+    margin: 15px 5px;
 }
 
 .css-title{
-    margin-top:10px;
+    /* margin-top:10px; */
     margin-bottom:10px;
     margin-left:-3px;
     font-size: 24px;
@@ -742,7 +743,7 @@ hr{
     /* Larger input fields for mobile */
     .css-title {
         font-size: 22px;
-        margin-bottom: 15px;
+        /* margin-bottom: 15px; */
     }
     
     .noteentry {

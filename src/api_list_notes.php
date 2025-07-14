@@ -1,0 +1,21 @@
+<?php
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
+header('Content-Type: application/json');
+require_once 'config.php';
+require_once 'db_connect.php';
+
+$sql = "SELECT id, heading, tags, updated FROM entries ORDER BY updated DESC";
+$result = $con->query($sql);
+
+$notes = array();
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $notes[] = $row;
+    }
+}
+
+echo json_encode($notes);

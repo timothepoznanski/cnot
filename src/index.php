@@ -1,4 +1,9 @@
 <?php
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -23,7 +28,7 @@ $note = $_GET['note'] ?? '';
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <title><?php echo JOURNAL_NAME;?></title>
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
+    <!-- <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/> -->
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css" />
@@ -54,28 +59,9 @@ $note = $_GET['note'] ?? '';
     <!-- LEFT COLUMN -->	
     <div id="left_col">
 
-        <!-- Search forms for mobile - displayed at top of left column -->
-        <div class="mobile-search-container">
-            <div class="contains_forms_search">
-                <form id="unified-search-form-left" action="index.php" method="POST">
-                    <div>
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
-                        <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                        <button type="button" id="toggle-search-mode-left">
-                            <?php
-                            $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
-                            ?>
-                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
-                        </button>
-                        <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
-                        <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();">
-            <span class="fas fa-times-circle" onclick="window.location='index.php';"></span>
-                        </button>
-                        <?php endif; ?>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <!-- Search forms for mobile - displayed below menu buttons in left column -->
+        
+    <!-- MENU -->
 
     <!-- Depending on the cases, we create the queries. -->  
         
@@ -126,6 +112,28 @@ $note = $_GET['note'] ?? '';
         ?>
     </div>
     <?php endif; ?>
+    
+    <?php if (!$is_mobile): ?>
+    <div class="contains_forms_search searchbar-desktop">
+        <form id="unified-search-form-left" action="index.php" method="POST">
+            <div class="searchbar-row">
+                <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
+                <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
+                <button type="button" id="toggle-search-mode-left" title="Toggle search mode" class="searchbar-toggle">
+                    <?php
+                    $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
+                    ?>
+                    <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
+                </button>
+                <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
+                <button type="button" id="clear-search-left" title="Clear search" class="searchbar-clear">
+                    <span class="fas fa-times-circle"></span>
+                </button>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+    <?php endif; ?>
 
     <?php if ($is_mobile && $note != ''): ?>
     <div class="mobile-menu-bar">
@@ -167,24 +175,7 @@ $note = $_GET['note'] ?? '';
     <!-- RIGHT COLUMN -->	
     <div id="right_col">
     
-        <!-- Search -->
-
-        <div class="contains_forms_search">
-            <form id="unified-search-form" action="index.php" method="POST">
-                <div>
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" onfocus="updateidsearch(this);" value="<?php echo htmlspecialchars($unified_search ?? '', ENT_QUOTES); ?>" />
-                    <input type="hidden" id="search_mode" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                    <button type="button" id="toggle-search-mode">
-                        <span id="toggle-icon" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>"></span>
-                    </button>
-                    <?php if (!empty($unified_search)): ?>
-                    <button type="button" id="clear-search" onclick="window.location='index.php';">
-                        <span class="fas fa-times-circle"></span>
-                    </button>
-                    <?php endif; ?>
-                </div>
-            </form>
-        </div>
+        <!-- Barre de recherche supprimée de la colonne de droite (desktop) -->
         
         <?php        
             

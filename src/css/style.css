@@ -1,3 +1,33 @@
+/* Desktop searchbar styles for left column */
+.searchbar-desktop {
+    margin-bottom: 10px;
+    padding: 14px 12px 14px 12px;
+    background: #f7f7f7;
+    border-radius: 8px;
+}
+.searchbar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.searchbar-input {
+    padding: 10px 14px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+.searchbar-toggle, .searchbar-clear {
+    padding: 8px 10px;
+    font-size: 1.1em;
+    background: #eaeaea;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */
 
 @font-face {
@@ -15,13 +45,8 @@
 }
 
 body {
-    padding: 0;
-    margin: 0;
-    background-color: #FFFFFF;
-   color: red;
-   font-weight: bold;
-    border-radius: 5px;
-   text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
 }
 
 a { color: #2E8CFA; }
@@ -547,11 +572,20 @@ hr{
 /* Mobile responsive styles */
 @media (max-width: 768px) {
     #left_col {
-        width: 100%;
-        position: relative;
-        height: auto;
-        min-height: 100vh;
-        border-right: none;
+        height:100%;
+        position:absolute;
+        top:0px;
+        left:0px;
+        width:370px;
+        padding-left:15px;
+        padding-top:10px;
+        padding-right:10px;
+        /*padding-right:210px;*/
+        background-color:#F7F7F5;
+        overflow:auto;
+        /*column-width: auto;*/
+        font-size: 14px;
+        border-right: solid #CCCCCC 1px;
     }
     
     #right_col {

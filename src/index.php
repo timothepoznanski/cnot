@@ -63,9 +63,13 @@ $note = $_GET['note'] ?? '';
                 <form id="unified-search-form-left" action="index.php" method="POST" style="display:flex;align-items:center;gap:8px;">
                     <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:10px; max-width:400px; margin:0 auto;">
                         <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control" placeholder="Rechercher dans les notes ou tags" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" style="width:100%; min-width: 120px; max-width:350px; border-top-right-radius:0;border-bottom-right-radius:0;"/>
-                        <input type="hidden" id="search_mode_left" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
+                        <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
                         <button type="button" id="toggle-search-mode-left" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px; border-top-left-radius:0;border-bottom-left-radius:0; border-radius:0 4px 4px 0; height:38px; display:flex; align-items:center;">
-                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode ?? ($tags_search ? 'fa-tags' : 'fa-file')) == 'tags' ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
+                            <?php
+                            // On force la classe de l'icône mobile à partir de $_POST['search_mode_left'] ou $_GET['search_mode_left']
+                            $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
+                            ?>
+                            <span id="toggle-icon-left" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>" style="font-size:1.3em;color:#007DB8;"></span>
                         </button>
                         <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
                         <button type="button" id="clear-search-left" onclick="document.getElementById('unified-search-left').value='';document.getElementById('search_mode_left').value='notes';document.getElementById('unified-search-form-left').submit();" style="background:none;border:none;outline:none;cursor:pointer;padding:0 4px;">
@@ -82,7 +86,7 @@ $note = $_GET['note'] ?? '';
     <?php
     // Build search conditions unified
     $search_condition = '';
-    $search_mode = $_POST['search_mode'] ?? $_GET['search_mode'] ?? ($tags_search ? 'tags' : 'notes');
+    $search_mode = $_POST['search_mode'] ?? $_POST['search_mode_left'] ?? $_GET['search_mode'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
     $unified_search = $_POST['unified_search'] ?? $_GET['unified_search'] ?? ($search ?: $tags_search);
 
     if ($unified_search) {
@@ -275,17 +279,21 @@ $note = $_GET['note'] ?? '';
 function updatePlaceholders() {
     var mode = document.getElementById('search_mode');
     var input = document.getElementById('unified-search');
-    if (mode.value === 'tags') {
-        input.placeholder = 'Search for one or more words in the tags';
-    } else {
-        input.placeholder = 'Search for one or more words within the notes';
+    if (mode && input) {
+        if (mode.value === 'tags') {
+            input.placeholder = 'Search for one or more words in the tags';
+        } else {
+            input.placeholder = 'Search for one or more words within the notes';
+        }
     }
     var modeLeft = document.getElementById('search_mode_left');
     var inputLeft = document.getElementById('unified-search-left');
-    if (modeLeft.value === 'tags') {
-        inputLeft.placeholder = 'Search for one or more words in the tags';
-    } else {
-        inputLeft.placeholder = 'Search for one or more words within the notes';
+    if (modeLeft && inputLeft) {
+        if (modeLeft.value === 'tags') {
+            inputLeft.placeholder = 'Search for one or more words in the tags';
+        } else {
+            inputLeft.placeholder = 'Search for one or more words within the notes';
+        }
     }
 }
 // Toggle pour desktop
@@ -293,34 +301,38 @@ document.getElementById('toggle-search-mode').onclick = function(e) {
     e.preventDefault();
     var mode = document.getElementById('search_mode');
     var icon = document.getElementById('toggle-icon');
-    if (mode.value === 'notes') {
-        mode.value = 'tags';
-        icon.classList.remove('fa-file');
-        icon.classList.add('fa-tags');
-    } else {
-        mode.value = 'notes';
-        icon.classList.remove('fa-tags');
-        icon.classList.add('fa-file');
+    if (mode && icon) {
+        if (mode.value === 'notes') {
+            mode.value = 'tags';
+            icon.classList.remove('fa-file');
+            icon.classList.add('fa-tags');
+        } else {
+            mode.value = 'notes';
+            icon.classList.remove('fa-tags');
+            icon.classList.add('fa-file');
+        }
+        updatePlaceholders();
+        document.getElementById('unified-search').focus();
     }
-    updatePlaceholders();
-    document.getElementById('unified-search').focus();
 };
 // Toggle pour mobile
 document.getElementById('toggle-search-mode-left').onclick = function(e) {
     e.preventDefault();
-    var mode = document.getElementById('search_mode_left');
+    var modeLeft = document.getElementById('search_mode_left');
     var icon = document.getElementById('toggle-icon-left');
-    if (mode.value === 'notes') {
-        mode.value = 'tags';
-        icon.classList.remove('fa-file');
-        icon.classList.add('fa-tags');
-    } else {
-        mode.value = 'notes';
-        icon.classList.remove('fa-tags');
-        icon.classList.add('fa-file');
+    if (modeLeft && icon) {
+        if (modeLeft.value === 'notes') {
+            modeLeft.value = 'tags';
+            icon.classList.remove('fa-file');
+            icon.classList.add('fa-tags');
+        } else {
+            modeLeft.value = 'notes';
+            icon.classList.remove('fa-tags');
+            icon.classList.add('fa-file');
+        }
+        updatePlaceholders();
+        document.getElementById('unified-search-left').focus();
     }
-    updatePlaceholders();
-    document.getElementById('unified-search-left').focus();
 };
 // Soumission du formulaire sur entrée
 document.getElementById('unified-search').addEventListener('keydown', function(e) {

@@ -1,3 +1,7 @@
+html, body {
+    overflow: hidden;
+    height: 100%;
+}
 /* Desktop searchbar styles for left column */
 .searchbar-desktop {
     margin-bottom: 10px;

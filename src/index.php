@@ -60,7 +60,7 @@ $note = $_GET['note'] ?? '';
             <form id="search-notes-form-mobile" action="index.php" method="POST">
                 <div class="searchbar-row searchbar-icon-row">
                     <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
                         <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                     </div>
                     <?php if (!empty($search)): ?>
@@ -71,7 +71,7 @@ $note = $_GET['note'] ?? '';
             <form id="search-tags-form-mobile" action="index.php" method="POST">
                 <div class="searchbar-row searchbar-icon-row">
                     <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
                         <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
                     </div>
                     <?php if (!empty($tags_search)): ?>
@@ -131,7 +131,7 @@ $note = $_GET['note'] ?? '';
         <form id="search-notes-form" action="index.php" method="POST">
             <div class="searchbar-row searchbar-icon-row">
                 <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
                     <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                 </div>
                 <?php if (!empty($search)): ?>
@@ -142,7 +142,7 @@ $note = $_GET['note'] ?? '';
         <form id="search-tags-form" action="index.php" method="POST">
             <div class="searchbar-row searchbar-icon-row">
                 <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
                     <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
                 </div>
                 <?php if (!empty($tags_search)): ?>

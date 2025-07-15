@@ -25,6 +25,19 @@
     width: 100%;
 }
 .searchbar-input {
+    ::placeholder {
+        color: #b0b0b0 !important;
+        opacity: 1;
+    }
+    :-ms-input-placeholder {
+        color: #b0b0b0 !important;
+    }
+    ::-ms-input-placeholder {
+        color: #b0b0b0 !important;
+    }
+    ::-webkit-input-placeholder {
+        color: #b0b0b0 !important;
+    }
     padding: 6px 40px 6px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
@@ -63,7 +76,7 @@
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
+    background: none !important;
     border: none;
     color: #bbb;
     font-size: 1.25em;
@@ -142,7 +155,7 @@ html, body {
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
+    background: none !important;
     border: none;
     outline: none;
     cursor: pointer;
@@ -195,7 +208,7 @@ html, body {
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
     font-size: 1.1em;
-    background: #eaeaea;
+    background: none !important;
     border: none;
     border-radius: 4px;
     cursor: pointer;

@@ -75,31 +75,48 @@ function updateident(el)
 function updatenote(){
     updateNoteEnCours = 1;
     var headi = document.getElementById("inp"+noteid).value;
-    var ent = $("#entry"+noteid).html();  // Retrieve the content of the note and convert it to HTML (images are converted to base64) to save it in a file (using fwrite in updatenote.php)
-
+    var entryElem = document.getElementById("entry"+noteid);
+    var ent = entryElem ? entryElem.innerHTML : "";
     // console.log("RESULT :" + ent);
-
-    var ent = ent.replace(/<br\s*[\/]?>/gi, "&nbsp;<br>");  // Replace empty lines with &nbsp; so that if we format it as code, the line break is preserved
-    var entcontent = $("#entry"+noteid).text(); // Retrieve the text content of the note to save it in the database (in updatenote.php)
+    ent = ent.replace(/<br\s*[\/]?>/gi, "&nbsp;<br>");
+    var entcontent = entryElem ? entryElem.textContent : "";
     // console.log("entcontent:" + entcontent);
     // console.log("ent:" + ent);
     var tags = document.getElementById("tags"+noteid).value;
-    
-    $.post( "updatenote.php", {id: noteid, tags: tags, heading: headi, entry: ent, entrycontent: entcontent, now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
-    .done(function(data) {  // We retrieved the date and time in updatenote.php and stored it in "data".
-        if(data=='1')
-        {
+
+    var params = new URLSearchParams({
+        id: noteid,
+        tags: tags,
+        heading: headi,
+        entry: ent,
+        entrycontent: entcontent,
+        now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60
+    });
+    fetch("updatenote.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.text())
+    .then(function(data) {
+        if(data=='1') {
             editedButNotSaved = 0;
-            $('#lastupdated'+noteid).html('Last Saved Today');
-        }
-        else
-        {
+            var lastUpdatedElem = document.getElementById('lastupdated'+noteid);
+            if (lastUpdatedElem) lastUpdatedElem.innerHTML = 'Last Saved Today';
+        } else {
             editedButNotSaved = 0;
-            $('#lastupdated'+noteid).html(data); // We display "data" (which is the date) on the note.
+            var lastUpdatedElem = document.getElementById('lastupdated'+noteid);
+            if (lastUpdatedElem) lastUpdatedElem.innerHTML = data;
         }
         updateNoteEnCours = 0;
     });
-    $('#newnotes').hide().show(0);
+    var newNotesElem = document.getElementById('newnotes');
+    if (newNotesElem) {
+        newNotesElem.style.display = 'none';
+        // Force reflow and show again
+        void newNotesElem.offsetWidth;
+        newNotesElem.style.display = '';
+    }
 }
 
 function newnote(){

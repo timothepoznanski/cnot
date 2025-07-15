@@ -711,8 +711,26 @@ textarea:focus{
     font-family: 'Inter', sans-serif;
 }
 
-.noteentry * {
+/* Appliquer Inter uniquement sur les éléments textuels dans .noteentry, sauf dans les vrais blocs de code et les spans générés par le plugin */
+.noteentry p,
+.noteentry div,
+.noteentry ul,
+.noteentry ol,
+.noteentry li,
+.noteentry b,
+.noteentry strong,
+.noteentry i,
+.noteentry em,
+.noteentry u,
+.noteentry s,
+.noteentry a,
+.noteentry span:not([style*='Consolas']) {
     font-family: 'Inter', sans-serif !important;
+}
+/* Forcer la police monospace sur tout descendant de bloc de code, même si un span coloré est ajouté */
+.noteentry pre, .noteentry code, .noteentry span[style*='Consolas'],
+.noteentry pre *, .noteentry code *, .noteentry span[style*='Consolas'] * {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
 .noteentry:focus{

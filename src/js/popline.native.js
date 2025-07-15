@@ -188,6 +188,14 @@ class Popline {
     btn.addEventListener('click', e => {
       action();
       this.hide();
+      // Déclenche un événement input sur la noteentry active
+      const sel = window.getSelection();
+      if (sel.rangeCount > 0) {
+        let container = sel.getRangeAt(0).commonAncestorContainer;
+        if (container.nodeType === 3) container = container.parentNode;
+        const noteentry = container.closest && container.closest('.noteentry');
+        if (noteentry) noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+      }
       e.stopPropagation();
     });
     li.appendChild(btn);

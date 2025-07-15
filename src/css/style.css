@@ -29,7 +29,7 @@
     width: 100%;
 }
 .searchbar-input {
-    padding: 6px 40px 6px 38px;
+    padding: 12px 40px 12px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
     background: #fafbfc;
@@ -45,14 +45,6 @@
 .searchbar-input::placeholder {
     color: #b0b0b0 !important;
     opacity: 1;
-    font-size: 0.92em;
-}
-.searchbar-input:-ms-input-placeholder {
-    color: #b0b0b0 !important;
-    font-size: 0.92em;
-}
-.searchbar-input::-ms-input-placeholder {
-    color: #b0b0b0 !important;
     font-size: 0.92em;
 }
 .searchbar-input::-webkit-input-placeholder {
@@ -108,7 +100,6 @@
     .searchbar-input {
         font-size: 1em;
         padding: 10px 36px 10px 34px;
-        font-family: 'Inter', sans-serif !important;
     }
     .searchbar-clear-outer {
         height: 32px;
@@ -221,19 +212,7 @@ pre, code, .noteentry span[style*='Consolas'] {
     color: #d32f2f;
     font-size: 1.25em;
 }
-.searchbar-input {
-    padding: 12px 40px 12px 38px;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
-    background: #fafbfc;
-    font-size: 1.08em;
-    transition: box-shadow 0.2s, border-color 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    outline: none;
-    width: 100%;
-    min-width: 0;
-    font-family: 'Inter', sans-serif !important;
-}
+/* doublon supprimé, voir plus haut */
 
 /* Desktop: icon on the right */
 .searchbar-icon-row .searchbar-icon {
@@ -248,10 +227,7 @@ pre, code, .noteentry span[style*='Consolas'] {
     z-index: 2;
 }
 /* Desktop: extra right padding for clear button, left for icon */
-.searchbar-input {
-    padding-right: 40px;
-    padding-left: 38px;
-}
+/* doublon supprimé, voir plus haut */
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
     font-size: 1.1em;
@@ -266,10 +242,7 @@ pre, code, .noteentry span[style*='Consolas'] {
 
 
 
-body {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-}
+
 
 a { color: #2E8CFA;  text-decoration: none; }
 a:link { color: #2E8CFA; }

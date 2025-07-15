@@ -1,3 +1,17 @@
+/* Notion-like code block style (exact values from user) */
+pre {
+  font-family: Consolas, monospace;
+  background-color: #F7F6F3;
+  font-size: 90%;
+  border: 0px solid #ddd;
+  padding: 34px 16px 32px 32px;
+  display: block;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  min-height: 1em;
+  color: rgb(55, 53, 47);
+  margin: 1em 0;
+}
 @charset "UTF-8";
 .popline {
   position: absolute;

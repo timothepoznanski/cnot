@@ -1,7 +1,5 @@
 /*
   popline.native.js - Version native JS de Popline (sans jQuery)
-  Basé sur jquery.popline.js 1.0.0
-  (c) 2025 migration par GitHub Copilot
 */
 
 class Popline {
@@ -109,9 +107,17 @@ class Popline {
     const selection = window.getSelection();
     if (selection && selection.toString().length > 0) {
       const rect = selection.getRangeAt(0).getBoundingClientRect();
+      // Afficher la barre au-dessus de la sélection, mais si pas la place, la mettre juste en dessous
+      let barHeight = this.bar.offsetHeight || 40;
+      let desiredTop = window.scrollY + rect.top - barHeight - 10;
+      let minTop = 8;
+      if (desiredTop < minTop) {
+        // Pas la place au-dessus, on la met en dessous
+        desiredTop = window.scrollY + rect.bottom + 10;
+      }
       this.show({
-        top: window.scrollY + rect.top - this.bar.offsetHeight - 10,
-        left: window.scrollX + rect.left + rect.width / 2 - this.bar.offsetWidth / 2
+        top: desiredTop,
+        left: window.scrollX + rect.left + rect.width / 2 - (this.bar.offsetWidth || 200) / 2
       });
     } else {
       this.hide();

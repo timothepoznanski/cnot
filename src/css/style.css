@@ -34,14 +34,53 @@ html, body {
     display: flex;
     align-items: center;
     gap: 10px;
+    position: relative;
+}
+
+/* Clear button for search bars */
+.searchbar-clear {
+    position: absolute;
+    right: 34px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0 4px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchbar-clear .fa-times-circle {
+    color: #d32f2f;
+    font-size: 1.3em;
+}
 }
 .searchbar-input {
-    padding: 8px 11px;
+    padding: 8px 11px 8px 10px;
     font-size: 1em;
     border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
     font-family: 'Inter', sans-serif !important;
+}
+
+/* Desktop: icon on the right */
+.searchbar-icon-row .searchbar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bdbdbd;
+    font-size: 1.1em;
+    pointer-events: none;
+    z-index: 2;
+}
+/* Desktop: extra right padding for icon */
+.searchbar-input {
+    padding-right: 34px;
 }
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
@@ -360,7 +399,7 @@ body {
 
 .contains_forms_search
 {
-    width:100%;
+    width: 94%;
     /* margin-left: 5px; */
     margin-right: 5px;
     margin-bottom: 5px;
@@ -414,7 +453,7 @@ body {
 .containbuttons{
     text-align: center;
     /* padding-bottom: 10px; */
-    padding-top: 5px;
+    padding-top: 11px;
 }
 
 .name_tags {
@@ -604,6 +643,42 @@ hr{
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {
+    .searchbar-row {
+        position: relative;
+    }
+    .searchbar-input {
+        padding-left: 34px;
+        padding-right: 34px;
+    }
+    .searchbar-icon-row .searchbar-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #bdbdbd;
+        font-size: 1.1em;
+        pointer-events: none;
+        z-index: 2;
+    }
+    .searchbar-clear {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .searchbar-clear .fa-times-circle {
+        color: #d32f2f;
+        font-size: 1.3em;
+    }
     html, body {
         overflow: auto;
     }

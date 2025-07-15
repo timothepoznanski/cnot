@@ -59,24 +59,21 @@ $note = $_GET['note'] ?? '';
     <!-- LEFT COLUMN -->	
     <div id="left_col">
 
-        <!-- Search forms for mobile - displayed below menu buttons in left column -->
+        <!-- Deux barres de recherche pour mobile -->
         <?php if ($is_mobile): ?>
         <div class="mobile-search-container">
-            <form id="unified-search-form" action="index.php" method="POST">
-                <div class="searchbar-row">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
-                    <input type="hidden" id="search_mode" name="search_mode" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                    <button type="button" id="toggle-search-mode-left" title="Toggle search mode" class="searchbar-toggle">
-                        <?php
-                        $search_mode_icon = $_POST['search_mode'] ?? $_GET['search_mode'] ?? ($tags_search ? 'tags' : 'notes');
-                        ?>
-                        <span id="toggle-icon-left" class="fas <?php echo ($search_mode_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
-                    </button>
-                    <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
-                    <button type="button" id="clear-search" title="Clear search" class="searchbar-clear">
-                        <span class="fas fa-times-circle"></span>
-                    </button>
-                    <?php endif; ?>
+            <form id="search-notes-form-mobile" action="index.php" method="POST" style="margin-bottom: 8px;">
+                <div class="searchbar-row searchbar-icon-row">
+                    <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+                    <span class="searchbar-icon searchbar-icon-right"><span class="fas fa-search"></span></span>
+                </div>
+            </form>
+            <form id="search-tags-form-mobile" action="index.php" method="POST">
+                <div class="searchbar-row searchbar-icon-row">
+                    <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
+<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+                    <span class="searchbar-icon searchbar-icon-right"><span class="fas fa-tags"></span></span>
                 </div>
             </form>
         </div>
@@ -87,20 +84,21 @@ $note = $_GET['note'] ?? '';
     <!-- Depending on the cases, we create the queries. -->  
         
     <?php
-    // Build search conditions unified
+    // Build search conditions for notes and tags séparément
     $search_condition = '';
-    $search_mode = $_POST['search_mode'] ?? $_POST['search_mode_left'] ?? $_GET['search_mode'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
-    $unified_search = $_POST['unified_search'] ?? $_GET['unified_search'] ?? ($search ?: $tags_search);
-
-    if ($unified_search) {
-        $terms = explode(' ', trim($unified_search));
+    if (!empty($search)) {
+        $terms = explode(' ', trim($search));
         foreach ($terms as $term) {
             if (!empty(trim($term))) {
-                if ($search_mode === 'tags') {
-                    $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
-                } else {
-                    $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
-                }
+                $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
+            }
+        }
+    }
+    if (!empty($tags_search)) {
+        $terms = explode(' ', trim($tags_search));
+        foreach ($terms as $term) {
+            if (!empty(trim($term))) {
+                $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
             }
         }
     }
@@ -114,43 +112,31 @@ $note = $_GET['note'] ?? '';
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
         <div class="list_tags" onclick="window.location = 'listtags.php';"><span><span title="List the tags" class="fas fa-tags"></span></span></div>
-        <!-- Button to export all notes -->
         <div class="exportAllButton" onclick="startDownload();">
             <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
         </div>
-        <!-- Download popup -->
         <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
            Please wait while the archive is being created...
         </div>
-        <!-- JS déplacé dans src/js/main-ui.js -->
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
-        if($search != '' || $tags_search != '') {
-            echo '<div class="newbutton" onclick="window.location=\'index.php\'" title="Clear search"'
-                .'<span class="fas fa-times-circle"></span>'
-                .'</div>';
-        }
+        // Croix rouge retirée
         ?>
     </div>
     <?php endif; ?>
     
     <?php if (!$is_mobile): ?>
     <div class="contains_forms_search searchbar-desktop">
-        <form id="unified-search-form-left" action="index.php" method="POST">
-            <div class="searchbar-row">
-                <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-left" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="" value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['unified_search']) ? $_POST['unified_search'] : ($unified_search ?? ''), ENT_QUOTES); ?>" />
-                <input type="hidden" id="search_mode_left" name="search_mode_left" value="<?php echo $search_mode ?? ($tags_search ? 'tags' : 'notes'); ?>">
-                <button type="button" id="toggle-search-mode" title="Toggle search mode" class="searchbar-toggle">
-                    <?php
-                    $search_mode_left_icon = $_POST['search_mode_left'] ?? $_GET['search_mode_left'] ?? ($tags_search ? 'tags' : 'notes');
-                    ?>
-                    <span id="toggle-icon" class="fas <?php echo ($search_mode_left_icon == 'tags') ? 'fa-tags' : 'fa-file'; ?>"></span>
-                </button>
-                <?php if ((isset($_POST['unified_search']) && trim($_POST['unified_search']) !== '') || (isset($_GET['unified_search']) && trim($_GET['unified_search']) !== '') || (!empty($unified_search))): ?>
-                <button type="button" id="clear-search-left" title="Clear search" class="searchbar-clear">
-                    <span class="fas fa-times-circle"></span>
-                </button>
-                <?php endif; ?>
+        <form id="search-notes-form" action="index.php" method="POST" style="margin-bottom: 8px;">
+            <div class="searchbar-row searchbar-icon-row">
+                <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+            </div>
+        </form>
+        <form id="search-tags-form" action="index.php" method="POST">
+            <div class="searchbar-row searchbar-icon-row">
+                <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
+<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
             </div>
         </form>
     </div>

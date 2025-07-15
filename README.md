@@ -28,6 +28,7 @@ You can also git pull the latest repository version and run the docker command w
 
 ```
   docker compose build --no-cache
+  docker compose up -d --force-recreate
 ```
 
 **If you want to change the following settings:** 

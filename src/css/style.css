@@ -17,6 +17,12 @@
     display: flex;
     align-items: center;
     width: 100%;
+    position: relative;
+}
+/* Ajout pour positionner le bouton clear dans la barre */
+.searchbar-input-wrapper {
+    position: relative;
+    width: 100%;
 }
 .searchbar-input {
     padding: 6px 40px 6px 38px;
@@ -53,20 +59,24 @@
     z-index: 2;
 }
 .searchbar-clear-outer {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: #bbb;
     font-size: 1.25em;
     cursor: pointer;
-    padding: 0 10px;
-    margin-left: 8px;
     border-radius: 50%;
     transition: background 0.2s, color 0.2s;
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0;
+    z-index: 3;
 }
 .searchbar-clear-outer:hover {
     color: #e74c3c;
@@ -504,11 +514,11 @@ body {
 
 .contains_forms_search
 {
-    width: 94%;
-    /* margin-left: 5px; */
-    margin-right: 5px;
+    width: 100%;
+    margin: 0;
     margin-bottom: 5px;
-    text-align:center;
+    text-align: left;
+    box-sizing: border-box;
 }
 
 .form_search{
@@ -557,7 +567,7 @@ body {
 
 .containbuttons{
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     padding-top: 11px;
 }
 

@@ -143,7 +143,38 @@ html, body {
 }
 body {
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden;  Supprimé pour permettre le scroll globalement */
+}
+/* Réactive le scroll sur la page trash si body a la classe trash-page */
+body.trash-page {
+    overflow-y: auto !important;
+    height: auto !important;
+}
+body.trash-page #right_col {
+    position: static !important;
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+    box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  body.trash-page #right_col {
+    position: static !important;
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+    box-sizing: border-box;
+  }
+  body.trash-page {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
 }
 /* Exclure la police Inter pour les blocs de code */
 pre, code, .noteentry span[style*='Consolas'] {
@@ -189,7 +220,6 @@ pre, code, .noteentry span[style*='Consolas'] {
 .searchbar-clear .fa-times-circle {
     color: #d32f2f;
     font-size: 1.25em;
-}
 }
 .searchbar-input {
     padding: 12px 40px 12px 38px;

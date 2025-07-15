@@ -52,11 +52,72 @@ class Popline {
       },
       { name: 'unlink', icon: '<i class="fas fa-unlink" title="Remove link"></i>', action: () => document.execCommand('unlink') },
       { name: 'color', icon: '<i class="fas fa-palette" style="color:#ff2222;" title="Text color"></i>', action: () => {
-          document.execCommand('foreColor', false, '#ff2222');
+          // Toggle red color: if all selection is red, remove only color; else, apply
+          const sel = window.getSelection();
+          if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            let allRed = true;
+            let hasText = false;
+            const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+              acceptNode: function(node) {
+                if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            });
+            let node = treeWalker.currentNode;
+            while(node) {
+              if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+                hasText = true;
+                let parent = node.parentNode;
+                let color = '';
+                if (parent && parent.style && parent.style.color) color = parent.style.color.replace(/\s/g, '').toLowerCase();
+                if (color !== '#ff2222' && color !== 'rgb(255,34,34)') allRed = false;
+              }
+              node = treeWalker.nextNode();
+            }
+            document.execCommand('styleWithCSS', false, true);
+            if (hasText && allRed) {
+              document.execCommand('foreColor', false, 'black');
+            } else {
+              document.execCommand('foreColor', false, '#ff2222');
+            }
+            document.execCommand('styleWithCSS', false, false);
+          }
         }
       },
       { name: 'bgcolor', icon: '<i class="fas fa-fill-drip" style="color:#ffe066;" title="Background color"></i>', action: () => {
-          document.execCommand('hiliteColor', false, '#ffe066');
+          // Toggle yellow highlight: if all selection is yellow, remove only highlight; else, apply
+          const sel = window.getSelection();
+          if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            let allYellow = true;
+            let hasText = false;
+            const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+              acceptNode: function(node) {
+                if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            });
+            let node = treeWalker.currentNode;
+            while(node) {
+              if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+                hasText = true;
+                let parent = node.parentNode;
+                let bg = '';
+                if (parent && parent.style && parent.style.backgroundColor) bg = parent.style.backgroundColor.replace(/\s/g, '').toLowerCase();
+                if (bg !== '#ffe066' && bg !== 'rgb(255,224,102)') allYellow = false;
+              }
+              node = treeWalker.nextNode();
+            }
+            if (hasText && allYellow) {
+              // On retire uniquement le surlignage (pas tout le format)
+              document.execCommand('styleWithCSS', false, true);
+              document.execCommand('hiliteColor', false, 'inherit');
+              document.execCommand('styleWithCSS', false, false);
+            } else {
+              document.execCommand('hiliteColor', false, '#ffe066');
+            }
+          }
         }
       },
       { name: 'ul', icon: '<i class="fas fa-list-ul" title="Bullet list"></i>', action: () => document.execCommand('insertUnorderedList') },
@@ -67,13 +128,23 @@ class Popline {
         }
       },
       { name: 'codeblock', icon: '<i class="fas fa-code" title="Code block"></i>', action: () => {
-          document.execCommand('formatBlock', false, 'pre');
-        }
-      },
-      { name: 'removeColor', icon: '<i class="fas fa-tint-slash" title="Remove color/highlight"></i>', action: () => {
-          document.execCommand('removeFormat');
-          document.execCommand('foreColor', false, '');
-          document.execCommand('hiliteColor', false, '');
+          // Toggle code block: if selection is in <pre>, remove <pre>; else, apply <pre>
+          const sel = window.getSelection();
+          if (sel.rangeCount > 0) {
+            let container = sel.getRangeAt(0).commonAncestorContainer;
+            // Remonte jusqu'à l'élément parent si textNode
+            if (container.nodeType === 3) container = container.parentNode;
+            // Si déjà dans un <pre>, on le remplace par un <div>
+            if (container.closest && container.closest('pre')) {
+              const pre = container.closest('pre');
+              // Remplacer <pre> par <div> en gardant le contenu
+              const div = document.createElement('div');
+              div.innerHTML = pre.innerHTML;
+              pre.parentNode.replaceChild(div, pre);
+            } else {
+              document.execCommand('formatBlock', false, 'pre');
+            }
+          }
         }
       },
       { name: 'removeFormat', icon: '<i class="fas fa-eraser" title="Remove format"></i>', action: () => document.execCommand('removeFormat') }

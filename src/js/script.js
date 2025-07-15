@@ -406,6 +406,15 @@ $( document ).ready(function() {
            if(updateNoteEnCours==1){displaySavingInProgress();}
         }, 2000);
    }
+
+   // Warn user if note is modified but not saved when leaving the page
+   window.addEventListener('beforeunload', function (e) {
+       if (editedButNotSaved === 1 && updateNoteEnCours === 0) {
+           var confirmationMessage = 'You have unsaved changes in your note. Are you sure you want to leave without saving?';
+           (e || window.event).returnValue = confirmationMessage; // For old browsers
+           return confirmationMessage; // For modern browsers
+       }
+   });
 });
 
 function checkedit(){

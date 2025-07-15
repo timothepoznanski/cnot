@@ -68,6 +68,10 @@ class Popline {
           if (size) document.execCommand('fontSize', false, size);
         }
       },
+      { name: 'codeblock', icon: '<i class="fas fa-code" title="Code block"></i>', action: () => {
+          document.execCommand('formatBlock', false, 'pre');
+        }
+      },
       { name: 'removeColor', icon: '<i class="fas fa-tint-slash" title="Remove color/highlight"></i>', action: () => {
           document.execCommand('removeFormat');
           document.execCommand('foreColor', false, '');
@@ -115,9 +119,22 @@ class Popline {
   }
 
   show(options) {
-    this.bar.style.top = options.top + 'px';
-    this.bar.style.left = options.left + 'px';
+    // Affiche la barre et ajuste sa position pour rester dans la fenêtre
     this.bar.style.display = 'block';
+    // Calculer la position souhaitée
+    let top = options.top;
+    let left = options.left;
+    const barRect = this.bar.getBoundingClientRect();
+    const winWidth = window.innerWidth;
+    const winHeight = window.innerHeight;
+    // Ajuster à droite si dépassement
+    if (left < 0) left = 8;
+    if (left + barRect.width > winWidth) left = winWidth - barRect.width - 8;
+    // Ajuster en haut si dépassement
+    if (top < 0) top = 8;
+    if (top + barRect.height > winHeight) top = winHeight - barRect.height - 8;
+    this.bar.style.top = top + 'px';
+    this.bar.style.left = left + 'px';
   }
 
   hide() {

@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../webfonts/Inter/static/Inter_24pt-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     overflow: hidden;
@@ -33,19 +47,7 @@ html, body {
     justify-content: center;
 }
 
-@font-face {
-    font-family: 'Inter';
-    src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: 'Inter';
-    src: url('../webfonts/Inter/static/Inter_24pt-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -488,6 +490,7 @@ div[contentEditable=true]:empty:before{
     margin-bottom:20px;
     background: white;
     border-radius: 5px;
+    font-family: 'Inter', sans-serif;
 }
 
 .innernote{
@@ -495,6 +498,7 @@ div[contentEditable=true]:empty:before{
     padding-top: 5px;
     padding-right: 2%;
     padding-bottom: 5px;
+    font-family: 'Inter', sans-serif;
 }
 
 textarea{
@@ -505,6 +509,7 @@ textarea{
     overflow: hidden;
     outline: none;
     resize: none;
+    font-family: 'Inter', sans-serif;
 }
 
 textarea:focus{
@@ -520,6 +525,11 @@ textarea:focus{
     overflow-wrap: break-word;
     outline: none;
     resize: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.noteentry * {
+    font-family: 'Inter', sans-serif !important;
 }
 
 .noteentry:focus{
@@ -544,6 +554,7 @@ input{
     font-size: 24px;
     font-weight: 600;
     color: #37352F;
+    font-family: 'Inter', sans-serif;
 }
 
 input:focus{

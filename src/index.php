@@ -176,12 +176,14 @@ $note = $_GET['note'] ?? '';
         
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {       
             $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
-            // Always preserve search state in note links (mobile & desktop)
-            $unified_search_param = isset($unified_search) && $unified_search !== '' ? "&unified_search=" . urlencode($unified_search) : '';
-            $search_mode_param = isset($search_mode) && $search_mode !== '' ? "&search_mode=" . urlencode($search_mode) : '';
-            $link_params = $unified_search_param . $search_mode_param;
+            // Préserver l'état de recherche dans les liens de notes
+            $params = [];
+            if (!empty($search)) $params[] = 'search=' . urlencode($search);
+            if (!empty($tags_search)) $params[] = 'tags_search=' . urlencode($tags_search);
+            $params[] = 'note=' . urlencode($row1["heading"]);
+            $link = 'index.php?' . implode('&', $params);
             echo "<form action=index.php><input type=hidden name=note>";
-            echo "<a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "$link_params'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
+            echo "<a class='links_arbo_left  $isSelected' href='$link'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
             echo "</form>";
             echo "<div id=pxbetweennotes></div>";
         }

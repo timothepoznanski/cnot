@@ -35,7 +35,7 @@ $note = $_GET['note'] ?? '';
     <script type="text/javascript" src="js/popline.native.js"></script>
 </head>
 
-<body<?php echo ($note != '') ? ' class="note-selected"' : ''; ?>>   
+<body<?php echo ($is_mobile && $note != '') ? ' class="note-open"' : ''; ?>>   
 
 
 

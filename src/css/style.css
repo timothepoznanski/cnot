@@ -1,3 +1,42 @@
+/* --- MOBILE LAYOUT --- */
+@media (max-width: 800px) {
+    body {
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+    #left_col {
+        width: 100vw;
+        min-width: 0;
+        max-width: none;
+        height: 100vh;
+        border-right: none;
+        border-bottom: 1px solid #CCCCCC;
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        background: #F7F7F5;
+    }
+    #right_col {
+        width: 100vw;
+        min-width: 0;
+        max-width: none;
+        height: 100vh;
+        display: none;
+        position: relative;
+        z-index: 1;
+    }
+    body.note-open #left_col {
+        display: none;
+    }
+    body.note-open #right_col {
+        display: block;
+    }
+}
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');

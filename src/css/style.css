@@ -732,6 +732,14 @@ textarea:focus{
 .noteentry pre *, .noteentry code *, .noteentry span[style*='Consolas'] * {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
+/* Fond grisé du bloc de code sans écraser le surlignage */
+.noteentry pre, .noteentry code, .noteentry span[style*='Consolas'] {
+    background: #f5f5f5 !important;
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: inline-block;
+    box-shadow: 0 0 0 1px #f5f5f5;
+}
 
 .noteentry:focus{
     border-bottom: 1px;

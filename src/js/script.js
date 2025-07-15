@@ -1,3 +1,177 @@
+// --- Code déplacé depuis main-ui.js ---
+// English placeholders depending on the mode
+function updatePlaceholders() {
+    var mode = document.getElementById('search_mode');
+    var input = document.getElementById('unified-search');
+    if (mode && input) {
+        // Set default to tags if not set
+        if (!mode.value || mode.value === '') mode.value = 'tags';
+        if (mode.value === 'tags') {
+            input.placeholder = 'Search for words in the tags';
+        } else {
+            input.placeholder = 'Search for words within the notes';
+        }
+    }
+    var modeLeft = document.getElementById('search_mode_left');
+    var inputLeft = document.getElementById('unified-search-left');
+    if (modeLeft && inputLeft) {
+        // Set default to tags if not set
+        if (!modeLeft.value || modeLeft.value === '') modeLeft.value = 'tags';
+        if (modeLeft.value === 'tags') {
+            inputLeft.placeholder = 'Search for words in the tags';
+        } else {
+            inputLeft.placeholder = 'Search for words within the notes';
+        }
+    }
+}
+// Toggle for desktop
+var toggleDesktop = document.getElementById('toggle-search-mode');
+if (toggleDesktop) {
+    toggleDesktop.onclick = function(e) {
+        e.preventDefault();
+        var mode = document.getElementById('search_mode_left');
+        var icon = document.getElementById('toggle-icon');
+        if (mode && icon) {
+            if (mode.value === 'notes') {
+                mode.value = 'tags';
+                icon.classList.remove('fa-file');
+                icon.classList.add('fa-tags');
+            } else {
+                mode.value = 'notes';
+                icon.classList.remove('fa-tags');
+                icon.classList.add('fa-file');
+            }
+            updatePlaceholders();
+            document.getElementById('unified-search-left').focus();
+        }
+    };
+}
+// Toggle for mobile
+var toggleMobile = document.getElementById('toggle-search-mode-left');
+if (toggleMobile) {
+    toggleMobile.onclick = function(e) {
+        e.preventDefault();
+        var mode = document.getElementById('search_mode');
+        var icon = document.getElementById('toggle-icon-left');
+        if (mode && icon) {
+            if (mode.value === 'notes') {
+                mode.value = 'tags';
+                icon.classList.remove('fa-file');
+                icon.classList.add('fa-tags');
+            } else {
+                mode.value = 'notes';
+                icon.classList.remove('fa-tags');
+                icon.classList.add('fa-file');
+            }
+            updatePlaceholders();
+            var input = document.getElementById('unified-search');
+            if (input) input.focus();
+        }
+    };
+}
+// Submit form on Enter key (with null checks)
+var unifiedSearch = document.getElementById('unified-search');
+if (unifiedSearch) {
+    unifiedSearch.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            var form = document.getElementById('unified-search-form');
+            if (form) form.submit();
+        }
+    });
+}
+var unifiedSearchLeft = document.getElementById('unified-search-left');
+if (unifiedSearchLeft) {
+    unifiedSearchLeft.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            var formLeft = document.getElementById('unified-search-form-left');
+            if (formLeft) formLeft.submit();
+        }
+    });
+}
+// Force default search mode to 'tags' on load
+document.addEventListener('DOMContentLoaded', function() {
+    // On ne force le mode 'tags' que si l'utilisateur arrive sur la page d'accueil sans paramètre de recherche
+    var url = window.location.href;
+    var hasQuery = url.indexOf('?') !== -1;
+    var mode = document.getElementById('search_mode');
+    var modeLeft = document.getElementById('search_mode_left');
+    if (!hasQuery) {
+        if (mode && (!mode.value || mode.value === '')) mode.value = 'tags';
+        if (modeLeft && (!modeLeft.value || modeLeft.value === '')) modeLeft.value = 'tags';
+    }
+    // Synchronise l'icône desktop
+    var iconDesktop = document.getElementById('toggle-icon');
+    if (iconDesktop && modeLeft) {
+        if (modeLeft.value === 'tags') {
+            iconDesktop.classList.remove('fa-file');
+            iconDesktop.classList.add('fa-tags');
+        } else {
+            iconDesktop.classList.remove('fa-tags');
+            iconDesktop.classList.add('fa-file');
+        }
+    }
+    // Synchronise l'icône mobile
+    var iconMobile = document.getElementById('toggle-icon-left');
+    if (iconMobile && mode) {
+        if (mode.value === 'tags') {
+            iconMobile.classList.remove('fa-file');
+            iconMobile.classList.add('fa-tags');
+        } else {
+            iconMobile.classList.remove('fa-tags');
+            iconMobile.classList.add('fa-file');
+        }
+    }
+    updatePlaceholders();
+});
+
+// Clear search for desktop (left column)
+var clearSearchLeft = document.getElementById('clear-search-left');
+if (clearSearchLeft) {
+    clearSearchLeft.onclick = function(e) {
+        e.preventDefault();
+        var inputLeft = document.getElementById('unified-search-left');
+        if (inputLeft) {
+            inputLeft.value = '';
+        }
+        document.getElementById('unified-search-form-left').submit();
+    };
+}
+
+// Clear search for mobile
+var clearSearchMobile = document.getElementById('clear-search');
+if (clearSearchMobile) {
+    clearSearchMobile.onclick = function(e) {
+        e.preventDefault();
+        var input = document.getElementById('unified-search');
+        if (input) {
+            input.value = '';
+        }
+        var form = document.getElementById('unified-search-form');
+        if (form) form.submit();
+    };
+}
+
+// Download function (popup)
+function startDownload() {
+    document.getElementById('downloadPopup').style.display = 'block';
+    window.location = 'exportEntries.php';
+    setTimeout(function() {
+        document.getElementById('downloadPopup').style.display = 'none';
+    }, 4000);
+}
+
+// Fixes the behavior of the home button on mobile
+if (document.querySelector('.mobile-menu-bar .btn-menu')) {
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.querySelector('.mobile-menu-bar .btn-menu');
+        if(btn) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'index.php';
+            };
+        }
+    });
+}
 var editedButNotSaved = 0;  // Flag indicating that the note has been edited set to 1
 var lastudpdate;
 var noteid=-1;

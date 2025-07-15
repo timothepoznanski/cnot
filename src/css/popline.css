@@ -9,24 +9,29 @@
   display: none;
   margin: 0;
   list-style: none;
-  padding: 0px 2px;
+  padding: 12px 20px;
   font-family: 'Inter', Arial, Helvetica, "Hiragino Sans GB", sans-serif !important;
   text-rendering: optimizeLegibility;
   white-space: nowrap; 
 }
 .popline li {
   color: black;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  display: inline-block; 
+  display: inline-block;
+  margin: 0 8px;
+  vertical-align: middle;
+  line-height: 1.2;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   .popline li i {
-    font-weight: bold; 
-  } 
+    font-weight: bold;
+    font-size: 1.5em;
+    vertical-align: middle;
+  }
 }
 .popline li .popline-text {
   font-size: 26.4px;

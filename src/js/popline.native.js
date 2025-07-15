@@ -41,35 +41,40 @@ class Popline {
     this.target.popline = this;
     // Ajout de tous les boutons principaux
     const buttons = [
-      { name: 'bold', icon: '<b>B</b>', action: () => document.execCommand('bold') },
-      { name: 'italic', icon: '<i>I</i>', action: () => document.execCommand('italic') },
-      { name: 'underline', icon: '<u>U</u>', action: () => document.execCommand('underline') },
-      { name: 'strike', icon: '<s>S</s>', action: () => document.execCommand('strikeThrough') },
-      { name: 'link', icon: '<span style="text-decoration:underline;">🔗</span>', action: () => {
-          const url = prompt('Entrez l’URL du lien :', 'https://');
+      { name: 'bold', icon: '<i class="fas fa-bold" title="Bold"></i>', action: () => document.execCommand('bold') },
+      { name: 'italic', icon: '<i class="fas fa-italic" title="Italic"></i>', action: () => document.execCommand('italic') },
+      { name: 'underline', icon: '<i class="fas fa-underline" title="Underline"></i>', action: () => document.execCommand('underline') },
+      { name: 'strike', icon: '<i class="fas fa-strikethrough" title="Strikethrough"></i>', action: () => document.execCommand('strikeThrough') },
+      { name: 'link', icon: '<i class="fas fa-link" title="Link"></i>', action: () => {
+          const url = prompt('Enter link URL:', 'https://');
           if (url) document.execCommand('createLink', false, url);
         }
       },
-      { name: 'unlink', icon: '<span style="text-decoration:line-through;">⛔</span>', action: () => document.execCommand('unlink') },
-      { name: 'color', icon: '<span style="color:#e74c3c;">A</span>', action: () => {
-          const color = prompt('Couleur du texte (nom ou #hex) :', '#e74c3c');
+      { name: 'unlink', icon: '<i class="fas fa-unlink" title="Remove link"></i>', action: () => document.execCommand('unlink') },
+      { name: 'color', icon: '<i class="fas fa-palette" style="color:#ff2222;" title="Text color"></i>', action: () => {
+          const color = prompt('Text color (name or #hex):', '#ff2222');
           if (color) document.execCommand('foreColor', false, color);
         }
       },
-      { name: 'bgcolor', icon: '<span style="background:#ffe066;">A</span>', action: () => {
-          const color = prompt('Couleur de fond (nom ou #hex) :', '#ffe066');
+      { name: 'bgcolor', icon: '<i class="fas fa-fill-drip" style="color:#ffe066;" title="Background color"></i>', action: () => {
+          const color = prompt('Background color (name or #hex):', '#ffe066');
           if (color) document.execCommand('hiliteColor', false, color);
         }
       },
-      { name: 'ul', icon: '• Liste', action: () => document.execCommand('insertUnorderedList') },
-      { name: 'ol', icon: '1. Liste', action: () => document.execCommand('insertOrderedList') },
-      { name: 'fontsize', icon: 'A+', action: () => {
-          const size = prompt('Taille de police (1-7) :', '3');
+      { name: 'ul', icon: '<i class="fas fa-list-ul" title="Bullet list"></i>', action: () => document.execCommand('insertUnorderedList') },
+      { name: 'ol', icon: '<i class="fas fa-list-ol" title="Numbered list"></i>', action: () => document.execCommand('insertOrderedList') },
+      { name: 'fontsize', icon: '<i class="fas fa-text-height" title="Font size"></i>', action: () => {
+          const size = prompt('Font size (1-7):', '3');
           if (size) document.execCommand('fontSize', false, size);
         }
       },
-      // boutons d'alignement supprimés
-      { name: 'removeFormat', icon: '⎚', action: () => document.execCommand('removeFormat') }
+      { name: 'removeColor', icon: '<i class="fas fa-tint-slash" title="Remove color/highlight"></i>', action: () => {
+          document.execCommand('removeFormat');
+          document.execCommand('foreColor', false, '');
+          document.execCommand('hiliteColor', false, '');
+        }
+      },
+      { name: 'removeFormat', icon: '<i class="fas fa-eraser" title="Remove format"></i>', action: () => document.execCommand('removeFormat') }
     ];
     buttons.forEach(btn => this.addButton(btn));
     // Gestion des événements natifs

@@ -107,7 +107,7 @@ a.links_arbo_left.selected-note {
 #icon_notes {
     padding-right: 7px;
     padding-left: 8px;
-    font-size: 11px;
+    font-size: 14px;
     color: #007DB8;
 }
 
@@ -283,11 +283,12 @@ img {
 
 .icon_download{
     color: #007DB8;
+    font-size: 1.1em;
 }
 
 .note-icons-desktop {
     padding: 4px 11px;
-    font-size: 0.95em;
+    font-size: 1.1em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -298,10 +299,12 @@ img {
 
 .icon_info{
     color: #007DB8;
+    font-size: 1.1em;
 }
 
 .icon_save{
     color: #007DB8;
+    font-size: 1.1em;
 }
 
 /* TAGS RIGHT */ 
@@ -535,7 +538,7 @@ hr {
 
 .lastupdated {
     float:right;
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Inter' !important;
     font-style: italic;
     font-weight: 400;

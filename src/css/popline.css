@@ -28,6 +28,7 @@ pre {
   text-rendering: optimizeLegibility;
   white-space: nowrap; 
 }
+
 .popline li {
   color: black;
   font-size: 18px;
@@ -35,7 +36,7 @@ pre {
   cursor: pointer;
   text-align: center;
   display: inline-block;
-  margin: 0 8px;
+  margin: 0 14px;
   vertical-align: middle;
   line-height: 1.2;
 }

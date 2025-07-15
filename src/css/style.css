@@ -6,10 +6,7 @@
     transition: background 0.15s, font-weight 0.15s;
 }
 .links_arbo_left:hover, .links_arbo_left.selected-note {
-    background: #f0f0f0;
     font-weight: bold;
-    color: #007DB8 !important;
-    border-radius: 6px;
 }
 /* Espace sous chaque note (remplace le style inline height:30px) */
 .note-bottom-space {
@@ -22,7 +19,7 @@
     width: 100%;
 }
 .searchbar-input {
-    padding: 12px 40px 12px 38px;
+    padding: 6px 40px 6px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
     background: #fafbfc;

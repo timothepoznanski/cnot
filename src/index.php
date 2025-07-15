@@ -160,9 +160,7 @@ $note = $_GET['note'] ?? '';
         </div>
     </div>
     <?php endif; ?>
-        
-    <hr><br>
-            
+                
     <?php
   
         if($note!='') // If the note is not empty, it means we have just clicked on a note.

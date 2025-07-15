@@ -224,7 +224,7 @@ body {
     font-size: 15px;
 }
 
-a { color: #2E8CFA; }
+a { color: #2E8CFA;  text-decoration: none; }
 a:link { color: #2E8CFA; }
 a:visited { color: #2E8CFA; }
 a:hover { color: #2E8CFA; }
@@ -852,6 +852,19 @@ hr{
     
     body.note-selected #right_col {
         display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        min-width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        min-height: 100vh;
+        box-sizing: border-box;
+        z-index: 100;
+        background: #fff;
+        overflow-y: auto;
+        padding: 12px;
     }
     
     /* Hide search in right column on mobile, show in left column */

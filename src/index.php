@@ -29,6 +29,7 @@ $note = $_GET['note'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <title><?php echo JOURNAL_NAME;?></title>
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <!-- <link type="text/css" rel="stylesheet" href="css/style-mobile.css"/> -->
     <link rel="stylesheet" href="css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="css/popline.css" />
     <script type="text/javascript" src="js/popline.native.js"></script>
@@ -108,7 +109,6 @@ $note = $_GET['note'] ?? '';
         <div class="exportAllButton" onclick="startDownload();">
             <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
         </div>
-        <div id="downloadPopup">Please wait while the archive is being created...</div>
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
         // Croix rouge retirée
@@ -142,14 +142,6 @@ $note = $_GET['note'] ?? '';
         </form>
     </div>
     <?php endif; ?>
-
-    <?php if ($is_mobile && $note != ''): ?>
-    <div class="mobile-menu-bar">
-        <div class="btn-menu" onclick="window.location='index.php'" title="Retour à la liste des notes">
-            <span class="fa fa-home"></span>
-        </div>
-    </div>
-    <?php endif; ?>
         
     <br><hr><br>
             
@@ -173,7 +165,7 @@ $note = $_GET['note'] ?? '';
             $params[] = 'note=' . urlencode($row1["heading"]);
             $link = 'index.php?' . implode('&', $params);
             echo "<form action=index.php><input type=hidden name=note>";
-            echo "<a class='links_arbo_left  $isSelected' href='$link'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
+            echo "<a class='links_arbo_left $isSelected' href='$link'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
             echo "</form>";
             echo "<div id=pxbetweennotes></div>";
         }
@@ -209,7 +201,7 @@ $note = $_GET['note'] ?? '';
                 echo '<div class="note-header-mobile">';
                 echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
                 if (!$is_mobile) {
-                    echo '<div class="note-icons-mobile">';
+                    echo '<div class="note-icons-desktop">';
                     echo '<span class="fas fa-save icon_save" title="Save this note" onclick="saveFocusedNoteJS()"></span>';
                     echo '<a href="'.$filename.'" download="'.$title.'"><span class="fas fa-download icon_download" title="Export this note"></span></a>';
                     echo '<span class="fas fa-info-circle icon_info" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"></span>';
@@ -221,7 +213,7 @@ $note = $_GET['note'] ?? '';
                 echo '<div class="note-tags-row">';
                 echo '<span class="fa fa-tag icon_tag"></span>';
                 echo '<span class="name_tags">'
-                    .'<input class="add-margin-left" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/>'
+                    .'<input class="add-margin" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags?" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/>'
                 .'</span>';
                 echo '</div>';
                 // Titre

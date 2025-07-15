@@ -1,51 +1,8 @@
-// English placeholders depending on the mode
-function updatePlaceholders() {
-    var mode = document.getElementById('search_mode');
-    var input = document.getElementById('unified-search');
-    if (mode && input) {
-        // Set default to tags if not set
-        if (!mode.value || mode.value === '') mode.value = 'tags';
-        if (mode.value === 'tags') {
-            input.placeholder = 'Search for words in the tags';
-        } else {
-            input.placeholder = 'Search for words within the notes';
-        }
-    }
-    var modeLeft = document.getElementById('search_mode_left');
-    var inputLeft = document.getElementById('unified-search-left');
-    if (modeLeft && inputLeft) {
-        // Set default to tags if not set
-        if (!modeLeft.value || modeLeft.value === '') modeLeft.value = 'tags';
-        if (modeLeft.value === 'tags') {
-            inputLeft.placeholder = 'Search for words in the tags';
-        } else {
-            inputLeft.placeholder = 'Search for words within the notes';
-        }
-    }
-}
-// Suppression du bouton toggle et des anciennes barres de recherche : code supprimé
-
 // Download function (popup)
 function startDownload() {
-    document.getElementById('downloadPopup').style.display = 'block';
     window.location = 'exportEntries.php';
-    setTimeout(function() {
-        document.getElementById('downloadPopup').style.display = 'none';
-    }, 4000);
 }
 
-// Fixes the behavior of the home button on mobile
-if (document.querySelector('.mobile-menu-bar .btn-menu')) {
-    document.addEventListener('DOMContentLoaded', function() {
-        var btn = document.querySelector('.mobile-menu-bar .btn-menu');
-        if(btn) {
-            btn.onclick = function(e) {
-                e.preventDefault();
-                window.location.href = 'index.php';
-            };
-        }
-    });
-}
 var editedButNotSaved = 0;  // Flag indicating that the note has been edited set to 1
 var lastudpdate;
 var noteid=-1;

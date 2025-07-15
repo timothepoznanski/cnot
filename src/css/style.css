@@ -1,32 +1,127 @@
-/* doublon supprimé, voir plus bas */
-/* Liens de la liste des notes (colonne de gauche) */
-.links_arbo_left {
-    color: #333 !important;
-    text-decoration: none !important;
-    font-weight: normal;
-    transition: background 0.15s, font-weight 0.15s;
+@font-face {
+    font-family: 'Inter';
+    src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
 }
-.links_arbo_left:hover, .links_arbo_left.selected-note {
+
+html, body {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    height: 100%;
+}
+
+body.trash-page {
+    overflow-y: auto;
+    height: auto;
+}
+
+body.trash-page {
+    position: static;
+    display: block;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: visible;
+    box-sizing: border-box;
+}
+
+/* LINKS */
+
+a { color: #2E8CFA;  text-decoration: none; }
+
+/* a:link { color: #2E8CFA; }
+a:visited { color: #2E8CFA; }
+a:hover { color: #2E8CFA; }
+a:active { color: #2E8CFA; } */
+
+.note-bottom-space { height: 30px; }
+
+/* LEFT COLUMN */
+
+#left_col{
+    height:100%;
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:370px;
+    padding-left:15px;
+    padding-top:10px;
+    padding-right:20px;
+    background-color:#F7F7F5;
+    overflow:auto;
+    border-right: solid #CCCCCC 1px;
+}
+
+#left_col::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* RIGHT COLUMN */
+
+#right_col{
+    height: 100%;
+    margin-top:0px;
+    margin-right:0px;
+    margin-left:370px;
+    background-color:#FFFFFF;
+    overflow-y: auto; /* Show vertical scroll only if needed */
+    overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
+#right_col::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* LINKS ARBO LEFT */
+
+a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_arbo_left:hover, a.links_arbo_left:active {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    text-decoration: none;
+    color: #333;
+    /* padding: 6px; */
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: normal;
+}
+
+a.links_arbo_left.selected-note {
+    background-color: #EFEFED;
     font-weight: bold;
 }
-/* Espace sous chaque note (remplace le style inline height:30px) */
-.note-bottom-space {
-    height: 30px;
+
+#icon_notes {
+    padding-right: 7px;
+    padding-left: 8px;
+    font-size: 11px;
+    color: #007DB8;
 }
-/* Modern search bar styles */
+
+/* SEARCHBARS */
+
 .searchbar-row {
     display: flex;
     align-items: center;
     width: 100%;
     position: relative;
 }
-/* Ajout pour positionner le bouton clear dans la barre */
+
 .searchbar-input-wrapper {
     position: relative;
     width: 100%;
 }
+
 .searchbar-input {
-    padding: 12px 40px 12px 38px;
+    padding: 6px 40px 6px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
     background: #fafbfc;
@@ -37,27 +132,26 @@
     width: 100%;
     min-width: 0;
     font-family: 'Inter', sans-serif !important;
+    color: #a09e9ed8 
 }
-/* Placeholder plus petit */
+
 .searchbar-input::placeholder {
-    color: #b0b0b0 !important;
+    color: #b0b0b0;
     opacity: 1;
-    font-size: 0.92em;
+    font-size: 0.80em;
 }
-.searchbar-input::-webkit-input-placeholder {
-    color: #b0b0b0 !important;
-    font-size: 0.92em;
-}
+
 .searchbar-input:focus {
-    border-color: #b3d4fc;
-    box-shadow: 0 0 0 2px #b3d4fc33;
+    border-color: #32a1ce;
 }
+
 .searchbar-icon-row {
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
 }
+
 .searchbar-icon {
     position: absolute;
     left: 12px;
@@ -65,10 +159,10 @@
     top: 50%;
     transform: translateY(-50%);
     color: #b0b0b0;
-    font-size: 1.1em;
     pointer-events: none;
     z-index: 2;
 }
+
 .searchbar-clear-outer {
     position: absolute;
     right: 8px;
@@ -80,7 +174,6 @@
     font-size: 1.25em;
     cursor: pointer;
     border-radius: 50%;
-    transition: background 0.2s, color 0.2s;
     height: 32px;
     width: 32px;
     display: flex;
@@ -89,86 +182,12 @@
     margin: 0;
     z-index: 3;
 }
+
 .searchbar-clear-outer:hover {
     color: #e74c3c;
     background: #f5eaea;
 }
-@media (max-width: 600px) {
-    .searchbar-input {
-        font-size: 1em;
-        padding: 10px 36px 10px 34px;
-    }
-    .searchbar-clear-outer {
-        height: 32px;
-        width: 32px;
-        font-size: 1.1em;
-    }
-}
-/* Forcer la police monospace sur les blocs de code générés par le plugin (span inline avec font-family: Consolas) */
-.noteentry span[style*='Consolas'] {
-    font-family: Consolas, monospace !important;
-    font-size: 13.5px !important;
-    font-style: normal !important;
-    font-weight: normal !important;
-    color: #333 !important;
-}
-@font-face {
-    font-family: 'Inter';
-    src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: 'Inter';
-    src: url('../webfonts/Inter/static/Inter_24pt-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-}
-
-html, body {
-    font-family: 'Inter', sans-serif;
-}
-body {
-    height: 100%;
-    /* overflow: hidden;  Supprimé pour permettre le scroll globalement */
-}
-/* Réactive le scroll sur la page trash si body a la classe trash-page */
-body.trash-page {
-    overflow-y: auto !important;
-    height: auto !important;
-}
-body.trash-page #right_col {
-    position: static !important;
-    display: block !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow-y: auto !important;
-    overflow-x: visible !important;
-    box-sizing: border-box;
-}
-@media (max-width: 768px) {
-  body.trash-page #right_col {
-    position: static !important;
-    display: block !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow-y: auto !important;
-    overflow-x: visible !important;
-    box-sizing: border-box;
-  }
-  body.trash-page {
-    overflow-y: auto !important;
-    height: auto !important;
-  }
-}
-/* Exclure la police Inter pour les blocs de code */
-pre, code, .noteentry span[style*='Consolas'] {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
-}
-/* Desktop searchbar styles for left column */
 .searchbar-desktop {
     margin-bottom: 10px;
     padding: 0;
@@ -176,6 +195,7 @@ pre, code, .noteentry span[style*='Consolas'] {
     border-radius: 0;
     box-shadow: none;
 }
+
 .searchbar-row {
     display: flex;
     align-items: center;
@@ -185,7 +205,6 @@ pre, code, .noteentry span[style*='Consolas'] {
     margin-bottom: 8px;
 }
 
-/* Clear button for search bars */
 .searchbar-clear {
     position: absolute;
     right: 10px;
@@ -205,26 +224,12 @@ pre, code, .noteentry span[style*='Consolas'] {
     border-radius: 50%;
     transition: background 0.2s, color 0.2s;
 }
+
 .searchbar-clear .fa-times-circle {
     color: #d32f2f;
     font-size: 1.25em;
 }
-/* doublon supprimé, voir plus haut */
 
-/* Desktop: icon on the right */
-.searchbar-icon-row .searchbar-icon {
-    position: absolute;
-    left: 12px;
-    right: auto;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #b0b0b0;
-    font-size: 1.1em;
-    pointer-events: none;
-    z-index: 2;
-}
-/* Desktop: extra right padding for clear button, left for icon */
-/* doublon supprimé, voir plus haut */
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
     font-size: 1.1em;
@@ -237,77 +242,22 @@ pre, code, .noteentry span[style*='Consolas'] {
     justify-content: center;
 }
 
+.contains_forms_search
+{
+    width: 100%;
+    margin: 0;
+    margin-bottom: 5px;
+    text-align: left;
+    box-sizing: border-box;
+}
 
-
-
-
-a { color: #2E8CFA;  text-decoration: none; }
-a:link { color: #2E8CFA; }
-a:visited { color: #2E8CFA; }
-a:hover { color: #2E8CFA; }
-a:active { color: #2E8CFA; }
+/* CAPTURES */
 
 img {
     max-width:100%; /* To prevent screenshots from exceeding their container when they are too large */
 }
-.switcher {
-  width: 150px;
-  position: fixed;
-  top: 20px;
-  left: 10px;
-  font-family: Helvetica, Arial;
-  font-weight: bold;
-  font-size: 15px;
-}
 
-
-
-
-#left_col{
-    height:100%;
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:370px;
-    padding-left:15px;
-    padding-top:10px;
-    padding-right:20px;
-    /*padding-right:210px;*/
-    background-color:#F7F7F5;
-    overflow:auto;
-    /*column-width: auto;*/
-    font-size: 14px;
-    border-right: solid #CCCCCC 1px;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
-#left_col::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-#right_col{
-    height: 100%;
-    margin-top:0px;
-    margin-right:0px;
-    margin-left:370px;
-    /* padding:15px 10px 10px 10px; */
-    background-color:#FFFFFF;
-    overflow-y: auto; /* Show vertical scroll only if needed */
-    overflow-x: hidden; /* Disable horizontal scrolling */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
-#right_col::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-.icon_grey{
-    color: #91918E;
-}
-
-.icon_download{
-    color: #007DB8;
-}
+/* POPUP NOTIFICATION */
 
 #notificationPopup {
     display: none;
@@ -324,80 +274,44 @@ img {
     text-align: center;
 }
 
-#downloadPopup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    color: #FFF;
-    background-color: #007DB8;
-    border: 1px solid #FFF;
-    z-index: 1000;
-    font-size: 1.5em;
-    border-radius: 10px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    text-align: center;
-    min-width: 260px;
-    max-width: 90vw;
+/* MENU RIGHT */
+
+.icon_download{
+    color: #007DB8;
 }
 
-.mobile-menu-bar {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
-}
-
-.btn-menu {
-    background: #007DB8;
-    color: #fff;
-    border-radius: 8px;
-    padding: 7px 16px;
-    font-size: 1.1em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.btn-menu .fa-home {
-    font-size: 1.2em;
-}
-
-.note-icons-mobile {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-}
-.note-icons-mobile .fa-home {
-    background: #007DB8;
-    color: #fff;
-    border-radius: 7px;
+.note-icons-desktop {
     padding: 4px 11px;
     font-size: 0.95em;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 25px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     margin: 0 auto;
 }
+
+.icon_info{
+    color: #007DB8;
+}
+
+.icon_save{
+    color: #007DB8;
+}
+
+/* TAGS RIGHT */ 
 
 .note-tags-row {
     display: flex;
     align-items: center;
-    gap: 8px;
     overflow: hidden;
     margin-top: 12px;
 }
 
-.note-tags-row .fa-tag.icon_tag {
+.fa-tag.icon_tag {
     font-size: 12px;
     margin-right: 8px;
     flex-shrink: 0;
-}
+} 
 
 .name_tags {
     flex: 1;
@@ -405,90 +319,20 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 14px;
 }
 
-.add-margin-left {
-    width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.add-margin {
+    margin: 15px 5px;
+    font-family: 'Inter', sans-serif !important;
 }
 
-#right_col {
-    background: #FFFFFF;
-}
+/* MENU LEFT */
 
-#pxbetweennotes {
-    height: 0px;
-}
-
-.links_arbo_left {
-    text-decoration: none;
-    color: #333;
-}
-
-#icon_notes {
-    padding-right: 7px;
-    padding-left: 8px;
-    font-size: 11px;
-    color: #007DB8;
-}
-
-#unified-search-form-left, #unified-search-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#unified-search-form-left > div, #unified-search-form > div {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-#unified-search-left, #unified-search {
-    width: 100%;
-    min-width: 120px;
-    max-width: 350px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-#toggle-search-mode-left, #toggle-search-mode {
-    background: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 0 8px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-radius: 0 4px 4px 0;
-    height: 38px;
-    display: flex;
-    align-items: center;
-}
-
-#toggle-icon-left, #toggle-icon {
-    /* font-size: 1.3em; */
-    color: #007DB8;
-}
-
-#clear-search-left, #clear-search {
-    background: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 0 4px;
-}
-
-#clear-search-left .fa-times-circle, #clear-search .fa-times-circle {
-    color: #d32f2f;
-    font-size: 1.3em;
+.containbuttons{
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 11px;
 }
 
 .newbutton[style], .list_tags[style] {
@@ -508,14 +352,17 @@ img {
     justify-content: center;
 }
 
-.icon_info{
+.newbutton, .list_tags, .exportAllButton {
+    display: inline-block;
+    width:30px;
+    cursor: pointer;
+    height:20px;
+    margin: 5px;
     color: #007DB8;
+    font-size: 17px;
 }
 
-
-.icon_save{
-    color: #007DB8;
-}
+/* MENU TRASH */
 
 .icon_trash{
     color: #007DB8;
@@ -526,101 +373,12 @@ img {
     margin-top: 7px;	
 }
 
-.icon_restore_trash{
+.icon_restore_trash {
     margin-left: 20px;	
     margin-top: 7px;	
 }
 
-.contains_forms_search
-{
-    width: 100%;
-    margin: 0;
-    margin-bottom: 5px;
-    text-align: left;
-    box-sizing: border-box;
-}
-
-.form_search{
-    margin-right: 20px; 
-    padding: 0px;
-    display: inline-block;
-    width: 30%;
-    color: #007DB8;
-}
-
-.form_search_tags{
-    margin-left: 20px; 
-    padding: 0px;
-    display: inline-block;
-    width: 30%;
-    color: #007DB8;
-}
-
-.contains_doss_tags
-{
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.contains_doss
-{
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.contains_tags
-{
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.contains_sousdoss
-{
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.containbuttons{
-    text-align: center;
-    padding-bottom: 15px;
-    padding-top: 11px;
-}
-
-.name_tags {
-    font-size: 13px;
-}
-
-
-.icon_doss, .name_doss, .name_tags, .icon_tag, .icon_sousdoss, .name_sousdoss {
-    display: inline-block;
-}
-
-.name_doss, .name_tags, .name_sousdoss {
-    margin-left: 0px;
-}
-
-
-.links_arbo_left {
-  display:inline-block; 
-  margin-top: 12px;
-  width: 100%; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis;
-  vertical-align: top;
-}
-
-
-form{
-    margin:0px; 
-    padding:0px;
-}
-
-.newbutton, .trashnotebutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton{
+.trashnotebutton, .backbutton, .emptytrash {
     display: inline-block;
     width:30px;
     cursor: pointer;
@@ -629,26 +387,6 @@ form{
     color: #007DB8;
     font-size: 17px;
 }
-
-.right-inner-addon {
-  position: relative;
-}
-
-.right-inner-addon input {
-  padding-right: 30px;
-}
-
-.right-inner-addon i {
-  position: absolute;
-  right: 0px;
-  padding: 10px 12px;
-  pointer-events: none;
-}
-
-div[contentEditable=true]:empty:before{
-        content:attr(data-ph);
-        color: #bababa;
-    }
 
 .searchtrash::-webkit-input-placeholder {
    color: white;
@@ -664,6 +402,13 @@ div[contentEditable=true]:empty:before{
 
 .searchtrash:focus{
     border-bottom: 1px solid #32a1ce;
+}
+
+/* NOTE DISPLAY */
+
+div[contentEditable=true]:empty:before {
+        content:attr(data-ph);
+        color: #bababa;
 }
 
 .notecard{
@@ -725,16 +470,40 @@ textarea:focus{
 .noteentry span:not([style*='Consolas']) {
     font-family: 'Inter', sans-serif !important;
 }
+
+.noteentry:focus{
+    border-bottom: 1px;
+    outline: 0;
+}
+
+/* CODE BLOCKS */
+
+/* Exclure la police Inter pour les blocs de code */
+pre, code, .noteentry span[style*='Consolas'] {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
+/* Forcer la police monospace sur les blocs de code générés par le plugin (span inline avec font-family: Consolas) */
+.noteentry span[style*='Consolas'] {
+    font-family: Consolas, monospace !important;
+    font-size: 13.5px !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    color: #333 !important;
+}
+
 /* Forcer la police monospace sur tout descendant de bloc de code, même si un span coloré est ajouté */
 .noteentry pre, .noteentry code, .noteentry span[style*='Consolas'],
 .noteentry pre *, .noteentry code *, .noteentry span[style*='Consolas'] * {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
-.noteentry:focus{
-    border-bottom: 1px;
-    outline: 0;
-}
+
+/* OTHERS */
+
+/* #pxbetweennotes {
+    height: 0px;
+} */
 
 input{
     width:100%;
@@ -742,13 +511,7 @@ input{
     text-overflow: ellipsis;
 }
 
-.add-margin-left{
-    margin: 15px 5px;
-    font-family: 'Inter', sans-serif !important;
-}
-
 .css-title{
-    /* margin-top:10px; */
     margin-bottom:10px;
     margin-left:-3px;
     font-size: 24px;
@@ -783,329 +546,5 @@ hr{
     font-family: 'Inter' !important;
     font-style: normal;
     font-weight: 300;
-}
-
-.selected-note {
-    background-color: #EFEFED;
-    border-radius: 8px;    
-    padding: 5px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-/* Mobile responsive styles */
-@media (max-width: 768px) {
-    .searchbar-row {
-        position: relative;
-    }
-    .searchbar-input {
-        padding-left: 34px;
-        padding-right: 34px;
-    }
-    .searchbar-icon-row .searchbar-icon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #bdbdbd;
-        font-size: 1.1em;
-        pointer-events: none;
-        z-index: 2;
-    }
-    .searchbar-clear {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 3;
-        background: none;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 0 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .searchbar-clear .fa-times-circle {
-        color: #d32f2f;
-        font-size: 1.3em;
-    }
-    html, body {
-        overflow: auto;
-    }
-    body {
-        padding: 0;
-        box-sizing: border-box;
-    }
-    #left_col {
-        height: 100%;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        box-sizing: border-box;
-        padding-left: 15px;
-        padding-right: 25px;
-        padding-top: 10px;
-        background-color: #F7F7F5;
-        overflow: auto;
-        font-size: 14px;
-        border-right: none;
-    }
-    
-    #right_col {
-        margin-left: 0;
-        width: 100%;
-        position: relative;
-        height: auto;
-        min-height: 100%;
-        display: none; /* Hidden by default on mobile */
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 12px;
-        box-sizing: border-box;
-    }
-    
-    /* When a note is selected, show only right column */
-    body.note-selected #left_col {
-        display: none;
-    }
-    
-    body.note-selected #right_col {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        height: 100vh;
-        min-height: 100vh;
-        box-sizing: border-box;
-        z-index: 100;
-        background: #fff;
-        overflow-y: auto;
-        padding: 12px;
-    }
-    
-    /* Hide search in right column on mobile, show in left column */
-    #right_col .contains_forms_search {
-        display: none;
-    }
-    
-    .mobile-search-container {
-        display: block;
-        margin-bottom: 20px;
-        /* padding: 10px; */
-        background: transparent;
-        border-radius: 2px;
-        margin: 10px 5px 20px 5px;
-    }
-    
-    /* Mobile back button */
-    .mobile-back-button {
-        display: block;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        background: #007DB8;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    .mobile-back-button:hover {
-        background: #005a8a;
-    }
-    
-    /* Adjust search forms for mobile */
-    .contains_forms_search {
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-    
-    .form_search, .form_search_tags {
-        width: 100%;
-        margin: 5px 0;
-        display: block;
-    }
-    
-    .clear-search {
-        text-align: center;
-        margin-top: 10px;
-    }
-    
-    /* Better touch targets for mobile */
-    .links_arbo_left {
-        padding: 4px 4px;
-        margin: 8px 0;
-        border-radius: 8px;
-        font-size: 16px;
-        line-height: 1.2;
-    }
-    
-    .links_arbo_left:hover {
-        background-color: #f0f0f0;
-    }
-    
-    /* Larger buttons for mobile */
-    .newbutton, .trashnotebutton, .backbutton, .emptytrash, .list_tags, .savebutton, .exportAllButton {
-        width: 40px;
-        height: 30px;
-        font-size: 20px;
-        margin: 8px;
-    }
-    
-    /* Better note display on mobile */
-    .notecard {
-        margin: 5px;
-        border-radius: 8px;
-    }
-    
-    .innernote {
-        padding: 10px 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .note-header-mobile {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0;
-        margin-bottom: 2px;
-    }
-
-    .lastupdated {
-        font-size: 13px;
-        font-style: italic;
-        font-weight: 400;
-        margin: 0;
-        color: rgb(51,51,51) !important;
-        white-space: nowrap;
-        flex: 1;
-    }
-
-    .note-icons-mobile {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-        flex-shrink: 0;
-    }
-
-    .icon_save, .icon_trash, .icon_info, .icon_download {
-        margin: 0;
-        font-size: 16px;
-        color: #007DB8;
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        vertical-align: middle;
-        transition: color 0.2s;
-    }
-    .icon_save:hover, .icon_trash:hover, .icon_info:hover, .icon_download:hover {
-        color: #005a8a;
-    }
-
-    .name_tags, .css-title {
-        word-break: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        font-size: 15px;
-        margin-bottom: 2px;
-    }
-    
-    /* Larger input fields for mobile */
-    .css-title {
-        font-size: 22px;
-        /* margin-bottom: 15px; */
-    }
-    
-    .noteentry {
-        font-size: 16px;
-        line-height: 1.5;
-        min-height: 200px;
-    }
-    
-    /* Better icon spacing on mobile */
-.icon_save, .icon_trash, .icon_info, .icon_download {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 5px;
-    font-size: 18px;
-}
-}
-
-/* Desktop styles */
-@media (min-width: 769px) {
-    .mobile-back-button {
-        display: none;
-    }
-    .mobile-search-container {
-        display: none;
-    }
-    #right_col .contains_forms_search {
-        display: block;
-    }
-    .note-header-mobile {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0;
-        margin-bottom: 2px;
-    }
-    .lastupdated {
-        font-size: 13px;
-        font-style: italic;
-        font-weight: 400;
-        margin: 0;
-        color: #888;
-        white-space: nowrap;
-        flex: 1;
-    }
-    .note-icons-mobile {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-        flex-shrink: 0;
-    }
-    .icon_save, .icon_trash, .icon_info, .icon_download {
-        margin: 0;
-        font-size: 16px;
-        color: #007DB8;
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        vertical-align: middle;
-        transition: color 0.2s;
-    }
-    .icon_save:hover, .icon_trash:hover, .icon_info:hover, .icon_download:hover {
-        color: #005a8a;
-    }
-    .note-tags-row {
-        display: flex;
-        align-items: center;
-    }
-    .name_tags {
-        word-break: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        font-size: 15px;
-        margin-bottom: 2px;
-    }
 }
 

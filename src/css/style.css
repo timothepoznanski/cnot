@@ -1,3 +1,7 @@
+/* Force monospace font on any span (even with inline style) inside code/pre in .noteentry, even if color or background is set inline */
+.noteentry pre span[style], .noteentry code span[style], .noteentry pre span[style] *, .noteentry code span[style] * {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
 /* Liens de la liste des notes (colonne de gauche) */
 .links_arbo_left {
     color: #333 !important;

@@ -52,13 +52,11 @@ class Popline {
       },
       { name: 'unlink', icon: '<i class="fas fa-unlink" title="Remove link"></i>', action: () => document.execCommand('unlink') },
       { name: 'color', icon: '<i class="fas fa-palette" style="color:#ff2222;" title="Text color"></i>', action: () => {
-          const color = prompt('Text color (name or #hex):', '#ff2222');
-          if (color) document.execCommand('foreColor', false, color);
+          document.execCommand('foreColor', false, '#ff2222');
         }
       },
       { name: 'bgcolor', icon: '<i class="fas fa-fill-drip" style="color:#ffe066;" title="Background color"></i>', action: () => {
-          const color = prompt('Background color (name or #hex):', '#ffe066');
-          if (color) document.execCommand('hiliteColor', false, color);
+          document.execCommand('hiliteColor', false, '#ffe066');
         }
       },
       { name: 'ul', icon: '<i class="fas fa-list-ul" title="Bullet list"></i>', action: () => document.execCommand('insertUnorderedList') },

@@ -31,17 +31,7 @@ $note = $_GET['note'] ?? '';
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="css/popline.css" />
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.popline.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.link.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.decoration.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.blockquote.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.blockcode.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.list.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.social.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.textcolor.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.backgroundcolor.js"></script>
-    <script type="text/javascript" src="js/plugins/jquery.popline.fontsize.js"></script>
+    <script type="text/javascript" src="js/popline.native.js"></script>
 </head>
 
 <body<?php echo ($note != '') ? ' class="note-selected"' : ''; ?>>   
@@ -249,7 +239,9 @@ $note = $_GET['note'] ?? '';
 <!-- script.js n'a plus besoin de jQuery -->
 <script src="js/script.js"></script>
 <script>
-// L'appel à Popline dépend de jQuery et doit rester ici tant que les plugins ne sont pas migrés
-$(".noteentry").popline();
+// Initialisation Popline natif
+document.addEventListener('DOMContentLoaded', function() {
+  Popline.init('.noteentry');
+});
 </script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
 </html>

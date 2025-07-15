@@ -237,26 +237,30 @@ function deleteNote(iid){
 
 // The functions below trigger the `update()` function when a note is modified. This simply sets a flag indicating that the note has been modified, but it does not save the changes.
 
-document.body.addEventListener('keyup', function(e) {
+
+// Déclenche update() sur keyup, input, et paste dans .noteentry
+['keyup', 'input', 'paste'].forEach(eventType => {
+  document.body.addEventListener(eventType, function(e) {
     if (e.target.classList.contains('name_doss')) {
-        if(updateNoteEnCours==1){
-            showNotificationPopup("Save in progress.");
-        } else {
-            update();
-        }
+      if(updateNoteEnCours==1){
+        showNotificationPopup("Save in progress.");
+      } else {
+        update();
+      }
     } else if (e.target.classList.contains('noteentry')) {
-        if(updateNoteEnCours==1){
-            showNotificationPopup("Automatic save in progress, please do not modify the note.");
-        } else {
-            update();
-        }
+      if(updateNoteEnCours==1){
+        showNotificationPopup("Automatic save in progress, please do not modify the note.");
+      } else {
+        update();
+      }
     } else if (e.target.tagName === 'INPUT') {
-        if(updateNoteEnCours==1){
-            showNotificationPopup("Automatic save in progress, please do not modify the note.");
-        } else {
-            update();
-        }
+      if(updateNoteEnCours==1){
+        showNotificationPopup("Automatic save in progress, please do not modify the note.");
+      } else {
+        update();
+      }
     }
+  });
 });
 
 document.body.addEventListener('click', function(e) {

@@ -28,12 +28,9 @@ $note = $_GET['note'] ?? '';
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <title><?php echo JOURNAL_NAME;?></title>
-    <!-- <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/> -->
-    <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="css/popline.css" /> <!-- CSS for the Popline -->
-    <!-- Remove the lines for the functions that we do not want to appear in the bar. -->
+    <link rel="stylesheet" type="text/css" href="css/popline.css" />
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.popline.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.link.js"></script>
@@ -41,8 +38,6 @@ $note = $_GET['note'] ?? '';
     <script type="text/javascript" src="js/plugins/jquery.popline.blockquote.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.blockcode.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.list.js"></script>
-    <!--<script type="text/javascript" src="js/plugins/jquery.popline.justify.js"></script> -->
-    <!--<script type="text/javascript" src="js/plugins/jquery.popline.blockformat.js"></script> -->
     <script type="text/javascript" src="js/plugins/jquery.popline.social.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.textcolor.js"></script>
     <script type="text/javascript" src="js/plugins/jquery.popline.backgroundcolor.js"></script>
@@ -62,25 +57,25 @@ $note = $_GET['note'] ?? '';
         <!-- Deux barres de recherche pour mobile -->
         <?php if ($is_mobile): ?>
         <div class="mobile-search-container">
-            <form id="search-notes-form-mobile" action="index.php" method="POST" style="margin-bottom: 8px;">
-                <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
-                    <div style="position:relative; flex:1; display:flex; align-items:center;">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
-                        <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-search"></span></span>
+            <form id="search-notes-form-mobile" action="index.php" method="POST">
+                <div class="searchbar-row searchbar-icon-row">
+                    <div class="searchbar-input-wrapper">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+                        <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                     </div>
                     <?php if (!empty($search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
                     <?php endif; ?>
                 </div>
             </form>
             <form id="search-tags-form-mobile" action="index.php" method="POST">
-                <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
-                    <div style="position:relative; flex:1; display:flex; align-items:center;">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
-                        <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-tags"></span></span>
+                <div class="searchbar-row searchbar-icon-row">
+                    <div class="searchbar-input-wrapper">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+                        <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
                     </div>
                     <?php if (!empty($tags_search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
                     <?php endif; ?>
                 </div>
             </form>
@@ -123,9 +118,7 @@ $note = $_GET['note'] ?? '';
         <div class="exportAllButton" onclick="startDownload();">
             <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
         </div>
-        <div id="downloadPopup" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); padding:20px; color: #FFF; background-color:#007DB8; border:1px solid #FFF; z-index:1000;font-size: 1.5em;">
-           Please wait while the archive is being created...
-        </div>
+        <div id="downloadPopup">Please wait while the archive is being created...</div>
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php
         // Croix rouge retirée
@@ -135,25 +128,25 @@ $note = $_GET['note'] ?? '';
     
     <?php if (!$is_mobile): ?>
     <div class="contains_forms_search searchbar-desktop">
-        <form id="search-notes-form" action="index.php" method="POST" style="margin-bottom: 8px;">
-            <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
-                <div style="position:relative; flex:1; display:flex; align-items:center;">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
-                    <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-search"></span></span>
+        <form id="search-notes-form" action="index.php" method="POST">
+            <div class="searchbar-row searchbar-icon-row">
+                <div class="searchbar-input-wrapper">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+                    <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                 </div>
                 <?php if (!empty($search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
                 <?php endif; ?>
             </div>
         </form>
         <form id="search-tags-form" action="index.php" method="POST">
-            <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
-                <div style="position:relative; flex:1; display:flex; align-items:center;">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
-                    <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-tags"></span></span>
+            <div class="searchbar-row searchbar-icon-row">
+                <div class="searchbar-input-wrapper">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+                    <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
                 </div>
                 <?php if (!empty($tags_search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
                 <?php endif; ?>
             </div>
         </form>
@@ -166,7 +159,6 @@ $note = $_GET['note'] ?? '';
             <span class="fa fa-home"></span>
         </div>
     </div>
-    <!-- JS déplacé dans src/js/main-ui.js -->
     <?php endif; ?>
         
     <hr><br>
@@ -189,7 +181,7 @@ $note = $_GET['note'] ?? '';
             $search_mode_param = isset($search_mode) && $search_mode !== '' ? "&search_mode=" . urlencode($search_mode) : '';
             $link_params = $unified_search_param . $search_mode_param;
             echo "<form action=index.php><input type=hidden name=note>";
-            echo "<a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "$link_params' style='text-decoration:none; color:#333'><div id=icon_notes; style='padding-right: 7px;padding-left: 8px; font-size:11px; color:#007DB8;' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
+            echo "<a class='links_arbo_left  $isSelected' href='index.php?note=" . urlencode($row1["heading"]) . "$link_params'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
             echo "</form>";
             echo "<div id=pxbetweennotes></div>";
         }
@@ -225,11 +217,11 @@ $note = $_GET['note'] ?? '';
                 echo '<div class="note-header-mobile">';
                 echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
                 if (!$is_mobile) {
-                    echo '<div class="note-icons-mobile" style="display:flex;gap:25px;align-items:center;">';
-                    echo '<span style="cursor:pointer" title="Save this note" onclick="saveFocusedNoteJS()" class="fas fa-save icon_save"></span>';
-                    echo '<a href="'.$filename.'" download="'.$title.'"><span style="cursor:pointer" title="Export this note" class="fas fa-download icon_download"></span></a>';
-                    echo '<span style="cursor:pointer" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')" class="fas fa-info-circle icon_info"></span>';
-                    echo '<span style="cursor:pointer" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')" class="fas fa-trash icon_trash"></span>';
+                    echo '<div class="note-icons-mobile">';
+                    echo '<span class="fas fa-save icon_save" title="Save this note" onclick="saveFocusedNoteJS()"></span>';
+                    echo '<a href="'.$filename.'" download="'.$title.'"><span class="fas fa-download icon_download" title="Export this note"></span></a>';
+                    echo '<span class="fas fa-info-circle icon_info" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"></span>';
+                    echo '<span class="fas fa-trash icon_trash" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')"></span>';
                     echo '</div>';
                 }
                 echo '</div>';
@@ -244,7 +236,7 @@ $note = $_GET['note'] ?? '';
                 echo '<h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars(htmlspecialchars_decode($row['heading'] ?: 'Untitled note'), ENT_QUOTES).'"'.($is_mobile ? ' readonly' : '').'/></h4>';
                 // Contenu de la note
                 echo '<div class="noteentry" autocomplete="off" autocapitalize="off" spellcheck="false" onload="initials(this);" onfocus="updateident(this);" id="entry'.$row['id'].'" data-ph="Enter text or paste images" contenteditable="'.($is_mobile ? 'false' : 'true').'">'.$entryfinal.'</div>';
-                echo '<div style="height:30px;"></div>';
+                echo '<div class="note-bottom-space"></div>';
                 echo '</div>';
                 echo '</div>';
             }
@@ -254,7 +246,6 @@ $note = $_GET['note'] ?? '';
     
 <!-- Do not place this block at the top, otherwise Popline will no longer work -->
 <script src="js/script.js"></script>
-<script src="js/main-ui.js"></script>
 <script>
 // L'appel à Popline dépend de jQuery et doit rester ici tant que les plugins ne sont pas migrés
 $(".noteentry").popline();

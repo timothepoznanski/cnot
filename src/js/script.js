@@ -1,4 +1,3 @@
-// --- Code déplacé depuis main-ui.js ---
 // English placeholders depending on the mode
 function updatePlaceholders() {
     var mode = document.getElementById('search_mode');

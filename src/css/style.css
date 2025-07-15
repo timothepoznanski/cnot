@@ -1,3 +1,20 @@
+/* Liens de la liste des notes (colonne de gauche) */
+.links_arbo_left {
+    color: #333 !important;
+    text-decoration: none !important;
+    font-weight: normal;
+    transition: background 0.15s, font-weight 0.15s;
+}
+.links_arbo_left:hover, .links_arbo_left.selected-note {
+    background: #f0f0f0;
+    font-weight: bold;
+    color: #007DB8 !important;
+    border-radius: 6px;
+}
+/* Espace sous chaque note (remplace le style inline height:30px) */
+.note-bottom-space {
+    height: 30px;
+}
 /* Modern search bar styles */
 .searchbar-row {
     display: flex;
@@ -5,8 +22,8 @@
     width: 100%;
 }
 .searchbar-input {
-    padding: 12px 40px 12px 18px;
-    border-radius: 22px;
+    padding: 12px 40px 12px 38px;
+    border-radius: 4px;
     border: 1px solid #e0e0e0;
     background: #fafbfc;
     font-size: 1.08em;
@@ -15,6 +32,7 @@
     outline: none;
     width: 100%;
     min-width: 0;
+    font-family: 'Inter', sans-serif !important;
 }
 .searchbar-input:focus {
     border-color: #b3d4fc;
@@ -28,7 +46,8 @@
 }
 .searchbar-icon {
     position: absolute;
-    right: 16px;
+    left: 12px;
+    right: auto;
     top: 50%;
     transform: translateY(-50%);
     color: #b0b0b0;
@@ -59,7 +78,8 @@
 @media (max-width: 600px) {
     .searchbar-input {
         font-size: 1em;
-        padding: 10px 36px 10px 14px;
+        padding: 10px 36px 10px 34px;
+        font-family: 'Inter', sans-serif !important;
     }
     .searchbar-clear-outer {
         height: 32px;
@@ -95,21 +115,24 @@ html, body {
 /* Desktop searchbar styles for left column */
 .searchbar-desktop {
     margin-bottom: 10px;
-    padding: 14px 12px 14px 12px;
-    background: #f7f7f7;
-    border-radius: 8px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 .searchbar-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0;
     position: relative;
+    width: 100%;
+    margin-bottom: 8px;
 }
 
 /* Clear button for search bars */
 .searchbar-clear {
     position: absolute;
-    right: 34px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -121,42 +144,53 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
 }
 .searchbar-clear .fa-times-circle {
     color: #d32f2f;
-    font-size: 1.3em;
+    font-size: 1.25em;
 }
 }
 .searchbar-input {
-    padding: 8px 11px 8px 10px;
-    font-size: 1em;
+    padding: 12px 40px 12px 38px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #e0e0e0;
+    background: #fafbfc;
+    font-size: 1.08em;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    outline: none;
     width: 100%;
+    min-width: 0;
     font-family: 'Inter', sans-serif !important;
 }
 
 /* Desktop: icon on the right */
 .searchbar-icon-row .searchbar-icon {
     position: absolute;
-    right: 10px;
+    left: 12px;
+    right: auto;
     top: 50%;
     transform: translateY(-50%);
-    color: #bdbdbd;
+    color: #b0b0b0;
     font-size: 1.1em;
     pointer-events: none;
     z-index: 2;
 }
-/* Desktop: extra right padding for icon */
+/* Desktop: extra right padding for clear button, left for icon */
 .searchbar-input {
-    padding-right: 34px;
+    padding-right: 40px;
+    padding-left: 38px;
 }
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
     font-size: 1.1em;
     background: #eaeaea;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -270,6 +304,11 @@ body {
     border: 1px solid #FFF;
     z-index: 1000;
     font-size: 1.5em;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    text-align: center;
+    min-width: 260px;
+    max-width: 90vw;
 }
 
 .mobile-menu-bar {
@@ -805,7 +844,7 @@ hr{
         margin-bottom: 20px;
         /* padding: 10px; */
         background: transparent;
-        border-radius: 8px;
+        border-radius: 2px;
         margin: 10px 5px 20px 5px;
     }
     

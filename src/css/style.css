@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -81,6 +82,16 @@ a:active { color: #2E8CFA; } */
     display: none; /* Chrome, Safari, Opera */
 }
 
+/* Header note : date à gauche, boutons à droite */
+.note-header-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
 /* LINKS ARBO LEFT */
 
 a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_arbo_left:hover, a.links_arbo_left:active {
@@ -129,7 +140,7 @@ a.links_arbo_left.selected-note {
     padding: 6px 40px 6px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
-    background: #fafbfc;
+    background: #fff;
     font-size: 0.95em;
     transition: box-shadow 0.2s, border-color 0.2s;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
@@ -283,18 +294,18 @@ img {
 
 .icon_download{
     color: #007DB8;
-    font-size: 1.1em;
+    font-size: 17px;
 }
 
 .note-icons-desktop {
     padding: 4px 11px;
-    font-size: 1.1em;
+    font-size: 17px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 25px;
     cursor: pointer;
-    margin: 0 auto;
+    margin: 0 0 0 auto;
 }
 
 .icon_info{
@@ -529,6 +540,12 @@ input {
     font-family: 'Inter', sans-serif;
 }
 
+.css-title:focus {
+    border: none !important;
+    outline: none;
+    box-shadow: none;
+}
+
 hr {
     margin:0;
     border-top: 1px solid #ccc
@@ -537,7 +554,9 @@ hr {
 /* LAST UPDATED AND CREATED DATES */
 
 .lastupdated {
-    float:right;
+    float: none;
+    margin-right: auto;
+    margin-left: 0;
     font-size: 14px;
     font-family: 'Inter' !important;
     font-style: italic;
@@ -553,6 +572,4 @@ hr {
     font-style: normal;
     font-weight: 300;
 } */
-
-
 

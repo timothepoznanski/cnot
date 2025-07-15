@@ -305,8 +305,6 @@ body {
 }
 
 .icon_download{
-    margin-left: 15px;	
-    margin-top: 7px;
     color: #007DB8;
 }
 
@@ -510,21 +508,15 @@ body {
 }
 
 .icon_info{
-    margin-left: 15px;	
-    margin-top: 7px;
     color: #007DB8;
 }
 
 
 .icon_save{
-    margin-left: 20px;	
-    margin-top: 7px;
     color: #007DB8;
 }
 
 .icon_trash{
-    margin-left: 15px;	
-    margin-top: 7px;	
     color: #007DB8;
 }
 
@@ -1015,7 +1007,7 @@ hr{
     .note-icons-mobile {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 32px;
         flex-shrink: 0;
     }
 
@@ -1094,7 +1086,7 @@ hr{
     .note-icons-mobile {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 32px;
         flex-shrink: 0;
     }
     .icon_save, .icon_trash, .icon_info, .icon_download {

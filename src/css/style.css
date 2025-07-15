@@ -288,8 +288,9 @@ img {
 .note-icons-desktop {
     padding: 4px 11px;
     font-size: 0.95em;
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 25px;
     cursor: pointer;
     margin: 0 auto;
@@ -324,12 +325,18 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 16px;
+}
+
+/* Retirer la bordure lors du focus sur l'input des tags */
+.name_tags input:focus {
+    border: none !important;
+    outline: none;
 }
 
 .add-margin {
     margin: 15px 5px;
     font-family: 'Inter', sans-serif !important;
+    font-size: 16px;
 }
 
 /* MENU LEFT */

@@ -1,3 +1,10 @@
+/* Forcer la police monospace sur les blocs de code générés par le plugin (span inline avec font-family: Consolas) */
+.noteentry span[style*='Consolas'] {
+    font-family: Consolas, monospace !important;
+    font-size: 13.5px !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+}
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -207,7 +214,7 @@ body {
 }
 
 .note-tags-row .fa-tag.icon_tag {
-    font-size: 15px;
+    font-size: 12px;
     margin-right: 8px;
     flex-shrink: 0;
 }
@@ -425,7 +432,7 @@ body {
 
 .links_arbo_left {
   display:inline-block; 
-  margin-top: 7px;
+  margin-top: 12px;
   width: 100%; 
   white-space: nowrap; 
   overflow: hidden; 
@@ -697,7 +704,7 @@ hr{
     /* Better touch targets for mobile */
     .links_arbo_left {
         padding: 4px 4px;
-        margin: 1px 0;
+        margin: 14px 0;
         border-radius: 8px;
         font-size: 16px;
         line-height: 1.2;

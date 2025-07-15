@@ -137,7 +137,7 @@ a.links_arbo_left.selected-note {
     width: 100%;
     min-width: 0;
     font-family: 'Inter', sans-serif !important;
-    color: #a09e9ed8 
+    color: #868484b9 
 }
 
 .searchbar-input::placeholder {
@@ -232,7 +232,7 @@ a.links_arbo_left.selected-note {
 
 .searchbar-clear .fa-times-circle {
     color: #d32f2f;
-    font-size: 1.25em;
+    font-size: 1.0em;
 }
 
 .searchbar-toggle, .searchbar-clear {
@@ -324,7 +324,7 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .add-margin {
@@ -472,7 +472,8 @@ textarea:focus{
 .noteentry u,
 .noteentry s,
 .noteentry a,
-.noteentry span:not([style*='Consolas']) {
+.noteentry > span:not([style*='Consolas']),
+.noteentry :not(pre):not(code) > span:not([style*='Consolas']) {
     font-family: 'Inter', sans-serif !important;
 }
 
@@ -483,24 +484,18 @@ textarea:focus{
 
 /* CODE BLOCKS */
 
-/* Exclure la police Inter pour les blocs de code */
+
+/* Blocs de code : monospace */
 pre, code, .noteentry span[style*='Consolas'] {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
-/* Forcer la police monospace sur les blocs de code générés par le plugin (span inline avec font-family: Consolas) */
+/* Style plugin code block (optionnel, garder la taille et couleur si besoin) */
 .noteentry span[style*='Consolas'] {
-    font-family: Consolas, monospace !important;
     font-size: 13.5px !important;
     font-style: normal !important;
     font-weight: normal !important;
     color: #333 !important;
-}
-
-/* Forcer la police monospace sur tout descendant de bloc de code, même si un span coloré est ajouté */
-.noteentry pre, .noteentry code, .noteentry span[style*='Consolas'],
-.noteentry pre *, .noteentry code *, .noteentry span[style*='Consolas'] * {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
 

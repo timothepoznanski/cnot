@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -394,14 +393,28 @@ img {
     color: #007DB8;
 }
 
-.icon_trash_trash{
-    margin-left: 5px;	
-    margin-top: 7px;	
+/* Container for trash action icons */
+.trash-action-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 7px;
+}
+
+.icon_trash_trash {
+    margin: 0 0 0 8px;
+    font-size: 1.2em;
+    color: #007DB8;
+    cursor: pointer;
 }
 
 .icon_restore_trash {
-    margin-left: 20px;	
-    margin-top: 7px;	
+    margin: 0;
+    font-size: 1.2em;
+    color: #007DB8;
+    cursor: pointer;
 }
 
 .trashnotebutton, .backbutton, .emptytrash {

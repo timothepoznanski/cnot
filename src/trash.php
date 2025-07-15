@@ -60,10 +60,12 @@
 			
 			echo '<div id="note'.$id.'" class="notecard">
 			<div class="innernote">
-				<span title="Permanently delete" onclick="deletePermanent(\''.$id.'\')" class="fas fa-trash pull-right icon_trash_trash" style="cursor: pointer;"></span>
-				<span title="Restore this note" onclick="putBack(\''.$id.'\')" class="fa fa-trash-restore-alt pull-right icon_restore_trash" style="margin-right:20px; cursor: pointer;"></span>
+				<div class="trash-action-icons">
+					<span title="Restore this note" onclick="putBack(\''.$id.'\')" class="fa fa-trash-restore-alt icon_restore_trash"></span>
+					<span title="Permanently delete" onclick="deletePermanent(\''.$id.'\')" class="fas fa-trash icon_trash_trash"></span>
+				</div>
 				<div id="lastupdated'.$id.'" class="lastupdated">Last modified on '.$updated.'</div>
-				<h3><input id="inp'.$id.'" type="text" placeholder="Title ?" value="'.htmlspecialchars($heading, ENT_QUOTES).'"></input> </h3>
+				<h3><input id="inp'.$id.'" class="css-title" type="text" placeholder="Title ?" value="'.htmlspecialchars($heading, ENT_QUOTES).'"></input> </h3>
 				<hr>
 				<div class="noteentry" onload="initials(this);" id="entry'.$id.'" data-ph="Enter text or images here" contenteditable="true">'.$entryfinal.'</div>
 				<div style="height:30px;"></div>

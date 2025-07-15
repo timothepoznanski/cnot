@@ -113,6 +113,7 @@
     font-size: 13.5px !important;
     font-style: normal !important;
     font-weight: normal !important;
+    color: #333 !important;
 }
 @font-face {
     font-family: 'Inter';
@@ -129,8 +130,15 @@
 }
 
 html, body {
+    font-family: 'Inter', sans-serif;
+}
+body {
     height: 100%;
     overflow: hidden;
+}
+/* Exclure la police Inter pour les blocs de code */
+pre, code, .noteentry span[style*='Consolas'] {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 /* Desktop searchbar styles for left column */
 .searchbar-desktop {

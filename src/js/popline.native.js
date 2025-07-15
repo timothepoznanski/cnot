@@ -23,6 +23,8 @@ class Popline {
     this.init();
     Popline.instances.push(this);
   }
+  static _selectionChangeHandler = null;
+  static _selectionChangeTimeout = null;
 
   setPosition(position) {
     this.settings.position = position === "relative" ? "relative" : "fixed";
@@ -80,11 +82,31 @@ class Popline {
     ];
     buttons.forEach(btn => this.addButton(btn));
     // Gestion des événements natifs
-    this.target.addEventListener('mouseup', (e) => this.handleSelection(e));
+    // On écoute mouseup sur tout le document pour gérer les sélections multi-lignes qui finissent hors de la zone
+    if (!Popline._globalMouseupHandler) {
+      Popline._globalMouseupHandler = (e) => {
+        Popline.instances.forEach(instance => {
+          const sel = window.getSelection();
+          if (!sel.rangeCount) return;
+          const range = sel.getRangeAt(0);
+          if (instance.target.contains(range.commonAncestorContainer)) {
+            instance.handleSelection(e);
+          } else {
+            instance.hide();
+          }
+        });
+      };
+      document.addEventListener('mouseup', Popline._globalMouseupHandler);
+    }
     this.target.addEventListener('keyup', (e) => this.handleSelection(e));
     document.addEventListener('mousedown', (e) => {
       if (!this.bar.contains(e.target)) this.hide();
     });
+    // On retire le listener selectionchange (plus de debounce, UX plus instantanée)
+    if (Popline._selectionChangeHandler) {
+      document.removeEventListener('selectionchange', Popline._selectionChangeHandler);
+      Popline._selectionChangeHandler = null;
+    }
   }
 
   addButton({name, icon, action}) {

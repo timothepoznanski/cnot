@@ -246,7 +246,7 @@ $note = $_GET['note'] ?? '';
     </div>
 </body>
     
-<!-- Do not place this block at the top, otherwise Popline will no longer work -->
+<!-- script.js n'a plus besoin de jQuery -->
 <script src="js/script.js"></script>
 <script>
 // L'appel à Popline dépend de jQuery et doit rester ici tant que les plugins ne sont pas migrés

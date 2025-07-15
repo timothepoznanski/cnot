@@ -120,14 +120,20 @@ function updatenote(){
 }
 
 function newnote(){
-
-    $.post( "insertnew.php", {now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60})
-    .done(function(data) {
+    var params = new URLSearchParams({
+        now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60
+    });
+    fetch("insertnew.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.text())
+    .then(function(data) {
         try {
             var res = typeof data === 'string' ? JSON.parse(data) : data;
             if(res.status === 1) {
-                $(window).scrollTop(0);
-                // Redirige vers la nouvelle note (par heading, car c'est ce que index.php attend)
+                window.scrollTo(0, 0);
                 window.location.href = "index.php?note=" + encodeURIComponent(res.heading);
             } else {
                 alert(res.error || data);
@@ -212,10 +218,15 @@ function putBack(iid) {
 }
 
 function deleteNote(iid){
-    $.post( "deletenote.php", {id:iid})
-    .done(function(data) {
+    var params = new URLSearchParams({ id: iid });
+    fetch("deletenote.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.text())
+    .then(function(data) {
         if(data=='1') {
-            // Redirige vers le menu sans note sélectionnée
             window.location.href = "index.php";
         } else {
             alert(data);
@@ -226,43 +237,35 @@ function deleteNote(iid){
 
 // The functions below trigger the `update()` function when a note is modified. This simply sets a flag indicating that the note has been modified, but it does not save the changes.
 
-$('body').on( 'keyup', '.name_doss', function (){
-    if(updateNoteEnCours==1){
-        //alert("Save in progress.")
-        showNotificationPopup("Save in progress.");
-    }
-    else{
-        update();
-    }
-});
-
-$('body').on( 'keyup', '.noteentry', function (){
-    if(updateNoteEnCours==1){
-        //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note.");
-    }
-    else{
-        update();
-    }
-});
-
-$('body').on( 'click', '.popline-btn', function (){
-    if(updateNoteEnCours==1){
-        //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note.");
-    }
-    else{
-        update();
+document.body.addEventListener('keyup', function(e) {
+    if (e.target.classList.contains('name_doss')) {
+        if(updateNoteEnCours==1){
+            showNotificationPopup("Save in progress.");
+        } else {
+            update();
+        }
+    } else if (e.target.classList.contains('noteentry')) {
+        if(updateNoteEnCours==1){
+            showNotificationPopup("Automatic save in progress, please do not modify the note.");
+        } else {
+            update();
+        }
+    } else if (e.target.tagName === 'INPUT') {
+        if(updateNoteEnCours==1){
+            showNotificationPopup("Automatic save in progress, please do not modify the note.");
+        } else {
+            update();
+        }
     }
 });
 
-$('body').on( 'keyup', 'input', function (){
-    if(updateNoteEnCours==1){
-        //alert("Automatic save in progress, please do not modify the note.")
-        showNotificationPopup("Automatic save in progress, please do not modify the note.");
-    }
-    else{
-        update();
+document.body.addEventListener('click', function(e) {
+    if (e.target.classList.contains('popline-btn')) {
+        if(updateNoteEnCours==1){
+            showNotificationPopup("Automatic save in progress, please do not modify the note.");
+        } else {
+            update();
+        }
     }
 });
 
@@ -276,42 +279,44 @@ function update(){
 }
 
 function displaySavingInProgress(){
-    $('#lastupdated'+noteid).html('<span style="color:#FF0000";>Saving in progress...</span>');
+    var elem = document.getElementById('lastupdated'+noteid);
+    if (elem) elem.innerHTML = '<span style="color:#FF0000";>Saving in progress...</span>';
 }
 
 function displayModificationsDone(){
-    $('#lastupdated'+noteid).html('<span style="color:#FF0000";>Note modified</span>');
+    var elem = document.getElementById('lastupdated'+noteid);
+    if (elem) elem.innerHTML = '<span style="color:#FF0000";>Note modified</span>';
 }
 
 function displayEditInProgress(){
-    $('#lastupdated'+noteid).html('<span>Editing in progress...</span>');
+    var elem = document.getElementById('lastupdated'+noteid);
+    if (elem) elem.innerHTML = '<span>Editing in progress...</span>';
 }
 
 // Every X seconds (5000 = 5s), we call the `checkedit()` function and display "Note modified" if there have been changes, or "Saving in progress..." if the note is being saved.
-$( document ).ready(function() {
-   if(editedButNotSaved==0){
-       setInterval(function(){
-           checkedit();
-          // console.log("editedButNotSaved = " + editedButNotSaved);
-           if(editedButNotSaved==1){displayModificationsDone();}
-           if(updateNoteEnCours==1){displaySavingInProgress();}
+document.addEventListener('DOMContentLoaded', function() {
+    if(editedButNotSaved==0){
+        setInterval(function(){
+            checkedit();
+            if(editedButNotSaved==1){displayModificationsDone();}
+            if(updateNoteEnCours==1){displaySavingInProgress();}
         }, 2000);
-   }
+    }
 
-   // Warn user if note is modified but not saved when leaving the page
-   window.addEventListener('beforeunload', function (e) {
-       // Only warn if a note is selected and not in search mode
-       if (
-           editedButNotSaved === 1 &&
-           updateNoteEnCours === 0 &&
-           noteid !== -1 &&
-           noteid !== 'search'
-       ) {
-           var confirmationMessage = 'You have unsaved changes in your note. Are you sure you want to leave without saving?';
-           (e || window.event).returnValue = confirmationMessage; // For old browsers
-           return confirmationMessage; // For modern browsers
-       }
-   });
+    // Warn user if note is modified but not saved when leaving the page
+    window.addEventListener('beforeunload', function (e) {
+        // Only warn if a note is selected and not in search mode
+        if (
+            editedButNotSaved === 1 &&
+            updateNoteEnCours === 0 &&
+            noteid !== -1 &&
+            noteid !== 'search'
+        ) {
+            var confirmationMessage = 'You have unsaved changes in your note. Are you sure you want to leave without saving?';
+            (e || window.event).returnValue = confirmationMessage; // For old browsers
+            return confirmationMessage; // For modern browsers
+        }
+    });
 });
 
 function checkedit(){

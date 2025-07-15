@@ -409,7 +409,13 @@ $( document ).ready(function() {
 
    // Warn user if note is modified but not saved when leaving the page
    window.addEventListener('beforeunload', function (e) {
-       if (editedButNotSaved === 1 && updateNoteEnCours === 0) {
+       // Only warn if a note is selected and not in search mode
+       if (
+           editedButNotSaved === 1 &&
+           updateNoteEnCours === 0 &&
+           noteid !== -1 &&
+           noteid !== 'search'
+       ) {
            var confirmationMessage = 'You have unsaved changes in your note. Are you sure you want to leave without saving?';
            (e || window.event).returnValue = confirmationMessage; // For old browsers
            return confirmationMessage; // For modern browsers

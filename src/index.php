@@ -63,17 +63,25 @@ $note = $_GET['note'] ?? '';
         <?php if ($is_mobile): ?>
         <div class="mobile-search-container">
             <form id="search-notes-form-mobile" action="index.php" method="POST" style="margin-bottom: 8px;">
-                <div class="searchbar-row searchbar-icon-row">
-                    <span class="searchbar-icon"><span class="fas fa-search"></span></span>
-<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon searchbar-icon-right"><span class="fas fa-search"></span></span>
+                <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
+                    <div style="position:relative; flex:1; display:flex; align-items:center;">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
+                        <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-search"></span></span>
+                    </div>
+                    <?php if (!empty($search)): ?>
+                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                    <?php endif; ?>
                 </div>
             </form>
             <form id="search-tags-form-mobile" action="index.php" method="POST">
-                <div class="searchbar-row searchbar-icon-row">
-                    <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
-<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon searchbar-icon-right"><span class="fas fa-tags"></span></span>
+                <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
+                    <div style="position:relative; flex:1; display:flex; align-items:center;">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
+                        <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-tags"></span></span>
+                    </div>
+                    <?php if (!empty($tags_search)): ?>
+                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
@@ -128,15 +136,25 @@ $note = $_GET['note'] ?? '';
     <?php if (!$is_mobile): ?>
     <div class="contains_forms_search searchbar-desktop">
         <form id="search-notes-form" action="index.php" method="POST" style="margin-bottom: 8px;">
-            <div class="searchbar-row searchbar-icon-row">
-                <span class="searchbar-icon"><span class="fas fa-search"></span></span>
-<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
+            <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
+                <div style="position:relative; flex:1; display:flex; align-items:center;">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search notes (multiple words possible)" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
+                    <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-search"></span></span>
+                </div>
+                <?php if (!empty($search)): ?>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                <?php endif; ?>
             </div>
         </form>
         <form id="search-tags-form" action="index.php" method="POST">
-            <div class="searchbar-row searchbar-icon-row">
-                <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
-<input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
+            <div class="searchbar-row searchbar-icon-row" style="display: flex; align-items: center;">
+                <div style="position:relative; flex:1; display:flex; align-items:center;">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search tags (multiple tags possible)" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" style="width:100%;" />
+                    <span class="searchbar-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><span class="fas fa-tags"></span></span>
+                </div>
+                <?php if (!empty($tags_search)): ?>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;" style="margin-left:8px;"><span class="fas fa-times-circle"></span></button>
+                <?php endif; ?>
             </div>
         </form>
     </div>

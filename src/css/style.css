@@ -1,3 +1,72 @@
+/* Modern search bar styles */
+.searchbar-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.searchbar-input {
+    padding: 12px 40px 12px 18px;
+    border-radius: 22px;
+    border: 1px solid #e0e0e0;
+    background: #fafbfc;
+    font-size: 1.08em;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    outline: none;
+    width: 100%;
+    min-width: 0;
+}
+.searchbar-input:focus {
+    border-color: #b3d4fc;
+    box-shadow: 0 0 0 2px #b3d4fc33;
+}
+.searchbar-icon-row {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.searchbar-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b0b0b0;
+    font-size: 1.1em;
+    pointer-events: none;
+    z-index: 2;
+}
+.searchbar-clear-outer {
+    background: none;
+    border: none;
+    color: #bbb;
+    font-size: 1.25em;
+    cursor: pointer;
+    padding: 0 10px;
+    margin-left: 8px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchbar-clear-outer:hover {
+    color: #e74c3c;
+    background: #f5eaea;
+}
+@media (max-width: 600px) {
+    .searchbar-input {
+        font-size: 1em;
+        padding: 10px 36px 10px 14px;
+    }
+    .searchbar-clear-outer {
+        height: 32px;
+        width: 32px;
+        font-size: 1.1em;
+    }
+}
 /* Forcer la police monospace sur les blocs de code générés par le plugin (span inline avec font-family: Consolas) */
 .noteentry span[style*='Consolas'] {
     font-family: Consolas, monospace !important;

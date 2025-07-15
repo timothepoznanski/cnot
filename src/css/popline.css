@@ -10,7 +10,7 @@
   margin: 0;
   list-style: none;
   padding: 0px 2px;
-  font-family: Arial, Helvetica, "Hiragino Sans GB", sans-serif;
+  font-family: 'Inter', Arial, Helvetica, "Hiragino Sans GB", sans-serif !important;
   text-rendering: optimizeLegibility;
   white-space: nowrap; 
 }

@@ -38,9 +38,10 @@ html, body {
 .searchbar-input {
     padding: 8px 11px;
     font-size: 1em;
-    border-radius: 5px;
+    border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
+    font-family: 'Inter', sans-serif !important;
 }
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
@@ -552,6 +553,7 @@ input{
 
 .add-margin-left{
     margin: 15px 5px;
+    font-family: 'Inter', sans-serif !important;
 }
 
 .css-title{
@@ -580,7 +582,8 @@ hr{
     font-family: 'Inter' !important;
     font-style: italic;
     font-weight: 400;
-    margin-top: 7px;	
+    margin-top: 7px;
+    color: rgb(51,51,51) !important;
 }
 
 .created{
@@ -749,7 +752,7 @@ hr{
         font-style: italic;
         font-weight: 400;
         margin: 0;
-        color: #888;
+        color: rgb(51,51,51) !important;
         white-space: nowrap;
         flex: 1;
     }

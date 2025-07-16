@@ -117,7 +117,7 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     color: #333;
     padding: 6px 6px 6px 0px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.2;
     font-weight: normal;
 }
@@ -464,7 +464,7 @@ div[contentEditable=true]:empty:before {
 }
 
 .notecard{
-    margin: 2%;
+    margin: 1%;
     margin-bottom:20px;
     background: white;
     border-radius: 5px;

@@ -21,7 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style-mobile.css" />
 
 </head>
-<body style="background:#007DB8;">
+<body class="trash-page" style="background:#007DB8;">
 	<h2 style="text-align:center; font-weight:500; color: #fff">Trash</h2>
 	<?php
 		if(!empty($search))

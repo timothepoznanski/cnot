@@ -5,11 +5,12 @@
         height: 100dvh !important;
         position: fixed;
         inset: 0;
-        padding: 0 16px;
+        padding: 16px;
         background: #F7F7F5;
         box-sizing: border-box;
         overflow-y: auto;
 }
+
 /* --- MOBILE LAYOUT CORRIGÉ --- */
 @media (max-width: 800px) {
     html, body {
@@ -35,7 +36,7 @@
         overflow-y: auto;
         position: fixed;
         inset: 0;
-        padding: 0 8px;
+        padding: 16px 20px 16px 16px;
         background: #F7F7F5;
         box-sizing: border-box;
     }

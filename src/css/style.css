@@ -115,7 +115,7 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     vertical-align: top;
     text-decoration: none;
     color: #333;
-    padding: 6px;
+    padding: 6px 6px 6px 0px;
     border-radius: 8px;
     font-size: 16px;
     line-height: 1.2;
@@ -474,7 +474,7 @@ div[contentEditable=true]:empty:before {
 .innernote{
     padding-left: 5%;
     padding-top: 5px;
-    padding-right: 2%;
+    padding-right: 5%;
     padding-bottom: 5px;
     font-family: 'Inter', sans-serif;
 }

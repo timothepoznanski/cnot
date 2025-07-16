@@ -1,42 +1,4 @@
-/* --- MOBILE LAYOUT --- */
-@media (max-width: 800px) {
-    body {
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-    }
-    #left_col {
-        width: 100vw;
-        min-width: 0;
-        max-width: none;
-        height: 100vh;
-        border-right: none;
-        border-bottom: 1px solid #CCCCCC;
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 100;
-        background: #F7F7F5;
-    }
-    #right_col {
-        width: 100vw;
-        min-width: 0;
-        max-width: none;
-        height: 100vh;
-        display: none;
-        position: relative;
-        z-index: 1;
-    }
-    body.note-open #left_col {
-        display: none;
-    }
-    body.note-open #right_col {
-        display: block;
-    }
-}
+
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -46,6 +8,7 @@
 
 html, body {
     font-family: 'Inter', sans-serif;
+
 }
 
 body {
@@ -636,3 +599,51 @@ hr {
     font-weight: 300;
 } */
 
+
+/* --- MOBILE LAYOUT CORRIGÉ --- */
+@media (max-width: 800px) {
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    html {
+    overflow-x: hidden;
+}
+
+    body {
+        display: block !important;
+        flex-direction: unset !important;
+        position: relative;
+    }
+
+    #left_col {
+        width: 100% !important;
+        height: 100dvh !important; /* plus sûr que 100vh */
+        overflow-y: auto;
+        position: fixed;
+        inset: 0;
+        padding: 0 8px;
+        background: #F7F7F5;
+        box-sizing: border-box;
+    }
+
+    #right_col {
+        display: none !important;
+    }
+
+    body.note-open #left_col {
+        display: none !important;
+    }
+
+    body.note-open #right_col {
+        display: block !important;
+        position: fixed;
+        inset: 0;
+        overflow-y: auto;
+        background: #fff;
+        z-index: 100;
+    }
+}

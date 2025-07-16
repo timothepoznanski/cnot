@@ -29,7 +29,7 @@ $note = $_GET['note'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <title><?php echo JOURNAL_NAME;?></title>
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
-    <!-- <link type="text/css" rel="stylesheet" href="css/style-mobile.css"/> -->
+    <link rel="stylesheet" href="css/mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="css/popline.css" />
     <script type="text/javascript" src="js/popline.native.js"></script>
@@ -164,9 +164,8 @@ $note = $_GET['note'] ?? '';
             if (!empty($tags_search)) $params[] = 'tags_search=' . urlencode($tags_search);
             $params[] = 'note=' . urlencode($row1["heading"]);
             $link = 'index.php?' . implode('&', $params);
-            echo "<form action=index.php><input type=hidden name=note>";
             echo "<a class='links_arbo_left $isSelected' href='$link'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
-            echo "</form>";
+
             echo "<div id=pxbetweennotes></div>";
         }
                  
@@ -228,7 +227,6 @@ $note = $_GET['note'] ?? '';
     </div>
 </body>
     
-<!-- script.js n'a plus besoin de jQuery -->
 <script src="js/script.js"></script>
 <script>
 // Initialisation Popline natif

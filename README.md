@@ -23,8 +23,13 @@ Open your web browser and visit:
 
 **If you want to update CNOT version:** 
 
-Just remove the 3 existing containers, git pull the latest repository version and run the application (docker compose command). Your data are normally untouched but always make a backup first (see next section).
-You can also git pull the latest repository version and run the docker command with no-cache parameter : 
+Two ways possible: 
+
+Your data are normally untouched but always make a backup first (see next section).
+
+1. Just remove the 3 existing containers, git pull the latest repository version and run the application (docker compose command).
+   
+2. You can also git pull the latest repository version and run the following docker commands: 
 
 ```
   docker compose build --no-cache

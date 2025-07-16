@@ -128,25 +128,76 @@ class Popline {
         }
       },
       { name: 'codeblock', icon: '<i class="fas fa-code" title="Code block"></i>', action: () => {
-          // Toggle code block: if selection is in <pre>, remove <pre>; else, apply <pre>
           const sel = window.getSelection();
-          if (sel.rangeCount > 0) {
-            let container = sel.getRangeAt(0).commonAncestorContainer;
-            // Remonte jusqu'à l'élément parent si textNode
-            if (container.nodeType === 3) container = container.parentNode;
-            // Si déjà dans un <pre>, on le remplace par un <div>
-            if (container.closest && container.closest('pre')) {
-              const pre = container.closest('pre');
-              // Remplacer <pre> par <div> en gardant le contenu
-              const div = document.createElement('div');
-              div.innerHTML = pre.innerHTML;
-              pre.parentNode.replaceChild(div, pre);
-            } else {
-              document.execCommand('formatBlock', false, 'pre');
-            }
+          if (!sel.rangeCount) return;
+
+          const range = sel.getRangeAt(0);
+          let container = range.commonAncestorContainer;
+          if (container.nodeType === 3) container = container.parentNode;
+
+          //If we are already in code block, we remove it
+          if (container.closest('pre')) {
+            const pre = container.closest('pre');
+            const text = pre.textContent;
+
+            // Convertir les retours à la ligne en éléments <br> ou <div>
+            const div = document.createElement('div');
+            const lines = text.split('\n');
+            lines.forEach((line, index) => {
+              if (index > 0) {
+                div.appendChild(document.createElement('br'));
+              }
+              if (line.length > 0) {
+                div.appendChild(document.createTextNode(line));
+              }
+            });
+
+            pre.parentNode.replaceChild(div, pre);
+            return;
           }
-        }
-      },
+
+          // Création d'un nouveau bloc de code
+          const fragment = range.cloneContents();
+          if (!fragment.textContent.trim()) return; // Ne rien faire si la sélection est vide
+
+          // Convertir le fragement en texte en préservant la structure
+          let content = '';
+          const processNode = (node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              content += node.textContent;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              // Ajouter un saut de ligne seulement pour les éléments de bloc
+              if (node.nodeName ==='P' || node.nodeName === 'DIV') {
+                if (!content.endsWith('\n')) content += '\n';
+              } else if (node.nodeName === 'BR') {
+                content += '\n';
+              }
+
+              for (const child of node.childNodes) {
+                processNode(child);
+              }
+            }
+          };
+
+          for (const node of fragment.childNodes) {
+            processNode(node);
+          }
+
+          // Préserver les doubles sauts de ligne intentionnels mais enlever les extras
+          content = content.replace(/\n{3,}/g, '\n\n');  // Enlève les espaces au début et à la fin
+
+          // Créer me bloc de code
+          const pre = document.createElement('pre');
+          pre.textContent = content;
+
+          // Remplacer la sélection par le bloc de code
+          range.deleteContents();
+          range.insertNode(pre);
+
+          // Nettoyer la sélection
+          sel.removeAllRanges();
+       }
+      },    
       { name: 'removeFormat', icon: '<i class="fas fa-eraser" title="Remove format"></i>', action: () => document.execCommand('removeFormat') }
     ];
     buttons.forEach(btn => this.addButton(btn));

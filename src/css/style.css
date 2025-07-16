@@ -472,9 +472,9 @@ div[contentEditable=true]:empty:before {
 }
 
 .innernote{
-    padding-left: 5%;
+    padding-left: 2%;
     padding-top: 5px;
-    padding-right: 5%;
+    padding-right: 2%;
     padding-bottom: 5px;
     font-family: 'Inter', sans-serif;
 }

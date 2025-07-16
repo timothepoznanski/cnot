@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -328,6 +327,16 @@ img {
 .icon_save{
     color: #007DB8;
     font-size: 1.1em;
+}
+
+.icon_separator.blue-separator {
+  color: #007DB8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon_separator.blue-separator:hover {
+  color: #007DB8;
 }
 
 /* TAGS RIGHT */ 

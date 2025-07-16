@@ -310,3 +310,47 @@ Popline.init = function(selector, options) {
 };
 
 window.Popline = Popline;
+
+// Fonction globale pour insérer un séparateur à la position du curseur dans la note active
+window.insertSeparator = function() {
+  // Restaure la dernière sélection si elle a été sauvegardée
+  if (window._lastNoteSelection && window._lastNoteSelection.range) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(window._lastNoteSelection.range);
+  }
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  // Crée un élément <hr>
+  const hr = document.createElement('hr');
+  hr.style.border = 'none';
+  hr.style.borderTop = '1px solid #bbb'; // gris pour le séparateur
+  hr.style.margin = '12px 0';
+  // Insère le <hr> à la position du curseur d'édition
+  if (!range.collapsed) {
+    range.deleteContents();
+  }
+  range.insertNode(hr);
+  // Place le curseur après le <hr>
+  range.setStartAfter(hr);
+  range.setEndAfter(hr);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  // Déclenche un événement input sur la noteentry active
+  let container = range.commonAncestorContainer;
+  if (container.nodeType === 3) container = container.parentNode;
+  const noteentry = container.closest && container.closest('.noteentry');
+  if (noteentry) noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+};
+// Sauvegarde la sélection dans la note avant de cliquer sur le bouton séparateur
+document.addEventListener('mousedown', function(e) {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) {
+    let container = sel.getRangeAt(0).commonAncestorContainer;
+    if (container.nodeType === 3) container = container.parentNode;
+    if (container.closest && container.closest('.noteentry')) {
+      window._lastNoteSelection = { range: sel.getRangeAt(0).cloneRange() };
+    }
+  }
+});

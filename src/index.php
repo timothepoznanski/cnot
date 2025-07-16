@@ -202,6 +202,7 @@ $note = $_GET['note'] ?? '';
                 if (!$is_mobile) {
                     echo '<div class="note-icons-desktop">';
                     echo '<span class="fas fa-save icon_save" title="Save this note" onclick="saveFocusedNoteJS()"></span>';
+                    echo '<span class="fas fa-minus icon_separator blue-separator" title="Ajouter un séparateur" onclick="insertSeparator()"></span>';
                     echo '<a href="'.$filename.'" download="'.$title.'"><span class="fas fa-download icon_download" title="Export this note"></span></a>';
                     echo '<span class="fas fa-info-circle icon_info" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"></span>';
                     echo '<span class="fas fa-trash icon_trash" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')"></span>';

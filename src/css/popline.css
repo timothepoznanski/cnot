@@ -7,7 +7,7 @@ pre {
   padding: 34px 16px 32px 32px;
   display: block;
   border-radius: 4px;
-  white-space: pre-wrap;
+  white-space: pre;
   min-height: 1em;
   color: rgb(55, 53, 47);
   margin: 1em 0;

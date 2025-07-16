@@ -211,13 +211,36 @@ function deleteNote(iid){
         update();
       }
     } else if (e.target.tagName === 'INPUT') {
-      if(updateNoteEnCours==1){
-        showNotificationPopup("Automatic save in progress, please do not modify the note.");
-      } else {
-        update();
+      // Ne déclenche update() que pour les inputs de note
+      if (
+        e.target.classList.contains('searchbar') ||
+        e.target.id === 'search' ||
+        e.target.classList.contains('searchtrash') ||
+        e.target.id === 'myInputFiltrerTags'
+      ) {
+        return;
+      }
+      // On déclenche update() pour les champs de note : titre et tags
+      if (
+        e.target.classList.contains('css-title') ||
+        (e.target.id && e.target.id.startsWith('inp')) ||
+        (e.target.id && e.target.id.startsWith('tags'))
+      ) {
+        if(updateNoteEnCours==1){
+          showNotificationPopup("Automatic save in progress, please do not modify the note.");
+        } else {
+          update();
+        }
       }
     }
   });
+});
+
+// Réinitialise noteid quand la barre de recherche reçoit le focus
+document.body.addEventListener('focusin', function(e) {
+  if (e.target.classList.contains('searchbar') || e.target.id === 'search' || e.target.classList.contains('searchtrash')) {
+    noteid = -1;
+  }
 });
 
 document.body.addEventListener('click', function(e) {
@@ -231,7 +254,7 @@ document.body.addEventListener('click', function(e) {
 });
 
 function update(){
-    if(noteid=='search') return;
+    if(noteid=='search' || noteid==-1) return;
     editedButNotSaved = 1;  // We set the flag to indicate that the note has been modified.
     var curdate = new Date();
     var curtime = curdate.getTime();

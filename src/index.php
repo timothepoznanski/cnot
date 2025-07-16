@@ -197,7 +197,7 @@ $note = $_GET['note'] ?? '';
                 echo '<div id="note'.$row['id'].'" class="notecard">';
                 echo '<div class="innernote">';
                 // Ligne 1 : date à gauche, boutons à droite
-                echo '<div class="note-header-mobile">';
+                echo '<div class="note-header">';
                 echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
                 if (!$is_mobile) {
                     echo '<div class="note-icons-desktop">';

@@ -1,60 +1,48 @@
-    #left_col {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
-        height: 100dvh !important;
-        position: fixed;
-        inset: 0;
-        padding: 16px;
-        background: #F7F7F5;
-        box-sizing: border-box;
-        overflow-y: auto;
+#left_col {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    position: fixed;
+    inset: 0;
+    padding: 16px;
+    background: #F7F7F5;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
-/* --- MOBILE LAYOUT CORRIGÉ --- */
-@media (max-width: 800px) {
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
 
-    html {
-    overflow-x: hidden;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-    body {
-        display: block !important;
-        flex-direction: unset !important;
-        position: relative;
-    }
+html {
+overflow-x: hidden;
+}
 
-    #left_col {
-        width: 100% !important;
-        height: 100dvh !important; /* plus sûr que 100vh */
-        overflow-y: auto;
-        position: fixed;
-        inset: 0;
-        padding: 16px 20px 16px 16px;
-        background: #F7F7F5;
-        box-sizing: border-box;
-    }
+body {
+    display: block !important;
+    flex-direction: unset !important;
+    position: relative;
+}
 
-    #right_col {
-        display: none !important;
-    }
 
-    body.note-open #left_col {
-        display: none !important;
-    }
+#right_col {
+    display: none !important;
+}
 
-    body.note-open #right_col {
-        display: block !important;
-        position: fixed;
-        inset: 0;
-        overflow-y: auto;
-        background: #fff;
-        z-index: 100;
-    }
+body.note-open #left_col {
+    display: none !important;
+}
+
+body.note-open #right_col {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    background: #fff;
+    z-index: 100;
 }

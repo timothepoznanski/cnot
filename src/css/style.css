@@ -73,10 +73,6 @@ body {
     flex-shrink: 0;
 }
 
-#left_col::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
 /* RIGHT COLUMN */
 
 #right_col {
@@ -87,10 +83,6 @@ body {
     overflow-y: auto; /* Show vertical scroll only if needed */
     overflow-x: hidden; /* Disable horizontal scrolling */
     box-sizing: border-box;
-}
-
-#right_col::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
 }
 
 /* Header note : date à gauche, boutons à droite */

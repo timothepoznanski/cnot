@@ -397,6 +397,7 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: rgb(55, 53, 47);
 }
 
 /* Retirer la bordure lors du focus sur l'input des tags */

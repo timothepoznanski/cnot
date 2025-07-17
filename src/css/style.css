@@ -21,6 +21,13 @@ h4 {
     font-style: normal;
 }
 
+@font-face {
+  font-family: 'Inter';
+  src: url('../webfonts/Inter/static/Inter_24pt-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
 html, body {
     font-family: 'Inter', sans-serif;
     color: rgb(55, 53, 47);

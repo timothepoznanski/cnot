@@ -1,19 +1,4 @@
-/* Supprimer les marges du h4 du titre de la note */
-h4 {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-@media (max-width: 800px) {
-  .note-header {
-    display: none !important;
-  }
-}
-/* Espace blanc entre le header et les tags */
-.note-header-spacer {
-    width: 100%;
-    height: 15px;
-    background: #fff;
-}
+
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -51,6 +36,12 @@ body.trash-page {
     overflow-y: auto;
     overflow-x: visible;
     box-sizing: border-box;
+}
+
+/* Supprimer les marges du h4 du titre de la note */
+h4 {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 form{
@@ -137,7 +128,12 @@ body {
     z-index: 10;
 }
 
-
+/* Espace blanc entre le header et les tags */
+.note-header-spacer {
+    width: 100%;
+    height: 15px;
+    background: #fff;
+}
 
 
 /* LINKS ARBO LEFT */
@@ -397,7 +393,11 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: rgb(55, 53, 47);
+    color: rgb(55, 53, 47) !important;
+}
+
+.name_tags * {
+    color: rgb(55, 53, 47) !important;
 }
 
 /* Retirer la bordure lors du focus sur l'input des tags */
@@ -605,7 +605,7 @@ input {
 }
 
 .css-title {
-    margin-bottom:10px;
+    margin-bottom: 20px;
     margin-left:-3px;
     font-size: 24px;
     font-weight: 600;

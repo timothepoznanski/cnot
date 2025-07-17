@@ -1,3 +1,13 @@
+/* Supprimer les marges du h4 du titre de la note */
+h4 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+@media (max-width: 800px) {
+  .note-header {
+    display: none !important;
+  }
+}
 /* Espace blanc entre le header et les tags */
 .note-header-spacer {
     width: 100%;

@@ -23,7 +23,7 @@ h4 {
 
 html, body {
     font-family: 'Inter', sans-serif;
-
+    color: rgb(55, 53, 47);
 }
 
 body {
@@ -143,7 +143,7 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     text-overflow: ellipsis;
     vertical-align: top;
     text-decoration: none;
-    color: #333;
+    color: rgb(55, 53, 47);
     padding: 6px 6px 6px 0px;
     border-radius: 8px;
     font-size: 14px;

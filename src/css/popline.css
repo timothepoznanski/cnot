@@ -30,7 +30,7 @@ pre {
 }
 
 .popline li {
-  color: black;
+  color: rgb(55, 53, 47);
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
@@ -68,7 +68,7 @@ pre {
   min-width: 24px; 
 }
 .popline li a:link, .popline li a:hover, .popline li a:visited, .popline li a:active {
-  color: black;
+  color: rgb(55, 53, 47);
   text-decoration: none; 
   padding-top: 0;
   margin: 10px;

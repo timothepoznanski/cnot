@@ -12,7 +12,7 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-	<title><?php echo JOURNAL_NAME; ?> - Corbeille</title>
+	<title><?php echo JOURNAL_NAME; ?> - Trash</title>
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>
 	<link rel="stylesheet" href="css/font-awesome.css" />
 	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
@@ -21,11 +21,11 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 </head>
 <body class="trash-page">
 	<div class="trash-container">
-		<h2 class="trash-header">Corbeille</h2>
+		<h2 class="trash-header">Trash</h2>
 		
 		<?php if (!empty($search)): ?>
 			<div class="trash-search-notice">
-				Résultats pour "<?php echo htmlspecialchars($search); ?>"
+				Results for "<?php echo htmlspecialchars($search); ?>"
 				<span class="trash-clear-search" onclick="window.location='trash.php'">
 					<i class="fas fa-times"></i>
 				</span>
@@ -38,17 +38,17 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 				name="search" 
 				id="searchInput"
 				class="trash-search-input"
-				placeholder="Rechercher dans la corbeille..." 
+				placeholder="Search in trash..." 
 				value="<?php echo htmlspecialchars($search); ?>"
 				autocomplete="off"
 			>
 		</form>
 		
 		<div class="trash-buttons-container">
-			<div class="trash-button trash-back-button" onclick="window.location = 'index.php';" title="Retour aux notes">
+			<div class="trash-button trash-back-button" onclick="window.location = 'index.php';" title="Back to notes">
 				<i class="fas fa-arrow-circle-left trash-button-icon"></i>
 			</div>
-			<div class="trash-button trash-empty-button" id="emptyTrashBtn" title="Vider la corbeille">
+			<div class="trash-button trash-empty-button" id="emptyTrashBtn" title="Empty trash">
 				<i class="fa fa-trash-alt trash-button-icon"></i>
 			</div>
 		</div>
@@ -69,10 +69,10 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 				echo '<div id="note'.$id.'" class="trash-notecard">
 					<div class="trash-innernote">
 						<div class="trash-action-icons">
-							<i title="Restaurer cette note" class="fa fa-trash-restore-alt icon_restore_trash" data-noteid="'.$id.'"></i>
-							<i title="Supprimer définitivement" class="fas fa-trash icon_trash_trash" data-noteid="'.$id.'"></i>
+							<i title="Restore this note" class="fa fa-trash-restore-alt icon_restore_trash" data-noteid="'.$id.'"></i>
+							<i title="Delete permanently" class="fas fa-trash icon_trash_trash" data-noteid="'.$id.'"></i>
 						</div>
-						<div class="lastupdated">Dernière modification le '.$updated.'</div>
+						<div class="lastupdated">Last modified on '.$updated.'</div>
 						<h3 class="css-title">'.htmlspecialchars($heading, ENT_QUOTES).'</h3>
 						<hr>
 						<div class="noteentry">'.$entryfinal.'</div>
@@ -80,7 +80,7 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 				</div>';
 			}
 		} else {
-			echo '<div class="trash-no-notes">Aucune note dans la corbeille.</div>';
+			echo '<div class="trash-no-notes">No notes in trash.</div>';
 		}
 		?>
 		</div>

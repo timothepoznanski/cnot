@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('icon_restore_trash')) {
             e.preventDefault();
             const noteid = e.target.getAttribute('data-noteid');
-            if (noteid && confirm('Voulez-vous restaurer cette note ?')) {
+            if (noteid && confirm('Do you want to restore this note?')) {
                 restoreNote(noteid);
             }
         }
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('icon_trash_trash')) {
             e.preventDefault();
             const noteid = e.target.getAttribute('data-noteid');
-            if (noteid && confirm('Voulez-vous supprimer définitivement cette note ? Cette action est irréversible.')) {
+            if (noteid && confirm('Do you want to permanently delete this note? This action cannot be undone.')) {
                 deleteNote(noteid);
             }
         }
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (emptyTrashBtn) {
         emptyTrashBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (confirm('Voulez-vous vider complètement la corbeille ? Cette action est irréversible.')) {
+            if (confirm('Do you want to empty the trash completely? This action cannot be undone.')) {
                 window.location.href = 'emptytrash.php';
             }
         });
@@ -75,7 +75,7 @@ function updateSearchResults(count, searchTerm) {
         resultsDiv.style.display = 'none';
     } else {
         resultsDiv.style.display = 'block';
-        resultsDiv.textContent = `${count} note(s) trouvée(s) pour "${searchTerm}"`;
+        resultsDiv.textContent = `${count} note(s) found for "${searchTerm}"`;
     }
 }
 
@@ -93,8 +93,8 @@ function restoreNote(noteid) {
         window.location.reload();
     })
     .catch(error => {
-        console.error('Erreur lors de la restauration:', error);
-        alert('Erreur lors de la restauration de la note');
+        console.error('Error during restoration:', error);
+        alert('Error restoring the note');
     });
 }
 
@@ -112,8 +112,8 @@ function deleteNote(noteid) {
         window.location.reload();
     })
     .catch(error => {
-        console.error('Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression définitive de la note');
+        console.error('Error during deletion:', error);
+        alert('Error during permanent deletion of the note');
     });
 }
 

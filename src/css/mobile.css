@@ -79,12 +79,13 @@ body {
     box-sizing: border-box !important;
     background: transparent !important;
     border: none !important;
+    color: #007DB8 !important;
 }
 
 .toolbar-btn:hover, .toolbar-btn:focus {
     background: transparent !important;
     border: none !important;
-    color: #007DB8 !important;
+    color: #005a8a !important;
 }
 
 /* Gestion responsive des boutons individuels sur mobile */

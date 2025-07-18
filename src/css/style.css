@@ -150,13 +150,13 @@ body {
     cursor: pointer;
     margin: 0 2px;
     transition: color 0.2s;
-    color: #444;
+    color: #007DB8;
     outline: none;
 }
 .toolbar-btn:hover, .toolbar-btn:focus {
     background: transparent !important;
     border: none !important;
-    color: #007DB8;
+    color: #005a8a;
 }
 
 .note-header::after {

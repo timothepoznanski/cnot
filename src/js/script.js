@@ -487,17 +487,34 @@ function showMoveFolderDialog(noteId) {
 
 function moveCurrentNoteToFolder() {
     var targetFolder = document.getElementById('moveNoteFolderSelect').value;
+    var currentNoteHeading = document.querySelector('input[id^="inp"]').value; // Get current note heading
     
-    // Update the hidden folder input
-    document.getElementById('folder' + noteid).value = targetFolder;
+    var params = new URLSearchParams({
+        action: 'move_note',
+        note_heading: currentNoteHeading,
+        target_folder: targetFolder
+    });
     
-    // Trigger the note update
-    update();
-    
-    closeModal('moveNoteFolderModal');
-    
-    // Show confirmation
-    showNotificationPopup('Note moved to folder: ' + targetFolder);
+    fetch("folder_operations.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.json())
+    .then(function(data) {
+        if (data.success) {
+            closeModal('moveNoteFolderModal');
+            // Reload the page to show the note in the new folder
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+            closeModal('moveNoteFolderModal');
+        }
+    })
+    .catch(error => {
+        alert('Error moving note: ' + error);
+        closeModal('moveNoteFolderModal');
+    });
 }
 
 function showMoveNoteDialog(noteHeading) {

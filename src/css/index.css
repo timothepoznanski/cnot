@@ -832,11 +832,12 @@ hr {
 }
 
 .note-in-folder a.links_arbo_left {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-    min-width: 0;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: block !important;
 }
 
 .note-actions {

@@ -2,9 +2,33 @@
 
 /* Reset spécifique pour éviter les conflits avec mobile.css */
 body.tags-page {
-    overflow-y: auto !important;
+    overflow: auto !important;
     position: static !important;
     height: auto !important;
+    min-height: 100vh !important;
+}
+
+/* Styles spécifiques mobile pour corriger le scroll */
+@media (max-width: 800px) {
+    body.tags-page {
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Override complet pour éviter les conflits avec mobile.css */
+    #left_col {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        max-width: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+        inset: auto !important;
+    }
 }
 
 .tags-container {
@@ -16,6 +40,7 @@ body.tags-page {
 }
 
 .tags-header {
+    display: none;
     text-align: center;
     margin-bottom: 30px;
     font-size: 2.5em;
@@ -82,15 +107,10 @@ body.tags-page {
 }
 
 .tag-name {
-    font-weight: 600;
+    font-weight: normal;
     font-size: 1.1em;
     color: #333;
-    margin-bottom: 8px;
-}
-
-.tag-count {
-    color: #666;
-    font-size: 0.9em;
+    margin-bottom: 0;
 }
 
 .no-tags {
@@ -106,10 +126,17 @@ body.tags-page {
 /* Responsive design pour mobile */
 @media (max-width: 800px) {
     /* Reset et override pour éviter les conflits */
-    body {
-        overflow-y: auto !important;
+    html, body {
+        overflow: auto !important;
         position: static !important;
         height: auto !important;
+        min-height: 100vh !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    body {
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
     }
     
     .tags-container {
@@ -118,10 +145,16 @@ body.tags-page {
         max-width: 100% !important;
         width: 100% !important;
         box-sizing: border-box !important;
+        position: relative !important;
+        overflow: visible !important;
     }
     
     .tags-header {
-        font-size: 2em !important;
+        display: none !important;
+    }
+    
+    .tags-search-form {
+        margin-top: 10px !important;
         margin-bottom: 20px !important;
     }
     
@@ -142,6 +175,8 @@ body.tags-page {
         gap: 12px !important;
         width: 100% !important;
         display: grid !important;
+        position: static !important;
+        overflow: visible !important;
     }
     
     .tag-item {
@@ -154,10 +189,6 @@ body.tags-page {
     
     .tag-name {
         font-size: 1em !important;
-    }
-    
-    .tag-count {
-        font-size: 0.85em !important;
     }
     
     /* Supprimer tout style conflictuel qui pourrait venir d'ailleurs */

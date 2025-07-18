@@ -54,21 +54,8 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 		} else {
 			foreach($tags_list as $tag) {
 				if (!empty(trim($tag))) {
-					// Compter le nombre d'occurrences de ce tag
-					$tag_count = 0;
-					$res_count = $con->query("SELECT tags FROM entries");
-					while($row_count = mysqli_fetch_array($res_count, MYSQLI_ASSOC)) {
-						$words_count = explode(',', $row_count['tags']);
-						foreach($words_count as $word_count) {
-							if (trim($word_count) === trim($tag)) {
-								$tag_count++;
-							}
-						}
-					}
-					
 					echo '<div class="tag-item" onclick="window.location.href=\'index.php?tags_search_from_list='.urlencode($tag).'\'">
 						<div class="tag-name">'.htmlspecialchars($tag).'</div>
-						<div class="tag-count">'.$tag_count.' note(s)</div>
 					</div>';
 				}
 			}

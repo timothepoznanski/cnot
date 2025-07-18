@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 require_once 'config.php';
 require_once 'db_connect.php';
 
-$sql = "SELECT id, heading, tags, updated FROM entries ORDER BY updated DESC";
+$sql = "SELECT id, heading, tags, folder, updated FROM entries ORDER BY folder, updated DESC";
 $result = $con->query($sql);
 
 $notes = array();

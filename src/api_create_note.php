@@ -16,6 +16,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $heading = isset($input['heading']) ? trim($input['heading']) : '';
 $tags = isset($input['tags']) ? trim($input['tags']) : '';
+$folder = isset($input['folder']) ? trim($input['folder']) : 'Uncategorized';
 
 if ($heading === '') {
     http_response_code(400);
@@ -23,8 +24,8 @@ if ($heading === '') {
     exit;
 }
 
-$stmt = $con->prepare("INSERT INTO entries (heading, tags, updated) VALUES (?, ?, NOW())");
-$stmt->bind_param('ss', $heading, $tags);
+$stmt = $con->prepare("INSERT INTO entries (heading, tags, folder, updated) VALUES (?, ?, ?, NOW())");
+$stmt->bind_param('sss', $heading, $tags, $folder);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'id' => $stmt->insert_id]);

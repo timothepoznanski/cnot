@@ -56,18 +56,14 @@ body {
 }
 
 #left_col {
-    width: 370px;
-    min-width: 370px;
-    max-width: 370px;
-    height: 100vh;
-    padding-left: 15px;
-    padding-top: 10px;
-    padding-right: 20px;
-    background-color: #F7F7F5;
-    overflow: auto;
-    border-right: solid #CCCCCC 1px;
-    box-sizing: border-box;
-    flex-shrink: 0;
+	width: 30%;
+	height: 100vh;
+	float: left;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border-right: 1px solid #ddd;
+	padding: 16px;
+	box-sizing: border-box;
 }
 
 /* RIGHT COLUMN */
@@ -77,7 +73,7 @@ body {
     min-width: 0;
     height: 100vh;
     background-color: #FFFFFF;
-    overflow-y: auto; /* Show vertical scroll only if needed */
+    overflow-y: scroll; /* Always show scrollbar */
     overflow-x: hidden; /* Disable horizontal scrolling */
     box-sizing: border-box;
 }
@@ -179,11 +175,11 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     font-size: 14px;
     line-height: 1.2;
     font-weight: normal;
+    box-sizing: border-box;
 }
 
 a.links_arbo_left.selected-note {
     background-color: #EFEFED;
-    font-weight: bold;
 }
 
 #icon_notes {
@@ -465,7 +461,7 @@ img {
     justify-content: center;
 }
 
-.newbutton, .list_tags, .exportAllButton {
+.newbutton, .newfolderbutton, .list_tags, .exportAllButton {
     display: inline-block;
     width:30px;
     cursor: pointer;
@@ -740,4 +736,239 @@ hr {
 .toolbar-btn:hover i.fas.fa-fill-drip,
 .toolbar-btn:focus i.fas.fa-fill-drip {
     color: #ffe066 !important;
+}
+
+/* FOLDER STYLES */
+
+.folder-header {
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.folder-header.selected-folder {
+    background-color: rgba(0, 125, 184, 0.15);
+}
+
+.folder-toggle {
+    display: flex;
+    align-items: center;
+    padding: 8px 6px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: transparent;
+    transition: background-color 0.2s;
+    user-select: none;
+    position: relative;
+}
+
+.folder-toggle:hover {
+    background-color: rgba(0, 125, 184, 0.1);
+}
+
+.folder-icon {
+    font-size: 12px;
+    color: #007DB8;
+    margin-right: 8px;
+    transition: transform 0.2s;
+    width: 12px;
+}
+
+.folder-name-icon {
+    font-size: 14px;
+    color: #007DB8;
+    margin-right: 8px;
+}
+
+.folder-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(55, 53, 47);
+    flex: 1;
+}
+
+.folder-actions {
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: auto;
+}
+
+.folder-toggle:hover .folder-actions {
+    opacity: 1;
+}
+
+.folder-edit-btn, .folder-delete-btn {
+    font-size: 12px;
+    color: #007DB8;
+    margin-left: 8px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.folder-edit-btn:hover {
+    background-color: rgba(0, 125, 184, 0.2);
+}
+
+.folder-delete-btn:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+.folder-content {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.note-in-folder {
+    margin-bottom: 2px !important;
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    padding-left: 30px !important;
+    transition: padding-left 0.2s;
+}
+
+.note-in-folder a.links_arbo_left {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+.note-actions {
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+.note-in-folder:hover .note-actions {
+    opacity: 1;
+}
+
+.move-note-btn {
+    font-size: 10px;
+    color: #007DB8;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: all 0.2s;
+    margin-right: 8px;
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    left: 6px;
+}
+
+.note-in-folder:hover .move-note-btn {
+    opacity: 1;
+}
+
+.move-note-btn:hover {
+    background-color: rgba(0, 125, 184, 0.2);
+    transform: scale(1.1);
+}
+
+/* MODALS */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    width: 300px;
+    max-width: 90%;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: rgb(55, 53, 47);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-content input, .modal-content select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.modal-content input:focus, .modal-content select:focus {
+    outline: none;
+    border-color: #007DB8;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s;
+}
+
+.modal-buttons button:first-child {
+    background-color: #007DB8;
+    color: white;
+}
+
+.modal-buttons button:first-child:hover {
+    background-color: #005a8a;
+}
+
+.modal-buttons button:last-child {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.modal-buttons button:last-child:hover {
+    background-color: #e9ecef;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: -5px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #333;
+    text-decoration: none;
 }

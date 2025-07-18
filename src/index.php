@@ -19,6 +19,18 @@ include 'db_connect.php';
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
 $note = $_GET['note'] ?? '';
+$folder_filter = $_GET['folder'] ?? '';
+
+// Determine current note folder early for JavaScript
+$current_note_folder = 'Uncategorized';
+if($note != '') {
+    $query_note_folder = "SELECT folder FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
+    $res_note_folder = $con->query($query_note_folder);
+    if($res_note_folder && $res_note_folder->num_rows > 0) {
+        $note_data = mysqli_fetch_array($res_note_folder, MYSQLI_ASSOC);
+        $current_note_folder = $note_data["folder"] ?: 'Uncategorized';
+    }
+}
 ?>
 
 <html>
@@ -41,6 +53,64 @@ $note = $_GET['note'] ?? '';
     <!-- Notification popup -->
     <div id="notificationPopup"></div>
     
+    <!-- Modal for creating new folder -->
+    <div id="newFolderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('newFolderModal')">&times;</span>
+            <h3>Create New Folder</h3>
+            <input type="text" id="newFolderName" placeholder="Folder name" maxlength="255" onkeypress="if(event.key==='Enter') createFolder()">
+            <div class="modal-buttons">
+                <button onclick="createFolder()">Create</button>
+                <button onclick="closeModal('newFolderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for moving note to folder -->
+    <div id="moveNoteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('moveNoteModal')">&times;</span>
+            <h3>Move Note to Folder</h3>
+            <p>Move "<span id="moveNoteTitle"></span>" to:</p>
+            <select id="moveNoteFolder">
+                <option value="Uncategorized">Uncategorized</option>
+            </select>
+            <div class="modal-buttons">
+                <button onclick="moveNoteToFolder()">Move</button>
+                <button onclick="closeModal('moveNoteModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for moving note to folder from toolbar -->
+    <div id="moveNoteFolderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('moveNoteFolderModal')">&times;</span>
+            <h3>Move Note to Folder</h3>
+            <p>Move this note to:</p>
+            <select id="moveNoteFolderSelect">
+                <option value="Uncategorized">Uncategorized</option>
+            </select>
+            <div class="modal-buttons">
+                <button onclick="moveCurrentNoteToFolder()">Move</button>
+                <button onclick="closeModal('moveNoteFolderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for editing folder name -->
+    <div id="editFolderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editFolderModal')">&times;</span>
+            <h3>Rename Folder</h3>
+            <input type="text" id="editFolderName" placeholder="New folder name" maxlength="255">
+            <div class="modal-buttons">
+                <button onclick="saveFolderName()">Save</button>
+                <button onclick="closeModal('editFolderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- LEFT COLUMN -->	
     <div id="left_col">
 
@@ -48,6 +118,7 @@ $note = $_GET['note'] ?? '';
         <?php if ($is_mobile): ?>
         <div class="containbuttons">
             <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
+            <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
             <div class="list_tags" onclick="window.location = 'listtags.php';"><span><span title="List the tags" class="fas fa-tags"></span></span></div>
             <div class="exportAllButton" onclick="startDownload();">
                 <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
@@ -107,8 +178,15 @@ $note = $_GET['note'] ?? '';
             }
         }
     }
-    $query_left = "SELECT heading FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC";
-    $query_right = "SELECT * FROM entries WHERE trash = 0$search_condition ORDER BY updated DESC LIMIT 1";
+    
+    // Add folder filter condition
+    $folder_condition = '';
+    if (!empty($folder_filter)) {
+        $folder_condition = " AND folder = '" . mysqli_real_escape_string($con, $folder_filter) . "'";
+    }
+    
+    $query_left = "SELECT heading, folder FROM entries WHERE trash = 0$search_condition$folder_condition ORDER BY folder, updated DESC";
+    $query_right = "SELECT * FROM entries WHERE trash = 0$search_condition$folder_condition ORDER BY updated DESC LIMIT 1";
     ?>
     
     <!-- MENU -->
@@ -116,6 +194,7 @@ $note = $_GET['note'] ?? '';
     <?php if (!$is_mobile): ?>
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
+        <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
         <div class="list_tags" onclick="window.location = 'listtags.php';"><span><span title="List the tags" class="fas fa-tags"></span></span></div>
         <div class="exportAllButton" onclick="startDownload();">
             <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
@@ -154,6 +233,12 @@ $note = $_GET['note'] ?? '';
     </div>
     <?php endif; ?>
         
+    <script>
+        // Variables for folder management
+        var isSearchMode = <?php echo (!empty($search) || !empty($tags_search)) ? 'true' : 'false'; ?>;
+        var currentNoteFolder = <?php echo json_encode($note != '' ? ($current_note_folder ?? 'Uncategorized') : null); ?>;
+    </script>
+        
     <br><hr><br>
             
     <?php
@@ -164,20 +249,100 @@ $note = $_GET['note'] ?? '';
             $res_right = $con->query($query_note);
         }
         
+        // Determine which folders should be open
+        $is_search_mode = !empty($search) || !empty($tags_search);
+        
         // Exécution de la requête pour la colonne de gauche
         $res_query_left = $con->query($query_left);
         
-        while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {       
-            $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
-            // Préserver l'état de recherche dans les liens de notes
-            $params = [];
-            if (!empty($search)) $params[] = 'search=' . urlencode($search);
-            if (!empty($tags_search)) $params[] = 'tags_search=' . urlencode($tags_search);
-            $params[] = 'note=' . urlencode($row1["heading"]);
-            $link = 'index.php?' . implode('&', $params);
-            echo "<a class='links_arbo_left $isSelected' href='$link'><div id='icon_notes' class='far fa-file'></div>" . ($row1["heading"] ?: 'Untitled note') . "</a>";
-
-            echo "<div id=pxbetweennotes></div>";
+        // Group notes by folder for hierarchical display
+        $folders = [];
+        $folders_with_results = []; // Track folders that have search results
+        while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {
+            $folder = $row1["folder"] ?: 'Uncategorized';
+            if (!isset($folders[$folder])) {
+                $folders[$folder] = [];
+            }
+            $folders[$folder][] = $row1;
+            
+            // If in search mode, track folders with results
+            if($is_search_mode) {
+                $folders_with_results[$folder] = true;
+            }
+        }
+        
+        // Add empty folders from folders table
+        $empty_folders_query = $con->query("SELECT name FROM folders ORDER BY name");
+        while($folder_row = mysqli_fetch_array($empty_folders_query, MYSQLI_ASSOC)) {
+            if (!isset($folders[$folder_row['name']])) {
+                $folders[$folder_row['name']] = [];
+            }
+        }
+        
+        // Sort folders alphabetically (Uncategorized first)
+        uksort($folders, function($a, $b) {
+            if ($a === 'Uncategorized') return -1;
+            if ($b === 'Uncategorized') return 1;
+            return strcasecmp($a, $b);
+        });
+        
+        // Display folders and notes
+        foreach($folders as $folderName => $notes) {
+            // Show folder header only if not filtering by folder
+            if (empty($folder_filter)) {
+                $folderClass = 'folder-header';
+                $folderId = 'folder-' . md5($folderName);
+                
+                // Determine if this folder should be open
+                $should_be_open = false;
+                if($is_search_mode) {
+                    // In search mode: open folders that have results
+                    $should_be_open = isset($folders_with_results[$folderName]);
+                } else {
+                    // In normal mode: open only the folder of the current note
+                    $should_be_open = ($folderName === $current_note_folder);
+                }
+                
+                // Set appropriate icon and display style
+                $chevron_icon = $should_be_open ? 'fa-chevron-down' : 'fa-chevron-right';
+                $folder_display = $should_be_open ? 'block' : 'none';
+                
+                echo "<div class='$folderClass' data-folder='$folderName' onclick='selectFolder(\"$folderName\", this)'>";
+                echo "<div class='folder-toggle' onclick='event.stopPropagation(); toggleFolder(\"$folderId\")' data-folder-id='$folderId'>";
+                echo "<i class='fas $chevron_icon folder-icon'></i>";
+                echo "<i class='fas fa-folder folder-name-icon'></i>";
+                echo "<span class='folder-name' ondblclick='editFolderName(\"$folderName\")'>$folderName</span>";
+                echo "<span class='folder-actions'>";
+                echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
+                echo "<i class='fas fa-trash folder-delete-btn' onclick='event.stopPropagation(); deleteFolder(\"$folderName\")' title='Delete folder'></i>";
+                echo "</span>";
+                echo "</div>";
+                echo "<div class='folder-content' id='$folderId' style='display: $folder_display;'>";
+            }
+            
+            // Display notes in folder
+            foreach($notes as $row1) {
+                $isSelected = ($note === $row1["heading"]) ? 'selected-note' : '';
+                // Préserver l'état de recherche dans les liens de notes
+                $params = [];
+                if (!empty($search)) $params[] = 'search=' . urlencode($search);
+                if (!empty($tags_search)) $params[] = 'tags_search=' . urlencode($tags_search);
+                if (!empty($folder_filter)) $params[] = 'folder=' . urlencode($folder_filter);
+                $params[] = 'note=' . urlencode($row1["heading"]);
+                $link = 'index.php?' . implode('&', $params);
+                
+                $noteClass = empty($folder_filter) ? 'links_arbo_left note-in-folder' : 'links_arbo_left';
+                echo "<a class='$noteClass $isSelected' href='$link' data-note-id='" . $row1["heading"] . "' data-folder='$folderName'>";
+                echo "<i class='fas fa-folder-open move-note-btn' onclick='showMoveNoteDialog(\"" . addslashes($row1["heading"]) . "\")' title='Move to folder'></i>";
+                echo ($row1["heading"] ?: 'Untitled note');
+                echo "</a>";
+                echo "<div id=pxbetweennotes></div>";
+            }
+            
+            if (empty($folder_filter)) {
+                echo "</div>"; // Close folder-content
+                echo "</div>"; // Close folder-header
+            }
         }
                  
     ?>
@@ -226,19 +391,23 @@ $note = $_GET['note'] ?? '';
                 echo '<button type="button" class="toolbar-btn btn-eraser" title="Effacer formatage" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-separator" title="Ajouter un séparateur" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-save" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-folder" title="Changer de dossier" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                 echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Exporter la note"><i class="fas fa-download"></i></a>';
                 echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-trash" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 echo '</div>';
                 echo '</div>';
                 
-                // Tags (sortis du header pour layout vertical)
+                // Tags only (folder selection removed)
                 echo '<div class="note-tags-row">';
                 echo '<span class="fa fa-tag icon_tag"></span>';
                 echo '<span class="name_tags">'
                     .'<input class="add-margin" size="70px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tags?" onfocus="updateidtags(this);" id="tags'.$row['id'].'" type="text" placeholder="Tags ?" value="'.htmlspecialchars(str_replace(',', ' ', $row['tags']), ENT_QUOTES).'"/>'
                 .'</span>';
                 echo '</div>';
+                
+                // Hidden folder value for the note
+                echo '<input type="hidden" id="folder'.$row['id'].'" value="'.htmlspecialchars($row['folder'] ?: 'Uncategorized', ENT_QUOTES).'"/>';
                 // Titre
                 echo '<h4><input class="css-title" autocomplete="off" autocapitalize="off" spellcheck="false" onfocus="updateidhead(this);" id="inp'.$row['id'].'" type="text" placeholder="Title ?" value="'.htmlspecialchars(htmlspecialchars_decode($row['heading'] ?: 'Untitled note'), ENT_QUOTES).'"/></h4>';
                 // Contenu de la note

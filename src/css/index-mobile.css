@@ -8,7 +8,8 @@
     padding: 16px;
     background: #F7F7F5;
     box-sizing: border-box;
-    overflow-y: auto;
+    overflow-y: scroll !important; /* Always show scrollbar on mobile */
+    overflow-x: hidden !important; /* Hide horizontal scrollbar */
 }
 
 /* Espacement pour le contenu mobile */
@@ -108,7 +109,7 @@ body {
 }
 
 /* Toujours afficher les boutons essentiels sur mobile */
-.btn-separator, .btn-save, .btn-download, .btn-info, .btn-trash {
+.btn-separator, .btn-save, .btn-folder, .btn-download, .btn-info, .btn-trash {
     display: flex !important;
 }
 
@@ -143,6 +144,7 @@ pre, code {
     #left_col .links_arbo_left {
         font-size: 18px !important;
         line-height: 1.4 !important;
+        box-sizing: border-box !important;
     }
 }
 
@@ -166,7 +168,91 @@ body.note-open #right_col {
     display: block !important;
     position: fixed;
     inset: 0;
-    overflow-y: auto;
+    overflow-y: scroll !important; /* Always show scrollbar */
     background: #fff;
     z-index: 100;
+}
+
+/* FOLDER STYLES FOR MOBILE */
+
+.folder-header {
+    margin-bottom: 8px;
+    cursor: pointer !important;
+    border-radius: 8px !important;
+    transition: background-color 0.2s !important;
+}
+
+.folder-header.selected-folder {
+    background-color: rgba(0, 125, 184, 0.15) !important;
+}
+
+.folder-toggle {
+    padding: 12px 8px !important;
+    border-radius: 8px !important;
+}
+
+.folder-name {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+.folder-content {
+    margin-left: 16px !important;
+    margin-bottom: 12px !important;
+}
+
+.note-in-folder {
+    padding-left: 38px !important;
+    margin-bottom: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+}
+
+.note-in-folder a.links_arbo_left {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.folder-actions {
+    opacity: 1 !important; /* Always visible on mobile */
+}
+
+.note-actions {
+    opacity: 1 !important; /* Always visible on mobile */
+}
+
+.folder-edit-btn, .folder-delete-btn {
+    font-size: 14px !important;
+    padding: 8px !important;
+}
+
+.move-note-btn {
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    margin-right: 10px !important;
+    opacity: 1 !important; /* Always visible on mobile */
+    position: absolute !important;
+    left: 6px !important;
+}
+
+/* MODAL MOBILE ADJUSTMENTS */
+
+.modal-content {
+    margin: 25% auto !important;
+    width: 280px !important;
+    max-width: 95% !important;
+}
+
+.modal-content input, .modal-content select {
+    font-size: 16px !important;
+    padding: 12px !important;
+}
+
+.modal-buttons button {
+    padding: 12px 20px !important;
+    font-size: 16px !important;
 }

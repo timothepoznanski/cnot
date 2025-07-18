@@ -17,6 +17,7 @@
 	$heading = trim($_POST['heading'] ?? '');
 	$entry = $_POST['entry'] ?? ''; // Save the HTML content (including images) in an HTML file.
 	$entrycontent = $_POST['entrycontent'] ?? ''; // Save the text content (without images) in the database.
+	$folder = $_POST['folder'] ?? 'Uncategorized';
 	
 	$now = $_POST['now'];
 	$seconds = (int)$now;
@@ -38,7 +39,7 @@
     
 	$updated_date = date("Y-m-d H:i:s", $seconds);
 	
-	$query = "UPDATE entries SET heading = '" . mysqli_real_escape_string($con, $heading) . "', entry = '" . mysqli_real_escape_string($con, $entrycontent) . "', created = created, updated = '$updated_date', tags = '" . mysqli_real_escape_string($con, $tags) . "' WHERE id = $id";
+	$query = "UPDATE entries SET heading = '" . mysqli_real_escape_string($con, $heading) . "', entry = '" . mysqli_real_escape_string($con, $entrycontent) . "', created = created, updated = '$updated_date', tags = '" . mysqli_real_escape_string($con, $tags) . "', folder = '" . mysqli_real_escape_string($con, $folder) . "' WHERE id = $id";
     
 	if($con->query($query)) {
 		die(formatDateTime(strtotime($updated_date))); // If writing the query in base is ok then we exit

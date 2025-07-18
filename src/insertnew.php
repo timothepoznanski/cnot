@@ -4,11 +4,15 @@
 	include 'db_connect.php';
 	
 	$now = $_POST['now'];
+	$folder = $_POST['folder'] ?? 'Uncategorized';
 	$created_date = date("Y-m-d H:i:s", (int)$now);
 	
 // Insert the new note
-$query = "INSERT INTO entries (heading, entry, created, updated) VALUES ('Untitled note', '', '$created_date', '$created_date')";
-if ($con->query($query)) {
+$query = "INSERT INTO entries (heading, entry, folder, created, updated) VALUES ('Untitled note', '', ?, '$created_date', '$created_date')";
+$stmt = $con->prepare($query);
+$stmt->bind_param("s", $folder);
+
+if ($stmt->execute()) {
 	$id = $con->insert_id;
 	// Return both the heading and the id (for future-proofing)
 	echo json_encode([

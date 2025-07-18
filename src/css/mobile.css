@@ -44,11 +44,22 @@ body {
     flex-wrap: wrap !important;
     gap: 8px !important;
     justify-content: center !important;
-    padding: 12px 8px !important;
+    padding: 8px !important;
     width: 100% !important;
     align-items: center !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+}
+
+/* Réduire l'espace entre toolbar et tags sur mobile */
+.note-header {
+    margin-bottom: 8px !important;
+    padding-bottom: 0 !important;
+}
+
+.note-tags-row {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
 }
 
 .toolbar-btn {
@@ -66,13 +77,13 @@ body {
     justify-content: center !important;
     text-decoration: none !important;
     box-sizing: border-box !important;
-    background: #f8f9fa !important;
-    border: 1px solid #e9ecef !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 .toolbar-btn:hover, .toolbar-btn:focus {
-    background: #e9ecef !important;
-    border-color: #007DB8 !important;
+    background: transparent !important;
+    border: none !important;
     color: #007DB8 !important;
 }
 

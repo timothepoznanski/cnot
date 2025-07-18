@@ -451,7 +451,7 @@ img {
 }
 
 .add-margin {
-    margin: 20px 5px;
+    margin: 8px 5px;
     font-family: 'Inter', sans-serif !important;
     font-size: 16px;
 }
@@ -743,4 +743,15 @@ hr {
 .toolbar-btn i.fas.fa-palette,
 .toolbar-btn i.fas.fa-fill-drip {
     color: inherit !important;
+}
+
+/* Couleurs spécifiques au hover pour les boutons de couleur */
+.toolbar-btn:hover i.fas.fa-palette,
+.toolbar-btn:focus i.fas.fa-palette {
+    color: #ff2222 !important;
+}
+
+.toolbar-btn:hover i.fas.fa-fill-drip,
+.toolbar-btn:focus i.fas.fa-fill-drip {
+    color: #ffe066 !important;
 }

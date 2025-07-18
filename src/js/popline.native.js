@@ -86,37 +86,160 @@ class Popline {
         }
       },
       { name: 'bgcolor', icon: '<i class="fas fa-fill-drip" style="color:#ffe066;" title="Background color"></i>', action: () => {
-          // Toggle yellow highlight: if all selection is yellow, remove only highlight; else, apply
           const sel = window.getSelection();
-          if (sel.rangeCount > 0) {
-            const range = sel.getRangeAt(0);
-            let allYellow = true;
-            let hasText = false;
-            const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+          if (!sel.rangeCount) return;
+          const range = sel.getRangeAt(0);
+          let container = range.commonAncestorContainer;
+          if (container.nodeType === 3) container = container.parentNode;
+          // Si dans un bloc code
+          if (container.closest && container.closest('pre')) {
+            if (sel.isCollapsed) return;
+            // On ne touche qu'au texte sélectionné, sans casser le <pre>
+            // On vérifie si tout est déjà surligné
+            let allYellow = true, hasText = false;
+            const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
               acceptNode: function(node) {
                 if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                if (node.nodeValue.trim() === '') return NodeFilter.FILTER_REJECT;
                 return NodeFilter.FILTER_ACCEPT;
               }
             });
-            let node = treeWalker.currentNode;
+            let node = walker.currentNode;
             while(node) {
-              if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
-                hasText = true;
-                let parent = node.parentNode;
-                let bg = '';
-                if (parent && parent.style && parent.style.backgroundColor) bg = parent.style.backgroundColor.replace(/\s/g, '').toLowerCase();
-                if (bg !== '#ffe066' && bg !== 'rgb(255,224,102)') allYellow = false;
-              }
-              node = treeWalker.nextNode();
+              hasText = true;
+              let parent = node.parentNode;
+              let bg = '';
+              if (parent && parent.style && parent.style.backgroundColor) bg = parent.style.backgroundColor.replace(/\s/g, '').toLowerCase();
+              if (bg !== '#ffe066' && bg !== 'rgb(255,224,102)') allYellow = false;
+              node = walker.nextNode();
             }
             if (hasText && allYellow) {
-              // On retire uniquement le surlignage (pas tout le format)
-              document.execCommand('styleWithCSS', false, true);
-              document.execCommand('hiliteColor', false, 'inherit');
-              document.execCommand('styleWithCSS', false, false);
-            } else {
-              document.execCommand('hiliteColor', false, '#ffe066');
+              // On retire le surlignage jaune custom
+              const unwrap = (node) => {
+                if (node.nodeType === 1 && node.style && (node.style.backgroundColor === 'rgb(255, 224, 102)' || node.style.backgroundColor === '#ffe066')) {
+                  node.style.backgroundColor = '';
+                  if (!node.getAttribute('style')) {
+                    while (node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
+                    node.parentNode.removeChild(node);
+                  }
+                } else if (node.nodeType === 1) {
+                  for (let i = 0; i < node.childNodes.length; i++) unwrap(node.childNodes[i]);
+                }
+              };
+              unwrap(range.commonAncestorContainer);
+              return;
             }
+            // Sinon, on surligne la sélection sans casser le <pre>
+            // Découper proprement les nœuds texte de la sélection
+            const highlightInPre = (range) => {
+              const startContainer = range.startContainer;
+              const endContainer = range.endContainer;
+              const startOffset = range.startOffset;
+              const endOffset = range.endOffset;
+              // On collecte tous les nœuds texte concernés
+              const nodes = [];
+              const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node) {
+                  if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                  if (node.nodeValue.trim() === '') return NodeFilter.FILTER_REJECT;
+                  return NodeFilter.FILTER_ACCEPT;
+                }
+              });
+              let node = walker.currentNode;
+              while(node) {
+                nodes.push(node);
+                node = walker.nextNode();
+              }
+              nodes.forEach(textNode => {
+                let nodeStart = 0;
+                let nodeEnd = textNode.length;
+                if (textNode === startContainer) nodeStart = startOffset;
+                if (textNode === endContainer) nodeEnd = endOffset;
+                if (nodeStart >= nodeEnd) return;
+                // Découper le texte en trois parties : avant, sélectionné, après
+                const before = textNode.nodeValue.slice(0, nodeStart);
+                const selected = textNode.nodeValue.slice(nodeStart, nodeEnd);
+                const after = textNode.nodeValue.slice(nodeEnd);
+                const frag = document.createDocumentFragment();
+                if (before) frag.appendChild(document.createTextNode(before));
+                if (selected) {
+                  const span = document.createElement('span');
+                  span.style.backgroundColor = '#ffe066';
+                  span.textContent = selected;
+                  frag.appendChild(span);
+                }
+                if (after) frag.appendChild(document.createTextNode(after));
+                textNode.parentNode.replaceChild(frag, textNode);
+              });
+              // Après surlignage, forcer le style du <pre> parent
+              let pre = container.closest && container.closest('pre');
+              if (pre) {
+                pre.style.background = '#F7F6F3';
+                pre.style.color = 'rgb(55, 53, 47)';
+                pre.style.padding = '34px 16px 32px 32px';
+                pre.style.borderRadius = '4px';
+                pre.style.fontFamily = 'Consolas, monospace';
+                pre.style.fontSize = '90%';
+                pre.style.margin = '1em 0';
+                pre.style.border = '0px solid #ddd';
+                pre.style.display = 'block';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.minHeight = '1em';
+                // S'assurer qu'il y a toujours un nœud texte direct avant/après chaque span
+                let changed = false;
+                Array.from(pre.childNodes).forEach((node, idx, arr) => {
+                  if (node.nodeType === 1 && node.nodeName === 'SPAN') {
+                    // Avant
+                    if (idx === 0 || arr[idx-1].nodeType !== 3) {
+                      pre.insertBefore(document.createTextNode('\u200B'), node); changed = true;
+                    }
+                    // Après
+                    if (idx === arr.length-1 || arr[idx+1].nodeType !== 3) {
+                      if (node.nextSibling) {
+                        pre.insertBefore(document.createTextNode('\u200B'), node.nextSibling);
+                      } else {
+                        pre.appendChild(document.createTextNode('\u200B'));
+                      }
+                      changed = true;
+                    }
+                  }
+                });
+                // Si le <pre> est vide, ajouter un espace insécable
+                if (!pre.textContent || pre.textContent === '') {
+                  pre.appendChild(document.createTextNode('\u00A0'));
+                }
+              }
+            };
+            highlightInPre(range);
+            sel.removeAllRanges();
+            return;
+          }
+          // Comportement natif hors bloc code
+          let allYellow = true;
+          let hasText = false;
+          const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+            acceptNode: function(node) {
+              if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          let node = treeWalker.currentNode;
+          while(node) {
+            if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+              hasText = true;
+              let parent = node.parentNode;
+              let bg = '';
+              if (parent && parent.style && parent.style.backgroundColor) bg = parent.style.backgroundColor.replace(/\s/g, '').toLowerCase();
+              if (bg !== '#ffe066' && bg !== 'rgb(255,224,102)') allYellow = false;
+            }
+            node = treeWalker.nextNode();
+          }
+          if (hasText && allYellow) {
+            document.execCommand('styleWithCSS', false, true);
+            document.execCommand('hiliteColor', false, 'inherit');
+            document.execCommand('styleWithCSS', false, false);
+          } else {
+            document.execCommand('hiliteColor', false, '#ffe066');
           }
         }
       },
@@ -186,9 +309,20 @@ class Popline {
           // Préserver les doubles sauts de ligne intentionnels mais enlever les extras
           content = content.replace(/\n{3,}/g, '\n\n');  // Enlève les espaces au début et à la fin
 
-          // Créer me bloc de code
+          // Créer le bloc de code avec le style popline (inline)
           const pre = document.createElement('pre');
           pre.textContent = content;
+          pre.style.background = '#F7F6F3';
+          pre.style.color = 'rgb(55, 53, 47)';
+          pre.style.padding = '34px 16px 32px 32px';
+          pre.style.borderRadius = '4px';
+          pre.style.fontFamily = 'Consolas, monospace';
+          pre.style.fontSize = '90%';
+          pre.style.margin = '1em 0';
+          pre.style.border = '0px solid #ddd';
+          pre.style.display = 'block';
+          pre.style.whiteSpace = 'pre-wrap';
+          pre.style.minHeight = '1em';
 
           // Remplacer la sélection par le bloc de code
           range.deleteContents();

@@ -31,8 +31,7 @@ $note = $_GET['note'] ?? '';
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="css/popline.css" />
-    <script type="text/javascript" src="js/popline.native.js"></script>
+    <!-- Popline supprimé -->
 </head>
 
 <body<?php echo ($is_mobile && $note != '') ? ' class="note-open"' : ''; ?>>   
@@ -198,14 +197,31 @@ $note = $_GET['note'] ?? '';
                 echo '<div class="innernote">';
                 // Ligne 1 : date à gauche, boutons à droite
                 echo '<div class="note-header">';
-                echo '<div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div>';
+                // Date à gauche
+                echo '<div class="note-header-left"><div id="lastupdated'.$row['id'].'" class="lastupdated">'.formatDateTime(strtotime($row['updated'])).'</div></div>';
+                // Barre d’édition centrée
                 if (!$is_mobile) {
-                    echo '<div class="note-icons-desktop">';
-                    echo '<span class="fas fa-save icon_save" title="Save this note" onclick="saveFocusedNoteJS()"></span>';
-                    echo '<span class="fas fa-minus icon_separator blue-separator" title="Add a separator" onclick="insertSeparator()"></span>';
-                    echo '<a href="'.$filename.'" download="'.$title.'"><span class="fas fa-download icon_download" title="Export this note"></span></a>';
-                    echo '<span class="fas fa-info-circle icon_info" title="Show note number" onclick="alert(\'Note file: '.$row['id'].'.html\nCreated on: '.formatDateTime(strtotime($row['created'])).'\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"></span>';
-                    echo '<span class="fas fa-trash icon_trash" title="Delete this note" onclick="deleteNote(\''.$row['id'].'\')"></span>';
+                    echo '<div class="note-edit-toolbar">';
+                    echo '<button type="button" class="toolbar-btn" title="Gras" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Italique" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Souligné" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Barré" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Lien" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Supprimer le lien" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Couleur texte" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Surlignage" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Liste à puces" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Liste numérotée" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Taille police" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Bloc code" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Effacer formatage" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
+                    // Bouton séparateur
+                    echo '<button type="button" class="toolbar-btn" title="Ajouter un séparateur" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                    // Boutons action note (enregistrer, exporter, info, supprimer)
+                    echo '<button type="button" class="toolbar-btn" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                    echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn" title="Exporter la note"><i class="fas fa-download"></i></a>';
+                    echo '<button type="button" class="toolbar-btn" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
+                    echo '<button type="button" class="toolbar-btn" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                     echo '</div>';
                 }
                 echo '</div>';
@@ -230,9 +246,165 @@ $note = $_GET['note'] ?? '';
     
 <script src="js/script.js"></script>
 <script>
-// Initialisation Popline natif
-document.addEventListener('DOMContentLoaded', function() {
-  Popline.init('.noteentry');
-});
-</script>  <!-- When selecting text, it displays the floating editing menu in the .noteentry area (i.e., note content) above / It must be 'contenteditable="true"' -->
+// Fonctions pour les boutons d’édition (reprennent la logique Popline)
+function addLinkToNote() {
+  const url = prompt('Entrer l’URL du lien:', 'https://');
+  if (url) document.execCommand('createLink', false, url);
+}
+function toggleRedColor() {
+  document.execCommand('styleWithCSS', false, true);
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) {
+    const range = sel.getRangeAt(0);
+    let allRed = true, hasText = false;
+    const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node) {
+        if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    let node = treeWalker.currentNode;
+    while(node) {
+      if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+        hasText = true;
+        let parent = node.parentNode;
+        let color = '';
+        if (parent && parent.style && parent.style.color) color = parent.style.color.replace(/\s/g, '').toLowerCase();
+        if (color !== '#ff2222' && color !== 'rgb(255,34,34)') allRed = false;
+      }
+      node = treeWalker.nextNode();
+    }
+    if (hasText && allRed) {
+      document.execCommand('foreColor', false, 'black');
+    } else {
+      document.execCommand('foreColor', false, '#ff2222');
+    }
+  }
+  document.execCommand('styleWithCSS', false, false);
+}
+function toggleYellowHighlight() {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) {
+    const range = sel.getRangeAt(0);
+    let allYellow = true, hasText = false;
+    const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node) {
+        if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    let node = treeWalker.currentNode;
+    while(node) {
+      if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+        hasText = true;
+        let parent = node.parentNode;
+        let bg = '';
+        if (parent && parent.style && parent.style.backgroundColor) bg = parent.style.backgroundColor.replace(/\s/g, '').toLowerCase();
+        if (bg !== '#ffe066' && bg !== 'rgb(255,224,102)') allYellow = false;
+      }
+      node = treeWalker.nextNode();
+    }
+    document.execCommand('styleWithCSS', false, true);
+    if (hasText && allYellow) {
+      document.execCommand('hiliteColor', false, 'inherit');
+    } else {
+      document.execCommand('hiliteColor', false, '#ffe066');
+    }
+    document.execCommand('styleWithCSS', false, false);
+  }
+}
+function changeFontSize() {
+  const size = prompt('Taille de police (1-7):', '3');
+  if (size) document.execCommand('fontSize', false, size);
+}
+function toggleCodeBlock() {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  let container = range.commonAncestorContainer;
+  if (container.nodeType === 3) container = container.parentNode;
+  // Si déjà dans un bloc code, on le retire
+  if (container.closest && container.closest('pre')) {
+    const pre = container.closest('pre');
+    // Remplacer le <pre> par son contenu sous forme de <div> et <br>
+    const text = pre.textContent;
+    const div = document.createElement('div');
+    const lines = text.split('\n');
+    lines.forEach((line, index) => {
+      if (index > 0) div.appendChild(document.createElement('br'));
+      if (line.length > 0) div.appendChild(document.createTextNode(line));
+    });
+    pre.parentNode.replaceChild(div, pre);
+    return;
+  }
+  // Sinon, transformer la sélection en bloc code
+  if (sel.isCollapsed) return; // rien à faire si pas de sélection
+  // On clone le contenu sélectionné
+  const fragment = range.cloneContents();
+  if (!fragment.textContent.trim()) return;
+  let content = '';
+  // On récupère le texte avec sa structure
+  const processNode = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      content += node.textContent;
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.nodeName ==='P' || node.nodeName === 'DIV') {
+        if (!content.endsWith('\n')) content += '\n';
+      } else if (node.nodeName === 'BR') {
+        content += '\n';
+      }
+      for (const child of node.childNodes) processNode(child);
+    }
+  };
+  for (const node of fragment.childNodes) processNode(node);
+  content = content.replace(/\n{3,}/g, '\n\n');
+  // Crée le bloc <pre> avec style inline pour garantir l'apparence
+  const pre = document.createElement('pre');
+  pre.textContent = content;
+  pre.style.background = '#F7F6F3';
+  pre.style.color = 'rgb(55, 53, 47)';
+  pre.style.padding = '34px 16px 32px 32px';
+  pre.style.borderRadius = '4px';
+  pre.style.fontFamily = 'Consolas, monospace';
+  pre.style.fontSize = '90%';
+  pre.style.margin = '1em 0';
+  // Remplace la sélection par le bloc code
+  range.deleteContents();
+  range.insertNode(pre);
+  // Place le curseur après le bloc code
+  sel.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStartAfter(pre);
+  newRange.setEndAfter(pre);
+  sel.addRange(newRange);
+}
+</script>
+<script>
+// Fonction pour insérer un séparateur à la position du curseur dans la note active
+function insertSeparator() {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  // Crée un élément <hr>
+  const hr = document.createElement('hr');
+  hr.style.border = 'none';
+  hr.style.borderTop = '1px solid #bbb';
+  hr.style.margin = '12px 0';
+  // Insère le <hr> à la position du curseur d'édition
+  if (!range.collapsed) {
+    range.deleteContents();
+  }
+  range.insertNode(hr);
+  // Place le curseur après le <hr>
+  range.setStartAfter(hr);
+  range.setEndAfter(hr);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  // Déclenche un événement input sur la noteentry active
+  let container = range.commonAncestorContainer;
+  if (container.nodeType === 3) container = container.parentNode;
+  const noteentry = container.closest && container.closest('.noteentry');
+  if (noteentry) noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+}
+</script>
 </html>

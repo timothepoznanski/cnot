@@ -31,8 +31,7 @@ $note = $_GET['note'] ?? '';
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
-    <script src="js/toolbar-functions.js"></script>
-    <script src="js/mobile-toolbar.js"></script>
+    <script src="js/toolbar.js"></script>
 </head>
 
 <body<?php echo ($is_mobile && $note != '') ? ' class="note-open"' : ''; ?>>   

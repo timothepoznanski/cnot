@@ -16,6 +16,22 @@
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>	
 	<link rel="stylesheet" href="css/font-awesome.css" />
 	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
+	<style>
+		.searchtrash::placeholder {
+			color: #999 !important;
+			opacity: 1;
+		}
+		.searchtrash::-webkit-input-placeholder {
+			color: #999 !important;
+		}
+		.searchtrash::-moz-placeholder {
+			color: #999 !important;
+			opacity: 1;
+		}
+		.searchtrash:-ms-input-placeholder {
+			color: #999 !important;
+		}
+	</style>
 
 </head>
 <body class="trash-page" style="background: #f5f5f5;">

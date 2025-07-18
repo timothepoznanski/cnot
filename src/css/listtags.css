@@ -1,11 +1,18 @@
 /* Styles pour la page de tags */
 
-/* Reset spécifique pour éviter les conflits avec index-mobile.css */
+/* Reset spécifique pour éviter les conflits avec index.css et index-mobile.css */
 body.tags-page {
     overflow: auto !important;
     position: static !important;
     height: auto !important;
     min-height: 100vh !important;
+    display: block !important;
+    flex-direction: unset !important;
+}
+
+html.tags-page {
+    overflow: auto !important;
+    height: auto !important;
 }
 
 .tags-container {
@@ -14,6 +21,7 @@ body.tags-page {
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .tags-header {

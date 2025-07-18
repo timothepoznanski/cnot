@@ -19,7 +19,7 @@ while($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
 sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tags-page">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">

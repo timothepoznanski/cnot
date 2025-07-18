@@ -27,7 +27,7 @@
         width: 100% !important;
         height: auto !important;
         min-height: 100vh !important;
-        overflow: visible !important;
+        overflow: auto !important;
         max-width: none !important;
         padding: 0 !important;
         background: transparent !important;
@@ -42,7 +42,7 @@
         width: 100% !important;
         box-sizing: border-box !important;
         position: relative !important;
-        overflow: visible !important;
+        overflow: auto !important;
     }
     
     .tags-header {
@@ -72,7 +72,7 @@
         width: 100% !important;
         display: grid !important;
         position: static !important;
-        overflow: visible !important;
+        overflow: auto !important;
     }
     
     .tag-item {

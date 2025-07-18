@@ -143,7 +143,28 @@ function toggleCodeBlock() {
   for (const node of fragment.childNodes) processNode(node);
   content = content.replace(/\n{3,}/g, '\n\n');
   
-  // Crée le bloc <pre> avec style inline pour garantir l'apparence
+  // Essayer d'abord avec execCommand pour les navigateurs qui le supportent encore
+  const escapedContent = content
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  
+  const preHTML = `<pre style="background: #F7F6F3; color: rgb(55, 53, 47); padding: 34px 16px 32px 32px; border-radius: 4px; font-family: Consolas, monospace; font-size: 90%; margin: 1em 0; border: 1px solid #ddd;">${escapedContent}</pre>`;
+  
+  try {
+    const success = document.execCommand('insertHTML', false, preHTML);
+    if (success) {
+      // Déclencher la détection de modification
+      if (typeof update === 'function') {
+        update();
+      }
+      return;
+    }
+  } catch (e) {
+    // execCommand a échoué, utiliser l'approche manuelle
+  }
+  
+  // Fallback : création manuelle avec support d'annulation
   const pre = document.createElement('pre');
   pre.textContent = content;
   pre.style.background = '#F7F6F3';
@@ -155,16 +176,41 @@ function toggleCodeBlock() {
   pre.style.margin = '1em 0';
   pre.style.border = '1px solid #ddd';
   
-  // Remplace la sélection par le bloc code
-  range.deleteContents();
-  range.insertNode(pre);
+  // Trouver la noteentry pour les événements
+  let noteContainer = range.commonAncestorContainer;
+  if (noteContainer.nodeType === 3) noteContainer = noteContainer.parentNode;
+  const noteentry = noteContainer.closest && noteContainer.closest('.noteentry');
   
-  // Place le curseur après le bloc code
-  sel.removeAllRanges();
-  const newRange = document.createRange();
-  newRange.setStartAfter(pre);
-  newRange.setEndAfter(pre);
-  sel.addRange(newRange);
+  if (noteentry) {
+    // Déclencher un événement beforeinput pour l'historique d'annulation
+    const beforeInputEvent = new InputEvent('beforeinput', {
+      bubbles: true,
+      cancelable: true,
+      inputType: 'insertText',
+      data: null
+    });
+    
+    if (noteentry.dispatchEvent(beforeInputEvent)) {
+      // Remplacer la sélection par le bloc code
+      range.deleteContents();
+      range.insertNode(pre);
+      
+      // Positionner le curseur après le bloc code
+      sel.removeAllRanges();
+      const newRange = document.createRange();
+      newRange.setStartAfter(pre);
+      newRange.setEndAfter(pre);
+      sel.addRange(newRange);
+      
+      // Déclencher l'événement input
+      const inputEvent = new InputEvent('input', {
+        bubbles: true,
+        inputType: 'insertText',
+        data: null
+      });
+      noteentry.dispatchEvent(inputEvent);
+    }
+  }
   
   // Déclencher la détection de modification
   if (typeof update === 'function') {
@@ -175,29 +221,61 @@ function toggleCodeBlock() {
 function insertSeparator() {
   const sel = window.getSelection();
   if (!sel.rangeCount) return;
-  const range = sel.getRangeAt(0);
   
-  // Crée un élément <hr>
+  const range = sel.getRangeAt(0);
+  let container = range.commonAncestorContainer;
+  if (container.nodeType === 3) container = container.parentNode;
+  const noteentry = container.closest && container.closest('.noteentry');
+  
+  if (!noteentry) return;
+  
+  // Essayer d'abord avec execCommand pour les navigateurs qui le supportent encore
+  try {
+    const hrHTML = '<hr style="border: none; border-top: 1px solid #bbb; margin: 12px 0;">';
+    const success = document.execCommand('insertHTML', false, hrHTML);
+    
+    if (success) {
+      // Déclenche un événement input
+      noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+      return;
+    }
+  } catch (e) {
+    // execCommand a échoué, utiliser l'approche manuelle
+  }
+  
+  // Fallback : insertion manuelle avec support d'annulation via l'API moderne
   const hr = document.createElement('hr');
   hr.style.border = 'none';
   hr.style.borderTop = '1px solid #bbb';
   hr.style.margin = '12px 0';
   
-  // Insère le <hr> à la position du curseur d'édition
-  if (!range.collapsed) {
-    range.deleteContents();
+  // Déclencher un événement beforeinput pour l'historique d'annulation
+  const beforeInputEvent = new InputEvent('beforeinput', {
+    bubbles: true,
+    cancelable: true,
+    inputType: 'insertText',
+    data: null
+  });
+  
+  if (noteentry.dispatchEvent(beforeInputEvent)) {
+    // Insérer l'élément
+    if (!range.collapsed) {
+      range.deleteContents();
+    }
+    range.insertNode(hr);
+    
+    // Positionner le curseur après le HR
+    range.setStartAfter(hr);
+    range.setEndAfter(hr);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    
+    // Déclencher l'événement input
+    const inputEvent = new InputEvent('input', {
+      bubbles: true,
+      inputType: 'insertText',
+      data: null
+    });
+    noteentry.dispatchEvent(inputEvent);
   }
-  range.insertNode(hr);
-  
-  // Place le curseur après le <hr>
-  range.setStartAfter(hr);
-  range.setEndAfter(hr);
-  sel.removeAllRanges();
-  sel.addRange(range);
-  
-  // Déclenche un événement input sur la noteentry active
-  let container = range.commonAncestorContainer;
-  if (container.nodeType === 3) container = container.parentNode;
-  const noteentry = container.closest && container.closest('.noteentry');
-  if (noteentry) noteentry.dispatchEvent(new Event('input', {bubbles:true}));
 }

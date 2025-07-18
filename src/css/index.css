@@ -21,22 +21,6 @@ body {
     height: 100%;
 }
 
-body.trash-page {
-    overflow-y: auto;
-    height: auto;
-}
-
-body.trash-page {
-    position: static;
-    display: block;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    overflow-y: auto;
-    overflow-x: visible;
-    box-sizing: border-box;
-}
-
 /* Supprimer les marges du h4 du titre de la note */
 h4 {
     margin: 0 !important;
@@ -491,60 +475,24 @@ img {
     font-size: 17px;
 }
 
-/* MENU TRASH */
-
-.icon_trash{
-    color: #007DB8;
-}
-
-/* Container for trash action icons */
-.trash-action-icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    margin-top: 7px;
-}
-
-.icon_trash_trash {
-    margin: 0 0 0 8px;
-    font-size: 1.2em;
-    color: #007DB8;
-    cursor: pointer;
-}
-
-.icon_restore_trash {
-    margin: 0;
-    font-size: 1.2em;
-    color: #007DB8;
-    cursor: pointer;
-}
-
-.trashnotebutton, .backbutton, .emptytrash {
-    display: inline-block;
-    width:30px;
-    cursor: pointer;
-    height:20px;
-    margin: 5px;
-    color: #007DB8;
-    font-size: 17px;
-}
-
-.searchtrash::-webkit-input-placeholder {
-   color: white;
-}
-
-.searchtrash:-ms-input-placeholder {  
-   color: white;  
-}
-
 .search:focus{
     border-bottom: 1px solid #32a1ce;
 }
 
-.searchtrash:focus{
-    border-bottom: 1px solid #32a1ce;
+/* ICONES TRASH pour interface principale */
+
+.icon_trash {
+    color: #007DB8;
+}
+
+.trashnotebutton {
+    display: inline-block;
+    width: 30px;
+    cursor: pointer;
+    height: 20px;
+    margin: 5px;
+    color: #007DB8;
+    font-size: 17px;
 }
 
 /* NOTE DISPLAY */
@@ -633,10 +581,21 @@ textarea:focus{
 
 /* CODE BLOCKS */
 
-
-/* Blocs de code : monospace */
+/* Blocs de code : monospace avec background gris */
 pre, code, .noteentry span[style*='Consolas'] {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    background-color: #f4f4f4 !important;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Background spécifique pour les blocs pre (plus de padding) */
+pre, .noteentry pre {
+    background-color: #f4f4f4 !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    border: 1px solid #e0e0e0;
+    overflow-x: auto;
 }
 
 /* Force Consolas pour tous les éléments dans les blocs de code, y compris gras et surlignage */
@@ -660,7 +619,7 @@ code *,
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
-/* Force Consolas pour tous les éléments avec styles inline dans les blocs de code */
+/* Force Consolas et préserve le background pour tous les éléments avec styles inline dans les blocs de code */
 pre span[style],
 code span[style],
 .noteentry pre span[style],
@@ -668,6 +627,15 @@ code span[style],
 .noteentry pre *[style],
 .noteentry code *[style] {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
+/* Préserver le background gris même avec du surlignage dans les blocs de code */
+/* Solution simple et efficace : override du background pour les éléments surlignés */
+pre *[style*="background"],
+code *[style*="background"],
+.noteentry pre *[style*="background"],
+.noteentry code *[style*="background"] {
+    background: linear-gradient(rgba(255, 255, 0, 0.4), rgba(255, 255, 0, 0.4)), #f4f4f4 !important;
 }
 
 /* Style plugin code block (optionnel, garder la taille et couleur si besoin) */

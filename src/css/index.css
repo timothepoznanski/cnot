@@ -581,7 +581,7 @@ textarea:focus{
 .code-block, 
 pre.code-block,
 .noteentry pre {
-    font-family: Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     background-color: #f8f8f8 !important;
     /* border: 1px solid #e1e1e1; */
     border-radius: 4px;
@@ -596,31 +596,31 @@ pre.code-block,
 
 /* Code inline */
 code {
-    font-family: Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     background-color: #f4f4f4;
     padding: 2px 4px;
     border-radius: 3px;
     color: #333;
 }
 
-/* Force Consolas et préserve le background pour tous les éléments avec styles inline dans les blocs de code */
+/* Force la même police pour tous les éléments avec styles inline dans les blocs de code */
 pre span[style],
 code span[style],
 .noteentry pre span[style],
 .noteentry code span[style],
 .noteentry pre *[style],
 .noteentry code *[style] {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
 }
 
-/* Force Consolas pour tous les éléments de formatage dans les blocs de code */
+/* Force la même police pour tous les éléments de formatage dans les blocs de code */
 pre b, pre strong, pre i, pre em, pre u, pre s, pre span,
 code b, code strong, code i, code em, code u, code s, code span,
 .code-block b, .code-block strong, .code-block i, .code-block em, .code-block u, .code-block s, .code-block span,
 .noteentry pre b, .noteentry pre strong, .noteentry pre i, .noteentry pre em, .noteentry pre u, .noteentry pre s, .noteentry pre span,
 .noteentry code b, .noteentry code strong, .noteentry code i, .noteentry code em, .noteentry code u, .noteentry code s, .noteentry code span,
 .noteentry .code-block b, .noteentry .code-block strong, .noteentry .code-block i, .noteentry .code-block em, .noteentry .code-block u, .noteentry .code-block s, .noteentry .code-block span {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     font-size: 15px !important;
 }
 
@@ -633,18 +633,18 @@ code *[style*="background"],
 .noteentry code *[style*="background"],
 .noteentry .code-block *[style*="background"] {
     background: linear-gradient(rgba(255, 255, 0, 0.4), rgba(255, 255, 0, 0.4)), #f4f4f4 !important;
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     font-size: 15px !important;
 }
 
-/* Force Consolas pour les éléments avec couleur dans les blocs de code */
+/* Force la même police pour les éléments avec couleur dans les blocs de code */
 pre *[style*="color"],
 code *[style*="color"],
 .code-block *[style*="color"],
 .noteentry pre *[style*="color"],
 .noteentry code *[style*="color"],
 .noteentry .code-block *[style*="color"] {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     font-size: 15px !important;
 }
 
@@ -657,7 +657,7 @@ code *[style*="color"],
 .noteentry span[style*='Consolas'] em,
 .noteentry span[style*='Consolas'] u,
 .noteentry span[style*='Consolas'] s {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-family: "Segoe UI Mono", "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "Courier New", monospace !important;
     font-size: 15px !important;
     font-style: normal !important;
     font-weight: normal !important;

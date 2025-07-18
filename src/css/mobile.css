@@ -11,6 +11,11 @@
     overflow-y: auto;
 }
 
+/* Espacement pour le contenu mobile */
+.mobile-search-container {
+    margin-bottom: 15px !important;
+}
+
 
 html, body {
     height: 100%;
@@ -29,8 +34,56 @@ body {
     position: relative;
 }
 
-.note-header {
+/* .note-header {
   display: none !important;
+} */
+
+/* Optimisation de la barre d'outils pour mobile */
+.note-edit-toolbar {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    justify-content: center !important;
+    padding: 8px 0 !important;
+    width: 100% !important;
+    align-items: center !important;
+}
+
+.toolbar-btn {
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 6px !important;
+    font-size: 1.1em !important;
+    border-radius: 6px !important;
+    margin: 2px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+}
+
+.toolbar-btn:hover, .toolbar-btn:focus {
+    background: #f0f0f0 !important;
+}
+
+/* Gestion responsive des boutons de formatage sur mobile */
+.format-buttons {
+    display: none !important; /* Cachés par défaut sur mobile */
+    transition: all 0.3s ease !important;
+    margin-bottom: 5px !important;
+    padding-bottom: 8px !important;
+    width: 100% !important;
+}
+
+.format-buttons.show {
+    display: flex !important; /* Visibles quand la classe 'show' est ajoutée */
+}
+
+/* Les boutons d'action restent toujours visibles */
+.action-buttons {
+    display: flex !important;
+    width: 100% !important;
 }
 
 #right_col {

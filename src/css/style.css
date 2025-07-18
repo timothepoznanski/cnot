@@ -112,8 +112,8 @@ body {
     z-index: 10;
     background: #fff;
     padding-top: 10px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    /* border-bottom: 1px solid #ccc; */
     gap: 0;
 }
 
@@ -142,6 +142,16 @@ body {
 }
 
 .note-edit-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Sur desktop, les deux barres d'outils sont toujours visibles */
+.format-buttons,
+.action-buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -741,12 +751,9 @@ hr {
 .toolbar-btn.save-modified:focus i.fas.fa-save {
     color: #e53935 !important;
 }
-.toolbar-btn i.fas.fa-save {
-    color: #222 !important;
-}
-.toolbar-btn:hover i.fas.fa-save,
-.toolbar-btn:focus i.fas.fa-save {
-    color: #222 !important;
+/* Pour l'icône save normale, permettre le changement de couleur au hover */
+.toolbar-btn:not(.save-modified) i.fas.fa-save {
+    color: inherit;
 }
 .toolbar-btn i.fas.fa-palette,
 .toolbar-btn i.fas.fa-fill-drip {

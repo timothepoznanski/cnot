@@ -74,12 +74,12 @@ body {
 }
 
 .toolbar-btn {
-    min-width: 36px !important;
-    min-height: 36px !important;
-    width: 36px !important;
-    height: 36px !important;
-    padding: 6px !important;
-    font-size: 0.9em !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 8px !important;
+    font-size: 1.0em !important;
     border-radius: 6px !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
@@ -143,28 +143,6 @@ pre, code {
     #left_col .links_arbo_left {
         font-size: 18px !important;
         line-height: 1.4 !important;
-    }
-}
-
-/* Ajustements pour très petits écrans */
-@media (max-width: 400px) {
-    .note-edit-toolbar {
-        gap: 4px !important;
-        padding: 6px !important;
-    }
-    
-    .toolbar-btn {
-        min-width: 32px !important;
-        min-height: 32px !important;
-        width: 32px !important;
-        height: 32px !important;
-        padding: 4px !important;
-        font-size: 0.8em !important;
-    }
-    
-    .note-header {
-        padding-left: 4px !important;
-        padding-right: 4px !important;
     }
 }
 

@@ -29,7 +29,7 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
 	<link type="text/css" rel="stylesheet" href="css/listtags.css"/>
 </head>
-<body>
+<body class="tags-page">
 	<div class="tags-container">
 		<h1 class="tags-header">Tags</h1>
 		
@@ -42,13 +42,6 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 				autocomplete="off"
 			>
 		</form>
-		
-		<div class="tags-buttons-container">
-			<a href="index.php" class="tags-button">
-				<i class="fas fa-arrow-left tags-button-icon"></i>
-				Back to Notes
-			</a>
-		</div>
 		
 		<div class="tags-info">
 			There are <?php echo $count_tags; ?> tags total

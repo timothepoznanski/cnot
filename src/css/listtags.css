@@ -1,9 +1,18 @@
 /* Styles pour la page de tags */
 
+/* Reset spécifique pour éviter les conflits avec mobile.css */
+body.tags-page {
+    overflow-y: auto !important;
+    position: static !important;
+    height: auto !important;
+}
+
 .tags-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .tags-header {
@@ -33,35 +42,19 @@
     border-color: #007DB8;
 }
 
-.tags-buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
+.tags-info {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007DB8;
+    font-size: 1.1em;
+    font-weight: 500;
 }
 
-.tags-button {
-    background: #007DB8;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.tags-button:hover {
-    background: #005a8a;
-    transform: translateY(-2px);
-}
-
-.tags-button-icon {
-    font-size: 1.2em;
+.search-results {
+    text-align: center;
+    margin-top: 10px;
+    color: #666;
+    font-size: 0.95em;
 }
 
 .tags-grid {
@@ -112,45 +105,65 @@
 
 /* Responsive design pour mobile */
 @media (max-width: 800px) {
+    /* Reset et override pour éviter les conflits */
+    body {
+        overflow-y: auto !important;
+        position: static !important;
+        height: auto !important;
+    }
+    
     .tags-container {
-        padding: 15px;
+        padding: 15px !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     
     .tags-header {
-        font-size: 2em;
-        margin-bottom: 20px;
+        font-size: 2em !important;
+        margin-bottom: 20px !important;
     }
     
     .tags-search-input {
-        width: 90%;
-        font-size: 1em;
+        width: 90% !important;
+        font-size: 1em !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
     }
     
-    .tags-buttons-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .tags-button {
-        width: 200px;
-        justify-content: center;
+    .tags-info {
+        font-size: 1em !important;
+        margin-bottom: 15px !important;
     }
     
     .tags-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+        gap: 12px !important;
+        width: 100% !important;
+        display: grid !important;
     }
     
     .tag-item {
-        padding: 12px;
+        padding: 12px !important;
+        display: block !important;
+        width: auto !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
     }
     
     .tag-name {
-        font-size: 1em;
+        font-size: 1em !important;
     }
     
     .tag-count {
-        font-size: 0.85em;
+        font-size: 0.85em !important;
+    }
+    
+    /* Supprimer tout style conflictuel qui pourrait venir d'ailleurs */
+    #myInputFiltrerTags,
+    #myULFiltrerTags,
+    .tags-list-container {
+        display: none !important;
     }
 }

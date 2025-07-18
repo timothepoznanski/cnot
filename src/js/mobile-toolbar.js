@@ -11,18 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour afficher/cacher les boutons de formatage
     function toggleFormatButtons() {
         const selection = window.getSelection();
-        const formatButtons = document.querySelectorAll('.format-buttons');
+        const toolbar = document.querySelector('.note-edit-toolbar');
         
         if (selection.toString().length > 0) {
-            // Il y a du texte sélectionné, afficher les boutons
-            formatButtons.forEach(toolbar => {
-                toolbar.classList.add('show');
-            });
+            // Il y a du texte sélectionné, afficher les boutons de formatage
+            if (toolbar) {
+                toolbar.classList.add('show-format-buttons');
+            }
         } else {
-            // Pas de sélection, cacher les boutons
-            formatButtons.forEach(toolbar => {
-                toolbar.classList.remove('show');
-            });
+            // Pas de sélection, cacher les boutons de formatage
+            if (toolbar) {
+                toolbar.classList.remove('show-format-buttons');
+            }
         }
     }
     
@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cacher les boutons quand on clique en dehors d'une note
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.notecard')) {
-            const formatButtons = document.querySelectorAll('.format-buttons');
-            formatButtons.forEach(toolbar => {
-                toolbar.classList.remove('show');
-            });
+            const toolbar = document.querySelector('.note-edit-toolbar');
+            if (toolbar) {
+                toolbar.classList.remove('show-format-buttons');
+            }
         }
     });
 });

@@ -98,7 +98,7 @@ body {
     box-sizing: border-box;
 }
 
-/* Header note : date à gauche, boutons à droite */
+/* Header note : contient uniquement la barre d'outils */
 
 .note-header {
     display: flex;
@@ -106,13 +106,13 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     position: sticky;
     top: 0;
     z-index: 10;
     background: #fff;
     padding-top: 10px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     /* border-bottom: 1px solid #ccc; */
     gap: 0;
 }
@@ -139,24 +139,6 @@ body {
     left: 24px;
     font-size: 0.95em;
     color: #888;
-}
-
-.note-edit-toolbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-}
-
-/* Sur desktop, les deux barres d'outils sont toujours visibles */
-.format-buttons,
-.action-buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
 }
 
 .toolbar-btn {
@@ -439,7 +421,8 @@ img {
     display: flex;
     align-items: center;
     overflow: hidden;
-    /* margin-top: 12px; */
+    margin-bottom: 15px;
+    margin-top: 5px;
 }
 
 .fa-tag.icon_tag {
@@ -594,6 +577,8 @@ code[contentEditable=true]:empty:before,
     padding-right: 2%;
     padding-bottom: 5px;
     font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 textarea{

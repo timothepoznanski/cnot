@@ -40,50 +40,70 @@ body {
 
 /* Optimisation de la barre d'outils pour mobile */
 .note-edit-toolbar {
+    flex-direction: row !important;
     flex-wrap: wrap !important;
-    gap: 6px !important;
+    gap: 8px !important;
     justify-content: center !important;
-    padding: 8px 0 !important;
+    padding: 12px 8px !important;
     width: 100% !important;
     align-items: center !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .toolbar-btn {
-    min-width: 36px !important;
-    min-height: 36px !important;
-    padding: 6px !important;
-    font-size: 1.1em !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 8px !important;
+    font-size: 1.0em !important;
     border-radius: 6px !important;
-    margin: 2px !important;
+    margin: 0 !important;
     flex-shrink: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-decoration: none !important;
     box-sizing: border-box !important;
+    background: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
 }
 
 .toolbar-btn:hover, .toolbar-btn:focus {
-    background: #f0f0f0 !important;
+    background: #e9ecef !important;
+    border-color: #007DB8 !important;
+    color: #007DB8 !important;
 }
 
-/* Gestion responsive des boutons de formatage sur mobile */
-.format-buttons {
-    display: none !important; /* Cachés par défaut sur mobile */
-    transition: all 0.3s ease !important;
-    margin-bottom: 5px !important;
-    padding-bottom: 8px !important;
-    width: 100% !important;
+/* Gestion responsive des boutons individuels sur mobile */
+/* Cacher certains boutons de formatage par défaut sur mobile */
+.btn-bold, .btn-italic, .btn-underline, .btn-strikethrough,
+.btn-link, .btn-unlink, .btn-color, .btn-highlight,
+.btn-list-ul, .btn-list-ol, .btn-text-height, .btn-code, .btn-eraser {
+    display: none !important;
 }
 
-.format-buttons.show {
-    display: flex !important; /* Visibles quand la classe 'show' est ajoutée */
-}
-
-/* Les boutons d'action restent toujours visibles */
-.action-buttons {
+/* Toujours afficher les boutons essentiels sur mobile */
+.btn-separator, .btn-save, .btn-download, .btn-info, .btn-trash {
     display: flex !important;
-    width: 100% !important;
+}
+
+/* Classe pour afficher les boutons de formatage quand nécessaire */
+.show-format-buttons .btn-bold, 
+.show-format-buttons .btn-italic, 
+.show-format-buttons .btn-underline, 
+.show-format-buttons .btn-strikethrough,
+.show-format-buttons .btn-link, 
+.show-format-buttons .btn-unlink, 
+.show-format-buttons .btn-color, 
+.show-format-buttons .btn-highlight,
+.show-format-buttons .btn-list-ul, 
+.show-format-buttons .btn-list-ol, 
+.show-format-buttons .btn-text-height, 
+.show-format-buttons .btn-code, 
+.show-format-buttons .btn-eraser {
+    display: flex !important;
 }
 
 #right_col {

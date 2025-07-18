@@ -211,31 +211,29 @@ $note = $_GET['note'] ?? '';
                 // Ligne 1 : barre d’édition centrée (plus de date)
                 echo '<div class="note-header">';
                 // Boutons de formatage (cachés par défaut sur mobile, visibles lors de sélection)
-                echo '<div class="note-edit-toolbar format-buttons">';
-                echo '<button type="button" class="toolbar-btn" title="Gras" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Italique" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Souligné" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Barré" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Lien" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Supprimer le lien" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Couleur texte" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Surlignage" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Liste à puces" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Liste numérotée" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Taille police" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Bloc code" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Effacer formatage" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
-                echo '</div>';
-                // Boutons d'action (toujours visibles)
-                echo '<div class="note-edit-toolbar action-buttons">';
-                echo '<button type="button" class="toolbar-btn" title="Ajouter un séparateur" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
-                echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn" title="Exporter la note"><i class="fas fa-download"></i></a>';
-                echo '<button type="button" class="toolbar-btn" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
-                echo '<button type="button" class="toolbar-btn" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
+                echo '<div class="note-edit-toolbar">';
+                echo '<button type="button" class="toolbar-btn btn-bold" title="Gras" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-italic" title="Italique" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-underline" title="Souligné" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-strikethrough" title="Barré" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-link" title="Lien" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-unlink" title="Supprimer le lien" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-color" title="Couleur texte" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-highlight" title="Surlignage" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-list-ul" title="Liste à puces" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-list-ol" title="Liste numérotée" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-text-height" title="Taille police" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-code" title="Bloc code" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-eraser" title="Effacer formatage" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-separator" title="Ajouter un séparateur" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-save" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Exporter la note"><i class="fas fa-download"></i></a>';
+                echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-trash" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 echo '</div>';
                 echo '</div>';
-                // Ligne 2 : icône tag + tags
+                
+                // Tags (sortis du header pour layout vertical)
                 echo '<div class="note-tags-row">';
                 echo '<span class="fa fa-tag icon_tag"></span>';
                 echo '<span class="name_tags">'

@@ -150,20 +150,20 @@ body {
 }
 
 .toolbar-btn {
-    background: #f7f7f7;
-    border: 1px solid #e0e0e0;
+    background: transparent !important;
+    border: none !important;
     border-radius: 5px;
     padding: 6px 8px;
     font-size: 1.1em;
     cursor: pointer;
     margin: 0 2px;
-    transition: background 0.2s, border 0.2s;
+    transition: color 0.2s;
     color: #444;
     outline: none;
 }
 .toolbar-btn:hover, .toolbar-btn:focus {
-    background: #e0eaff;
-    border-color: #32a1ce;
+    background: transparent !important;
+    border: none !important;
     color: #007DB8;
 }
 
@@ -635,6 +635,37 @@ pre, code, .noteentry span[style*='Consolas'] {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
+/* Force Consolas pour tous les éléments dans les blocs de code, y compris gras et surlignage */
+pre *, 
+code *, 
+.noteentry span[style*='Consolas'] *,
+.noteentry pre b,
+.noteentry pre strong,
+.noteentry pre i,
+.noteentry pre em,
+.noteentry pre u,
+.noteentry pre s,
+.noteentry pre span,
+.noteentry code b,
+.noteentry code strong,
+.noteentry code i,
+.noteentry code em,
+.noteentry code u,
+.noteentry code s,
+.noteentry code span {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
+/* Force Consolas pour tous les éléments avec styles inline dans les blocs de code */
+pre span[style],
+code span[style],
+.noteentry pre span[style],
+.noteentry code span[style],
+.noteentry pre *[style],
+.noteentry code *[style] {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
 /* Style plugin code block (optionnel, garder la taille et couleur si besoin) */
 .noteentry span[style*='Consolas'] {
     font-size: 13.5px !important;
@@ -690,10 +721,25 @@ hr {
 }
 
 .toolbar-btn.save-modified {
-    color: #fff !important;
-    background: #e53935 !important;
-    border-color: #b71c1c !important;
+    background: transparent !important;
+    border: none !important;
 }
+/* Quand save est modifié, il reste rouge même au hover/focus */
 .toolbar-btn.save-modified i.fas.fa-save {
-    color: #fff !important;
+    color: #e53935 !important;
+}
+.toolbar-btn.save-modified:hover i.fas.fa-save,
+.toolbar-btn.save-modified:focus i.fas.fa-save {
+    color: #e53935 !important;
+}
+.toolbar-btn i.fas.fa-save {
+    color: #222 !important;
+}
+.toolbar-btn:hover i.fas.fa-save,
+.toolbar-btn:focus i.fas.fa-save {
+    color: #222 !important;
+}
+.toolbar-btn i.fas.fa-palette,
+.toolbar-btn i.fas.fa-fill-drip {
+    color: inherit !important;
 }

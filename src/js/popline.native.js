@@ -56,6 +56,94 @@ class Popline {
           const sel = window.getSelection();
           if (sel.rangeCount > 0) {
             const range = sel.getRangeAt(0);
+            let container = range.commonAncestorContainer;
+            if (container.nodeType === 3) container = container.parentNode;
+            
+            // Vérifier si on est dans un bloc de code
+            const isInCodeBlock = container.closest && container.closest('pre');
+            
+            if (isInCodeBlock) {
+              // Logique spéciale pour les blocs de code
+              if (sel.isCollapsed) return;
+              
+              let allRed = true, hasText = false;
+              const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node) {
+                  if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                  if (node.nodeValue.trim() === '') return NodeFilter.FILTER_REJECT;
+                  return NodeFilter.FILTER_ACCEPT;
+                }
+              });
+              let node = walker.currentNode;
+              while(node) {
+                hasText = true;
+                let parent = node.parentNode;
+                let color = '';
+                if (parent && parent.style && parent.style.color) color = parent.style.color.replace(/\s/g, '').toLowerCase();
+                if (color !== '#ff2222' && color !== 'rgb(255,34,34)') allRed = false;
+                node = walker.nextNode();
+              }
+              
+              if (hasText && allRed) {
+                // Retirer la couleur rouge dans le bloc de code
+                const unwrap = (node) => {
+                  if (node.nodeType === 1 && node.style && (node.style.color === 'rgb(255, 34, 34)' || node.style.color === '#ff2222')) {
+                    node.style.color = '';
+                    if (!node.getAttribute('style') || node.getAttribute('style').trim() === '') {
+                      while (node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
+                      node.parentNode.removeChild(node);
+                    }
+                  } else if (node.nodeType === 1) {
+                    for (let i = 0; i < node.childNodes.length; i++) unwrap(node.childNodes[i]);
+                  }
+                };
+                unwrap(range.commonAncestorContainer);
+                return;
+              }
+              
+              // Appliquer la couleur rouge dans le bloc de code
+              const nodes = [];
+              const walker2 = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node) {
+                  if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+                  if (node.nodeValue.trim() === '') return NodeFilter.FILTER_REJECT;
+                  return NodeFilter.FILTER_ACCEPT;
+                }
+              });
+              let node2 = walker2.currentNode;
+              while(node2) {
+                nodes.push(node2);
+                node2 = walker2.nextNode();
+              }
+              
+              nodes.forEach(textNode => {
+                let nodeStart = 0;
+                let nodeEnd = textNode.length;
+                if (textNode === range.startContainer) nodeStart = range.startOffset;
+                if (textNode === range.endContainer) nodeEnd = range.endOffset;
+                if (nodeStart >= nodeEnd) return;
+                
+                const before = textNode.nodeValue.slice(0, nodeStart);
+                const selected = textNode.nodeValue.slice(nodeStart, nodeEnd);
+                const after = textNode.nodeValue.slice(nodeEnd);
+                const frag = document.createDocumentFragment();
+                if (before) frag.appendChild(document.createTextNode(before));
+                if (selected) {
+                  const span = document.createElement('span');
+                  span.style.color = '#ff2222';
+                  span.style.fontFamily = 'Consolas, monospace'; // Préserver la police
+                  span.textContent = selected;
+                  frag.appendChild(span);
+                }
+                if (after) frag.appendChild(document.createTextNode(after));
+                textNode.parentNode.replaceChild(frag, textNode);
+              });
+              
+              sel.removeAllRanges();
+              return;
+            }
+            
+            // Comportement normal hors bloc de code
             let allRed = true;
             let hasText = false;
             const treeWalker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
@@ -165,6 +253,7 @@ class Popline {
                 if (selected) {
                   const span = document.createElement('span');
                   span.style.backgroundColor = '#ffe066';
+                  span.style.fontFamily = 'Consolas, monospace'; // Forcer la police Consolas
                   span.textContent = selected;
                   frag.appendChild(span);
                 }
@@ -181,7 +270,7 @@ class Popline {
                 pre.style.fontFamily = 'Consolas, monospace';
                 pre.style.fontSize = '90%';
                 pre.style.margin = '1em 0';
-                pre.style.border = '0px solid #ddd';
+                pre.style.border = '1px solid #ddd'; // Garder la bordure du bloc de code
                 pre.style.display = 'block';
                 pre.style.whiteSpace = 'pre-wrap';
                 pre.style.minHeight = '1em';
@@ -276,6 +365,13 @@ class Popline {
             });
 
             pre.parentNode.replaceChild(div, pre);
+            
+            // Placer le curseur dans le div pour que la sélection soit détectable
+            const newRange = document.createRange();
+            newRange.setStartAfter(div);
+            newRange.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(newRange);
             return;
           }
 
@@ -319,7 +415,7 @@ class Popline {
           pre.style.fontFamily = 'Consolas, monospace';
           pre.style.fontSize = '90%';
           pre.style.margin = '1em 0';
-          pre.style.border = '0px solid #ddd';
+          pre.style.border = '1px solid #ddd'; // Garder la bordure du bloc de code
           pre.style.display = 'block';
           pre.style.whiteSpace = 'pre-wrap';
           pre.style.minHeight = '1em';
@@ -328,8 +424,12 @@ class Popline {
           range.deleteContents();
           range.insertNode(pre);
 
-          // Nettoyer la sélection
+          // Placer le curseur à la fin du bloc de code pour que la sélection soit détectable
+          const newRange = document.createRange();
+          newRange.setStartAfter(pre);
+          newRange.collapse(true);
           sel.removeAllRanges();
+          sel.addRange(newRange);
        }
       },    
       { name: 'removeFormat', icon: '<i class="fas fa-eraser" title="Remove format"></i>', action: () => document.execCommand('removeFormat') }
@@ -379,7 +479,9 @@ class Popline {
         let container = sel.getRangeAt(0).commonAncestorContainer;
         if (container.nodeType === 3) container = container.parentNode;
         const noteentry = container.closest && container.closest('.noteentry');
-        if (noteentry) noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+        if (noteentry) {
+          noteentry.dispatchEvent(new Event('input', {bubbles:true}));
+        }
       }
       e.stopPropagation();
     });

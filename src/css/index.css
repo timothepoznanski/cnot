@@ -869,7 +869,6 @@ hr {
 }
 
 .move-note-btn:hover {
-    background-color: rgba(0, 125, 184, 0.2);
     transform: scale(1.1);
 }
 

@@ -244,16 +244,6 @@ document.body.addEventListener('focusin', function(e) {
   }
 });
 
-document.body.addEventListener('click', function(e) {
-    if (e.target.classList.contains('popline-btn')) {
-        if(updateNoteEnCours==1){
-            showNotificationPopup("Automatic save in progress, please do not modify the note.");
-        } else {
-            update();
-        }
-    }
-});
-
 function update(){
     if(noteid=='search' || noteid==-1) return;
     editedButNotSaved = 1;  // We set the flag to indicate that the note has been modified.

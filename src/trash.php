@@ -15,7 +15,6 @@
 	<title><?php echo JOURNAL_NAME;?></title>
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>	
 	<link rel="stylesheet" href="css/font-awesome.css" />
-	<link rel="stylesheet" type="text/css" href="css/popline.css" />
 	<link type="text/css" rel="stylesheet" href="css/style-mobile.css"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<link rel="stylesheet" type="text/css" href="css/style-mobile.css" />

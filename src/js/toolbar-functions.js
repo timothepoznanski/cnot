@@ -132,7 +132,7 @@ function toggleCodeBlock() {
       content += node.textContent;
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       if (node.nodeName ==='P' || node.nodeName === 'DIV') {
-        if (!content.endsWith('\n')) content += '\n';
+        if (content.length > 0 && !content.endsWith('\n')) content += '\n';
       } else if (node.nodeName === 'BR') {
         content += '\n';
       }

@@ -561,6 +561,15 @@ div[contentEditable=true]:empty:before {
         color: #bababa;
 }
 
+/* Exclure les blocs de code du placeholder automatique */
+pre[contentEditable=true]:empty:before,
+code[contentEditable=true]:empty:before,
+.noteentry pre:empty:before,
+.noteentry code:empty:before,
+.noteentry span[style*='Consolas']:empty:before {
+        content: none !important;
+}
+
 .notecard{
     margin: 1%;
     margin-bottom:20px;

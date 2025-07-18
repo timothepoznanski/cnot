@@ -24,10 +24,11 @@ sort($tags_list, SORT_NATURAL | SORT_FLAG_CASE);
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo JOURNAL_NAME; ?> - Tags</title>
-	<link type="text/css" rel="stylesheet" href="css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="css/index.css"/>
 	<link rel="stylesheet" href="css/font-awesome.css" />
-	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
+	<link type="text/css" rel="stylesheet" href="css/index-mobile.css"/>
 	<link type="text/css" rel="stylesheet" href="css/listtags.css"/>
+	<link type="text/css" rel="stylesheet" href="css/listtags-mobile.css"/>
 </head>
 <body class="tags-page">
 	<div class="tags-container">

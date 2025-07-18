@@ -13,9 +13,9 @@ $search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
 	<title><?php echo JOURNAL_NAME; ?> - Trash</title>
-	<link type="text/css" rel="stylesheet" href="css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="css/index.css"/>
 	<link rel="stylesheet" href="css/font-awesome.css" />
-	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
+	<link type="text/css" rel="stylesheet" href="css/index-mobile.css"/>
 	<link type="text/css" rel="stylesheet" href="css/trash.css"/>
 	<link type="text/css" rel="stylesheet" href="css/trash-mobile.css"/>
 </head>

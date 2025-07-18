@@ -28,8 +28,8 @@ $note = $_GET['note'] ?? '';
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <title><?php echo JOURNAL_NAME;?></title>
-    <link type="text/css" rel="stylesheet" href="css/style.css"/>
-    <link rel="stylesheet" href="css/mobile.css" media="(max-width: 800px)">
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
     <script src="js/toolbar-functions.js"></script>
     <script src="js/mobile-toolbar.js"></script>

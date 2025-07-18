@@ -1,94 +1,92 @@
 <?php
 @ob_start();
-?>
-<?php
-	include 'functions.php';
-	require 'config.php';
-	include 'db_connect.php';	
-?>
+include 'functions.php';
+require 'config.php';
+include 'db_connect.php';
 
-<html>
+$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
+?>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-	<title><?php echo JOURNAL_NAME;?></title>
-	<link type="text/css" rel="stylesheet" href="css/style.css"/>	
+	<title><?php echo JOURNAL_NAME; ?> - Corbeille</title>
+	<link type="text/css" rel="stylesheet" href="css/style.css"/>
 	<link rel="stylesheet" href="css/font-awesome.css" />
 	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
-	<style>
-		.searchtrash::placeholder {
-			color: #999 !important;
-			opacity: 1;
-		}
-		.searchtrash::-webkit-input-placeholder {
-			color: #999 !important;
-		}
-		.searchtrash::-moz-placeholder {
-			color: #999 !important;
-			opacity: 1;
-		}
-		.searchtrash:-ms-input-placeholder {
-			color: #999 !important;
-		}
-	</style>
-
+	<link type="text/css" rel="stylesheet" href="css/trash.css"/>
+	<link type="text/css" rel="stylesheet" href="css/trash-mobile.css"/>
 </head>
-<body class="trash-page" style="background: #f5f5f5;">
-	<?php
-		$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
-	?>
-	<h2 style="text-align:center; font-weight:500; color: #333; margin-top: 40px;">Trash</h2>
-	<?php
-		if(!empty($search))
-		{
-			echo '<h4 style="text-align:center; font-weight:300;"> Results for '.$search.'. <span style="cursor:pointer;font-weight:700;" onclick="window.location=\'trash.php\'"><span class="fas fa-times"></span></span></h4>';
-		}
-	?>
-	<form action="trash.php" method="POST">
-		<h5 style="text-align:center; font-weight:300;"><input autocomplete="off" onfocus="updateidhead(this);" class="searchtrash" style="background:#f8f8f8; text-align:center; width:25%; border: 1px solid #ddd; border-radius: 6px; padding: 8px; color: #666;" name="search" id="search" type="text" placeholder="Search for notes in the trash by clicking here" value="<?php echo $search; ?>"></h5>
-	</form>
-	
-	<div id="containbuttonsstrash">
-		<div class="backbutton" onclick="window.location = 'index.php';" style="margin-left: 30px;">
-			<span style="text-align:center; font-size:20px; color:#007DB8;">
-				<span title="Back to notes" class="fas fa-arrow-circle-left"></span>
-			</span>
+<body class="trash-page">
+	<div class="trash-container">
+		<h2 class="trash-header">Corbeille</h2>
+		
+		<?php if (!empty($search)): ?>
+			<div class="trash-search-notice">
+				Résultats pour "<?php echo htmlspecialchars($search); ?>"
+				<span class="trash-clear-search" onclick="window.location='trash.php'">
+					<i class="fas fa-times"></i>
+				</span>
+			</div>
+		<?php endif; ?>
+		
+		<form action="trash.php" method="POST" class="trash-search-form">
+			<input 
+				type="text" 
+				name="search" 
+				id="searchInput"
+				class="trash-search-input"
+				placeholder="Rechercher dans la corbeille..." 
+				value="<?php echo htmlspecialchars($search); ?>"
+				autocomplete="off"
+			>
+		</form>
+		
+		<div class="trash-buttons-container">
+			<div class="trash-button trash-back-button" onclick="window.location = 'index.php';" title="Retour aux notes">
+				<i class="fas fa-arrow-circle-left trash-button-icon"></i>
+			</div>
+			<div class="trash-button trash-empty-button" id="emptyTrashBtn" title="Vider la corbeille">
+				<i class="fa fa-trash-alt trash-button-icon"></i>
+			</div>
 		</div>
-		<div class="emptytrash" onclick="emptytrash();"><span style="text-align:center; font-size:20px; color:#007DB8;"><span title="Empty the trash" class="fa fa-trash-alt"></span></span></div>
-	</div>
-	
-	<br>
-	<?php
+		
+		<div class="trash-content">
+		<?php
 		$search_condition = $search ? " AND (heading LIKE '%$search%' OR entry LIKE '%$search%')" : '';
 		$res = $con->query("SELECT * FROM entries WHERE trash = 1$search_condition ORDER BY updated DESC LIMIT 50");
 		
 		if ($res && $res->num_rows > 0) {
-		while($row = mysqli_fetch_array($res, MYSQLI_ASSOC))		{
-			$id = $row['id'];
-			$filename = "./entries/" . $id . ".html";
-			$entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
-			$heading = $row['heading'];
-			$updated = formatDateTime(strtotime($row['updated']));
-			
-			echo '<div id="note'.$id.'" class="notecard" style="border: 1px solid #ddd; margin-bottom: 15px; border-radius: 8px;">
-			<div class="innernote">
-				<div class="trash-action-icons">
-					<span title="Restore this note" onclick="putBack(\''.$id.'\')" class="fa fa-trash-restore-alt icon_restore_trash"></span>
-					<span title="Permanently delete" onclick="deletePermanent(\''.$id.'\')" class="fas fa-trash icon_trash_trash"></span>
-				</div>
-				<div id="lastupdated'.$id.'" class="lastupdated">Last modified on '.$updated.'</div>
-				<h3><input id="inp'.$id.'" class="css-title" type="text" placeholder="Title ?" value="'.htmlspecialchars($heading, ENT_QUOTES).'"></input> </h3>
-				<hr>
-				<div class="noteentry" onload="initials(this);" id="entry'.$id.'" data-ph="Enter text or images here" contenteditable="true">'.$entryfinal.'</div>
-				<div style="height:30px;"></div>
-			</div>
-			</div>';
-		}
+			while($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
+				$id = $row['id'];
+				$filename = "./entries/" . $id . ".html";
+				$entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
+				$heading = $row['heading'];
+				$updated = formatDateTime(strtotime($row['updated']));
+				
+				echo '<div id="note'.$id.'" class="trash-notecard">
+					<div class="trash-innernote">
+						<div class="trash-action-icons">
+							<i title="Restaurer cette note" class="fa fa-trash-restore-alt icon_restore_trash" data-noteid="'.$id.'"></i>
+							<i title="Supprimer définitivement" class="fas fa-trash icon_trash_trash" data-noteid="'.$id.'"></i>
+						</div>
+						<div class="lastupdated">Dernière modification le '.$updated.'</div>
+						<h3 class="css-title">'.htmlspecialchars($heading, ENT_QUOTES).'</h3>
+						<hr>
+						<div class="noteentry">'.$entryfinal.'</div>
+					</div>
+				</div>';
+			}
 		} else {
-			echo '<div style="text-align:center; color:#666; margin-top:50px;"><h4>No notes found in trash.</h4></div>';
+			echo '<div class="trash-no-notes">Aucune note dans la corbeille.</div>';
 		}
-	?>
+		?>
+		</div>
+	</div>
+	
+	<script src="js/script.js"></script>
+	<script src="js/trash.js"></script>
 </body>
-<script src="js/script.js"></script>
 </html>

@@ -132,6 +132,9 @@ body {
     align-items: center;
     gap: 10px;
     justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .note-header > #lastupdated {

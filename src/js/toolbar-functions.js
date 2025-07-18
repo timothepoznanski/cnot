@@ -66,6 +66,23 @@ function toggleYellowHighlight() {
       document.execCommand('hiliteColor', false, '#ffe066');
     }
     document.execCommand('styleWithCSS', false, false);
+
+    // Rétablir le style des blocs <pre> touchés par la sélection
+    // On parcourt tous les <pre> dans la note courante
+    const note = range.commonAncestorContainer.closest ? range.commonAncestorContainer.closest('.noteentry') : null;
+    if (note) {
+      const pres = note.querySelectorAll('pre');
+      pres.forEach(pre => {
+        pre.style.background = '#F7F6F3';
+        pre.style.color = 'rgb(55, 53, 47)';
+        pre.style.padding = '34px 16px 32px 32px';
+        pre.style.borderRadius = '4px';
+        pre.style.fontFamily = 'Consolas, monospace';
+        pre.style.fontSize = '90%';
+        pre.style.margin = '1em 0';
+        pre.style.border = '1px solid #ddd';
+      });
+    }
   }
 }
 

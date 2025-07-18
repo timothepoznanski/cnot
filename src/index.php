@@ -239,10 +239,8 @@ $note = $_GET['note'] ?? '';
             }
         ?>        
     </div>
-        ?>        
+        
     </div>
 </body>
-    
 <script src="js/script.js"></script>
-</html>
 </html>

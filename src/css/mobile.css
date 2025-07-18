@@ -126,19 +126,6 @@ pre, code {
     font-size: 16px !important;
 }
 
-/* Largeur du conteneur de tags sur mobile */
-.note-tags-row {
-    width: 90% !important;
-}
-
-.name_tags {
-    width: 100% !important;
-}
-
-.name_tags input {
-    width: 100% !important;
-}
-
 #right_col {
     display: none !important;
 }

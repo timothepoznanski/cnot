@@ -20,8 +20,8 @@
 	<link rel="stylesheet" type="text/css" href="css/style-mobile.css" />
 
 </head>
-<body class="trash-page" style="background:#007DB8;">
-	<h2 style="text-align:center; font-weight:500; color: #fff">Trash</h2>
+<body class="trash-page">
+	<h2 style="text-align:center; font-weight:500; color: #333; margin-top: 40px;">Trash</h2>
 	<?php
 		if(!empty($search))
 		{
@@ -29,16 +29,16 @@
 		}
 	?>
 	<form action="trash.php" method="POST">
-		<h5 style="text-align:center; font-weight:300;"><input autocomplete="off" onfocus="updateidhead(this);" class="searchtrash" style="background:inherit; text-align:center; width:25%;" name="search" id="search" type="text" placeholder="Search for notes in the trash by clicking here" value="<?php echo $search; ?>"></h5>
+		<h5 style="text-align:center; font-weight:300;"><input autocomplete="off" onfocus="updateidhead(this);" class="searchtrash" style="background:#f8f8f8; text-align:center; width:25%; border: 1px solid #ddd; border-radius: 6px; padding: 8px;" name="search" id="search" type="text" placeholder="Search for notes in the trash by clicking here" value="<?php echo $search; ?>"></h5>
 	</form>
 	
 	<div id="containbuttonsstrash">
 		<div class="backbutton" onclick="window.location = 'index.php';" style="margin-left: 30px;">
-			<span style="text-align:center; font-size:20px; color:white;">
+			<span style="text-align:center; font-size:20px; color:#007DB8;">
 				<span title="Back to notes" class="fas fa-arrow-circle-left"></span>
 			</span>
 		</div>
-		<div class="emptytrash" onclick="emptytrash();"><span style="text-align:center; font-size:20px; color:white;"><span title="Empty the trash" class="fa fa-trash-alt"></span></span></div>
+		<div class="emptytrash" onclick="emptytrash();"><span style="text-align:center; font-size:20px; color:#007DB8;"><span title="Empty the trash" class="fa fa-trash-alt"></span></span></div>
 	</div>
 	
 	<br>
@@ -70,7 +70,7 @@
 			</div>';
 		}
 		} else {
-			echo '<div style="text-align:center; color:white; margin-top:50px;"><h4>No notes found in trash.</h4></div>';
+			echo '<div style="text-align:center; color:#666; margin-top:50px;"><h4>No notes found in trash.</h4></div>';
 		}
 	?>
 </body>

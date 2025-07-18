@@ -222,7 +222,7 @@ $note = $_GET['note'] ?? '';
                 echo '<button type="button" class="toolbar-btn btn-list-ul" title="Liste à puces" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-list-ol" title="Liste numérotée" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-text-height" title="Taille police" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-code" title="Bloc code" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-code" title="Bloc de code" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-eraser" title="Effacer formatage" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-separator" title="Ajouter un séparateur" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-save" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';

@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         emptyTrashBtn.addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Do you want to empty the trash completely? This action cannot be undone.')) {
-                window.location.href = 'emptytrash.php';
+                emptyTrash();
             }
         });
     }
@@ -85,12 +85,19 @@ function restoreNote(noteid) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'noteid=' + encodeURIComponent(noteid)
+        body: 'id=' + encodeURIComponent(noteid)
     })
     .then(response => response.text())
     .then(data => {
-        // Recharger la page pour mettre à jour la liste
-        window.location.reload();
+        if (data === '1') {
+            // Supprimer visuellement la note de la liste
+            const noteElement = document.getElementById('note' + noteid);
+            if (noteElement) {
+                noteElement.style.display = 'none';
+            }
+        } else {
+            alert('Error restoring the note: ' + data);
+        }
     })
     .catch(error => {
         console.error('Error during restoration:', error);
@@ -104,16 +111,45 @@ function deleteNote(noteid) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'noteid=' + encodeURIComponent(noteid)
+        body: 'id=' + encodeURIComponent(noteid)
     })
     .then(response => response.text())
     .then(data => {
-        // Recharger la page pour mettre à jour la liste
-        window.location.reload();
+        if (data === '1') {
+            // Supprimer visuellement la note de la liste
+            const noteElement = document.getElementById('note' + noteid);
+            if (noteElement) {
+                noteElement.style.display = 'none';
+            }
+        } else {
+            alert('Error during permanent deletion: ' + data);
+        }
     })
     .catch(error => {
         console.error('Error during deletion:', error);
         alert('Error during permanent deletion of the note');
+    });
+}
+
+function emptyTrash() {
+    fetch('emptytrash.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data === '1') {
+            // Succès - rediriger vers trash.php pour actualiser la page
+            window.location.href = 'trash.php';
+        } else {
+            alert('Error emptying trash: ' + data);
+        }
+    })
+    .catch(error => {
+        console.error('Error during trash emptying:', error);
+        alert('Error emptying trash');
     });
 }
 

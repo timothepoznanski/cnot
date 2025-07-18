@@ -71,23 +71,6 @@ function toggleYellowHighlight() {
       document.execCommand('hiliteColor', false, '#ffe066');
     }
     document.execCommand('styleWithCSS', false, false);
-
-    // Rétablir le style des blocs <pre> touchés par la sélection
-    // On parcourt tous les <pre> dans la note courante
-    const note = range.commonAncestorContainer.closest ? range.commonAncestorContainer.closest('.noteentry') : null;
-    if (note) {
-      const pres = note.querySelectorAll('pre');
-      pres.forEach(pre => {
-        pre.style.background = '#F7F6F3';
-        pre.style.color = 'rgb(55, 53, 47)';
-        pre.style.padding = '34px 16px 32px 32px';
-        pre.style.borderRadius = '4px';
-        pre.style.fontFamily = 'Consolas, monospace';
-        pre.style.fontSize = '90%';
-        pre.style.margin = '1em 0';
-        pre.style.border = '1px solid #ddd';
-      });
-    }
   }
 }
 
@@ -99,128 +82,38 @@ function changeFontSize() {
 function toggleCodeBlock() {
   const sel = window.getSelection();
   if (!sel.rangeCount) return;
+  
   const range = sel.getRangeAt(0);
   let container = range.commonAncestorContainer;
   if (container.nodeType === 3) container = container.parentNode;
   
   // Si déjà dans un bloc code, on le retire
-  if (container.closest && container.closest('pre')) {
-    const pre = container.closest('pre');
-    // Remplacer le <pre> par son contenu sous forme de <div> et <br>
-    const text = pre.textContent;
-    const div = document.createElement('div');
-    const lines = text.split('\n');
-    lines.forEach((line, index) => {
-      if (index > 0) div.appendChild(document.createElement('br'));
-      if (line.length > 0) div.appendChild(document.createTextNode(line));
-    });
-    pre.parentNode.replaceChild(div, pre);
-    
-    // Déclencher la détection de modification
-    if (typeof update === 'function') {
-      update();
-    }
+  const existingPre = container.closest ? container.closest('pre') : null;
+  if (existingPre) {
+    const text = existingPre.textContent;
+    existingPre.outerHTML = text.replace(/\n/g, '<br>');
     return;
   }
   
-  // Sinon, transformer la sélection en bloc code
-  if (sel.isCollapsed) return; // rien à faire si pas de sélection
+  // Sinon, créer un bloc code avec le texte sélectionné
+  if (sel.isCollapsed) {
+    // Pas de sélection : insérer un bloc vide
+    document.execCommand('insertHTML', false, '<pre class="code-block"><br></pre>');
+    return;
+  }
   
-  // On clone le contenu sélectionné
-  const fragment = range.cloneContents();
-  if (!fragment.textContent.trim()) return;
+  // Récupérer le texte sélectionné
+  const selectedText = sel.toString();
+  if (!selectedText.trim()) return;
   
-  let content = '';
-  // On récupère le texte avec sa structure
-  const processNode = (node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      content += node.textContent;
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.nodeName ==='P' || node.nodeName === 'DIV') {
-        if (content.length > 0 && !content.endsWith('\n')) content += '\n';
-      } else if (node.nodeName === 'BR') {
-        content += '\n';
-      }
-      for (const child of node.childNodes) processNode(child);
-    }
-  };
-  
-  for (const node of fragment.childNodes) processNode(node);
-  content = content.replace(/\n{3,}/g, '\n\n');
-  
-  // Essayer d'abord avec execCommand pour les navigateurs qui le supportent encore
-  const escapedContent = content
+  // Échapper le HTML et créer le bloc code
+  const escapedText = selectedText
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
   
-  const preHTML = `<pre style="background: #F7F6F3; color: rgb(55, 53, 47); padding: 34px 16px 32px 32px; border-radius: 4px; font-family: Consolas, monospace; font-size: 90%; margin: 1em 0; border: 1px solid #ddd;">${escapedContent}</pre>`;
-  
-  try {
-    const success = document.execCommand('insertHTML', false, preHTML);
-    if (success) {
-      // Déclencher la détection de modification
-      if (typeof update === 'function') {
-        update();
-      }
-      return;
-    }
-  } catch (e) {
-    // execCommand a échoué, utiliser l'approche manuelle
-  }
-  
-  // Fallback : création manuelle avec support d'annulation
-  const pre = document.createElement('pre');
-  pre.textContent = content;
-  pre.style.background = '#F7F6F3';
-  pre.style.color = 'rgb(55, 53, 47)';
-  pre.style.padding = '34px 16px 32px 32px';
-  pre.style.borderRadius = '4px';
-  pre.style.fontFamily = 'Consolas, monospace';
-  pre.style.fontSize = '90%';
-  pre.style.margin = '1em 0';
-  pre.style.border = '1px solid #ddd';
-  
-  // Trouver la noteentry pour les événements
-  let noteContainer = range.commonAncestorContainer;
-  if (noteContainer.nodeType === 3) noteContainer = noteContainer.parentNode;
-  const noteentry = noteContainer.closest && noteContainer.closest('.noteentry');
-  
-  if (noteentry) {
-    // Déclencher un événement beforeinput pour l'historique d'annulation
-    const beforeInputEvent = new InputEvent('beforeinput', {
-      bubbles: true,
-      cancelable: true,
-      inputType: 'insertText',
-      data: null
-    });
-    
-    if (noteentry.dispatchEvent(beforeInputEvent)) {
-      // Remplacer la sélection par le bloc code
-      range.deleteContents();
-      range.insertNode(pre);
-      
-      // Positionner le curseur après le bloc code
-      sel.removeAllRanges();
-      const newRange = document.createRange();
-      newRange.setStartAfter(pre);
-      newRange.setEndAfter(pre);
-      sel.addRange(newRange);
-      
-      // Déclencher l'événement input
-      const inputEvent = new InputEvent('input', {
-        bubbles: true,
-        inputType: 'insertText',
-        data: null
-      });
-      noteentry.dispatchEvent(inputEvent);
-    }
-  }
-  
-  // Déclencher la détection de modification
-  if (typeof update === 'function') {
-    update();
-  }
+  const codeHTML = `<pre class="code-block">${escapedText}</pre>`;
+  document.execCommand('insertHTML', false, codeHTML);
 }
 
 function insertSeparator() {

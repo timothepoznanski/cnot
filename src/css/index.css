@@ -503,11 +503,8 @@ div[contentEditable=true]:empty:before {
 }
 
 /* Exclure les blocs de code du placeholder automatique */
-pre[contentEditable=true]:empty:before,
-code[contentEditable=true]:empty:before,
-.noteentry pre:empty:before,
-.noteentry code:empty:before,
-.noteentry span[style*='Consolas']:empty:before {
+.code-block:empty:before,
+.noteentry .code-block:empty:before {
         content: none !important;
 }
 
@@ -556,7 +553,7 @@ textarea:focus{
     font-family: 'Inter', sans-serif;
 }
 
-/* Appliquer Inter uniquement sur les éléments textuels dans .noteentry, sauf dans les vrais blocs de code et les spans générés par le plugin */
+/* Appliquer Inter sur les éléments textuels, sauf dans les blocs de code */
 .noteentry p,
 .noteentry div,
 .noteentry ul,
@@ -569,8 +566,7 @@ textarea:focus{
 .noteentry u,
 .noteentry s,
 .noteentry a,
-.noteentry > span:not([style*='Consolas']),
-.noteentry :not(pre):not(code) > span:not([style*='Consolas']) {
+.noteentry span:not(.code-block span) {
     font-family: 'Inter', sans-serif !important;
 }
 
@@ -581,42 +577,30 @@ textarea:focus{
 
 /* CODE BLOCKS */
 
-/* Blocs de code : monospace avec background gris */
-pre, code, .noteentry span[style*='Consolas'] {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
-    background-color: #f4f4f4 !important;
+/* Style simplifié pour les blocs de code */
+.code-block, 
+pre.code-block,
+.noteentry pre {
+    font-family: Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace !important;
+    background-color: #f8f8f8 !important;
+    /* border: 1px solid #e1e1e1; */
+    border-radius: 4px;
+    padding: 30px 30px;
+    margin: 8px 0;
+    color: #333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    font-size: 15px !important;
+}
+
+/* Code inline */
+code {
+    font-family: Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace !important;
+    background-color: #f4f4f4;
     padding: 2px 4px;
     border-radius: 3px;
-}
-
-/* Background spécifique pour les blocs pre (plus de padding) */
-pre, .noteentry pre {
-    background-color: #f4f4f4 !important;
-    padding: 8px 12px !important;
-    border-radius: 6px !important;
-    border: 1px solid #e0e0e0;
-    overflow-x: auto;
-}
-
-/* Force Consolas pour tous les éléments dans les blocs de code, y compris gras et surlignage */
-pre *, 
-code *, 
-.noteentry span[style*='Consolas'] *,
-.noteentry pre b,
-.noteentry pre strong,
-.noteentry pre i,
-.noteentry pre em,
-.noteentry pre u,
-.noteentry pre s,
-.noteentry pre span,
-.noteentry code b,
-.noteentry code strong,
-.noteentry code i,
-.noteentry code em,
-.noteentry code u,
-.noteentry code s,
-.noteentry code span {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    color: #333;
 }
 
 /* Force Consolas et préserve le background pour tous les éléments avec styles inline dans les blocs de code */
@@ -640,7 +624,7 @@ code *[style*="background"],
 
 /* Style plugin code block (optionnel, garder la taille et couleur si besoin) */
 .noteentry span[style*='Consolas'] {
-    font-size: 13.5px !important;
+    font-size: 15px !important;
     font-style: normal !important;
     font-weight: normal !important;
     color: #333 !important;

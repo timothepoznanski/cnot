@@ -66,6 +66,7 @@ function updatenote(){
             if (lastUpdatedElem) lastUpdatedElem.innerHTML = data;
         }
         updateNoteEnCours = 0;
+        setSaveButtonRed(false);
     });
     var newNotesElem = document.getElementById('newnotes');
     if (newNotesElem) {
@@ -265,16 +266,39 @@ function update(){
 function displaySavingInProgress(){
     var elem = document.getElementById('lastupdated'+noteid);
     if (elem) elem.innerHTML = '<span style="color:#FF0000";>Saving in progress...</span>';
+    setSaveButtonRed(true);
 }
 
 function displayModificationsDone(){
     var elem = document.getElementById('lastupdated'+noteid);
     if (elem) elem.innerHTML = '<span style="color:#FF0000";>Note modified</span>';
+    setSaveButtonRed(true);
 }
 
 function displayEditInProgress(){
     var elem = document.getElementById('lastupdated'+noteid);
     if (elem) elem.innerHTML = '<span>Editing in progress...</span>';
+    setSaveButtonRed(true);
+}
+
+// Met à jour la couleur du bouton sauvegarder
+function setSaveButtonRed(isRed) {
+    // On prend le premier bouton .toolbar-btn qui contient .fa-save
+    var saveBtn = document.querySelector('.toolbar-btn > .fa-save')?.parentElement;
+    if (!saveBtn) {
+        // fallback: bouton avec icône save
+        var btns = document.querySelectorAll('.toolbar-btn');
+        btns.forEach(function(btn){
+            if(btn.querySelector && btn.querySelector('.fa-save')) saveBtn = btn;
+        });
+    }
+    if (saveBtn) {
+        if (isRed) {
+            saveBtn.classList.add('save-modified');
+        } else {
+            saveBtn.classList.remove('save-modified');
+        }
+    }
 }
 
 // Every X seconds (5000 = 5s), we call the `checkedit()` function and display "Note modified" if there have been changes, or "Saving in progress..." if the note is being saved.

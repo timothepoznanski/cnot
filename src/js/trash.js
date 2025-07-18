@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const noteid = e.target.getAttribute('data-noteid');
             if (noteid && confirm('Do you want to permanently delete this note? This action cannot be undone.')) {
-                deleteNote(noteid);
+                permanentlyDeleteNote(noteid);
             }
         }
     });
@@ -105,7 +105,7 @@ function restoreNote(noteid) {
     });
 }
 
-function deleteNote(noteid) {
+function permanentlyDeleteNote(noteid) {
     fetch('permanentDelete.php', {
         method: 'POST',
         headers: {

@@ -102,30 +102,6 @@ function newnote(){
     });
 }
 
-function emptytrash() {
-    var r = confirm("Are you sure you want to permanently delete all notes from the trash? They will be lost forever!");
-    if (r == true) {
-        // Create a new FormData object to send the data
-        const formData = new FormData();
-
-        // Use the fetch API to send a POST request
-        fetch('emptytrash.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            // If successful, redirect after a short delay
-            setTimeout(function() { 
-                window.location.href = "trash.php"; 
-            }, 1000);
-        })
-        .catch(error => {
-            console.error('Error:', error); // Log any errors
-        });
-    }
-}
-
 function deleteNote(iid){
     var params = new URLSearchParams({ id: iid });
     fetch("deletenote.php", {

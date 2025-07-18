@@ -613,17 +613,51 @@ code span[style],
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
+/* Force Consolas pour tous les éléments de formatage dans les blocs de code */
+pre b, pre strong, pre i, pre em, pre u, pre s, pre span,
+code b, code strong, code i, code em, code u, code s, code span,
+.code-block b, .code-block strong, .code-block i, .code-block em, .code-block u, .code-block s, .code-block span,
+.noteentry pre b, .noteentry pre strong, .noteentry pre i, .noteentry pre em, .noteentry pre u, .noteentry pre s, .noteentry pre span,
+.noteentry code b, .noteentry code strong, .noteentry code i, .noteentry code em, .noteentry code u, .noteentry code s, .noteentry code span,
+.noteentry .code-block b, .noteentry .code-block strong, .noteentry .code-block i, .noteentry .code-block em, .noteentry .code-block u, .noteentry .code-block s, .noteentry .code-block span {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-size: 15px !important;
+}
+
 /* Préserver le background gris même avec du surlignage dans les blocs de code */
 /* Solution simple et efficace : override du background pour les éléments surlignés */
 pre *[style*="background"],
 code *[style*="background"],
+.code-block *[style*="background"],
 .noteentry pre *[style*="background"],
-.noteentry code *[style*="background"] {
+.noteentry code *[style*="background"],
+.noteentry .code-block *[style*="background"] {
     background: linear-gradient(rgba(255, 255, 0, 0.4), rgba(255, 255, 0, 0.4)), #f4f4f4 !important;
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-size: 15px !important;
+}
+
+/* Force Consolas pour les éléments avec couleur dans les blocs de code */
+pre *[style*="color"],
+code *[style*="color"],
+.code-block *[style*="color"],
+.noteentry pre *[style*="color"],
+.noteentry code *[style*="color"],
+.noteentry .code-block *[style*="color"] {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+    font-size: 15px !important;
 }
 
 /* Style plugin code block (optionnel, garder la taille et couleur si besoin) */
-.noteentry span[style*='Consolas'] {
+.noteentry span[style*='Consolas'],
+.noteentry span[style*='Consolas'] *,
+.noteentry span[style*='Consolas'] b,
+.noteentry span[style*='Consolas'] strong,
+.noteentry span[style*='Consolas'] i,
+.noteentry span[style*='Consolas'] em,
+.noteentry span[style*='Consolas'] u,
+.noteentry span[style*='Consolas'] s {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
     font-size: 15px !important;
     font-style: normal !important;
     font-weight: normal !important;

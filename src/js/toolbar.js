@@ -1,10 +1,3 @@
-// Toolbar functions and mobile toolbar behavior
-// Combined from toolbar-functions.js and mobile-toolbar.js
-
-// ==============================================
-// TOOLBAR FUNCTIONS (formatage et utilitaires)
-// ==============================================
-
 function addLinkToNote() {
   const url = prompt('Entrer l\'URL du lien:', 'https://');
   if (url) document.execCommand('createLink', false, url);

@@ -22,7 +22,7 @@
 }
 
 .tags-list-info {
-    margin-bottom: 10px;
+    margin: 20px 0;
     font-size: 1em;
     color: #007DB8;
     text-align: center;
@@ -74,21 +74,21 @@
     }
     
     #myInputFiltrerTags {
-        font-size: 1.5em !important;
-        padding: 18px 12px !important;
+        font-size: 1.1em !important;
+        padding: 12px 8px !important;
         width: 86vw !important;
         max-width: 86vw !important;
     }
     
     #myULFiltrerTags {
-        gap: 10px !important;
+        gap: 6px !important;
     }
     
     #myULFiltrerTags a {
-        font-size: 1.1em !important;
-        padding: 12px 16px !important;
-        min-width: 30vw !important;
-        max-width: 42vw !important;
+        font-size: 0.85em !important;
+        padding: 8px 10px !important;
+        min-width: 22vw !important;
+        max-width: 30vw !important;
         text-align: center !important;
     }
 }
@@ -108,24 +108,24 @@
     }
     
     #myInputFiltrerTags {
-        font-size: 1.7em !important;
-        padding: 22px 14px !important;
+        font-size: 1.2em !important;
+        padding: 14px 10px !important;
         width: 86vw !important;
         max-width: 86vw !important;
         margin: 8px 1vw 10px 1vw;
     }
     
     #myULFiltrerTags {
-        gap: 14px !important;
+        gap: 8px !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
     }
     
     #myULFiltrerTags a {
-        font-size: 1.2em !important;
-        padding: 14px 18px !important;
-        min-width: 28vw !important;
-        max-width: 40vw !important;
+        font-size: 0.9em !important;
+        padding: 10px 12px !important;
+        min-width: 20vw !important;
+        max-width: 28vw !important;
         text-align: center !important;
         line-height: 1.2 !important;
     }

@@ -15,12 +15,13 @@
 	<title><?php echo JOURNAL_NAME;?></title>
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>	
 	<link rel="stylesheet" href="css/font-awesome.css" />
-	<link type="text/css" rel="stylesheet" href="css/style-mobile.css"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<link rel="stylesheet" type="text/css" href="css/style-mobile.css" />
+	<link type="text/css" rel="stylesheet" href="css/mobile.css"/>
 
 </head>
-<body class="trash-page">
+<body class="trash-page" style="background: #f5f5f5;">
+	<?php
+		$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
+	?>
 	<h2 style="text-align:center; font-weight:500; color: #333; margin-top: 40px;">Trash</h2>
 	<?php
 		if(!empty($search))
@@ -29,7 +30,7 @@
 		}
 	?>
 	<form action="trash.php" method="POST">
-		<h5 style="text-align:center; font-weight:300;"><input autocomplete="off" onfocus="updateidhead(this);" class="searchtrash" style="background:#f8f8f8; text-align:center; width:25%; border: 1px solid #ddd; border-radius: 6px; padding: 8px;" name="search" id="search" type="text" placeholder="Search for notes in the trash by clicking here" value="<?php echo $search; ?>"></h5>
+		<h5 style="text-align:center; font-weight:300;"><input autocomplete="off" onfocus="updateidhead(this);" class="searchtrash" style="background:#f8f8f8; text-align:center; width:25%; border: 1px solid #ddd; border-radius: 6px; padding: 8px; color: #666;" name="search" id="search" type="text" placeholder="Search for notes in the trash by clicking here" value="<?php echo $search; ?>"></h5>
 	</form>
 	
 	<div id="containbuttonsstrash">
@@ -43,7 +44,6 @@
 	
 	<br>
 	<?php
-		$search = trim($_POST['search'] ?? $_GET['search'] ?? '');
 		$search_condition = $search ? " AND (heading LIKE '%$search%' OR entry LIKE '%$search%')" : '';
 		$res = $con->query("SELECT * FROM entries WHERE trash = 1$search_condition ORDER BY updated DESC LIMIT 50");
 		
@@ -55,7 +55,7 @@
 			$heading = $row['heading'];
 			$updated = formatDateTime(strtotime($row['updated']));
 			
-			echo '<div id="note'.$id.'" class="notecard">
+			echo '<div id="note'.$id.'" class="notecard" style="border: 1px solid #ddd; margin-bottom: 15px; border-radius: 8px;">
 			<div class="innernote">
 				<div class="trash-action-icons">
 					<span title="Restore this note" onclick="putBack(\''.$id.'\')" class="fa fa-trash-restore-alt icon_restore_trash"></span>

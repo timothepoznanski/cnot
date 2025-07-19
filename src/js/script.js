@@ -245,9 +245,12 @@ function updateAttachmentCountInMenu(noteId) {
     .then(data => {
         if (data.success) {
             const count = data.attachments.length;
+            const hasAttachments = count > 0;
+            
+            // Update dropdown menu count
             const menu = document.getElementById('note-menu-' + noteId);
             if (menu) {
-                // Find the attachments menu item and update its text
+                // Find the attachments menu item and update its text and class
                 const attachmentItems = menu.querySelectorAll('.dropdown-item');
                 attachmentItems.forEach(item => {
                     if (item.innerHTML.includes('fa-paperclip')) {
@@ -256,10 +259,36 @@ function updateAttachmentCountInMenu(noteId) {
                             item.innerHTML = `<i class="fas fa-paperclip"></i> Attachments (${count})`;
                             // Re-add the onclick handler as innerHTML replaces it
                             item.onclick = function() { showAttachmentDialog(noteId); };
+                            // Update has-attachments class
+                            if (hasAttachments) {
+                                item.classList.add('has-attachments');
+                            } else {
+                                item.classList.remove('has-attachments');
+                            }
                         }
                     }
                 });
             }
+            
+            // Update settings button (gear icon) class
+            const settingsBtn = document.getElementById('settings-btn-' + noteId);
+            if (settingsBtn) {
+                if (hasAttachments) {
+                    settingsBtn.classList.add('has-attachments');
+                } else {
+                    settingsBtn.classList.remove('has-attachments');
+                }
+            }
+            
+            // Update attachment button class (mobile)
+            const attachmentBtns = document.querySelectorAll('.btn-attachment[onclick*="' + noteId + '"]');
+            attachmentBtns.forEach(btn => {
+                if (hasAttachments) {
+                    btn.classList.add('has-attachments');
+                } else {
+                    btn.classList.remove('has-attachments');
+                }
+            });
         }
     })
     .catch(error => {

@@ -537,7 +537,17 @@ if($note != '') {
                 // Menu déroulant pour les actions sur la note (desktop seulement)
                 if (!$is_mobile) {
                     echo '<div class="toolbar-dropdown">';
-                    echo '<button type="button" class="toolbar-btn btn-settings" title="Note settings" onclick="toggleNoteMenu(\''.$row['id'].'\')" id="settings-btn-'.$row['id'].'"><i class="fas fa-cog"></i></button>';
+                    
+                    // Calculer le nombre d'attachments pour déterminer la couleur du bouton settings
+                    $attachments_count = 0;
+                    if (!empty($row['attachments'])) {
+                        $attachments_data = json_decode($row['attachments'], true);
+                        if (is_array($attachments_data)) {
+                            $attachments_count = count($attachments_data);
+                        }
+                    }
+                    
+                    echo '<button type="button" class="toolbar-btn btn-settings'.($attachments_count > 0 ? ' has-attachments' : '').'" title="Note settings" onclick="toggleNoteMenu(\''.$row['id'].'\')" id="settings-btn-'.$row['id'].'"><i class="fas fa-cog"></i></button>';
                     echo '<div class="dropdown-menu" id="note-menu-'.$row['id'].'" style="display: none;">';
                     
                     // Bouton favoris avec icône étoile
@@ -548,7 +558,15 @@ if($note != '') {
                     
                     echo '<div class="dropdown-item" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i> Move to folder</div>';
                     
-                    // Calculer le nombre d'attachments
+                    echo '<div class="dropdown-item'.($attachments_count > 0 ? ' has-attachments' : '').'" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i> Attachments ('.$attachments_count.')</div>';
+                    echo '<div class="dropdown-item" onclick="window.open(\''.$filename.'\', \'_blank\')"><i class="fas fa-download"></i> Export</div>';
+                    echo '<div class="dropdown-item" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i> Information</div>';
+                    echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
+                    echo '</div>';
+                    echo '</div>';
+                } else {
+                    // Boutons individuels pour mobile
+                    // Calculer le nombre d'attachments pour le bouton mobile
                     $attachments_count = 0;
                     if (!empty($row['attachments'])) {
                         $attachments_data = json_decode($row['attachments'], true);
@@ -557,14 +575,6 @@ if($note != '') {
                         }
                     }
                     
-                    echo '<div class="dropdown-item" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i> Attachments ('.$attachments_count.')</div>';
-                    echo '<div class="dropdown-item" onclick="window.open(\''.$filename.'\', \'_blank\')"><i class="fas fa-download"></i> Export</div>';
-                    echo '<div class="dropdown-item" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i> Information</div>';
-                    echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
-                    echo '</div>';
-                    echo '</div>';
-                } else {
-                    // Boutons individuels pour mobile
                     // Bouton favoris avec icône étoile
                     $is_favorite = $row['favorite'] ?? 0;
                     $star_class = $is_favorite ? 'fas' : 'far';
@@ -572,7 +582,7 @@ if($note != '') {
                     echo '<button type="button" class="toolbar-btn btn-favorite" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i></button>';
                     
                     echo '<button type="button" class="toolbar-btn btn-folder" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
-                    echo '<button type="button" class="toolbar-btn btn-attachment" title="Attachments" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-attachment'.($attachments_count > 0 ? ' has-attachments' : '').'" title="Attachments" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
                     echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Export"><i class="fas fa-download"></i></a>';
                     echo '<button type="button" class="toolbar-btn btn-info" title="Information" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i></button>';
                     echo '<button type="button" class="toolbar-btn btn-trash" title="Delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';

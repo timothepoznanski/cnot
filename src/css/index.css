@@ -210,6 +210,27 @@ a:active { color: #2E8CFA; } */
     color: #007DB8 !important;
 }
 
+/* Green indicators for notes with attachments */
+.btn-settings.has-attachments {
+    color: #28a745 !important;
+}
+
+.btn-settings.has-attachments:hover {
+    color: #1e7e34 !important;
+}
+
+.btn-attachment.has-attachments {
+    color: #28a745 !important;
+}
+
+.btn-attachment.has-attachments:hover {
+    color: #1e7e34 !important;
+}
+
+.dropdown-item.has-attachments i {
+    color: #28a745 !important;
+}
+
 .attachments-list {
     max-height: 300px;
     overflow-y: auto;

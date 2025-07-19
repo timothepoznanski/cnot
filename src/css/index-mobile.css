@@ -513,3 +513,16 @@ a.links_arbo_left.selected-note {
     background: rgba(0, 125, 184, 0.1) !important;
     color: #005a8a !important;
 }
+
+/* Green indicators for notes with attachments on mobile */
+.btn-settings.has-attachments,
+.btn-attachment.has-attachments {
+    color: #28a745 !important;
+}
+
+.btn-settings.has-attachments:hover,
+.btn-settings.has-attachments:focus,
+.btn-attachment.has-attachments:hover,
+.btn-attachment.has-attachments:focus {
+    color: #1e7e34 !important;
+}

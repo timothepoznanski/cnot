@@ -767,7 +767,7 @@ hr {
 /* FOLDER STYLES */
 
 .folder-header {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.2s;

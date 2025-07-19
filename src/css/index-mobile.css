@@ -184,7 +184,7 @@ body.note-open #right_col {
 /* FOLDER STYLES FOR MOBILE */
 
 .folder-header {
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     cursor: pointer !important;
     border-radius: 8px !important;
     transition: background-color 0.2s !important;

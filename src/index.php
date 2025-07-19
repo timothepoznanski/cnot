@@ -257,15 +257,8 @@ if($note != '') {
             $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
             $res_right = $con->query($query_note);
         } else {
-            // No specific note requested, get the default note (last updated)
-            $res_right = $con->query($query_right);
-            if($res_right && $res_right->num_rows > 0) {
-                $default_note = mysqli_fetch_array($res_right, MYSQLI_ASSOC);
-                $default_note_folder = $default_note["folder"] ?: 'Uncategorized';
-                $note = $default_note["heading"]; // Set the note variable for selection highlighting
-                // Reset result pointer for later use
-                $res_right->data_seek(0);
-            }
+            // No specific note requested, don't show any note by default
+            $res_right = null;
         }
         
         // Determine which folders should be open
@@ -383,17 +376,15 @@ if($note != '') {
             
             // Right-side list based on the query created earlier //		
             
-            // Exécution de la requête pour la colonne de droite
-            if (!isset($res_right)) {
-                $res_right = $con->query($query_right);
-            }
-           
-            while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC))
-            {
-            
-                $filename = "entries/".$row["id"].".html";
-                $title = $row['heading'];             
-                $entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
+            // Check if we should display a note or welcome message
+            if ($res_right && $res_right->num_rows > 0) {
+                while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC))
+                {
+                
+                    $filename = "entries/".$row["id"].".html";
+                    $title = $row['heading'];             
+                    $entryfinal = file_exists($filename) ? file_get_contents($filename) : '';
+               
            
                 // Affichage harmonisé desktop/mobile :
                 echo '<div id="note'.$row['id'].'" class="notecard">';
@@ -442,6 +433,21 @@ if($note != '') {
                 echo '</div>';
                 echo '</div>';
             }
+        } else {
+            // Display welcome message when no note is selected
+            echo '<div class="welcome-message" style="padding: 40px; text-align: center; color: #666; font-family: \'Inter\', sans-serif;">';
+            echo '<div style="font-size: 24px; margin-bottom: 20px; color: #333;">📝 Welcome to ' . JOURNAL_NAME . '</div>';
+            echo '<div style="font-size: 16px; line-height: 1.6; max-width: 400px; margin: 0 auto;">';
+            echo '<p>Select a note from the sidebar to start editing, or create a new note.</p>';
+            echo '<p style="margin-top: 30px;"><strong>Getting started:</strong></p>';
+            echo '<ul style="text-align: left; display: inline-block;">';
+            echo '<li>Click the <i class="fas fa-file-medical" style="color: #007DB8;"></i> button to create a new note</li>';
+            echo '<li>Click the <i class="fas fa-folder-plus" style="color: #007DB8;"></i> button to create a new folder</li>';
+            echo '<li>Use the search bars to find specific notes</li>';
+            echo '</ul>';
+            echo '</div>';
+            echo '</div>';
+        }
         ?>        
     </div>
         

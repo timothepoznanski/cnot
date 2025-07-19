@@ -38,7 +38,7 @@ function toggleFavorite(noteId) {
                     // Show notification
                     showNotificationPopup(response.message);
                     
-                    // Refresh immediately to update favorites folder
+                    // Refresh to update favorites folder
                     window.location.reload();
                 } else {
                     showNotificationPopup('Erreur: ' + response.message);

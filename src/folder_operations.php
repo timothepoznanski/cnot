@@ -128,6 +128,25 @@ switch($action) {
         echo json_encode(['success' => true, 'folders' => $folders]);
         break;
         
+    case 'empty_folder':
+        $folderName = $_POST['folder_name'] ?? '';
+        
+        if (empty($folderName)) {
+            echo json_encode(['success' => false, 'error' => 'Folder name is required']);
+            exit;
+        }
+        
+        // Move all notes from this folder to trash
+        $query = "UPDATE entries SET trash = 1 WHERE folder = '" . mysqli_real_escape_string($con, $folderName) . "' AND trash = 0";
+        
+        if ($con->query($query)) {
+            $affected_rows = $con->affected_rows;
+            echo json_encode(['success' => true, 'message' => "Moved $affected_rows notes to trash"]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Database error occurred']);
+        }
+        break;
+        
     default:
         echo json_encode(['success' => false, 'error' => 'Invalid action']);
 }

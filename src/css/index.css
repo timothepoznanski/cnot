@@ -56,7 +56,7 @@ body {
 }
 
 #left_col {
-	width: 30%;
+	width: 370px;
 	height: 100vh;
 	float: left;
 	overflow-y: scroll;
@@ -176,6 +176,14 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     line-height: 1.2;
     font-weight: normal;
     box-sizing: border-box;
+}
+
+/* Specific rule for note title spans in all links */
+a.links_arbo_left .note-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 
 a.links_arbo_left.selected-note {
@@ -798,7 +806,7 @@ hr {
     opacity: 1;
 }
 
-.folder-edit-btn, .folder-delete-btn {
+.folder-edit-btn, .folder-delete-btn, .folder-empty-btn {
     font-size: 12px;
     color: #007DB8;
     margin-left: 8px;
@@ -817,6 +825,11 @@ hr {
     color: #dc3545;
 }
 
+.folder-empty-btn:hover {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
 .folder-content {
     margin-left: 20px;
     margin-bottom: 10px;
@@ -827,17 +840,21 @@ hr {
     position: relative;
     display: flex !important;
     align-items: center !important;
-    padding-left: 30px !important;
+    padding-left: 26px !important;
     transition: padding-left 0.2s;
 }
 
 .note-in-folder a.links_arbo_left {
+    display: block !important;
+    position: relative !important;
+}
+
+.note-in-folder a.links_arbo_left .note-title {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    flex: 1 !important;
-    min-width: 0 !important;
     display: block !important;
+    margin-left: 16px !important;
 }
 
 .note-actions {
@@ -862,7 +879,7 @@ hr {
     opacity: 0;
     display: inline-block;
     position: absolute;
-    left: 6px;
+    left: 2px;
 }
 
 .note-in-folder:hover .move-note-btn {

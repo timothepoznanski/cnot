@@ -236,17 +236,37 @@ if($note != '') {
     <script>
         // Variables for folder management
         var isSearchMode = <?php echo (!empty($search) || !empty($tags_search)) ? 'true' : 'false'; ?>;
-        var currentNoteFolder = <?php echo json_encode($note != '' ? ($current_note_folder ?? 'Uncategorized') : null); ?>;
+        var currentNoteFolder = <?php 
+            if ($note != '' && empty($search) && empty($tags_search)) {
+                echo json_encode($current_note_folder ?? 'Uncategorized');
+            } else if ($default_note_folder && empty($search) && empty($tags_search)) {
+                echo json_encode($default_note_folder);
+            } else {
+                echo 'null';
+            }
+        ?>;
     </script>
         
     <br><hr><br>
             
     <?php
   
+        $default_note_folder = null; // Track folder of default note
+        
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
         {          
             $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
             $res_right = $con->query($query_note);
+        } else {
+            // No specific note requested, get the default note (last updated)
+            $res_right = $con->query($query_right);
+            if($res_right && $res_right->num_rows > 0) {
+                $default_note = mysqli_fetch_array($res_right, MYSQLI_ASSOC);
+                $default_note_folder = $default_note["folder"] ?: 'Uncategorized';
+                $note = $default_note["heading"]; // Set the note variable for selection highlighting
+                // Reset result pointer for later use
+                $res_right->data_seek(0);
+            }
         }
         
         // Determine which folders should be open
@@ -298,9 +318,12 @@ if($note != '') {
                 if($is_search_mode) {
                     // In search mode: open folders that have results
                     $should_be_open = isset($folders_with_results[$folderName]);
-                } else {
-                    // In normal mode: open only the folder of the current note
+                } else if($note != '') {
+                    // If a note is selected: open only the folder of the current note
                     $should_be_open = ($folderName === $current_note_folder);
+                } else if($default_note_folder) {
+                    // If no specific note selected but default note loaded: open its folder
+                    $should_be_open = ($folderName === $default_note_folder);
                 }
                 
                 // Set appropriate icon and display style
@@ -314,7 +337,11 @@ if($note != '') {
                 echo "<span class='folder-name' ondblclick='editFolderName(\"$folderName\")'>$folderName</span>";
                 echo "<span class='folder-actions'>";
                 echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
-                echo "<i class='fas fa-trash folder-delete-btn' onclick='event.stopPropagation(); deleteFolder(\"$folderName\")' title='Delete folder'></i>";
+                if ($folderName === 'Uncategorized') {
+                    echo "<i class='fas fa-trash-alt folder-empty-btn' onclick='event.stopPropagation(); emptyFolder(\"$folderName\")' title='Move all notes to trash'></i>";
+                } else {
+                    echo "<i class='fas fa-trash folder-delete-btn' onclick='event.stopPropagation(); deleteFolder(\"$folderName\")' title='Delete folder'></i>";
+                }
                 echo "</span>";
                 echo "</div>";
                 echo "<div class='folder-content' id='$folderId' style='display: $folder_display;'>";
@@ -334,7 +361,7 @@ if($note != '') {
                 $noteClass = empty($folder_filter) ? 'links_arbo_left note-in-folder' : 'links_arbo_left';
                 echo "<a class='$noteClass $isSelected' href='$link' data-note-id='" . $row1["heading"] . "' data-folder='$folderName'>";
                 echo "<i class='fas fa-folder-open move-note-btn' onclick='showMoveNoteDialog(\"" . addslashes($row1["heading"]) . "\")' title='Move to folder'></i>";
-                echo ($row1["heading"] ?: 'Untitled note');
+                echo "<span class='note-title'>" . ($row1["heading"] ?: 'Untitled note') . "</span>";
                 echo "</a>";
                 echo "<div id=pxbetweennotes></div>";
             }

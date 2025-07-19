@@ -146,6 +146,14 @@ pre, code {
         line-height: 1.4 !important;
         box-sizing: border-box !important;
     }
+    
+    /* Specific rule for note title spans in all links on mobile */
+    #left_col .links_arbo_left .note-title {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
+    }
 }
 
 #right_col {
@@ -202,7 +210,7 @@ body.note-open #right_col {
 }
 
 .note-in-folder {
-    padding-left: 38px !important;
+    padding-left: 34px !important;
     margin-bottom: 4px !important;
     display: flex !important;
     align-items: center !important;
@@ -210,11 +218,16 @@ body.note-open #right_col {
 }
 
 .note-in-folder a.links_arbo_left {
+    display: block !important;
+    position: relative !important;
+}
+
+.note-in-folder a.links_arbo_left .note-title {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    flex: 1 !important;
-    min-width: 0 !important;
+    display: block !important;
+    margin-left: 20px !important;
 }
 
 .folder-actions {
@@ -225,7 +238,7 @@ body.note-open #right_col {
     opacity: 1 !important; /* Always visible on mobile */
 }
 
-.folder-edit-btn, .folder-delete-btn {
+.folder-edit-btn, .folder-delete-btn, .folder-empty-btn {
     font-size: 14px !important;
     padding: 8px !important;
 }
@@ -236,7 +249,7 @@ body.note-open #right_col {
     margin-right: 10px !important;
     opacity: 1 !important; /* Always visible on mobile */
     position: absolute !important;
-    left: 6px !important;
+    left: 2px !important;
 }
 
 /* MODAL MOBILE ADJUSTMENTS */

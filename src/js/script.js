@@ -449,6 +449,35 @@ function deleteFolder(folderName) {
     });
 }
 
+function emptyFolder(folderName) {
+    if (!confirm(`Are you sure you want to move all notes from "${folderName}" to trash?`)) {
+        return;
+    }
+    
+    var params = new URLSearchParams({
+        action: 'empty_folder',
+        folder_name: folderName
+    });
+    
+    fetch("folder_operations.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.json())
+    .then(function(data) {
+        if (data.success) {
+            location.reload();
+            showNotificationPopup(`All notes moved to trash from folder: ${folderName}`);
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error emptying folder: ' + error);
+    });
+}
+
 function showMoveFolderDialog(noteId) {
     noteid = noteId; // Set the current note ID
     

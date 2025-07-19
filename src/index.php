@@ -257,8 +257,24 @@ if($note != '') {
             $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
             $res_right = $con->query($query_note);
         } else {
-            // No specific note requested, don't show any note by default
-            $res_right = null;
+            // No specific note requested, check if we have notes to show the latest one
+            $check_notes_query = "SELECT COUNT(*) as note_count FROM entries WHERE trash = 0$search_condition$folder_condition";
+            $check_result = $con->query($check_notes_query);
+            $note_count = $check_result->fetch_assoc()['note_count'];
+            
+            if ($note_count > 0) {
+                // Show the most recently updated note
+                $res_right = $con->query($query_right);
+                if($res_right && $res_right->num_rows > 0) {
+                    $latest_note = $res_right->fetch_assoc();
+                    $default_note_folder = $latest_note["folder"] ?: 'Uncategorized';
+                    // Reset the result pointer for display
+                    $res_right->data_seek(0);
+                }
+            } else {
+                // No notes available, show welcome message
+                $res_right = null;
+            }
         }
         
         // Determine which folders should be open

@@ -16,6 +16,17 @@ require 'config.php';
 include 'functions.php';
 include 'db_connect.php';
 
+// Vérification et migration des colonnes (seulement à l'ouverture de l'application)
+$result = $con->query("SHOW COLUMNS FROM entries LIKE 'folder'");
+if ($result->num_rows == 0) {
+    $con->query("ALTER TABLE entries ADD COLUMN folder varchar(255) DEFAULT 'Uncategorized'");
+}
+
+$result = $con->query("SHOW COLUMNS FROM entries LIKE 'favorite'");
+if ($result->num_rows == 0) {
+    $con->query("ALTER TABLE entries ADD COLUMN favorite TINYINT(1) DEFAULT 0");
+}
+
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
 $note = $_GET['note'] ?? '';
@@ -376,7 +387,7 @@ if($note != '') {
                 
                 // Icône spéciale pour le dossier Favoris
                 if ($folderName === 'Favoris') {
-                    echo "<i class='fas fa-star folder-name-icon' style='color:#FFD700;'></i>";
+                    echo "<i class='fas fa-star folder-name-icon' style='color:#007DB8;'></i>";
                 } else {
                     echo "<i class='fas fa-folder folder-name-icon'></i>";
                 }
@@ -472,8 +483,8 @@ if($note != '') {
                 
                 // Bouton favoris avec icône étoile
                 $is_favorite = $row['favorite'] ?? 0;
-                $star_class = 'fas'; // Toujours étoile pleine
-                $star_color = $is_favorite ? 'color:#FFD700;' : 'color:#007DB8;'; // Doré si favori, bleu sinon
+                $star_class = $is_favorite ? 'fas' : 'far'; // Étoile pleine si favori, étoile vide sinon
+                $star_color = 'color:#007DB8;'; // Toujours bleu
                 echo '<button type="button" class="toolbar-btn btn-favorite" title="'.($is_favorite ? 'Remove from favorites' : 'Add to favorites').'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="'.$star_color.'"></i></button>';
                 
                 echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';

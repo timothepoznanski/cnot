@@ -23,14 +23,16 @@ function toggleFavorite(noteId) {
                     // Update the star icon
                     const starIcon = document.querySelector(`button[onclick*="toggleFavorite('${noteId}')"] i`);
                     if (starIcon) {
+                        starIcon.style.color = '#007DB8'; // Always blue
+                        
+                        // Simple logic: full star if favorite, empty star if not favorite
                         if (response.is_favorite) {
-                            starIcon.style.color = '#FFD700'; // Gold color for favorite
+                            starIcon.classList.remove('far');
+                            starIcon.classList.add('fas'); // Full star for favorite
                         } else {
-                            starIcon.style.color = '#007DB8'; // Blue color for non-favorite
+                            starIcon.classList.remove('fas');
+                            starIcon.classList.add('far'); // Empty star for non-favorite
                         }
-                        // Keep it always as full star (fas)
-                        starIcon.classList.remove('far');
-                        starIcon.classList.add('fas');
                     }
                     
                     // Show notification

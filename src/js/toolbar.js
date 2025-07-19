@@ -94,6 +94,12 @@ function toggleCodeBlock() {
   if (sel.isCollapsed) {
     // Pas de sélection : insérer un bloc vide
     document.execCommand('insertHTML', false, '<pre class="code-block"><br></pre>');
+    // Add copy button to newly created code block
+    setTimeout(() => {
+      if (typeof addCopyButtonsToCodeBlocks === 'function') {
+        addCopyButtonsToCodeBlocks();
+      }
+    }, 100);
     return;
   }
   
@@ -109,6 +115,13 @@ function toggleCodeBlock() {
   
   const codeHTML = `<pre class="code-block">${escapedText}</pre>`;
   document.execCommand('insertHTML', false, codeHTML);
+  
+  // Add copy button to newly created code block
+  setTimeout(() => {
+    if (typeof addCopyButtonsToCodeBlocks === 'function') {
+      addCopyButtonsToCodeBlocks();
+    }
+  }, 100);
 }
 
 function insertSeparator() {

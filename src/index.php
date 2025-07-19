@@ -11,7 +11,7 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
     $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent) ? true : false;
 }
 
-@ob_start();
+ob_start();
 require 'config.php';
 include 'functions.php';
 include 'db_connect.php';
@@ -237,7 +237,7 @@ if($note != '') {
     // Add folder filter condition
     $folder_condition = '';
     if (!empty($folder_filter)) {
-        if ($folder_filter === 'Favoris') {
+        if ($folder_filter === 'Favorites') {
             $folder_condition = " AND favorite = 1";
         } else {
             $folder_condition = " AND folder = '" . mysqli_real_escape_string($con, $folder_filter) . "'";
@@ -402,14 +402,14 @@ if($note != '') {
             if($is_search_mode) {
                 $folders_with_results[$folder] = true;
                 if ($row1["favorite"]) {
-                    $folders_with_results['Favoris'] = true;
+                    $folders_with_results['Favorites'] = true;
                 }
             }
         }
         
         // Add favorites as a special folder if there are any favorites
         if (!empty($favorites)) {
-            $folders = ['Favoris' => $favorites] + $folders;
+            $folders = ['Favorites' => $favorites] + $folders;
         }
         
         // Add empty folders from folders table
@@ -420,10 +420,10 @@ if($note != '') {
             }
         }
         
-        // Sort folders alphabetically (Favoris first, then Uncategorized, then others)
+        // Sort folders alphabetically (Favorites first, then Uncategorized, then others)
         uksort($folders, function($a, $b) {
-            if ($a === 'Favoris') return -1;
-            if ($b === 'Favoris') return 1;
+            if ($a === 'Favorites') return -1;
+            if ($b === 'Favorites') return 1;
             if ($a === 'Uncategorized') return -1;
             if ($b === 'Uncategorized') return 1;
             return strcasecmp($a, $b);
@@ -472,8 +472,8 @@ if($note != '') {
                 echo "<div class='folder-toggle' onclick='event.stopPropagation(); toggleFolder(\"$folderId\")' data-folder-id='$folderId'>";
                 echo "<i class='fas $chevron_icon folder-icon'></i>";
                 
-                // Icône spéciale pour le dossier Favoris
-                if ($folderName === 'Favoris') {
+                // Icône spéciale pour le dossier Favorites
+                if ($folderName === 'Favorites') {
                     echo "<i class='fas fa-star folder-name-icon' style='color:#007DB8;'></i>";
                 } else {
                     echo "<i class='fas fa-folder folder-name-icon'></i>";
@@ -484,8 +484,8 @@ if($note != '') {
                 echo "<span class='folder-actions'>";
                 
                 // Actions différentes selon le type de dossier
-                if ($folderName === 'Favoris') {
-                    // Pas d'actions pour le dossier Favoris (il se gère automatiquement)
+                if ($folderName === 'Favorites') {
+                    // Pas d'actions pour le dossier Favorites (il se gère automatiquement)
                 } else if ($folderName === 'Uncategorized') {
                     echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
                     echo "<i class='fas fa-trash-alt folder-empty-btn' onclick='event.stopPropagation(); emptyFolder(\"$folderName\")' title='Move all notes to trash'></i>";

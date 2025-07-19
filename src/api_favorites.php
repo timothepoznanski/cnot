@@ -45,8 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($updateStmt->execute()) {
             echo json_encode([
                 'success' => true, 
-                'is_favorite' => $newFavorite,
-                'message' => $newFavorite ? 'Note ajoutée aux favoris' : 'Note retirée des favoris'
+                'is_favorite' => $newFavorite
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour']);

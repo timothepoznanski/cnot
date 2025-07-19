@@ -541,6 +541,7 @@ a.links_arbo_left.selected-note {
     color: #b0b0b0;
     pointer-events: none;
     z-index: 2;
+    font-size: 0.8em;
 }
 
 .searchbar-clear-outer {
@@ -551,7 +552,7 @@ a.links_arbo_left.selected-note {
     background: none !important;
     border: none;
     color: #bbb;
-    font-size: 1.25em;
+    font-size: 1.0em;
     cursor: pointer;
     border-radius: 50%;
     height: 32px;
@@ -569,7 +570,8 @@ a.links_arbo_left.selected-note {
 }
 
 .searchbar-desktop {
-    margin-bottom: 10px;
+    margin-top: 12px;
+    margin-bottom: 15px;
     padding: 0;
     background: none;
     border-radius: 0;
@@ -607,12 +609,12 @@ a.links_arbo_left.selected-note {
 
 .searchbar-clear .fa-times-circle {
     color: #d32f2f;
-    font-size: 1.0em;
+    font-size: 0.8em;
 }
 
 .searchbar-toggle, .searchbar-clear {
     padding: 8px 10px;
-    font-size: 1.1em;
+    font-size: 0.9em;
     background: none !important;
     border: none;
     border-radius: 4px;
@@ -625,8 +627,7 @@ a.links_arbo_left.selected-note {
 .contains_forms_search
 {
     width: 100%;
-    margin: 0;
-    margin-bottom: 5px;
+    margin: 12px 0 15px 0;
     text-align: left;
     box-sizing: border-box;
 }
@@ -945,6 +946,49 @@ pre.code-block,
     word-wrap: break-word;
     overflow-x: auto;
     font-size: 15px !important;
+    position: relative;
+}
+
+/* Container pour le bouton copier */
+.code-block-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Bouton copier pour les blocs de code */
+.copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #666;
+    opacity: 0;
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 10;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.code-block:hover .copy-code-btn,
+.code-block-container:hover .copy-code-btn {
+    opacity: 1;
+}
+
+.copy-code-btn:hover {
+    background: #fff;
+    color: #007DB8;
+    border-color: #007DB8;
+}
+
+.copy-code-btn.copied {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
 }
 
 /* Code inline */

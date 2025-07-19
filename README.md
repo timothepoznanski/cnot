@@ -48,6 +48,7 @@ just update your `.env` file and run the application (docker compose command). T
 
 - ENTRIES_DATA_PATH
 - DB_DATA_PATH
+- ATTACHMENTS_DATA_PATH
 
 Update your `.env` file and run the application (docker compose command). ⚠️ This will create a new empty directory, so you won’t be able to access your previous data unless you re-import it (see next section).
 
@@ -60,6 +61,10 @@ Simply updating the `.env` file and deleting the database container will not be 
 ### Export your notes ###
 
 Get your html files from '../ENTRIES_DATA'. You can also export all your notes using the export button. This method adds an index file to the zip export.
+
+### Export your attachements ###
+
+Get your html files from '../ATTACHEMENTS_DATA'. You can also export all your notes using the export button. This method adds an index file to the zip export.
 
 ### Export your database ###
 

@@ -23,27 +23,6 @@ if (!file_exists($attachments_dir)) {
     chmod($attachments_dir, 0777);
 }
 
-// Try to fix permissions if directory is not writable
-if (!is_writable($attachments_dir)) {
-    // Try multiple permission levels
-    @chmod($attachments_dir, 0777);
-    @chmod($attachments_dir, 0755);
-    @chmod($attachments_dir, 0666);
-    
-    // If still not writable, try to create a test file to get more info
-    if (!is_writable($attachments_dir)) {
-        $test_file = $attachments_dir . '/test_write.txt';
-        $can_write = @file_put_contents($test_file, 'test');
-        if ($can_write !== false) {
-            @unlink($test_file);
-            // Directory is actually writable, PHP's is_writable() is lying
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Attachments directory is not writable. Owner: ' . fileowner($attachments_dir) . ', Perms: ' . substr(sprintf('%o', fileperms($attachments_dir)), -4)]);
-            exit;
-        }
-    }
-}
-
 // Handle different actions
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 

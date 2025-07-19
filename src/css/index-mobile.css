@@ -184,7 +184,7 @@ body.note-open #right_col {
 /* FOLDER STYLES FOR MOBILE */
 
 .folder-header {
-    margin-bottom: 5px;
+    margin-bottom: 0px; /* Suppression de l'espace entre les dossiers mobile (5px → 0px) */
     cursor: pointer !important;
     border-radius: 8px !important;
     transition: background-color 0.2s !important;
@@ -286,12 +286,12 @@ a.links_arbo_left {
 
 .folder-content {
     margin-left: 16px !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 5px !important; /* Réduction de l'espace sous les dossiers mobile (12px → 5px) */
 }
 
 .note-in-folder {
-    padding-left: 34px !important;
-    margin-bottom: 4px !important;
+    padding-left: 6px !important; /* Réduction du padding mobile (34px → 6px) */
+    margin-bottom: 0px !important; /* Suppression de l'espace entre les notes */
     display: flex !important;
     align-items: center !important;
     position: relative !important;
@@ -307,7 +307,7 @@ a.links_arbo_left {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: block !important;
-    margin-left: 20px !important;
+    margin-left: 0px !important; /* Récupération de l'espace mobile (20px → 0px) */
 }
 
 .folder-actions {

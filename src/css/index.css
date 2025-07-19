@@ -170,7 +170,7 @@ a.links_arbo_left, a.links_arbo_left:link, a.links_arbo_left:visited, a.links_ar
     vertical-align: top;
     text-decoration: none;
     color: rgb(55, 53, 47);
-    padding: 6px 6px 6px 0px;
+    padding: 3px 6px 3px 0px; /* Réduction du padding vertical (6px → 3px) */
     border-radius: 8px;
     font-size: 14px;
     line-height: 1.2;
@@ -767,7 +767,7 @@ hr {
 /* FOLDER STYLES */
 
 .folder-header {
-    margin-bottom: 2px;
+    margin-bottom: 0px; /* Suppression de l'espace entre les dossiers */
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.2s;
@@ -850,15 +850,15 @@ hr {
 
 .folder-content {
     margin-left: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Réduction de l'espace sous chaque dossier */
 }
 
 .note-in-folder {
-    margin-bottom: 2px !important;
+    margin-bottom: 0px !important; /* Suppression de l'espace entre les notes */
     position: relative;
     display: flex !important;
     align-items: center !important;
-    padding-left: 26px !important;
+    padding-left: 6px !important; /* Réduction du padding pour récupérer l'espace */
     transition: padding-left 0.2s;
 }
 
@@ -872,7 +872,13 @@ hr {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: block !important;
-    margin-left: 16px !important;
+    margin-left: 0px !important; /* Récupérer l'espace de l'icône supprimée */
+    transition: margin-left 0.2s ease; /* Animation fluide */
+}
+
+/* Au survol, garder le titre à gauche (pas de changement) */
+.note-in-folder:hover a.links_arbo_left .note-title {
+    margin-left: 0px !important; /* Reste à gauche */
 }
 
 .note-actions {
@@ -887,21 +893,11 @@ hr {
 }
 
 .move-note-btn {
-    font-size: 10px;
-    color: #007DB8;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 3px;
-    transition: all 0.2s;
-    margin-right: 8px;
-    opacity: 0;
-    display: inline-block;
-    position: absolute;
-    left: 2px;
+    display: none; /* Masquer complètement l'icône de dossier */
 }
 
 .note-in-folder:hover .move-note-btn {
-    opacity: 1;
+    display: none; /* Garder masqué même au survol */
 }
 
 .move-note-btn:hover {

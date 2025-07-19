@@ -43,6 +43,213 @@ a:active { color: #2E8CFA; } */
 
 .note-bottom-space { height: 30px; }
 
+/* ATTACHMENT MODAL AND STYLES */
+
+.attachment-modal {
+    z-index: 1001;
+}
+
+.attachment-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 2px dashed #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+.attachment-upload input[type="file"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.attachment-upload button {
+    padding: 8px 16px;
+    background: #007DB8;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.attachment-upload button:hover {
+    background: #005a8a;
+}
+
+.attachments-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+}
+
+.attachment-info {
+    flex: 1;
+}
+
+.attachment-filename {
+    font-weight: bold;
+    color: #333;
+}
+
+.attachment-size {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.attachment-actions button {
+    padding: 4px 8px;
+    font-size: 0.8em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.attachment-download {
+    background: #28a745;
+    color: white;
+}
+
+.attachment-download:hover {
+    background: #218838;
+}
+
+.attachment-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.attachment-delete:hover {
+    background: #c82333;
+}
+
+/* TOOLBAR VERTICAL MENU */
+
+.note-edit-toolbar {
+    position: relative;
+}
+
+.desktop-toolbar {
+    display: flex !important;
+    width: 100%;
+    position: relative;
+}
+
+.mobile-toolbar {
+    display: none !important;
+}
+
+.toolbar-vertical-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 200px;
+    padding: 8px 0;
+    margin-top: 5px;
+}
+
+.toolbar-menu-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.toolbar-menu-btn:hover {
+    background: #f5f5f5;
+    color: #007DB8;
+}
+
+.toolbar-menu-btn i {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.btn-settings {
+    position: relative;
+}
+
+.btn-settings.active {
+    background: rgba(0, 125, 184, 0.1) !important;
+    color: #007DB8 !important;
+}
+
+.attachments-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.attachment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background-color: #f9f9f9;
+}
+
+.attachment-info {
+    flex: 1;
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.attachment-actions button {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 8px;
+    cursor: pointer;
+    color: #007DB8;
+}
+
+.attachment-actions button:hover {
+    background-color: #f0f0f0;
+}
+
+.attachment-actions .delete-btn {
+    color: #dc3545;
+}
+
+.attachment-actions .delete-btn:hover {
+    background-color: #f8d7da;
+}
+
 /* LEFT COLUMN */
 
 
@@ -787,6 +994,7 @@ hr {
     transition: background-color 0.2s;
     user-select: none;
     position: relative;
+    width: 100%;
 }
 
 .folder-toggle:hover {
@@ -812,12 +1020,22 @@ hr {
     font-weight: 600;
     color: rgb(55, 53, 47);
     flex: 1;
+    min-width: 0;
+}
+
+.folder-note-count {
+    font-size: 12px;
+    color: #999;
+    font-weight: 300;
+    margin-left: auto;
+    order: 1;
 }
 
 .folder-actions {
     opacity: 0;
     transition: opacity 0.2s;
-    margin-left: auto;
+    margin-left: 8px;
+    order: 2;
 }
 
 .folder-toggle:hover .folder-actions {

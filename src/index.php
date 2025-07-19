@@ -27,6 +27,11 @@ if ($result->num_rows == 0) {
     $con->query("ALTER TABLE entries ADD COLUMN favorite TINYINT(1) DEFAULT 0");
 }
 
+$result = $con->query("SHOW COLUMNS FROM entries LIKE 'attachments'");
+if ($result->num_rows == 0) {
+    $con->query("ALTER TABLE entries ADD COLUMN attachments TEXT DEFAULT NULL");
+}
+
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
 $note = $_GET['note'] ?? '';
@@ -117,6 +122,24 @@ if($note != '') {
             <div class="modal-buttons">
                 <button onclick="saveFolderName()">Save</button>
                 <button onclick="closeModal('editFolderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for attachments -->
+    <div id="attachmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('attachmentModal')">&times;</span>
+            <h3>Manage Attachments</h3>
+            <div class="attachment-upload">
+                <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar">
+                <button onclick="uploadAttachment()">Upload File</button>
+            </div>
+            <div id="attachmentsList" class="attachments-list">
+                <!-- Attachments will be loaded here -->
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('attachmentModal')">Close</button>
             </div>
         </div>
     </div>
@@ -420,6 +443,7 @@ if($note != '') {
                 }
                 
                 echo "<span class='folder-name' ondblclick='editFolderName(\"$folderName\")'>$folderName</span>";
+                echo "<span class='folder-note-count'>(" . count($notes) . ")</span>";
                 echo "<span class='folder-actions'>";
                 
                 // Actions différentes selon le type de dossier
@@ -504,14 +528,15 @@ if($note != '') {
                 echo '<button type="button" class="toolbar-btn btn-code" title="Code block" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-eraser" title="Clear formatting" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-separator" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-attachment" title="Add attachment" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-save" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-folder" title="Change folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                 echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Exporter la note"><i class="fas fa-download"></i></a>';
                 
                 // Bouton favoris avec icône étoile
                 $is_favorite = $row['favorite'] ?? 0;
-                $star_class = $is_favorite ? 'fas' : 'far'; // Étoile pleine si favori, étoile vide sinon
-                $star_color = 'color:#007DB8;'; // Toujours bleu
+                $star_class = $is_favorite ? 'fas' : 'far';
+                $star_color = 'color:#007DB8;';
                 echo '<button type="button" class="toolbar-btn btn-favorite" title="'.($is_favorite ? 'Remove from favorites' : 'Add to favorites').'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="'.$star_color.'"></i></button>';
                 
                 echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';

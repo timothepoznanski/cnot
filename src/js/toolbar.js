@@ -1,6 +1,8 @@
 function addLinkToNote() {
   const url = prompt('Entrer l\'URL du lien:', 'https://');
-  if (url) document.execCommand('createLink', false, url);
+  if (url && url.trim() !== '' && url !== 'https://') {
+    document.execCommand('createLink', false, url);
+  }
 }
 
 function toggleRedColor() {

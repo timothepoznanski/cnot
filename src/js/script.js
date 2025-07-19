@@ -8,6 +8,196 @@ var lastudpdate;
 var noteid=-1;
 var updateNoteEnCours = 0;
 var selectedFolder = 'Uncategorized'; // Track currently selected folder
+var currentNoteIdForAttachments = null; // Track current note for attachments
+
+// Function to toggle the vertical toolbar menu
+function toggleToolbarMenu(noteId) {
+    const menu = document.getElementById('toolbarMenu' + noteId);
+    const settingsBtn = document.querySelector('.btn-settings');
+    
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        // Close any other open menus first
+        document.querySelectorAll('.toolbar-vertical-menu').forEach(otherMenu => {
+            otherMenu.style.display = 'none';
+        });
+        document.querySelectorAll('.btn-settings').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Open this menu
+        menu.style.display = 'block';
+        settingsBtn.classList.add('active');
+        
+        // Close menu when clicking outside
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu(e) {
+                if (!menu.contains(e.target) && !settingsBtn.contains(e.target)) {
+                    menu.style.display = 'none';
+                    settingsBtn.classList.remove('active');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }, 100);
+    } else {
+        // Close menu
+        menu.style.display = 'none';
+        settingsBtn.classList.remove('active');
+    }
+}
+
+// Add attachment functionality
+function showAttachmentDialog(noteId) {
+    currentNoteIdForAttachments = noteId;
+    document.getElementById('attachmentModal').style.display = 'block';
+    loadAttachments(noteId);
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function uploadAttachment() {
+    const fileInput = document.getElementById('attachmentFile');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select a file');
+        return;
+    }
+    
+    if (!currentNoteIdForAttachments) {
+        alert('No note selected');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('action', 'upload');
+    formData.append('note_id', currentNoteIdForAttachments);
+    formData.append('file', file);
+    
+    fetch('api_attachments.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            fileInput.value = ''; // Clear input
+            loadAttachments(currentNoteIdForAttachments); // Reload list
+            showNotificationPopup('File uploaded successfully');
+        } else {
+            alert('Upload failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Upload failed');
+    });
+}
+
+function loadAttachments(noteId) {
+    fetch(`api_attachments.php?action=list&note_id=${noteId}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            displayAttachments(data.attachments);
+        } else {
+            console.error('Failed to load attachments:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function displayAttachments(attachments) {
+    const container = document.getElementById('attachmentsList');
+    
+    if (attachments.length === 0) {
+        container.innerHTML = '<p>No attachments</p>';
+        return;
+    }
+    
+    let html = '<h4>Attachments:</h4>';
+    attachments.forEach(attachment => {
+        const fileSize = formatFileSize(attachment.file_size);
+        const uploadDate = new Date(attachment.uploaded_at).toLocaleDateString();
+        
+        html += `
+            <div class="attachment-item">
+                <div class="attachment-info">
+                    <strong>${attachment.original_name}</strong>
+                    <br>
+                    <small>${fileSize} - ${uploadDate}</small>
+                </div>
+                <div class="attachment-actions">
+                    <button onclick="downloadAttachment(${attachment.id})" title="Download">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button onclick="deleteAttachment(${attachment.id})" title="Delete" class="delete-btn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function downloadAttachment(attachmentId) {
+    window.open(`api_attachments.php?action=download&attachment_id=${attachmentId}`, '_blank');
+}
+
+function deleteAttachment(attachmentId) {
+    if (!confirm('Are you sure you want to delete this attachment?')) {
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('action', 'delete');
+    formData.append('attachment_id', attachmentId);
+    
+    fetch('api_attachments.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadAttachments(currentNoteIdForAttachments); // Reload list
+            showNotificationPopup('Attachment deleted');
+        } else {
+            alert('Delete failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Delete failed');
+    });
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Make links clickable in contenteditable areas
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function(e) {
+        // Check if clicked element is a link inside a contenteditable area
+        if (e.target.tagName === 'A' && e.target.closest('[contenteditable="true"]')) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Open link directly in new tab
+            window.open(e.target.href, '_blank');
+        }
+    });
+});
 
 // Function to toggle favorite status
 function toggleFavorite(noteId) {

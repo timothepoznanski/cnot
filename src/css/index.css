@@ -50,9 +50,6 @@ a:active { color: #2E8CFA; } */
 }
 
 .attachment-upload {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     margin-bottom: 20px;
     padding: 15px;
     border: 2px dashed #ddd;
@@ -60,11 +57,20 @@ a:active { color: #2E8CFA; } */
     background: #f9f9f9;
 }
 
+.file-input-container {
+    margin-bottom: 5px;
+}
+
+.upload-button-container {
+    text-align: center;
+}
+
 .attachment-upload input[type="file"] {
-    flex: 1;
+    width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 3px;
+    box-sizing: border-box;
 }
 
 .attachment-upload button {

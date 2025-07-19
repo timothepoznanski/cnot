@@ -15,33 +15,7 @@ include 'db_connect.php';
 // Create attachments directory if it doesn't exist
 $attachments_dir = 'attachments';
 if (!file_exists($attachments_dir)) {
-    if (!mkdir($attachments_dir, 0777, true)) {
-        echo json_encode(['success' => false, 'message' => 'Failed to create attachments directory']);
-        exit;
-    }
-    // Set permissions after creation
-    chmod($attachments_dir, 0777);
-}
-
-// Try to fix permissions if directory is not writable
-if (!is_writable($attachments_dir)) {
-    // Try multiple permission levels
-    @chmod($attachments_dir, 0777);
-    @chmod($attachments_dir, 0755);
-    @chmod($attachments_dir, 0666);
-    
-    // If still not writable, try to create a test file to get more info
-    if (!is_writable($attachments_dir)) {
-        $test_file = $attachments_dir . '/test_write.txt';
-        $can_write = @file_put_contents($test_file, 'test');
-        if ($can_write !== false) {
-            @unlink($test_file);
-            // Directory is actually writable, PHP's is_writable() is lying
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Attachments directory is not writable. Owner: ' . fileowner($attachments_dir) . ', Perms: ' . substr(sprintf('%o', fileperms($attachments_dir)), -4)]);
-            exit;
-        }
-    }
+    mkdir($attachments_dir, 0755, true);
 }
 
 // Handle different actions
@@ -103,18 +77,6 @@ function handleUpload() {
         return;
     }
     
-    // Check if source file exists and is readable
-    if (!is_uploaded_file($file['tmp_name'])) {
-        echo json_encode(['success' => false, 'message' => 'Invalid uploaded file']);
-        return;
-    }
-    
-    // Check if destination directory is writable
-    if (!is_writable($attachments_dir)) {
-        echo json_encode(['success' => false, 'message' => 'Attachments directory is not writable']);
-        return;
-    }
-    
     // Move uploaded file
     if (move_uploaded_file($file['tmp_name'], $file_path)) {
         // Get current attachments
@@ -157,13 +119,7 @@ function handleUpload() {
             echo json_encode(['success' => false, 'message' => 'Note not found']);
         }
     } else {
-        $error_msg = 'Failed to save file to: ' . $file_path;
-        if (!is_dir($attachments_dir)) {
-            $error_msg .= ' (directory does not exist)';
-        } elseif (!is_writable($attachments_dir)) {
-            $error_msg .= ' (directory not writable)';
-        }
-        echo json_encode(['success' => false, 'message' => $error_msg]);
+        echo json_encode(['success' => false, 'message' => 'Failed to save file']);
     }
 }
 

@@ -132,8 +132,12 @@ if($note != '') {
             <span class="close" onclick="closeModal('attachmentModal')">&times;</span>
             <h3>Manage Attachments</h3>
             <div class="attachment-upload">
-                <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar">
-                <button onclick="uploadAttachment()">Upload File</button>
+                <div class="file-input-container">
+                    <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar">
+                </div>
+                <div class="upload-button-container">
+                    <button onclick="uploadAttachment()">Upload File</button>
+                </div>
             </div>
             <div id="attachmentsList" class="attachments-list">
                 <!-- Attachments will be loaded here -->

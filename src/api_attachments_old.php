@@ -15,33 +15,7 @@ include 'db_connect.php';
 // Create attachments directory if it doesn't exist
 $attachments_dir = 'attachments';
 if (!file_exists($attachments_dir)) {
-    if (!mkdir($attachments_dir, 0777, true)) {
-        echo json_encode(['success' => false, 'message' => 'Failed to create attachments directory']);
-        exit;
-    }
-    // Set permissions after creation
-    chmod($attachments_dir, 0777);
-}
-
-// Try to fix permissions if directory is not writable
-if (!is_writable($attachments_dir)) {
-    // Try multiple permission levels
-    @chmod($attachments_dir, 0777);
-    @chmod($attachments_dir, 0755);
-    @chmod($attachments_dir, 0666);
-    
-    // If still not writable, try to create a test file to get more info
-    if (!is_writable($attachments_dir)) {
-        $test_file = $attachments_dir . '/test_write.txt';
-        $can_write = @file_put_contents($test_file, 'test');
-        if ($can_write !== false) {
-            @unlink($test_file);
-            // Directory is actually writable, PHP's is_writable() is lying
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Attachments directory is not writable. Owner: ' . fileowner($attachments_dir) . ', Perms: ' . substr(sprintf('%o', fileperms($attachments_dir)), -4)]);
-            exit;
-        }
-    }
+    mkdir($attachments_dir, 0755, true);
 }
 
 // Handle different actions
@@ -103,18 +77,6 @@ function handleUpload() {
         return;
     }
     
-    // Check if source file exists and is readable
-    if (!is_uploaded_file($file['tmp_name'])) {
-        echo json_encode(['success' => false, 'message' => 'Invalid uploaded file']);
-        return;
-    }
-    
-    // Check if destination directory is writable
-    if (!is_writable($attachments_dir)) {
-        echo json_encode(['success' => false, 'message' => 'Attachments directory is not writable']);
-        return;
-    }
-    
     // Move uploaded file
     if (move_uploaded_file($file['tmp_name'], $file_path)) {
         // Get current attachments
@@ -157,13 +119,7 @@ function handleUpload() {
             echo json_encode(['success' => false, 'message' => 'Note not found']);
         }
     } else {
-        $error_msg = 'Failed to save file to: ' . $file_path;
-        if (!is_dir($attachments_dir)) {
-            $error_msg .= ' (directory does not exist)';
-        } elseif (!is_writable($attachments_dir)) {
-            $error_msg .= ' (directory not writable)';
-        }
-        echo json_encode(['success' => false, 'message' => $error_msg]);
+        echo json_encode(['success' => false, 'message' => 'Failed to save file']);
     }
 }
 
@@ -307,4 +263,114 @@ function handleDownload() {
         exit('Note not found');
     }
 }
+                    return;
+                }
+            }
+        }
+        
+        echo json_encode(['success' => false, 'message' => 'Attachment not found']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Note not found']);
+    }
+}
+?>
+    $tmp_name = $file['tmp_name'];
+    
+    // Validate file size (max 10MB)
+    if ($file_size > 10 * 1024 * 1024) {
+        echo json_encode(['success' => false, 'message' => 'File too large (max 10MB)']);
+        return;
+    }
+    
+    // Validate file extension
+    $allowed_extensions = ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar'];
+    $file_extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+    
+    if (!in_array($file_extension, $allowed_extensions)) {
+        echo json_encode(['success' => false, 'message' => 'File type not allowed']);
+        return;
+    }
+    
+    // Generate unique filename
+    $unique_name = uniqid() . '_' . $original_name;
+    $file_path = $attachments_dir . '/' . $unique_name;
+    
+    // Move uploaded file
+    if (!move_uploaded_file($tmp_name, $file_path)) {
+        echo json_encode(['success' => false, 'message' => 'Failed to save file']);
+        return;
+    }
+    
+    // Save to database
+    $stmt = $con->prepare("INSERT INTO attachments (note_id, original_name, file_name, file_size, file_type, uploaded_at) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("issss", $note_id, $original_name, $unique_name, $file_size, $file_type);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'File uploaded successfully']);
+    } else {
+        // Remove file if database insert failed
+        unlink($file_path);
+        echo json_encode(['success' => false, 'message' => 'Database error']);
+    }
+}
+
+function handleList() {
+    global $con;
+    
+    $note_id = $_GET['note_id'] ?? '';
+    
+    if (empty($note_id)) {
+        echo json_encode(['success' => false, 'message' => 'Note ID is required']);
+        return;
+    }
+    
+    $stmt = $con->prepare("SELECT id, original_name, file_size, file_type, uploaded_at FROM attachments WHERE note_id = ? ORDER BY uploaded_at DESC");
+    $stmt->bind_param("i", $note_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $attachments = [];
+    while ($row = $result->fetch_assoc()) {
+        $attachments[] = $row;
+    }
+    
+    echo json_encode(['success' => true, 'attachments' => $attachments]);
+}
+
+function handleDelete() {
+    global $con, $attachments_dir;
+    
+    $attachment_id = $_POST['attachment_id'] ?? '';
+    
+    if (empty($attachment_id)) {
+        echo json_encode(['success' => false, 'message' => 'Attachment ID is required']);
+        return;
+    }
+    
+    // Get file info
+    $stmt = $con->prepare("SELECT file_name FROM attachments WHERE id = ?");
+    $stmt->bind_param("i", $attachment_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $attachment = $result->fetch_assoc();
+    
+    if (!$attachment) {
+        echo json_encode(['success' => false, 'message' => 'Attachment not found']);
+        return;
+    }
+    
+    // Delete from database
+    $stmt = $con->prepare("DELETE FROM attachments WHERE id = ?");
+    $stmt->bind_param("i", $attachment_id);
+    
+    if ($stmt->execute()) {
+        // Delete file
+        $file_path = $attachments_dir . '/' . $attachment['file_name'];
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+        echo json_encode(['success' => true, 'message' => 'Attachment deleted']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Database error']);
+    }
 ?>

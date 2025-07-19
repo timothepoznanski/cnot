@@ -118,7 +118,7 @@ function displayAttachments(attachments) {
         return;
     }
     
-    let html = '<h4>Attachments:</h4>';
+    let html = '';
     attachments.forEach(attachment => {
         const fileSize = formatFileSize(attachment.file_size);
         const uploadDate = new Date(attachment.uploaded_at).toLocaleDateString();
@@ -126,15 +126,15 @@ function displayAttachments(attachments) {
         html += `
             <div class="attachment-item">
                 <div class="attachment-info">
-                    <strong>${attachment.original_name}</strong>
+                    <strong>${attachment.original_filename}</strong>
                     <br>
                     <small>${fileSize} - ${uploadDate}</small>
                 </div>
                 <div class="attachment-actions">
-                    <button onclick="downloadAttachment(${attachment.id})" title="Download">
+                    <button onclick="downloadAttachment('${attachment.id}')" title="Download">
                         <i class="fas fa-download"></i>
                     </button>
-                    <button onclick="deleteAttachment(${attachment.id})" title="Delete" class="delete-btn">
+                    <button onclick="deleteAttachment('${attachment.id}')" title="Delete" class="delete-btn">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -154,8 +154,14 @@ function deleteAttachment(attachmentId) {
         return;
     }
     
+    if (!currentNoteIdForAttachments) {
+        alert('No note selected');
+        return;
+    }
+    
     const formData = new FormData();
     formData.append('action', 'delete');
+    formData.append('note_id', currentNoteIdForAttachments);
     formData.append('attachment_id', attachmentId);
     
     fetch('api_attachments.php', {

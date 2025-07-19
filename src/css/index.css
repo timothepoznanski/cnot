@@ -717,7 +717,25 @@ hr {
 .toolbar-btn.save-modified {
     background: transparent !important;
     border: none !important;
+    animation: pulse-save 2s infinite;
 }
+
+/* Animation de pulsation pour le bouton save modifié */
+@keyframes pulse-save {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.0);
+    }
+}
+
 /* Quand save est modifié, il reste rouge même au hover/focus */
 .toolbar-btn.save-modified i.fas.fa-save {
     color: #e53935 !important;

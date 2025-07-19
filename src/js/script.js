@@ -422,12 +422,9 @@ function saveFolderName() {
 }
 
 function deleteFolder(folderName) {
-    if (!confirm(`Are you sure you want to delete the folder "${folderName}"? All notes will be moved to "Uncategorized".`)) {
-        return;
-    }
-    
+    // First, check how many notes are in this folder
     var params = new URLSearchParams({
-        action: 'delete',
+        action: 'count_notes_in_folder',
         folder_name: folderName
     });
     
@@ -439,13 +436,47 @@ function deleteFolder(folderName) {
     .then(response => response.json())
     .then(function(data) {
         if (data.success) {
-            location.reload();
+            var noteCount = data.count || 0;
+            var confirmMessage;
+            
+            if (noteCount === 0) {
+                confirmMessage = `Are you sure you want to delete the empty folder "${folderName}"?`;
+            } else {
+                confirmMessage = `Are you sure you want to delete the folder "${folderName}"? \n${noteCount} note${noteCount > 1 ? 's' : ''} will be moved to "Uncategorized".\n\nIf you want to delete all the notes of this fold instead, you can move them to "Uncategorized" folder then empty it.`;
+            }
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            // Proceed with deletion
+            var deleteParams = new URLSearchParams({
+                action: 'delete',
+                folder_name: folderName
+            });
+            
+            fetch("folder_operations.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: deleteParams.toString()
+            })
+            .then(response => response.json())
+            .then(function(data) {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error deleting folder: ' + error);
+            });
         } else {
-            alert('Error: ' + data.error);
+            alert('Error checking folder contents: ' + data.error);
         }
     })
     .catch(error => {
-        alert('Error deleting folder: ' + error);
+        alert('Error checking folder contents: ' + error);
     });
 }
 

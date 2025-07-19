@@ -87,7 +87,6 @@ if($note != '') {
         <div class="modal-content">
             <span class="close" onclick="closeModal('moveNoteFolderModal')">&times;</span>
             <h3>Move Note to Folder</h3>
-            <p>Move this note to:</p>
             <select id="moveNoteFolderSelect">
                 <option value="Uncategorized">Uncategorized</option>
             </select>

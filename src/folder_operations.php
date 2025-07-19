@@ -147,6 +147,26 @@ switch($action) {
         }
         break;
         
+    case 'count_notes_in_folder':
+        $folderName = $_POST['folder_name'] ?? '';
+        
+        if (empty($folderName)) {
+            echo json_encode(['success' => false, 'error' => 'Folder name is required']);
+            exit;
+        }
+        
+        // Count notes in this folder
+        $query = "SELECT COUNT(*) as count FROM entries WHERE folder = '" . mysqli_real_escape_string($con, $folderName) . "' AND trash = 0";
+        $result = $con->query($query);
+        
+        if ($result) {
+            $row = $result->fetch_assoc();
+            echo json_encode(['success' => true, 'count' => intval($row['count'])]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Database error occurred']);
+        }
+        break;
+        
     default:
         echo json_encode(['success' => false, 'error' => 'Invalid action']);
 }

@@ -9,6 +9,8 @@ CnoT runs in Docker and works seamlessly on both Windows and Linux. The interfac
 ## Installation
  
 ```
+mkdir my-cnot
+cd my-cnot
 git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
 docker compose up -d --build

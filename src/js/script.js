@@ -126,7 +126,6 @@ function uploadAttachment() {
             fileInput.value = ''; // Clear input
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
-            showNotificationPopup('File uploaded successfully');
         } else {
             alert('Upload failed: ' + data.message);
         }
@@ -196,10 +195,6 @@ function downloadAttachment(attachmentId) {
 }
 
 function deleteAttachment(attachmentId) {
-    if (!confirm('Are you sure you want to delete this attachment?')) {
-        return;
-    }
-    
     if (!currentNoteIdForAttachments) {
         alert('No note selected');
         return;
@@ -219,7 +214,6 @@ function deleteAttachment(attachmentId) {
         if (data.success) {
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
-            showNotificationPopup('Attachment deleted');
         } else {
             alert('Delete failed: ' + data.message);
         }

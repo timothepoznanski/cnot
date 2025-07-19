@@ -30,8 +30,9 @@ include 'db_connect.php';
             $res_right = $con->query($query_right);
             while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC)) {
                 $title = $row["heading"] ?: 'Untitled note';
+                $folder = $row["folder"] ?: 'Uncategorized';
                 $tags = $row["tags"] ? ' - ' . $row["tags"] : '';
-                $indexContent .= '<a href="./'.$row['id'].'.html">'.$title.'</a> ('.$tags.')<br>';
+                $indexContent .= '<a href="./'.$row['id'].'.html">'.$title.'</a> (' . $folder . $tags.')<br>';
             }
             $indexContent .= '</body></html>';
             $zip->addFromString('index.html', $indexContent);

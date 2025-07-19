@@ -9,6 +9,47 @@ var noteid=-1;
 var updateNoteEnCours = 0;
 var selectedFolder = 'Uncategorized'; // Track currently selected folder
 
+// Function to toggle favorite status
+function toggleFavorite(noteId) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api_favorites.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Update the star icon
+                    const starIcon = document.querySelector(`button[onclick*="toggleFavorite('${noteId}')"] i`);
+                    if (starIcon) {
+                        if (response.is_favorite) {
+                            starIcon.style.color = '#FFD700'; // Gold color for favorite
+                        } else {
+                            starIcon.style.color = '#007DB8'; // Blue color for non-favorite
+                        }
+                        // Keep it always as full star (fas)
+                        starIcon.classList.remove('far');
+                        starIcon.classList.add('fas');
+                    }
+                    
+                    // Show notification
+                    showNotificationPopup(response.message);
+                    
+                    // Refresh immediately to update favorites folder
+                    window.location.reload();
+                } else {
+                    showNotificationPopup('Erreur: ' + response.message);
+                }
+            } catch (e) {
+                showNotificationPopup('Erreur lors de la mise à jour des favoris');
+            }
+        }
+    };
+    
+    xhr.send('action=toggle_favorite&note_id=' + encodeURIComponent(noteId));
+}
+
 function updateidsearch(el)
 {
     noteid = el.id.substr(5);
@@ -437,13 +478,36 @@ function deleteFolder(folderName) {
     .then(function(data) {
         if (data.success) {
             var noteCount = data.count || 0;
-            var confirmMessage;
             
+            // If folder is empty, delete without confirmation
             if (noteCount === 0) {
-                confirmMessage = `Are you sure you want to delete the empty folder "${folderName}"?`;
-            } else {
-                confirmMessage = `Are you sure you want to delete the folder "${folderName}"? \n${noteCount} note${noteCount > 1 ? 's' : ''} will be moved to "Uncategorized".\n\nIf you want to delete all the notes of this fold instead, you can move them to "Uncategorized" folder then empty it.`;
+                // Proceed directly with deletion for empty folders
+                var deleteParams = new URLSearchParams({
+                    action: 'delete',
+                    folder_name: folderName
+                });
+                
+                fetch("folder_operations.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: deleteParams.toString()
+                })
+                .then(response => response.json())
+                .then(function(data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Error deleting folder: ' + error);
+                });
+                return;
             }
+            
+            // For folders with notes, ask for confirmation
+            var confirmMessage = `Are you sure you want to delete the folder "${folderName}"? \n${noteCount} note${noteCount > 1 ? 's' : ''} will be moved to "Uncategorized".\n\nIf you want to delete all the notes of this fold instead, you can move them to "Uncategorized" folder then empty it.`;
             
             if (!confirm(confirmMessage)) {
                 return;

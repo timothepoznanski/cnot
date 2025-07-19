@@ -181,10 +181,14 @@ if($note != '') {
     // Add folder filter condition
     $folder_condition = '';
     if (!empty($folder_filter)) {
-        $folder_condition = " AND folder = '" . mysqli_real_escape_string($con, $folder_filter) . "'";
+        if ($folder_filter === 'Favoris') {
+            $folder_condition = " AND favorite = 1";
+        } else {
+            $folder_condition = " AND folder = '" . mysqli_real_escape_string($con, $folder_filter) . "'";
+        }
     }
     
-    $query_left = "SELECT heading, folder FROM entries WHERE trash = 0$search_condition$folder_condition ORDER BY folder, updated DESC";
+    $query_left = "SELECT heading, folder, favorite FROM entries WHERE trash = 0$search_condition$folder_condition ORDER BY folder, updated DESC";
     $query_right = "SELECT * FROM entries WHERE trash = 0$search_condition$folder_condition ORDER BY updated DESC LIMIT 1";
     ?>
     
@@ -232,24 +236,8 @@ if($note != '') {
     </div>
     <?php endif; ?>
         
-    <script>
-        // Variables for folder management
-        var isSearchMode = <?php echo (!empty($search) || !empty($tags_search)) ? 'true' : 'false'; ?>;
-        var currentNoteFolder = <?php 
-            if ($note != '' && empty($search) && empty($tags_search)) {
-                echo json_encode($current_note_folder ?? 'Uncategorized');
-            } else if ($default_note_folder && empty($search) && empty($tags_search)) {
-                echo json_encode($default_note_folder);
-            } else {
-                echo 'null';
-            }
-        ?>;
-    </script>
-        
-    <br><hr><br>
-            
     <?php
-  
+        // Determine default note folder before JavaScript
         $default_note_folder = null; // Track folder of default note
         
         if($note!='') // If the note is not empty, it means we have just clicked on a note.
@@ -276,6 +264,23 @@ if($note != '') {
                 $res_right = null;
             }
         }
+    ?>
+        
+    <script>
+        // Variables for folder management
+        var isSearchMode = <?php echo (!empty($search) || !empty($tags_search)) ? 'true' : 'false'; ?>;
+        var currentNoteFolder = <?php 
+            if ($note != '' && empty($search) && empty($tags_search)) {
+                echo json_encode($current_note_folder ?? 'Uncategorized');
+            } else if ($default_note_folder && empty($search) && empty($tags_search)) {
+                echo json_encode($default_note_folder);
+            } else {
+                echo 'null';
+            }
+        ?>;
+    </script>
+                    
+    <?php
         
         // Determine which folders should be open
         $is_search_mode = !empty($search) || !empty($tags_search);
@@ -286,6 +291,8 @@ if($note != '') {
         // Group notes by folder for hierarchical display
         $folders = [];
         $folders_with_results = []; // Track folders that have search results
+        $favorites = []; // Store favorite notes
+        
         while($row1 = mysqli_fetch_array($res_query_left, MYSQLI_ASSOC)) {
             $folder = $row1["folder"] ?: 'Uncategorized';
             if (!isset($folders[$folder])) {
@@ -293,10 +300,23 @@ if($note != '') {
             }
             $folders[$folder][] = $row1;
             
+            // If the note is a favorite, also add it to the favorites "folder"
+            if ($row1["favorite"]) {
+                $favorites[] = $row1;
+            }
+            
             // If in search mode, track folders with results
             if($is_search_mode) {
                 $folders_with_results[$folder] = true;
+                if ($row1["favorite"]) {
+                    $folders_with_results['Favoris'] = true;
+                }
             }
+        }
+        
+        // Add favorites as a special folder if there are any favorites
+        if (!empty($favorites)) {
+            $folders = ['Favoris' => $favorites] + $folders;
         }
         
         // Add empty folders from folders table
@@ -307,8 +327,10 @@ if($note != '') {
             }
         }
         
-        // Sort folders alphabetically (Uncategorized first)
+        // Sort folders alphabetically (Favoris first, then Uncategorized, then others)
         uksort($folders, function($a, $b) {
+            if ($a === 'Favoris') return -1;
+            if ($b === 'Favoris') return 1;
             if ($a === 'Uncategorized') return -1;
             if ($b === 'Uncategorized') return 1;
             return strcasecmp($a, $b);
@@ -327,8 +349,18 @@ if($note != '') {
                     // In search mode: open folders that have results
                     $should_be_open = isset($folders_with_results[$folderName]);
                 } else if($note != '') {
-                    // If a note is selected: open only the folder of the current note
-                    $should_be_open = ($folderName === $current_note_folder);
+                    // If a note is selected: open the folder of the current note AND Favoris if note is favorite
+                    if ($folderName === $current_note_folder) {
+                        $should_be_open = true;
+                    } else if ($folderName === 'Favoris') {
+                        // Open Favoris folder if the current note is favorite
+                        $query_check_favorite = "SELECT favorite FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
+                        $res_check_favorite = $con->query($query_check_favorite);
+                        if ($res_check_favorite && $res_check_favorite->num_rows > 0) {
+                            $favorite_data = $res_check_favorite->fetch_assoc();
+                            $should_be_open = $favorite_data['favorite'] == 1;
+                        }
+                    }
                 } else if($default_note_folder) {
                     // If no specific note selected but default note loaded: open its folder
                     $should_be_open = ($folderName === $default_note_folder);
@@ -341,13 +373,25 @@ if($note != '') {
                 echo "<div class='$folderClass' data-folder='$folderName' onclick='selectFolder(\"$folderName\", this)'>";
                 echo "<div class='folder-toggle' onclick='event.stopPropagation(); toggleFolder(\"$folderId\")' data-folder-id='$folderId'>";
                 echo "<i class='fas $chevron_icon folder-icon'></i>";
-                echo "<i class='fas fa-folder folder-name-icon'></i>";
+                
+                // Icône spéciale pour le dossier Favoris
+                if ($folderName === 'Favoris') {
+                    echo "<i class='fas fa-star folder-name-icon' style='color:#FFD700;'></i>";
+                } else {
+                    echo "<i class='fas fa-folder folder-name-icon'></i>";
+                }
+                
                 echo "<span class='folder-name' ondblclick='editFolderName(\"$folderName\")'>$folderName</span>";
                 echo "<span class='folder-actions'>";
-                echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
-                if ($folderName === 'Uncategorized') {
+                
+                // Actions différentes selon le type de dossier
+                if ($folderName === 'Favoris') {
+                    // Pas d'actions pour le dossier Favoris (il se gère automatiquement)
+                } else if ($folderName === 'Uncategorized') {
+                    echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
                     echo "<i class='fas fa-trash-alt folder-empty-btn' onclick='event.stopPropagation(); emptyFolder(\"$folderName\")' title='Move all notes to trash'></i>";
                 } else {
+                    echo "<i class='fas fa-edit folder-edit-btn' onclick='event.stopPropagation(); editFolderName(\"$folderName\")' title='Rename folder'></i>";
                     echo "<i class='fas fa-trash folder-delete-btn' onclick='event.stopPropagation(); deleteFolder(\"$folderName\")' title='Delete folder'></i>";
                 }
                 echo "</span>";
@@ -426,6 +470,13 @@ if($note != '') {
                 echo '<button type="button" class="toolbar-btn btn-save" title="Enregistrer la note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-folder" title="Changer de dossier" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                 echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Exporter la note"><i class="fas fa-download"></i></a>';
+                
+                // Bouton favoris avec icône étoile
+                $is_favorite = $row['favorite'] ?? 0;
+                $star_class = 'fas'; // Toujours étoile pleine
+                $star_color = $is_favorite ? 'color:#FFD700;' : 'color:#007DB8;'; // Doré si favori, bleu sinon
+                echo '<button type="button" class="toolbar-btn btn-favorite" title="'.($is_favorite ? 'Retirer des favoris' : 'Ajouter aux favoris').'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="'.$star_color.'"></i></button>';
+                
                 echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-trash" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 echo '</div>';

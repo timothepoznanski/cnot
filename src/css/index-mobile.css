@@ -191,7 +191,12 @@ body.note-open #right_col {
 }
 
 .folder-header.selected-folder {
-    background-color: rgba(0, 125, 184, 0.15) !important;
+    background-color: transparent !important; /* Remove blue background on mobile */
+}
+
+/* Remove note selection highlighting on mobile */
+a.links_arbo_left.selected-note {
+    background-color: transparent !important;
 }
 
 .folder-toggle {
@@ -244,12 +249,7 @@ body.note-open #right_col {
 }
 
 .move-note-btn {
-    font-size: 12px !important;
-    padding: 4px 6px !important;
-    margin-right: 10px !important;
-    opacity: 1 !important; /* Always visible on mobile */
-    position: absolute !important;
-    left: 2px !important;
+    display: none !important; /* Hide move note button on mobile */
 }
 
 /* MODAL MOBILE ADJUSTMENTS */

@@ -100,25 +100,25 @@ body {
     color: #005a8a !important;
 }
 
-/* Gestion responsive des boutons individuels sur mobile */
-/* Cacher certains boutons de formatage par défaut sur mobile */
+/* Mobile responsive button management */
+/* Hide formatting buttons by default on mobile */
 .btn-bold, .btn-italic, .btn-underline, .btn-strikethrough,
 .btn-link, .btn-unlink, .btn-color, .btn-highlight,
 .btn-list-ul, .btn-list-ol, .btn-text-height, .btn-code, .btn-eraser {
     display: none !important;
 }
 
-/* Boutons toujours visibles sur mobile */
+/* Always visible buttons on mobile */
 .btn-separator, .btn-save {
     display: flex !important;
 }
 
-/* Boutons d'action visibles par défaut sur mobile */
+/* Action buttons visible by default on mobile */
 .btn-favorite, .btn-folder, .btn-attachment, .btn-download, .btn-info, .btn-trash {
     display: flex !important;
 }
 
-/* Quand du texte est sélectionné : afficher les boutons de formatage et cacher les boutons d'action */
+/* When text is selected: show formatting buttons and hide action buttons */
 .show-format-buttons .btn-bold, 
 .show-format-buttons .btn-italic, 
 .show-format-buttons .btn-underline, 
@@ -135,7 +135,7 @@ body {
     display: flex !important;
 }
 
-/* Cacher TOUS les boutons d'action quand du texte est sélectionné (y compris separator et save) */
+/* Hide ALL action buttons when text is selected (including separator and save) */
 .show-format-buttons .btn-separator,
 .show-format-buttons .btn-save,
 .show-format-buttons .btn-favorite, 
@@ -147,7 +147,7 @@ body {
     display: none !important;
 }
 
-/* Augmenter la taille du texte des blocs de code sur mobile */
+/* Increase text size for code blocks on mobile */
 .noteentry span[style*='Consolas'] {
     font-size: 16px !important;
 }
@@ -156,21 +156,19 @@ pre, code {
     font-size: 16px !important;
 }
 
-/* Augmenter la taille du texte dans la colonne de gauche sur mobile */
-@media (max-width: 800px) {
-    #left_col .links_arbo_left {
-        font-size: 18px !important;
-        line-height: 1.4 !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Specific rule for note title spans in all links on mobile */
-    #left_col .links_arbo_left .note-title {
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        display: block !important;
-    }
+/* Increase text size in left column on mobile */
+#left_col .links_arbo_left {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+    box-sizing: border-box !important;
+}
+
+/* Specific rule for note title spans in all links on mobile */
+#left_col .links_arbo_left .note-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
 }
 
 #right_col {
@@ -201,7 +199,7 @@ body.note-open #right_col {
 /* FOLDER STYLES FOR MOBILE */
 
 .folder-header {
-    margin-bottom: 0px; /* Suppression de l'espace entre les dossiers mobile (5px → 0px) */
+    margin-bottom: 0px; /* Remove spacing between mobile folders (5px → 0px) */
     cursor: pointer !important;
     border-radius: 8px !important;
     transition: background-color 0.2s !important;
@@ -266,29 +264,27 @@ a.links_arbo_left {
 }
 
 /* Force override all possible highlighting states on mobile */
-@media (max-width: 800px) {
-    .folder-header,
-    .folder-header:hover,
-    .folder-header:active,
-    .folder-header:focus,
-    .folder-header.selected-folder {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
-    
-    a.links_arbo_left,
-    a.links_arbo_left:hover,
-    a.links_arbo_left:active,
-    a.links_arbo_left:focus,
-    a.links_arbo_left.selected-note {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
-    
-    .folder-content {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
+.folder-header,
+.folder-header:hover,
+.folder-header:active,
+.folder-header:focus,
+.folder-header.selected-folder {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+a.links_arbo_left,
+a.links_arbo_left:hover,
+a.links_arbo_left:active,
+a.links_arbo_left:focus,
+a.links_arbo_left.selected-note {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+.folder-content {
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
 .folder-toggle {
@@ -304,7 +300,6 @@ a.links_arbo_left {
 .folder-note-count {
     font-size: 14px !important;
     color: #999 !important;
-    /* font-style: italic !important; */
     font-weight: 300 !important;
     margin-left: 3px !important;
     margin-right: 10px !important;
@@ -312,12 +307,12 @@ a.links_arbo_left {
 
 .folder-content {
     margin-left: 16px !important;
-    margin-bottom: 5px !important; /* Réduction de l'espace sous les dossiers mobile (12px → 5px) */
+    margin-bottom: 5px !important; /* Reduce spacing under mobile folders (12px → 5px) */
 }
 
 .note-in-folder {
-    padding-left: 6px !important; /* Réduction du padding mobile (34px → 6px) */
-    margin-bottom: 0px !important; /* Suppression de l'espace entre les notes */
+    padding-left: 6px !important; /* Reduce mobile padding (34px → 6px) */
+    margin-bottom: 0px !important; /* Remove spacing between notes */
     display: flex !important;
     align-items: center !important;
     position: relative !important;
@@ -333,7 +328,7 @@ a.links_arbo_left {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: block !important;
-    margin-left: 0px !important; /* Récupération de l'espace mobile (20px → 0px) */
+    margin-left: 0px !important; /* Recover mobile spacing (20px → 0px) */
 }
 
 .folder-actions {

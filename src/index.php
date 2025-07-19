@@ -563,6 +563,19 @@ if($note != '') {
                     echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
                     echo '</div>';
                     echo '</div>';
+                } else {
+                    // Boutons individuels pour mobile
+                    // Bouton favoris avec icône étoile
+                    $is_favorite = $row['favorite'] ?? 0;
+                    $star_class = $is_favorite ? 'fas' : 'far';
+                    $favorite_title = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
+                    echo '<button type="button" class="toolbar-btn btn-favorite" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i></button>';
+                    
+                    echo '<button type="button" class="toolbar-btn btn-folder" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-attachment" title="Attachments" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
+                    echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Export"><i class="fas fa-download"></i></a>';
+                    echo '<button type="button" class="toolbar-btn btn-info" title="Information" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-trash" title="Delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 }
                 
                 echo '</div>';

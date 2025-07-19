@@ -109,7 +109,7 @@ body {
 }
 
 /* Toujours afficher les boutons essentiels sur mobile */
-.btn-separator, .btn-save, .btn-folder, .btn-download, .btn-info, .btn-trash {
+.btn-separator, .btn-save, .btn-favorite, .btn-folder, .btn-attachment, .btn-download, .btn-info, .btn-trash {
     display: flex !important;
 }
 

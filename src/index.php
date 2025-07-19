@@ -176,10 +176,6 @@ if($note != '') {
                         <i class="fas fa-plus-square"></i>
                         <span>Unfold All Folders</span>
                     </div>
-                    <div class="settings-menu-item" onclick="toggleFoldersVisibility();">
-                        <i class="fas fa-eye-slash" id="toggleFoldersIcon"></i>
-                        <span id="toggleFoldersText">Hide Folders</span>
-                    </div>
                 </div>
             </div>
             <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
@@ -274,10 +270,6 @@ if($note != '') {
                 <div class="settings-menu-item" onclick="unfoldAllFolders();">
                     <i class="fas fa-plus-square"></i>
                     <span>Unfold All Folders</span>
-                </div>
-                <div class="settings-menu-item" onclick="toggleFoldersVisibility();">
-                    <i class="fas fa-eye-slash" id="toggleFoldersIcon"></i>
-                    <span id="toggleFoldersText">Hide Folders</span>
                 </div>
             </div>
         </div>
@@ -603,7 +595,7 @@ if($note != '') {
                     echo '<div class="dropdown-item" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i> Move to folder</div>';
                     
                     echo '<div class="dropdown-item'.($attachments_count > 0 ? ' has-attachments' : '').'" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i> Attachments ('.$attachments_count.')</div>';
-                    echo '<div class="dropdown-item" onclick="window.open(\''.$filename.'\', \'_blank\')"><i class="fas fa-download"></i> Export</div>';
+                    echo '<div class="dropdown-item" onclick="downloadFile(\''.$filename.'\', \''.addslashes($title).'\')"><i class="fas fa-download"></i> Export to HTML</div>';
                     echo '<div class="dropdown-item" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i> Information</div>';
                     echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
                     echo '</div>';
@@ -627,7 +619,7 @@ if($note != '') {
                     
                     echo '<button type="button" class="toolbar-btn btn-folder" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                     echo '<button type="button" class="toolbar-btn btn-attachment'.($attachments_count > 0 ? ' has-attachments' : '').'" title="Attachments" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
-                    echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Export"><i class="fas fa-download"></i></a>';
+                    echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Export to HTML"><i class="fas fa-download"></i></a>';
                     echo '<button type="button" class="toolbar-btn btn-info" title="Information" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i></button>';
                     echo '<button type="button" class="toolbar-btn btn-trash" title="Delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 }

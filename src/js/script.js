@@ -1135,35 +1135,3 @@ function unfoldAllFolders() {
     // Close settings menu
     document.getElementById('settingsMenu').style.display = 'none';
 }
-
-let foldersHidden = false;
-
-function toggleFoldersVisibility() {
-    const folderHeaders = document.querySelectorAll('.folder-header');
-    const toggleIcon = document.getElementById('toggleFoldersIcon');
-    const toggleText = document.getElementById('toggleFoldersText');
-    
-    foldersHidden = !foldersHidden;
-    
-    folderHeaders.forEach(header => {
-        if (foldersHidden) {
-            header.style.display = 'none';
-        } else {
-            header.style.display = 'block';
-        }
-    });
-    
-    // Update icon and text
-    if (foldersHidden) {
-        toggleIcon.classList.remove('fa-eye-slash');
-        toggleIcon.classList.add('fa-eye');
-        toggleText.textContent = 'Show Folders';
-    } else {
-        toggleIcon.classList.remove('fa-eye');
-        toggleIcon.classList.add('fa-eye-slash');
-        toggleText.textContent = 'Hide Folders';
-    }
-    
-    // Close settings menu
-    document.getElementById('settingsMenu').style.display = 'none';
-}

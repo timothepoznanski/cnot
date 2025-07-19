@@ -521,6 +521,9 @@ if($note != '') {
                 echo '<div class="note-header">';
                 // Boutons de formatage (cachés par défaut sur mobile, visibles lors de sélection)
                 echo '<div class="note-edit-toolbar">';
+                if ($is_mobile) {
+                    echo '<button type="button" class="toolbar-btn btn-home" title="Home" onclick="window.location.href=\'index.php\'"><i class="fas fa-home"></i></button>';
+                }
                 echo '<button type="button" class="toolbar-btn btn-bold" title="Bold" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-italic" title="Italic" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-underline" title="Underline" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';

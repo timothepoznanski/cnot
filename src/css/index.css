@@ -758,7 +758,7 @@ img {
     justify-content: center;
 }
 
-.newbutton, .newfolderbutton, .list_tags, .exportAllButton {
+.newbutton, .newfolderbutton, .list_tags, .exportAllButton, .settingsbutton {
     display: inline-block;
     width:30px;
     cursor: pointer;
@@ -766,6 +766,66 @@ img {
     margin: 5px;
     color: #007DB8;
     font-size: 17px;
+}
+
+/* Settings dropdown styles */
+.settings-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.settingsbutton {
+    display: inline-block;
+    width: 30px;
+    cursor: pointer;
+    height: 20px;
+    margin: 5px;
+    color: #007DB8;
+    font-size: 17px;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 180px;
+    padding: 8px 0;
+    margin-top: 5px;
+    display: none;
+}
+
+.settings-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.settings-menu-item:last-child {
+    border-bottom: none;
+}
+
+.settings-menu-item:hover {
+    background-color: #f8f9fa;
+    color: #007DB8;
+}
+
+.settings-menu-item i {
+    margin-right: 10px;
+    width: 16px;
+    text-align: center;
+    color: #007DB8;
 }
 
 .search:focus{

@@ -1079,3 +1079,91 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Settings menu functions
+function toggleSettingsMenu(event) {
+    event.stopPropagation();
+    const menu = document.getElementById('settingsMenu');
+    
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';
+        
+        // Close menu when clicking outside
+        setTimeout(() => {
+            document.addEventListener('click', function closeSettingsMenu(e) {
+                if (!menu.contains(e.target)) {
+                    menu.style.display = 'none';
+                    document.removeEventListener('click', closeSettingsMenu);
+                }
+            });
+        }, 100);
+    } else {
+        menu.style.display = 'none';
+    }
+}
+
+function foldAllFolders() {
+    const folderContents = document.querySelectorAll('.folder-content');
+    const folderIcons = document.querySelectorAll('.folder-icon');
+    
+    folderContents.forEach(content => {
+        content.style.display = 'none';
+    });
+    
+    folderIcons.forEach(icon => {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-right');
+    });
+    
+    // Close settings menu
+    document.getElementById('settingsMenu').style.display = 'none';
+}
+
+function unfoldAllFolders() {
+    const folderContents = document.querySelectorAll('.folder-content');
+    const folderIcons = document.querySelectorAll('.folder-icon');
+    
+    folderContents.forEach(content => {
+        content.style.display = 'block';
+    });
+    
+    folderIcons.forEach(icon => {
+        icon.classList.remove('fa-chevron-right');
+        icon.classList.add('fa-chevron-down');
+    });
+    
+    // Close settings menu
+    document.getElementById('settingsMenu').style.display = 'none';
+}
+
+let foldersHidden = false;
+
+function toggleFoldersVisibility() {
+    const folderHeaders = document.querySelectorAll('.folder-header');
+    const toggleIcon = document.getElementById('toggleFoldersIcon');
+    const toggleText = document.getElementById('toggleFoldersText');
+    
+    foldersHidden = !foldersHidden;
+    
+    folderHeaders.forEach(header => {
+        if (foldersHidden) {
+            header.style.display = 'none';
+        } else {
+            header.style.display = 'block';
+        }
+    });
+    
+    // Update icon and text
+    if (foldersHidden) {
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+        toggleText.textContent = 'Show Folders';
+    } else {
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+        toggleText.textContent = 'Hide Folders';
+    }
+    
+    // Close settings menu
+    document.getElementById('settingsMenu').style.display = 'none';
+}

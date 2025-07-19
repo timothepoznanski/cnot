@@ -163,6 +163,25 @@ if($note != '') {
             <div class="exportAllButton" onclick="startDownload();">
                 <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
             </div>
+            <div class="settings-dropdown">
+                <div class="settingsbutton" onclick="toggleSettingsMenu(event);" title="Settings">
+                    <span><span class="fas fa-cog"></span></span>
+                </div>
+                <div class="settings-menu" id="settingsMenu">
+                    <div class="settings-menu-item" onclick="foldAllFolders();">
+                        <i class="fas fa-minus-square"></i>
+                        <span>Fold All Folders</span>
+                    </div>
+                    <div class="settings-menu-item" onclick="unfoldAllFolders();">
+                        <i class="fas fa-plus-square"></i>
+                        <span>Unfold All Folders</span>
+                    </div>
+                    <div class="settings-menu-item" onclick="toggleFoldersVisibility();">
+                        <i class="fas fa-eye-slash" id="toggleFoldersIcon"></i>
+                        <span id="toggleFoldersText">Hide Folders</span>
+                    </div>
+                </div>
+            </div>
             <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         </div>
         <?php endif; ?>
@@ -242,6 +261,25 @@ if($note != '') {
         <div class="list_tags" onclick="window.location = 'listtags.php';"><span><span title="List the tags" class="fas fa-tags"></span></span></div>
         <div class="exportAllButton" onclick="startDownload();">
             <span><span title="Export all notes as a zip file for offline viewing" class="fas fa-download"></span></span>
+        </div>
+        <div class="settings-dropdown">
+            <div class="settingsbutton" onclick="toggleSettingsMenu(event);" title="Settings">
+                <span><span class="fas fa-cog"></span></span>
+            </div>
+            <div class="settings-menu" id="settingsMenu">
+                <div class="settings-menu-item" onclick="foldAllFolders();">
+                    <i class="fas fa-minus-square"></i>
+                    <span>Fold All Folders</span>
+                </div>
+                <div class="settings-menu-item" onclick="unfoldAllFolders();">
+                    <i class="fas fa-plus-square"></i>
+                    <span>Unfold All Folders</span>
+                </div>
+                <div class="settings-menu-item" onclick="toggleFoldersVisibility();">
+                    <i class="fas fa-eye-slash" id="toggleFoldersIcon"></i>
+                    <span id="toggleFoldersText">Hide Folders</span>
+                </div>
+            </div>
         </div>
         <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
         <?php

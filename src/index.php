@@ -255,6 +255,28 @@ if($note != '') {
         {          
             $query_note = "SELECT * FROM entries WHERE trash = 0 AND heading = '" . mysqli_real_escape_string($con, $note) . "'";
             $res_right = $con->query($query_note);
+            
+            // Si la note demandée n'existe pas, afficher la dernière note mise à jour
+            if(!$res_right || $res_right->num_rows == 0) {
+                $note = ''; // Reset note to trigger showing latest note
+                $check_notes_query = "SELECT COUNT(*) as note_count FROM entries WHERE trash = 0$search_condition$folder_condition";
+                $check_result = $con->query($check_notes_query);
+                $note_count = $check_result->fetch_assoc()['note_count'];
+                
+                if ($note_count > 0) {
+                    // Show the most recently updated note
+                    $res_right = $con->query($query_right);
+                    if($res_right && $res_right->num_rows > 0) {
+                        $latest_note = $res_right->fetch_assoc();
+                        $default_note_folder = $latest_note["folder"] ?: 'Uncategorized';
+                        // Reset the result pointer for display
+                        $res_right->data_seek(0);
+                    }
+                } else {
+                    // No notes available, show welcome message
+                    $res_right = null;
+                }
+            }
         } else {
             // No specific note requested, check if we have notes to show the latest one
             $check_notes_query = "SELECT COUNT(*) as note_count FROM entries WHERE trash = 0$search_condition$folder_condition";
@@ -349,6 +371,11 @@ if($note != '') {
         
         // Display folders and notes
         foreach($folders as $folderName => $notes) {
+            // En mode recherche, ne pas afficher les dossiers vides
+            if ($is_search_mode && empty($notes)) {
+                continue;
+            }
+            
             // Show folder header only if not filtering by folder
             if (empty($folder_filter)) {
                 $folderClass = 'folder-header';
@@ -511,19 +538,8 @@ if($note != '') {
                 echo '</div>';
             }
         } else {
-            // Display welcome message when no note is selected
-            echo '<div class="welcome-message" style="padding: 40px; text-align: center; color: #666; font-family: \'Inter\', sans-serif;">';
-            echo '<div style="font-size: 24px; margin-bottom: 20px; color: #333;">📝 Welcome to ' . JOURNAL_NAME . '</div>';
-            echo '<div style="font-size: 16px; line-height: 1.6; max-width: 400px; margin: 0 auto;">';
-            echo '<p>Select a note from the sidebar to start editing, or create a new note.</p>';
-            echo '<p style="margin-top: 30px;"><strong>Getting started:</strong></p>';
-            echo '<ul style="text-align: left; display: inline-block;">';
-            echo '<li>Click the <i class="fas fa-file-medical" style="color: #007DB8;"></i> button to create a new note</li>';
-            echo '<li>Click the <i class="fas fa-folder-plus" style="color: #007DB8;"></i> button to create a new folder</li>';
-            echo '<li>Use the search bars to find specific notes</li>';
-            echo '</ul>';
-            echo '</div>';
-            echo '</div>';
+            // Display welcome message when no note is selected - page blanche
+            echo '<div class="welcome-message" style="height: 100%; width: 100%;"></div>';
         }
         ?>        
     </div>

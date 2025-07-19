@@ -3,8 +3,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Gestion de la recherche/filtrage des tags
     const searchInput = document.getElementById('tagsSearchInput');
+    
     if (searchInput) {
         searchInput.addEventListener('input', function() {
+            filterTags();
+        });
+        
+        // Ajouter aussi un événement keyup pour plus de compatibilité mobile
+        searchInput.addEventListener('keyup', function() {
             filterTags();
         });
     }
@@ -23,10 +29,10 @@ function filterTags() {
         if (tagName) {
             const txtValue = tagName.textContent || tagName.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tagItems[i].style.display = 'block';
+                tagItems[i].classList.remove('hidden');
                 visibleCount++;
             } else {
-                tagItems[i].style.display = 'none';
+                tagItems[i].classList.add('hidden');
             }
         }
     }

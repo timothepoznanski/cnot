@@ -85,6 +85,11 @@ html.tags-page {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Classe pour masquer les tags lors du filtrage */
+.tag-item.hidden {
+    display: none;
+}
+
 .tag-item:hover {
     border-color: #007DB8;
     transform: translateY(-2px);

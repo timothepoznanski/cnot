@@ -83,6 +83,11 @@
         box-sizing: border-box !important;
     }
     
+    /* Classe pour masquer les tags lors du filtrage */
+    .tag-item.hidden {
+        display: none !important;
+    }
+    
     .tag-name {
         font-size: 1em !important;
     }

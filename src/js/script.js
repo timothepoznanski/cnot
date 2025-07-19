@@ -188,7 +188,11 @@ function displayAttachments(attachments) {
 }
 
 function downloadAttachment(attachmentId) {
-    window.open(`api_attachments.php?action=download&attachment_id=${attachmentId}`, '_blank');
+    if (!currentNoteIdForAttachments) {
+        alert('No note selected');
+        return;
+    }
+    window.open(`api_attachments.php?action=download&note_id=${currentNoteIdForAttachments}&attachment_id=${attachmentId}`, '_blank');
 }
 
 function deleteAttachment(attachmentId) {

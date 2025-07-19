@@ -12,7 +12,7 @@
     overflow-x: hidden !important; /* Hide horizontal scrollbar */
 }
 
-/* Espacement pour le contenu mobile */
+/* Mobile content spacing */
 .mobile-search-container {
     margin-bottom: 15px !important;
 }
@@ -25,7 +25,7 @@ html, body {
     overflow: hidden;
 }
 
-/* Exception pour la page des tags */
+/* Exception for tags page */
 body.tags-page {
     overflow: auto !important;
     height: auto !important;
@@ -46,7 +46,7 @@ body {
   display: none !important;
 } */
 
-/* Optimisation de la barre d'outils pour mobile */
+/* Mobile toolbar optimization */
 .note-edit-toolbar {
     flex-direction: row !important;
     flex-wrap: wrap !important;
@@ -60,7 +60,7 @@ body {
     overflow: hidden !important;
 }
 
-/* Réduire l'espace entre toolbar et tags sur mobile */
+/* Reduce space between toolbar and tags on mobile */
 .note-header {
     margin-bottom: 8px !important;
     padding-bottom: 0 !important;
@@ -108,12 +108,17 @@ body {
     display: none !important;
 }
 
-/* Toujours afficher les boutons essentiels sur mobile */
-.btn-separator, .btn-save, .btn-favorite, .btn-folder, .btn-attachment, .btn-download, .btn-info, .btn-trash {
+/* Boutons toujours visibles sur mobile */
+.btn-separator, .btn-save {
     display: flex !important;
 }
 
-/* Classe pour afficher les boutons de formatage quand nécessaire */
+/* Boutons d'action visibles par défaut sur mobile */
+.btn-favorite, .btn-folder, .btn-attachment, .btn-download, .btn-info, .btn-trash {
+    display: flex !important;
+}
+
+/* Quand du texte est sélectionné : afficher les boutons de formatage et cacher les boutons d'action */
 .show-format-buttons .btn-bold, 
 .show-format-buttons .btn-italic, 
 .show-format-buttons .btn-underline, 
@@ -128,6 +133,18 @@ body {
 .show-format-buttons .btn-code, 
 .show-format-buttons .btn-eraser {
     display: flex !important;
+}
+
+/* Cacher TOUS les boutons d'action quand du texte est sélectionné (y compris separator et save) */
+.show-format-buttons .btn-separator,
+.show-format-buttons .btn-save,
+.show-format-buttons .btn-favorite, 
+.show-format-buttons .btn-folder, 
+.show-format-buttons .btn-attachment, 
+.show-format-buttons .btn-download, 
+.show-format-buttons .btn-info, 
+.show-format-buttons .btn-trash {
+    display: none !important;
 }
 
 /* Augmenter la taille du texte des blocs de code sur mobile */

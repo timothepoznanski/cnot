@@ -2,7 +2,7 @@
 
 I created CnoT as a simple, self-hosted, open-source, full-responsive, note-taking tool with powerful search and full control over your data.
 
-If you run the app online, be sure to handle access control yourself. I personally use Nginx Proxy Manager’s Access List for that.
+If you run the app online, be sure to handle access control and HTTPS yourself. I personally use Nginx Proxy Manager’s Access Lists and certificats features (https://nginxproxymanager.com/) for that.
 
 ## Installation
  

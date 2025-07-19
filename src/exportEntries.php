@@ -29,7 +29,9 @@ include 'db_connect.php';
             $query_right = 'SELECT * FROM entries WHERE trash = 0';
             $res_right = $con->query($query_right);
             while($row = mysqli_fetch_array($res_right, MYSQLI_ASSOC)) {
-                $indexContent .= '<a href="./'.$row['id'].'.html">'.$row["heading"].'</a> ('.$row["tags"].')<br>';
+                $title = $row["heading"] ?: 'Untitled note';
+                $tags = $row["tags"] ? ' - ' . $row["tags"] : '';
+                $indexContent .= '<a href="./'.$row['id'].'.html">'.$title.'</a> ('.$tags.')<br>';
             }
             $indexContent .= '</body></html>';
             $zip->addFromString('index.html', $indexContent);

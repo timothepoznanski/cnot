@@ -85,7 +85,7 @@ switch($action) {
         
     case 'move_note':
         $noteHeading = $_POST['note_heading'] ?? '';
-        $targetFolder = $_POST['target_folder'] ?? 'Uncategorized';
+        $targetFolder = $_POST['folder'] ?? 'Uncategorized';
         
         if (empty($noteHeading)) {
             echo json_encode(['success' => false, 'error' => 'Note heading is required']);

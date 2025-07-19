@@ -103,12 +103,15 @@ if($note != '') {
         <div class="modal-content">
             <span class="close" onclick="closeModal('moveNoteFolderModal')">&times;</span>
             <h3>Move Note to Folder</h3>
-            <select id="moveNoteFolderSelect">
+            <select id="moveNoteFolderSelect" onchange="toggleNewFolderInput()">
                 <option value="Uncategorized">Uncategorized</option>
             </select>
+            <div id="newFolderInputContainer" style="display: none; margin-top: 10px;">
+                <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            </div>
             <div class="modal-buttons">
-                <button onclick="moveCurrentNoteToFolder()">Move</button>
-                <button onclick="closeModal('moveNoteFolderModal')">Cancel</button>
+                <button type="button" onclick="moveCurrentNoteToFolder()">Move</button>
+                <button type="button" onclick="closeModal('moveNoteFolderModal')">Cancel</button>
             </div>
         </div>
     </div>

@@ -870,6 +870,20 @@ function emptyFolder(folderName) {
     });
 }
 
+function toggleNewFolderInput() {
+    const select = document.getElementById('moveNoteFolderSelect');
+    const container = document.getElementById('newFolderInputContainer');
+    const input = document.getElementById('moveNewFolderName');
+    
+    if (select.value === '__create_new__') {
+        container.style.display = 'block';
+        input.focus();
+    } else {
+        container.style.display = 'none';
+        input.value = '';
+    }
+}
+
 function showMoveFolderDialog(noteId) {
     noteid = noteId; // Set the current note ID
     
@@ -901,19 +915,43 @@ function showMoveFolderDialog(noteId) {
                 }
                 select.appendChild(option);
             });
+            
+            // Add "Create New Folder" option
+            var createOption = document.createElement('option');
+            createOption.value = '__create_new__';
+            createOption.textContent = '+ Create New Folder';
+            select.appendChild(createOption);
+            
+            // Reset new folder input
+            document.getElementById('newFolderInputContainer').style.display = 'none';
+            document.getElementById('moveNewFolderName').value = '';
+            
             document.getElementById('moveNoteFolderModal').style.display = 'block';
         }
     });
 }
 
 function moveCurrentNoteToFolder() {
-    var targetFolder = document.getElementById('moveNoteFolderSelect').value;
+    var selectedFolder = document.getElementById('moveNoteFolderSelect').value;
+    var folderToMoveTo;
+    
+    if (selectedFolder === '__create_new__') {
+        var newFolderName = document.getElementById('moveNewFolderName').value.trim();
+        if (!newFolderName) {
+            alert('Please enter a folder name');
+            return;
+        }
+        folderToMoveTo = newFolderName;
+    } else {
+        folderToMoveTo = selectedFolder;
+    }
+    
     var currentNoteHeading = document.getElementById('inp' + noteid).value; // Get the heading of the specific note
     
     var params = new URLSearchParams({
         action: 'move_note',
         note_heading: currentNoteHeading,
-        target_folder: targetFolder
+        folder: folderToMoveTo
     });
     
     fetch("folder_operations.php", {

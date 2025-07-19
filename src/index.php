@@ -532,19 +532,37 @@ if($note != '') {
                 echo '<button type="button" class="toolbar-btn btn-code" title="Code block" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-eraser" title="Clear formatting" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-separator" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-attachment" title="Add attachment" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-save" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-folder" title="Change folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
-                echo '<a href="'.$filename.'" download="'.$title.'" class="toolbar-btn btn-download" title="Exporter la note"><i class="fas fa-download"></i></a>';
+                
+                // Menu déroulant pour les actions sur la note
+                echo '<div class="toolbar-dropdown">';
+                echo '<button type="button" class="toolbar-btn btn-settings" title="Note settings" onclick="toggleNoteMenu(\''.$row['id'].'\')" id="settings-btn-'.$row['id'].'"><i class="fas fa-cog"></i></button>';
+                echo '<div class="dropdown-menu" id="note-menu-'.$row['id'].'" style="display: none;">';
                 
                 // Bouton favoris avec icône étoile
                 $is_favorite = $row['favorite'] ?? 0;
                 $star_class = $is_favorite ? 'fas' : 'far';
-                $star_color = 'color:#007DB8;';
-                echo '<button type="button" class="toolbar-btn btn-favorite" title="'.($is_favorite ? 'Remove from favorites' : 'Add to favorites').'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="'.$star_color.'"></i></button>';
+                $favorite_text = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
+                echo '<div class="dropdown-item" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i> '.$favorite_text.'</div>';
                 
-                echo '<button type="button" class="toolbar-btn btn-info" title="Infos note" onclick="alert(\'Note file: '.$row['id'].'.html\\nCreated on: '.formatDateTime(strtotime($row['created'])).'\\nLast updated: '.formatDateTime(strtotime($row['updated'])).'\')"><i class="fas fa-info-circle"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-trash" title="Supprimer la note" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
+                echo '<div class="dropdown-item" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i> Move to folder</div>';
+                
+                // Calculer le nombre d'attachments
+                $attachments_count = 0;
+                if (!empty($row['attachments'])) {
+                    $attachments_data = json_decode($row['attachments'], true);
+                    if (is_array($attachments_data)) {
+                        $attachments_count = count($attachments_data);
+                    }
+                }
+                
+                echo '<div class="dropdown-item" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i> Attachments ('.$attachments_count.')</div>';
+                echo '<div class="dropdown-item" onclick="window.open(\''.$filename.'\', \'_blank\')"><i class="fas fa-download"></i> Export</div>';
+                echo '<div class="dropdown-item" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i> Information</div>';
+                echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
+                echo '</div>';
+                echo '</div>';
+                
                 echo '</div>';
                 echo '</div>';
                 

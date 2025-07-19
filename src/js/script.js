@@ -10,12 +10,53 @@ var updateNoteEnCours = 0;
 var selectedFolder = 'Uncategorized'; // Track currently selected folder
 var currentNoteIdForAttachments = null; // Track current note for attachments
 
-// Function to toggle the vertical toolbar menu
+// Function to toggle the note settings dropdown menu
+function toggleNoteMenu(noteId) {
+    const menu = document.getElementById('note-menu-' + noteId);
+    const button = document.getElementById('settings-btn-' + noteId);
+    
+    // Close all other open menus
+    document.querySelectorAll('.dropdown-menu').forEach(otherMenu => {
+        if (otherMenu.id !== 'note-menu-' + noteId) {
+            otherMenu.style.display = 'none';
+        }
+    });
+    
+    // Toggle current menu
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';
+        button.classList.add('active');
+        
+        // Close menu when clicking outside
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu(e) {
+                if (!menu.contains(e.target) && !button.contains(e.target)) {
+                    menu.style.display = 'none';
+                    button.classList.remove('active');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }, 100);
+    } else {
+        menu.style.display = 'none';
+        button.classList.remove('active');
+    }
+}
+
+// Function to show note information in a better formatted way
+function showNoteInfo(noteId, created, updated) {
+    const createdDate = new Date(created).toLocaleString();
+    const updatedDate = new Date(updated).toLocaleString();
+    const message = `Note ID: ${noteId}\nCréée le: ${createdDate}\nDernière modification: ${updatedDate}`;
+    alert(message);
+}
+
+// Function to toggle the vertical toolbar menu (legacy - keeping for compatibility)
 function toggleToolbarMenu(noteId) {
     const menu = document.getElementById('toolbarMenu' + noteId);
     const settingsBtn = document.querySelector('.btn-settings');
     
-    if (menu.style.display === 'none' || menu.style.display === '') {
+    if (menu && (menu.style.display === 'none' || menu.style.display === '')) {
         // Close any other open menus first
         document.querySelectorAll('.toolbar-vertical-menu').forEach(otherMenu => {
             otherMenu.style.display = 'none';
@@ -38,7 +79,7 @@ function toggleToolbarMenu(noteId) {
                 }
             });
         }, 100);
-    } else {
+    } else if (menu) {
         // Close menu
         menu.style.display = 'none';
         settingsBtn.classList.remove('active');
@@ -84,6 +125,7 @@ function uploadAttachment() {
         if (data.success) {
             fileInput.value = ''; // Clear input
             loadAttachments(currentNoteIdForAttachments); // Reload list
+            updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
             showNotificationPopup('File uploaded successfully');
         } else {
             alert('Upload failed: ' + data.message);
@@ -172,6 +214,7 @@ function deleteAttachment(attachmentId) {
     .then(data => {
         if (data.success) {
             loadAttachments(currentNoteIdForAttachments); // Reload list
+            updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
             showNotificationPopup('Attachment deleted');
         } else {
             alert('Delete failed: ' + data.message);
@@ -189,6 +232,35 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Function to update attachment count in dropdown menu
+function updateAttachmentCountInMenu(noteId) {
+    fetch(`api_attachments.php?action=list&note_id=${noteId}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const count = data.attachments.length;
+            const menu = document.getElementById('note-menu-' + noteId);
+            if (menu) {
+                // Find the attachments menu item and update its text
+                const attachmentItems = menu.querySelectorAll('.dropdown-item');
+                attachmentItems.forEach(item => {
+                    if (item.innerHTML.includes('fa-paperclip')) {
+                        const icon = item.querySelector('i.fas.fa-paperclip');
+                        if (icon) {
+                            item.innerHTML = `<i class="fas fa-paperclip"></i> Attachments (${count})`;
+                            // Re-add the onclick handler as innerHTML replaces it
+                            item.onclick = function() { showAttachmentDialog(noteId); };
+                        }
+                    }
+                });
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error updating attachment count:', error);
+    });
 }
 
 // Make links clickable in contenteditable areas

@@ -380,6 +380,7 @@ body {
     color: #333;
     border-bottom: 1px solid #f0f0f0;
     transition: background-color 0.2s;
+    font-style: normal;
 }
 
 .dropdown-item:last-child {

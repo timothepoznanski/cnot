@@ -908,7 +908,7 @@ function showMoveFolderDialog(noteId) {
 
 function moveCurrentNoteToFolder() {
     var targetFolder = document.getElementById('moveNoteFolderSelect').value;
-    var currentNoteHeading = document.querySelector('input[id^="inp"]').value; // Get current note heading
+    var currentNoteHeading = document.getElementById('inp' + noteid).value; // Get the heading of the specific note
     
     var params = new URLSearchParams({
         action: 'move_note',

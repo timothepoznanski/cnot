@@ -1,29 +1,30 @@
 services:  
   
   # WEB      
-  webservercnot:       
+  webserver:       
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: unless-stopped      
     depends_on:
-      dbservercnot:
+      database:
         condition: service_healthy
     environment:
-      MYSQL_HOST: dbservercnot
+      MYSQL_HOST: database
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
+      APP_ENV: ${APP_ENV}
     ports:
       - "${HTTP_WEB_PORT}:80"
     volumes:
       - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
       - "${ATTACHMENTS_DATA_PATH}:/var/www/html/attachments"
-    command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
+    command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries /var/www/html/attachments && apache2-foreground"
 
   # DATABASE
-  dbservercnot:
+  database:
     image: mysql:9.3.0
     restart: unless-stopped
     volumes:
@@ -41,13 +42,13 @@ services:
       start_period: 40s
 
   # PHPMYADMIN (PMA)
-  pmacnot:
+  phpmyadmin:
     image: phpmyadmin:5.2.2
     depends_on:
-      dbservercnot:
+      database:
         condition: service_healthy
     environment:
-      PMA_HOST: dbservercnot
+      PMA_HOST: database
       UPLOAD_LIMIT: 250M
     ports:
       - "${HTTP_PMA_PORT}:80"

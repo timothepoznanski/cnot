@@ -55,7 +55,7 @@ if($note != '') {
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title><?php echo JOURNAL_NAME;?></title>
+    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'development') ? ' - DEV MODE' : ''; ?></title>
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
@@ -560,27 +560,31 @@ if($note != '') {
                 if ($is_mobile) {
                     echo '<button type="button" class="toolbar-btn btn-home" title="Home" onclick="window.location.href=\'index.php\'"><i class="fas fa-home"></i></button>';
                 }
-                echo '<button type="button" class="toolbar-btn btn-bold" title="Bold" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-italic" title="Italic" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-underline" title="Underline" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-strikethrough" title="Strikethrough" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-link" title="Link" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-unlink" title="Remove link" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-color" title="Text color" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-highlight" title="Highlight" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-list-ul" title="Bullet list" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-list-ol" title="Numbered list" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-text-height" title="Font size" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-code" title="Code block" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-eraser" title="Clear formatting" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-separator" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-save" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
                 
-                // Menu déroulant pour les actions sur la note (desktop seulement)
+                // Boutons de formatage de texte (visibles seulement lors de sélection en desktop)
+                $text_format_class = $is_mobile ? '' : ' text-format-btn';
+                echo '<button type="button" class="toolbar-btn btn-bold'.$text_format_class.'" title="Bold" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-italic'.$text_format_class.'" title="Italic" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-underline'.$text_format_class.'" title="Underline" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-strikethrough'.$text_format_class.'" title="Strikethrough" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-link'.$text_format_class.'" title="Link" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-unlink'.$text_format_class.'" title="Remove link" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-color'.$text_format_class.'" title="Text color" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-highlight'.$text_format_class.'" title="Highlight" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-list-ul'.$text_format_class.'" title="Bullet list" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-list-ol'.$text_format_class.'" title="Numbered list" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-text-height'.$text_format_class.'" title="Font size" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-code'.$text_format_class.'" title="Code block" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-eraser'.$text_format_class.'" title="Clear formatting" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
+                
+                // Boutons d'actions sur la note (visibles seulement quand aucun texte n'est sélectionné en desktop)
+                $note_action_class = $is_mobile ? '' : ' note-action-btn';
+                echo '<button type="button" class="toolbar-btn btn-separator'.$note_action_class.'" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-save'.$note_action_class.'" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                
+                // Boutons d'actions sur la note (desktop seulement, remplacent le menu déroulant)
                 if (!$is_mobile) {
-                    echo '<div class="toolbar-dropdown">';
-                    
-                    // Calculer le nombre d'attachments pour déterminer la couleur du bouton settings
+                    // Calculer le nombre d'attachments pour déterminer la couleur du bouton attachments
                     $attachments_count = 0;
                     if (!empty($row['attachments'])) {
                         $attachments_data = json_decode($row['attachments'], true);
@@ -589,25 +593,19 @@ if($note != '') {
                         }
                     }
                     
-                    echo '<button type="button" class="toolbar-btn btn-settings'.($attachments_count > 0 ? ' has-attachments' : '').'" title="Note settings" onclick="toggleNoteMenu(\''.$row['id'].'\')" id="settings-btn-'.$row['id'].'"><i class="fas fa-cog"></i></button>';
-                    echo '<div class="dropdown-menu" id="note-menu-'.$row['id'].'" style="display: none;">';
-                    
                     // Bouton favoris avec icône étoile
                     $is_favorite = $row['favorite'] ?? 0;
                     $star_class = $is_favorite ? 'fas' : 'far';
-                    $favorite_text = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
-                    echo '<div class="dropdown-item" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i> '.$favorite_text.'</div>';
+                    $favorite_title = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
+                    echo '<button type="button" class="toolbar-btn btn-favorite'.$note_action_class.'" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i></button>';
                     
-                    echo '<div class="dropdown-item" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i> Move to folder</div>';
-                    
-                    echo '<div class="dropdown-item'.($attachments_count > 0 ? ' has-attachments' : '').'" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i> Attachments ('.$attachments_count.')</div>';
-                    echo '<div class="dropdown-item" onclick="downloadFile(\''.$filename.'\', \''.addslashes($title).'\')"><i class="fas fa-download"></i> Export to HTML</div>';
-                    echo '<div class="dropdown-item" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i> Information</div>';
-                    echo '<div class="dropdown-item dropdown-delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i> Delete</div>';
-                    echo '</div>';
-                    echo '</div>';
+                    echo '<button type="button" class="toolbar-btn btn-folder'.$note_action_class.'" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-attachment'.$note_action_class.($attachments_count > 0 ? ' has-attachments' : '').'" title="Attachments ('.$attachments_count.')" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-download'.$note_action_class.'" title="Export to HTML" onclick="downloadFile(\''.$filename.'\', \''.addslashes($title).'\')"><i class="fas fa-download"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-info'.$note_action_class.'" title="Information" onclick="showNoteInfo(\''.$row['id'].'\', \''.addslashes($row['created']).'\', \''.addslashes($row['updated']).'\')"><i class="fas fa-info-circle"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-trash'.$note_action_class.'" title="Delete" onclick="deleteNote(\''.$row['id'].'\')"><i class="fas fa-trash"></i></button>';
                 } else {
-                    // Boutons individuels pour mobile
+                    // Boutons individuels pour mobile (toujours visibles)
                     // Calculer le nombre d'attachments pour le bouton mobile
                     $attachments_count = 0;
                     if (!empty($row['attachments'])) {
@@ -616,6 +614,9 @@ if($note != '') {
                             $attachments_count = count($attachments_data);
                         }
                     }
+                    
+                    // Boutons d'action sur la note 
+                    echo '<button type="button" class="toolbar-btn btn-separator" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
                     
                     // Bouton favoris avec icône étoile
                     $is_favorite = $row['favorite'] ?? 0;

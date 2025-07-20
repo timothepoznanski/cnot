@@ -1,3 +1,31 @@
+# Ignore data directories (Docker volumes for database, entries, attachments)
+data/
+
+# Ignore entries in source directory  
 src/entries/*
 !src/entries/index.php
+
+# Ignore attachments in source directory
+src/attachments/*
+!src/attachments/.gitkeep
+
+# Environment files (uncomment if needed)
 # .env
+# .env.local
+# .env.dev
+# .env.prod
+
+# Docker volumes and temporary files
+.docker/
+docker-data/
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

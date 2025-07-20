@@ -20,6 +20,38 @@ Open your web browser and visit:
 
 `http://YOUR_SERVER_NAME:8077`
 
+## Development Environment
+
+CnoT supports separate development and production environments for better workflow:
+
+### Development Mode (`cnot-dev`)
+- **Branch**: `dev`
+- **Live code editing**: Changes to `src/` are immediately reflected without rebuilding containers
+- **Ports**: 8087 (web), 8088 (phpmyadmin) 
+- **Visual indicator**: Title shows "CnoT - DEV MODE"
+
+### Production Mode (`cnot-prod`)
+- **Branch**: `main`
+- **Embedded code**: Code is built into Docker images for stability
+- **Ports**: 8077 (web), 8078 (phpmyadmin)
+- **Clean interface**: Standard "CnoT" title
+
+### Quick Start Commands
+
+For development:
+```bash
+# Automatically switches to dev branch and starts development environment
+cnot-dev
+```
+
+For production:
+```bash
+# Automatically switches to main branch and starts production environment  
+cnot-prod
+```
+
+**Note**: These aliases are created automatically during setup and allow seamless switching between environments while preserving separate data for each.
+
 
 ## Update app or settings
 
@@ -208,61 +240,3 @@ chown -R www-data: ENTRIES_DATA
 ## Contributing 
 
 If you want to contribute to the code, don't hesitate to open a pull request. Thanks!
-
-
-## API
-
-### Authentification
-
-Toutes les requêtes API nécessitent une authentification HTTP Basic (gérée par Nginx Proxy Manager).
-
-### Lister les notes
-
-- **URL** : `/api_list_notes.php`
-- **Méthode** : `GET`
-- **Réponse** :
-    ```json
-    [
-      {
-        "id": 1,
-        "heading": "Titre",
-        "tags": "tag1,tag2",
-        "updated": "2025-07-14 20:00:00"
-      }
-    ]
-    ```
-
-### Créer une note
-
-- **URL** : `/api_create_note.php`
-- **Méthode** : `POST`
-- **Body (JSON)** :
-    ```json
-    {
-      "heading": "Titre de la note",
-      "tags": "tag1,tag2"
-    }
-    ```
-- **Réponse (succès)** :
-    ```json
-    { "success": true, "id": 2 }
-    ```
-- **Réponse (erreur)** :
-    ```json
-    { "error": "Le champ heading est requis" }
-    ```
-
-### Exemple curl
-
-```bash
-curl -u 'utilisateur:motdepasse' -X POST https://cnot.timpoz.com/api_create_note.php \
-  -H "Content-Type: application/json" \
-  -d '{"heading": "Ma nouvelle note", "tags": "perso,important"}'
-```
-
----
-## Inspired from
-
-https://github.com/arkanath/SleekArchive
- 
-https://github.com/kenshin54/popline

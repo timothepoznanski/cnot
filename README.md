@@ -15,10 +15,10 @@ git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
 ```
 
-Copy `.env.example` to `.env` and configure your settings, then run:
+Configure your `.env` file, then run:
 
 ```bash
-docker compose --env-file .env --env-file .env.prod \
+docker compose --env-file .env \
     -f docker-compose.yml \
     -f docker-compose-reverse-proxy.yml \
     up -d --build
@@ -28,11 +28,11 @@ Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`
 
 ## Development
 
-For development mode:
+For development mode, configure your `.env.dev` file, then run:
 
 ```bash
 docker compose -p cnot-dev \
-    --env-file .env --env-file .env.dev \
+    --env-file .env.dev \
     -f docker-compose.yml \
     -f docker-compose-dev.yml \
     -f docker-compose-reverse-proxy-dev.yml \

@@ -18,15 +18,6 @@ docker compose up -d --build
 
 Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`
 
-## Development
-
-```bash
-docker compose -p cnot-dev --env-file .env.dev -f docker-compose.yml -f docker-compose-dev.yml up -d --build
-```
-
-Development runs on port 8087 with live code editing enabled (because of docker volume on src).
-
-
 ## Update app or settings
 
 **If you want to update CNOT version:** 

@@ -21,7 +21,7 @@
       - ./src:/var/www/html
       - "${ENTRIES_DATA_PATH_DEV}:/var/www/html/entries"
       - "${ATTACHMENTS_DATA_PATH_DEV}:/var/www/html/attachments"
-    command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries && apache2-foreground"
+    command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries /var/www/html/attachments && apache2-foreground"
 
   # DATABASE
   dbserver-dev:

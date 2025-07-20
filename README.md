@@ -18,28 +18,18 @@ cd cnot
 Configure your `.env` file, then run:
 
 ```bash
-docker compose --env-file .env \
-    -f docker-compose.yml \
-    -f docker-compose-reverse-proxy.yml \
-    up -d --build
+docker compose -f docker-compose.yml up -d --build
 ```
 
 Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`
 
 ## Development
 
-For development mode, configure your `.env.dev` file, then run:
-
 ```bash
-docker compose -p cnot-dev \
-    --env-file .env.dev \
-    -f docker-compose.yml \
-    -f docker-compose-dev.yml \
-    -f docker-compose-reverse-proxy-dev.yml \
-    up -d --build
+docker compose -p cnot-dev --env-file .env.dev -f docker-compose.yml -f docker-compose-dev.yml up -d --build
 ```
 
-Development runs on port 8087 with live code editing enabled.
+Development runs on port 8087 with live code editing enabled (because of docker volume on src).
 
 
 ## Update app or settings

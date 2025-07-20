@@ -20,11 +20,11 @@ alias cnot-prod='CNOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || ech
     cd "$CNOT_DIR" && \
     docker compose down 2>/dev/null; docker compose -p cnot-dev down 2>/dev/null && \
     git checkout main && git pull origin main && \
-    docker compose --env-file .env \
+    docker compose \
         -f docker-compose.yml \
         -f docker-compose-reverse-proxy.yml \
         build --no-cache && \
-    docker compose --env-file .env \
+    docker compose \
         -f docker-compose.yml \
         -f docker-compose-reverse-proxy.yml \
         up -d'

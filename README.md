@@ -13,7 +13,19 @@ mkdir my-cnot
 cd my-cnot
 git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
+<<<<<<< HEAD
 docker compose up -d --build
+=======
+```
+
+Configure your `.env` file, then run:
+
+```bash
+docker compose 
+    -f docker-compose.yml 
+    -f docker-compose-reverse-proxy.yml 
+    up -d --build
+>>>>>>> 9cef757 (Update README.md and cnot-aliases.sh: Add reverse proxy configuration to Docker commands)
 ```
 
 Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`

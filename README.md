@@ -13,12 +13,7 @@ mkdir my-cnot
 cd my-cnot
 git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
-```
-
-Configure your `.env` file, then run:
-
-```bash
-docker compose -f docker-compose.yml up -d --build
+docker compose up -d --build
 ```
 
 Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`

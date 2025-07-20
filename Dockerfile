@@ -23,9 +23,5 @@ COPY php.ini /usr/local/etc/php/
 # - In development: provides initial files and correct permissions before volume mount overrides it
 COPY ./src/ /var/www/html/
 
-# Create attachments directory and give permissions to apache
-RUN mkdir -p /var/www/html/attachments
-RUN chown -R www-data:www-data /var/www/html/
-
 # Expose port HTTP
 EXPOSE 80

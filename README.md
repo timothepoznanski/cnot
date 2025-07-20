@@ -7,18 +7,32 @@ CnoT runs in Docker and works seamlessly on both Windows and Linux. The interfac
 ⚠️ If you run the app online, make sure to secure it properly by handling access control and HTTPS yourself. Personally, I use Nginx Proxy Manager with its Access List and SSL certificate features (https://nginxproxymanager.com).
 
 ## Installation
+
+### Quick Start
  
-```
+```bash
 mkdir my-cnot
 cd my-cnot
 git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
-docker compose up -d --build
+chmod +x setup.sh cnot-aliases.sh
+./setup.sh
+```
+
+### Manual Installation
+
+```bash
+mkdir my-cnot
+cd my-cnot
+git clone https://github.com/timothepoznanski/cnot.git
+cd cnot
+source cnot-aliases.sh
+cnot-prod  # for production or cnot-dev for development
 ```
 
 Open your web browser and visit:
-
-`http://YOUR_SERVER_NAME:8077`
+- **Production**: `http://YOUR_SERVER_NAME:8077`
+- **Development**: `http://YOUR_SERVER_NAME:8087`
 
 ## Development Environment
 
@@ -36,21 +50,37 @@ CnoT supports separate development and production environments for better workfl
 - **Ports**: 8077 (web), 8078 (phpmyadmin)
 - **Clean interface**: Standard "CnoT" title
 
+### Setup Aliases
+
+First, load the CnoT aliases by sourcing the provided script:
+
+```bash
+source cnot-aliases.sh
+```
+
 ### Quick Start Commands
 
 For development:
 ```bash
-# Automatically switches to dev branch and starts development environment
+# Automatically switches to dev branch, pulls latest code, and starts development environment
 cnot-dev
 ```
 
 For production:
 ```bash
-# Automatically switches to main branch and starts production environment  
+# Automatically switches to main branch, pulls latest code, and starts production environment  
 cnot-prod
 ```
 
-**Note**: These aliases are created automatically during setup and allow seamless switching between environments while preserving separate data for each.
+Other useful commands:
+```bash
+cnot-status   # Check running containers and networks
+cnot-stop     # Stop all environments
+cnot-cleanup  # Clean up Docker resources
+cnot-help     # Show all available commands
+```
+
+**Note**: All aliases automatically pull the latest code from the remote repository to ensure you're always working with the most up-to-date version.
 
 
 ## Update app or settings

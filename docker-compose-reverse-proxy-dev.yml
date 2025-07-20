@@ -19,4 +19,5 @@ networks:
   npm-cnot-pma-net:
     external: true
   internal-net:
-    driver: bridge
+    external: true
+    name: cnot_internal-net

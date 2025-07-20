@@ -8,93 +8,15 @@ CnoT runs in Docker and works seamlessly on both Windows and Linux. The interfac
 
 ## Installation
 
-### Quick Start
- 
 ```bash
 mkdir my-cnot
 cd my-cnot
 git clone https://github.com/timothepoznanski/cnot.git
 cd cnot
-chmod +x setup.sh cnot-aliases.sh
-./setup.sh
+docker compose up -d --build
 ```
 
-### Manual Installation
-
-```bash
-mkdir my-cnot
-cd my-cnot
-git clone https://github.com/timothepoznanski/cnot.git
-cd cnot
-source cnot-aliases.sh
-cnot-prod  # for production or cnot-dev for development
-```
-
-### Installation Methods Comparison
-
-| Aspect | Quick Start (`./setup.sh`) | Manual Installation |
-|--------|-------------|---------|
-| **Prerequisites Check** | ✅ Verifies Docker/Git installation | ❌ No verification |
-| **Alias Persistence** | ✅ Option to add to ~/.bashrc | ❌ Current session only |
-| **User Guidance** | ✅ Help and step-by-step instructions | ❌ You need to know what to do |
-| **Setup Speed** | ⏱️ More interactive steps | ⚡ Direct and fast |
-| **Safety** | ✅ Safer for beginners | ⚠️ Assumes prerequisites are met |
-| **Best for** | 🆕 New users, first installation | 👨‍💻 Experienced users, quick setup |
-
-**Recommendation:** Use **Quick Start** for your first installation or if you're new to the project. Use **Manual** if you're experienced and want the fastest setup.
-
-Open your web browser and visit:
-- **Production**: `http://YOUR_SERVER_NAME:8077`
-- **Development**: `http://YOUR_SERVER_NAME:8087`
-
-## Development Environment
-
-CnoT supports separate development and production environments for better workflow:
-
-### Development Mode (`cnot-dev`)
-- **Branch**: `dev`
-- **Live code editing**: Changes to `src/` are immediately reflected without rebuilding containers
-- **Ports**: 8087 (web), 8088 (phpmyadmin) 
-- **Visual indicator**: Title shows "CnoT - DEV MODE"
-
-### Production Mode (`cnot-prod`)
-- **Branch**: `main`
-- **Embedded code**: Code is built into Docker images for stability
-- **Ports**: 8077 (web), 8078 (phpmyadmin)
-- **Clean interface**: Standard "CnoT" title
-
-### Setup Aliases
-
-First, load the CnoT aliases by sourcing the provided script:
-
-```bash
-source cnot-aliases.sh
-```
-
-### Quick Start Commands
-
-For development:
-```bash
-# Automatically switches to dev branch, pulls latest code, and starts development environment
-cnot-dev
-```
-
-For production:
-```bash
-# Automatically switches to main branch, pulls latest code, and starts production environment  
-cnot-prod
-```
-
-Other useful commands:
-```bash
-cnot-status   # Check running containers and networks
-cnot-stop     # Stop all environments
-cnot-cleanup  # Clean up Docker resources
-cnot-help     # Show all available commands
-```
-
-**Note**: All aliases automatically pull the latest code from the remote repository to ensure you're always working with the most up-to-date version.
-
+Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`
 
 ## Update app or settings
 

@@ -16,10 +16,10 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
     ports:
-      - "${HTTP_WEB_PORT_PROD}:80"
+      - "${HTTP_WEB_PORT}:80"
     volumes:
-      - "${ENTRIES_DATA_PATH_PROD}:/var/www/html/entries"
-      - "${ATTACHMENTS_DATA_PATH_PROD}:/var/www/html/attachments"
+      - "${ENTRIES_DATA_PATH}:/var/www/html/entries"
+      - "${ATTACHMENTS_DATA_PATH}:/var/www/html/attachments"
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries /var/www/html/attachments && apache2-foreground"
 
   # DATABASE
@@ -27,7 +27,7 @@ services:
     image: mysql:9.3.0
     restart: unless-stopped
     volumes:
-      - "${DB_DATA_PATH_PROD}:/var/lib/mysql"
+      - "${DB_DATA_PATH}:/var/lib/mysql"
     environment:
       MYSQL_USER: ${MYSQL_USER}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -50,5 +50,5 @@ services:
       PMA_HOST: dbserver-prod
       UPLOAD_LIMIT: 250M
     ports:
-      - "${HTTP_PMA_PORT_PROD}:80"
+      - "${HTTP_PMA_PORT}:80"
     restart: unless-stopped

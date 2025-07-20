@@ -1,16 +1,16 @@
 services:  
   
   # WEB      
-  webserver-prod:       
+  webserver:       
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: unless-stopped      
     depends_on:
-      dbserver-prod:
+      database:
         condition: service_healthy
     environment:
-      MYSQL_HOST: dbserver-prod
+      MYSQL_HOST: database
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -23,7 +23,7 @@ services:
     command: /bin/sh -c "chown -R www-data:www-data /var/www/html/entries /var/www/html/attachments && apache2-foreground"
 
   # DATABASE
-  dbserver-prod:
+  database:
     image: mysql:9.3.0
     restart: unless-stopped
     volumes:
@@ -41,13 +41,13 @@ services:
       start_period: 40s
 
   # PHPMYADMIN (PMA)
-  pma-prod:
+  phpmyadmin:
     image: phpmyadmin:5.2.2
     depends_on:
-      dbserver-prod:
+      database:
         condition: service_healthy
     environment:
-      PMA_HOST: dbserver-prod
+      PMA_HOST: database
       UPLOAD_LIMIT: 250M
     ports:
       - "${HTTP_PMA_PORT}:80"

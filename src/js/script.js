@@ -1321,6 +1321,95 @@ if (document.readyState === 'loading') {
     addCopyButtonsToCodeBlocks();
 }
 
+// Gestion de l'affichage des boutons de formatage selon la sélection de texte (desktop uniquement)
+function initTextSelectionHandlers() {
+    // Vérifier si on est en mode desktop
+    if (window.innerWidth <= 800) {
+        return; // Ne pas activer sur mobile
+    }
+    
+    let selectionTimeout;
+    
+    function handleSelectionChange() {
+        clearTimeout(selectionTimeout);
+        selectionTimeout = setTimeout(() => {
+            const selection = window.getSelection();
+            const textFormatButtons = document.querySelectorAll('.text-format-btn');
+            const noteActionButtons = document.querySelectorAll('.note-action-btn');
+            
+            // Vérifier si la sélection contient du texte et est dans une zone éditable
+            if (selection && selection.toString().trim().length > 0) {
+                const range = selection.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                const editableElement = container.nodeType === Node.TEXT_NODE 
+                    ? container.parentElement.closest('.noteentry, [contenteditable="true"]')
+                    : container.closest('.noteentry, [contenteditable="true"]');
+                
+                if (editableElement) {
+                    // Texte sélectionné dans une zone éditable : afficher les boutons de formatage, cacher les actions
+                    textFormatButtons.forEach(btn => {
+                        btn.classList.add('show-on-selection');
+                    });
+                    noteActionButtons.forEach(btn => {
+                        btn.classList.add('hide-on-selection');
+                    });
+                } else {
+                    // Texte sélectionné mais pas dans une zone éditable : afficher les actions, cacher le formatage
+                    textFormatButtons.forEach(btn => {
+                        btn.classList.remove('show-on-selection');
+                    });
+                    noteActionButtons.forEach(btn => {
+                        btn.classList.remove('hide-on-selection');
+                    });
+                }
+            } else {
+                // Pas de sélection de texte : afficher les actions, cacher le formatage
+                textFormatButtons.forEach(btn => {
+                    btn.classList.remove('show-on-selection');
+                });
+                noteActionButtons.forEach(btn => {
+                    btn.classList.remove('hide-on-selection');
+                });
+            }
+        }, 50); // Délai court pour éviter les appels trop fréquents
+    }
+    
+    // Écouter les changements de sélection
+    document.addEventListener('selectionchange', handleSelectionChange);
+    
+    // Écouter aussi les clics pour gérer les cas où la sélection est supprimée
+    document.addEventListener('click', (e) => {
+        // Attendre un peu pour que la sélection soit mise à jour
+        setTimeout(handleSelectionChange, 10);
+    });
+    
+    // Gérer le redimensionnement de la fenêtre
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 800) {
+            // Si on passe en mode mobile, réinitialiser l'état des boutons
+            const textFormatButtons = document.querySelectorAll('.text-format-btn');
+            const noteActionButtons = document.querySelectorAll('.note-action-btn');
+            textFormatButtons.forEach(btn => {
+                btn.classList.remove('show-on-selection');
+            });
+            noteActionButtons.forEach(btn => {
+                btn.classList.remove('hide-on-selection');
+            });
+        } else {
+            // Si on passe en mode desktop, appliquer la logique de sélection
+            handleSelectionChange();
+        }
+    });
+}
+
+// Initialiser les gestionnaires de sélection de texte
+document.addEventListener('DOMContentLoaded', initTextSelectionHandlers);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTextSelectionHandlers);
+} else {
+    initTextSelectionHandlers();
+}
+
 // Global function for manual testing
 window.testCopyButtons = function() {
     console.log('Manual test - adding copy buttons');

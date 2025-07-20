@@ -373,6 +373,47 @@ body {
     color: #005a8a;
 }
 
+/* Gestion de l'affichage des boutons selon la sélection de texte en mode desktop */
+@media (min-width: 801px) {
+    /* Boutons de formatage de texte : cachés par défaut, visibles lors de sélection */
+    .text-format-btn {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+        width: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    
+    .text-format-btn.show-on-selection {
+        opacity: 1;
+        visibility: visible;
+        width: auto;
+        padding: 6px 8px;
+        margin: 0 2px;
+    }
+    
+    /* Boutons d'actions sur la note : visibles par défaut, cachés lors de sélection */
+    .note-action-btn {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+        width: auto;
+        padding: 6px 8px;
+        margin: 0 2px;
+    }
+    
+    .note-action-btn.hide-on-selection {
+        opacity: 0;
+        visibility: hidden;
+        width: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+}
+
 /* Toolbar dropdown menu styles */
 .toolbar-dropdown {
     position: relative;

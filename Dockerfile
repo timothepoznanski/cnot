@@ -18,6 +18,9 @@ COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY php.ini /usr/local/etc/php/
 
 # Copy src files
+# This ensures the container has the application code in all scenarios:
+# - In production: code is embedded in the image (no external dependencies)
+# - In development: provides initial files and correct permissions before volume mount overrides it
 COPY ./src/ /var/www/html/
 
 # Create attachments directory and give permissions to apache

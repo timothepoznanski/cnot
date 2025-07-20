@@ -30,6 +30,19 @@ source cnot-aliases.sh
 cnot-prod  # for production or cnot-dev for development
 ```
 
+### Installation Methods Comparison
+
+| Aspect | Quick Start (`./setup.sh`) | Manual Installation |
+|--------|-------------|---------|
+| **Prerequisites Check** | ✅ Verifies Docker/Git installation | ❌ No verification |
+| **Alias Persistence** | ✅ Option to add to ~/.bashrc | ❌ Current session only |
+| **User Guidance** | ✅ Help and step-by-step instructions | ❌ You need to know what to do |
+| **Setup Speed** | ⏱️ More interactive steps | ⚡ Direct and fast |
+| **Safety** | ✅ Safer for beginners | ⚠️ Assumes prerequisites are met |
+| **Best for** | 🆕 New users, first installation | 👨‍💻 Experienced users, quick setup |
+
+**Recommendation:** Use **Quick Start** for your first installation or if you're new to the project. Use **Manual** if you're experienced and want the fastest setup.
+
 Open your web browser and visit:
 - **Production**: `http://YOUR_SERVER_NAME:8077`
 - **Development**: `http://YOUR_SERVER_NAME:8087`

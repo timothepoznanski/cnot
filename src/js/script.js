@@ -87,6 +87,20 @@ function toggleToolbarMenu(noteId) {
 }
 
 // Add attachment functionality
+// Affiche le nom du fichier choisi sous le bouton dans la modal d'attachement
+document.addEventListener('DOMContentLoaded', function() {
+    var fileInput = document.getElementById('attachmentFile');
+    var fileNameDiv = document.getElementById('selectedFileName');
+    if (fileInput && fileNameDiv) {
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files && fileInput.files.length > 0) {
+                fileNameDiv.textContent = fileInput.files[0].name;
+            } else {
+                fileNameDiv.textContent = 'Aucun fichier choisi';
+            }
+        });
+    }
+});
 function showAttachmentDialog(noteId) {
     currentNoteIdForAttachments = noteId;
     document.getElementById('attachmentModal').style.display = 'block';

@@ -1,0 +1,5 @@
+# Override pour le développement avec live reload
+services:
+  webserver:
+    volumes:
+      - "./src:/var/www/html"

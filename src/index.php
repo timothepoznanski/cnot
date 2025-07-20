@@ -55,7 +55,7 @@ if($note != '') {
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title><?php echo JOURNAL_NAME;?></title>
+    <title><?php echo JOURNAL_NAME;?> - DEV MODE</title>
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
@@ -136,8 +136,14 @@ if($note != '') {
             <h3>Manage Attachments</h3>
             <div class="attachment-upload">
                 <div class="file-input-container">
-                    <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar">
+                    <label for="attachmentFile" style="display: block; width: 160px; margin: 0 auto; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px; text-align: center; cursor: pointer; position: relative; z-index: 1;">
+                        Choose a file
+                        <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar" style="display:none;">
+                    </label>
+                    <div id="acceptedTypes" style="font-size: 0.85em; color: #888; text-align: center; margin-top: 4px;">pdf, doc, docx, txt, jpg, jpeg, png, gif, zip, rar</div>
                 </div>
+                <div style="height: 18px;"></div>
+                <div id="selectedFileName" style="margin: 0 0 18px 0; font-size: 0.95em; color: #444; text-align:center; min-height: 1.5em;">No file chosen</div>
                 <div class="upload-button-container">
                     <button onclick="uploadAttachment()">Upload File</button>
                 </div>
@@ -655,4 +661,5 @@ if($note != '') {
     </div>
 </body>
 <script src="js/script.js"></script>
+
 </html>

@@ -55,7 +55,7 @@ if($note != '') {
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title><?php echo JOURNAL_NAME;?> - DEV MODE</title>
+    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'development') ? ' - DEV MODE' : ''; ?></title>
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />

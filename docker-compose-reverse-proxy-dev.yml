@@ -1,0 +1,23 @@
+services:
+  webserver:
+    networks:
+      - npm-cnot-dev-webserver-net
+      - internal-net
+
+  database:
+    networks:
+      - internal-net
+
+  phpmyadmin:
+    networks:
+      - npm-cnot-dev-pma-net
+      - internal-net
+
+networks:
+  npm-cnot-dev-webserver-net:
+    external: true
+  npm-cnot-dev-pma-net:
+    external: true
+  internal-net:
+    external: true
+    name: cnot-dev_internal-net

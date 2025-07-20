@@ -15,6 +15,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}  
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
+      APP_ENV: ${APP_ENV}
     ports:
       - "${HTTP_WEB_PORT}:80"
     volumes:

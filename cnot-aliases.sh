@@ -4,7 +4,7 @@
 # This script defines convenient aliases for managing development and production environments
 
 # Development environment alias
-alias cnot-dev='CNOT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")" 2>/dev/null || pwd) && \
+alias cnot-dev='CNOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd) && \
     cd "$CNOT_DIR" && \
     echo "🔄 Stopping existing environments..." && \
     docker compose down 2>/dev/null; docker compose -p cnot-dev down 2>/dev/null && \
@@ -24,7 +24,7 @@ alias cnot-dev='CNOT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")" 2>/dev/n
     echo "🌐 Networks: npm-cnot-dev-webserver-net (DEV)"'
 
 # Production environment alias
-alias cnot-prod='CNOT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")" 2>/dev/null || pwd) && \
+alias cnot-prod='CNOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd) && \
     cd "$CNOT_DIR" && \
     echo "🔄 Stopping existing environments..." && \
     docker compose down 2>/dev/null; docker compose -p cnot-dev down 2>/dev/null && \
@@ -53,7 +53,7 @@ alias cnot-status='echo "📊 CnoT Environment Status:" && \
     docker network ls --filter "name=cnot" --format "table {{.Name}}\t{{.Driver}}"'
 
 # Stop all CnoT environments
-alias cnot-stop='CNOT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")" 2>/dev/null || pwd) && \
+alias cnot-stop='CNOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd) && \
     cd "$CNOT_DIR" && \
     echo "🛑 Stopping all CnoT environments..." && \
     docker compose down 2>/dev/null && \

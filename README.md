@@ -43,6 +43,31 @@ cnot-prod  # for production or cnot-dev for development
 
 **Recommendation:** Use **Quick Start** for your first installation or if you're new to the project. Use **Manual** if you're experienced and want the fastest setup.
 
+### Windows Users
+
+**Option 1 - Git Bash (Recommended):**
+If you have Git for Windows installed, you can use Git Bash which supports the bash scripts:
+```bash
+# In Git Bash
+source cnot-aliases.sh
+cnot-dev  # or cnot-prod
+```
+
+**Option 2 - PowerShell:**
+```powershell
+# In PowerShell
+. .\cnot-aliases.ps1
+cnot-dev  # or cnot-prod
+```
+
+**Option 3 - Command Prompt:**
+```cmd
+# In Command Prompt
+cnot.bat dev    # for development
+cnot.bat prod   # for production
+cnot.bat help   # for help
+```
+
 Open your web browser and visit:
 - **Production**: `http://YOUR_SERVER_NAME:8077`
 - **Development**: `http://YOUR_SERVER_NAME:8087`

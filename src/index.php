@@ -228,6 +228,16 @@ if($note != '') {
                     <?php endif; ?>
                 </div>
             </form>
+            <!-- Barre de filtre des dossiers pour mobile -->
+            <div class="folder-filter-container">
+                <div class="searchbar-row searchbar-icon-row">
+                    <div class="searchbar-input-wrapper">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-mobile" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
+                        <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
+                    </div>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-mobile" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
+                </div>
+            </div>
         </div>
         <?php endif; ?>
         
@@ -325,6 +335,16 @@ if($note != '') {
                 <?php endif; ?>
             </div>
         </form>
+        <!-- Barre de filtre des dossiers pour desktop -->
+        <div class="folder-filter-container">
+            <div class="searchbar-row searchbar-icon-row">
+                <div class="searchbar-input-wrapper">
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-desktop" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
+                    <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
+                </div>
+                <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-desktop" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>
     </div>
     <?php endif; ?>
         

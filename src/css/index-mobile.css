@@ -17,6 +17,15 @@
     margin-bottom: 15px !important;
 }
 
+/* Folder filter spacing on mobile */
+.folder-filter-container {
+    margin-top: 10px !important;
+}
+
+.folder-filter-container .searchbar-row {
+    margin-bottom: 0 !important;
+}
+
 
 html, body {
     height: 100%;

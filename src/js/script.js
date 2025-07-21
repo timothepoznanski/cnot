@@ -1581,3 +1581,124 @@ window.testCopyFunction = function(text) {
         alert('Clipboard API not available');
     }
 };
+
+// Folder filtering functionality
+function filterFolders() {
+    const isMobile = window.innerWidth <= 800;
+    const filterId = isMobile ? 'folder-filter-mobile' : 'folder-filter-desktop';
+    const clearButtonId = isMobile ? 'folder-filter-clear-mobile' : 'folder-filter-clear-desktop';
+    
+    const filterInput = document.getElementById(filterId);
+    const clearButton = document.getElementById(clearButtonId);
+    const filterValue = filterInput.value.toLowerCase().trim();
+    
+    // Show/hide clear button
+    if (filterValue) {
+        clearButton.style.display = 'block';
+    } else {
+        clearButton.style.display = 'none';
+    }
+    
+    // Get all folder headers
+    const folderHeaders = document.querySelectorAll('.folder-header');
+    
+    folderHeaders.forEach(folderHeader => {
+        const folderName = folderHeader.getAttribute('data-folder');
+        if (!folderName) return;
+        
+        // Check if folder name matches filter
+        const matches = folderName.toLowerCase().includes(filterValue);
+        
+        if (matches || !filterValue) {
+            // Show folder
+            folderHeader.style.display = 'block';
+        } else {
+            // Hide folder and its content
+            folderHeader.style.display = 'none';
+            
+            // Also hide folder content using the data-folder-id approach
+            const folderToggle = folderHeader.querySelector('[data-folder-id]');
+            if (folderToggle) {
+                const folderId = folderToggle.getAttribute('data-folder-id');
+                const folderContent = document.getElementById(folderId);
+                if (folderContent) {
+                    folderContent.style.display = 'none';
+                }
+            }
+        }
+    });
+}
+
+function clearFolderFilter() {
+    const isMobile = window.innerWidth <= 800;
+    const filterId = isMobile ? 'folder-filter-mobile' : 'folder-filter-desktop';
+    const clearButtonId = isMobile ? 'folder-filter-clear-mobile' : 'folder-filter-clear-desktop';
+    
+    // Clear the input
+    const filterInput = document.getElementById(filterId);
+    filterInput.value = '';
+    
+    // Hide clear button
+    const clearButton = document.getElementById(clearButtonId);
+    clearButton.style.display = 'none';
+    
+    // Show all folders
+    const folderHeaders = document.querySelectorAll('.folder-header');
+    folderHeaders.forEach(folderHeader => {
+        folderHeader.style.display = 'block';
+        
+        // Restore folder content visibility based on their previous state
+        const folderToggle = folderHeader.querySelector('[data-folder-id]');
+        if (folderToggle) {
+            const folderId = folderToggle.getAttribute('data-folder-id');
+            const folderContent = document.getElementById(folderId);
+            const folderIcon = folderToggle.querySelector('.folder-icon');
+            
+            if (folderContent && folderIcon) {
+                // Restore based on icon state (chevron direction indicates open/closed state)
+                if (folderIcon.classList.contains('fa-chevron-down')) {
+                    folderContent.style.display = 'block';
+                } else {
+                    folderContent.style.display = 'none';
+                }
+            }
+        }
+    });
+}
+
+function clearFolderFilter() {
+    const isMobile = window.innerWidth <= 800;
+    const filterId = isMobile ? 'folder-filter-mobile' : 'folder-filter-desktop';
+    const clearButtonId = isMobile ? 'folder-filter-clear-mobile' : 'folder-filter-clear-desktop';
+    
+    // Clear the input
+    const filterInput = document.getElementById(filterId);
+    filterInput.value = '';
+    
+    // Hide clear button
+    const clearButton = document.getElementById(clearButtonId);
+    clearButton.style.display = 'none';
+    
+    // Show all folders
+    const folderHeaders = document.querySelectorAll('.folder-header');
+    folderHeaders.forEach(folderHeader => {
+        folderHeader.style.display = 'block';
+        
+        // Restore folder content visibility based on their previous state
+        const folderToggle = folderHeader.querySelector('[data-folder-id]');
+        if (folderToggle) {
+            const folderId = folderToggle.getAttribute('data-folder-id');
+            const folderContent = document.getElementById(folderId);
+            const folderIcon = folderToggle.querySelector('.folder-icon');
+            
+            if (folderContent && folderIcon) {
+                // Restore based on icon state (chevron direction indicates open/closed state)
+                if (folderIcon.classList.contains('fa-chevron-down')) {
+                    folderContent.style.display = 'block';
+                } else {
+                    folderContent.style.display = 'none';
+                }
+            }
+        }
+    });
+}

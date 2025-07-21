@@ -667,6 +667,16 @@ a.links_arbo_left.selected-note {
     box-shadow: none;
 }
 
+/* Folder filter container styling */
+.folder-filter-container {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.folder-filter-container .searchbar-row {
+    margin-bottom: 0;
+}
+
 .searchbar-row {
     display: flex;
     align-items: center;

@@ -587,6 +587,7 @@ a.links_arbo_left.selected-note {
 .searchbar-input-wrapper {
     position: relative;
     width: 100%;
+    flex: 1;
 }
 
 .searchbar-input {
@@ -595,13 +596,19 @@ a.links_arbo_left.selected-note {
     border: 1px solid #e0e0e0;
     background: #fff;
     font-size: 0.95em;
-    transition: box-shadow 0.2s, border-color 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     outline: none;
     width: 100%;
     min-width: 0;
     font-family: 'Inter', sans-serif !important;
     color: #868484b9 
+}
+
+.searchbar-input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
 }
 
 .searchbar-input::placeholder {
@@ -634,10 +641,7 @@ a.links_arbo_left.selected-note {
 }
 
 .searchbar-clear-outer {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
     background: none !important;
     border: none;
     color: #bbb;
@@ -1752,4 +1756,87 @@ hr {
 
 #moveNoteFolderModal .modal-buttons button:nth-child(2):hover {
     background-color: #218838;
+}
+
+/* UNIFIED SEARCH STYLES */
+.unified-search-container {
+    width: 100%;
+}
+
+.search-type-buttons {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.search-type-btn {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #6c757d;
+    font-size: 0.9em;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-type-btn:hover {
+    color: #495057;
+}
+
+.search-type-btn.active {
+    color: #007DB8;
+}
+
+.search-type-btn.active:hover {
+    color: #0056b3;
+}
+
+.searchbar-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Search validation error styles */
+.search-validation-error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    margin: 8px 0 4px 0;
+    border-left: 3px solid #d32f2f;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-type-btn-error {
+    animation: shake 0.5s ease-in-out;
+    border-color: #d32f2f !important;
+    background-color: #ffebee !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
 }

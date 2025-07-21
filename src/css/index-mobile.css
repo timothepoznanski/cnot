@@ -642,3 +642,32 @@ a.links_arbo_left.selected-note {
 .btn-attachment.has-attachments:focus {
     color: #1e7e34 !important;
 }
+
+/* UNIFIED SEARCH MOBILE STYLES */
+.search-type-buttons {
+    gap: 1px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.search-type-btn {
+    background: transparent;
+    border: none;
+    padding: 5px 6px;
+    font-size: 0.85em;
+    min-width: 28px;
+    height: 28px;
+    color: #6c757d;
+    transition: all 0.2s ease;
+}
+
+.search-type-btn.active {
+    color: #007DB8;
+}
+
+/* Mobile search validation error styles */
+.mobile .search-validation-error {
+    font-size: 0.8em;
+    margin: 6px 0 2px 0;
+    padding: 6px 10px;
+}

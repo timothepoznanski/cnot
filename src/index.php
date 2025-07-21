@@ -34,6 +34,31 @@ if ($result->num_rows == 0) {
 
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
+
+// Handle unified search
+if (!empty($_POST['unified_search'])) {
+    $unified_search = $_POST['unified_search'];
+    $search_in_notes = isset($_POST['search_in_notes']);
+    $search_in_tags = isset($_POST['search_in_tags']);
+    
+    // Only proceed if at least one option is selected
+    if ($search_in_notes || $search_in_tags) {
+        // Set search values based on selected options
+        if ($search_in_notes) {
+            $search = $unified_search;
+        } else {
+            $search = '';
+        }
+        
+        if ($search_in_tags) {
+            $tags_search = $unified_search;
+        } else {
+            $tags_search = '';
+        }
+    }
+    // If no options are selected, ignore the search (keep existing search state)
+}
+
 $note = $_GET['note'] ?? '';
 $folder_filter = $_GET['folder'] ?? '';
 
@@ -206,26 +231,30 @@ if($note != '') {
         <!-- Deux barres de recherche pour mobile -->
         <?php if ($is_mobile): ?>
         <div class="mobile-search-container">
-            <form id="search-notes-form-mobile" action="index.php" method="POST">
-                <div class="searchbar-row searchbar-icon-row">
-                    <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in all notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
-                        <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+            <form id="unified-search-form-mobile" action="index.php" method="POST">
+                <div class="unified-search-container mobile">
+                    <div class="searchbar-row searchbar-icon-row">
+                        <div class="searchbar-input-wrapper">
+                            <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-mobile" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                            <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                        </div>
+                        <div class="search-type-buttons">
+                            <button type="button" class="search-type-btn" id="search-notes-btn-mobile" title="Search in notes" data-type="notes">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                            <button type="button" class="search-type-btn" id="search-tags-btn-mobile" title="Search in tags" data-type="tags">
+                                <i class="fas fa-tags"></i>
+                            </button>
+                        </div>
+                        <?php if (!empty($search) || !empty($tags_search)): ?>
+                            <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                        <?php endif; ?>
                     </div>
-                    <?php if (!empty($search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                    <?php endif; ?>
-                </div>
-            </form>
-            <form id="search-tags-form-mobile" action="index.php" method="POST">
-                <div class="searchbar-row searchbar-icon-row">
-                    <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in all tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
-                        <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
-                    </div>
-                    <?php if (!empty($tags_search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                    <?php endif; ?>
+                    <!-- Hidden inputs to maintain compatibility -->
+                    <input type="hidden" id="search-notes-hidden-mobile" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
+                    <input type="hidden" id="search-tags-hidden-mobile" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
+                    <input type="hidden" id="search-in-notes-mobile" name="search_in_notes" value="<?php echo !empty($search) ? '1' : ''; ?>">
+                    <input type="hidden" id="search-in-tags-mobile" name="search_in_tags" value="<?php echo !empty($tags_search) ? '1' : ''; ?>">
                 </div>
             </form>
             <!-- Barre de filtre des dossiers pour mobile -->
@@ -313,26 +342,30 @@ if($note != '') {
     
     <?php if (!$is_mobile): ?>
     <div class="contains_forms_search searchbar-desktop">
-        <form id="search-notes-form" action="index.php" method="POST">
-            <div class="searchbar-row searchbar-icon-row">
-                <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in all notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+        <form id="unified-search-form" action="index.php" method="POST">
+            <div class="unified-search-container">
+                <div class="searchbar-row searchbar-icon-row">
+                    <div class="searchbar-input-wrapper">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                        <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                    </div>
+                    <div class="search-type-buttons">
+                        <button type="button" class="search-type-btn" id="search-notes-btn" title="Search in notes" data-type="notes">
+                            <i class="fas fa-file-alt"></i>
+                        </button>
+                        <button type="button" class="search-type-btn" id="search-tags-btn" title="Search in tags" data-type="tags">
+                            <i class="fas fa-tags"></i>
+                        </button>
+                    </div>
+                    <?php if (!empty($search) || !empty($tags_search)): ?>
+                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                    <?php endif; ?>
                 </div>
-                <?php if (!empty($search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                <?php endif; ?>
-            </div>
-        </form>
-        <form id="search-tags-form" action="index.php" method="POST">
-            <div class="searchbar-row searchbar-icon-row">
-                <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in all tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
-                </div>
-                <?php if (!empty($tags_search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                <?php endif; ?>
+                <!-- Hidden inputs to maintain compatibility -->
+                <input type="hidden" id="search-notes-hidden" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
+                <input type="hidden" id="search-tags-hidden" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
+                <input type="hidden" id="search-in-notes" name="search_in_notes" value="<?php echo !empty($search) ? '1' : ''; ?>">
+                <input type="hidden" id="search-in-tags" name="search_in_tags" value="<?php echo !empty($tags_search) ? '1' : ''; ?>">
             </div>
         </form>
         <!-- Barre de filtre des dossiers pour desktop -->
@@ -700,5 +733,6 @@ if($note != '') {
     </div>
 </body>
 <script src="js/script.js"></script>
+<script src="js/unified-search.js"></script>
 
 </html>

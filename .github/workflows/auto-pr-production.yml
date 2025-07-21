@@ -32,10 +32,23 @@ jobs:
         docker run --rm -v $(pwd)/src:/app php:8.1-cli find /app -name "*.php" -exec php -l {} \;
         echo "PHP syntax check passed"
     
+    - name: Check for changes
+      run: |
+        echo "Checking if there are changes between dev and main..."
+        git fetch origin main
+        
+        # Check if there are any differences
+        if git diff --quiet origin/main HEAD; then
+          echo "No changes detected between dev and main branches"
+          echo "Skipping PR creation - branches are identical"
+          exit 0
+        fi
+        
+        echo "Changes detected, proceeding with PR creation..."
+    
     - name: Check for merge conflicts
       run: |
         echo "Checking for merge conflicts..."
-        git fetch origin main
         
         # Simple conflict check
         if ! git merge-tree $(git merge-base HEAD origin/main) origin/main HEAD > /dev/null 2>&1; then

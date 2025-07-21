@@ -647,6 +647,11 @@ if($note != '') {
     <!-- RIGHT COLUMN -->	
     <div id="right_col">
     
+        <!-- Validation déploiement -->
+        <div style="position: absolute; top: 10px; right: 20px; background: rgba(0, 125, 184, 0.1); color: #007DB8; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; z-index: 100; border: 1px solid rgba(0, 125, 184, 0.2);">
+            🚀 Déploiement actif - <?php echo date('d/m/Y H:i'); ?>
+        </div>
+    
         <!-- Barre de recherche supprimée de la colonne de droite (desktop) -->
         
         <?php        

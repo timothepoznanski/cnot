@@ -577,10 +577,11 @@ if($note != '') {
                 echo '<button type="button" class="toolbar-btn btn-code'.$text_format_class.'" title="Code block" onclick="toggleCodeBlock()"><i class="fas fa-code"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-eraser'.$text_format_class.'" title="Clear formatting" onclick="document.execCommand(\'removeFormat\')"><i class="fas fa-eraser"></i></button>';
                 
-                // Boutons d'actions sur la note (visibles seulement quand aucun texte n'est sélectionné en desktop)
-                $note_action_class = $is_mobile ? '' : ' note-action-btn';
-                echo '<button type="button" class="toolbar-btn btn-separator'.$note_action_class.'" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-save'.$note_action_class.'" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                // Boutons d'actions sur la note (desktop seulement)
+                if (!$is_mobile) {
+                    echo '<button type="button" class="toolbar-btn btn-separator note-action-btn" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-save note-action-btn" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
+                }
                 
                 // Boutons d'actions sur la note (desktop seulement, remplacent le menu déroulant)
                 if (!$is_mobile) {
@@ -617,6 +618,7 @@ if($note != '') {
                     
                     // Boutons d'action sur la note 
                     echo '<button type="button" class="toolbar-btn btn-separator" title="Add separator" onclick="insertSeparator()"><i class="fas fa-minus"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-save" title="Save note" onclick="saveFocusedNoteJS()"><i class="fas fa-save"></i></button>';
                     
                     // Bouton favoris avec icône étoile
                     $is_favorite = $row['favorite'] ?? 0;

@@ -18,22 +18,19 @@ docker compose up -d --build
 
 Open your web browser and visit: `http://YOUR_SERVER_NAME:8077`
 
-## Update app or settings
+## Update app
 
 **If you want to update CNOT version:** 
 
-Two ways possible: 
-
-Your data are normally untouched but always make a backup first (see next section).
-
-1. Just remove the 3 existing containers, git pull the latest repository version and run the application (docker compose command).
-   
-2. You can also git pull the latest repository version and run the following docker commands: 
-
 ```
+  cd my-cnot
+  git pull
+  cd cnot
   docker compose build --no-cache
   docker compose up -d --force-recreate
 ```
+
+## Update settings
 
 **If you want to change the following settings:** 
 

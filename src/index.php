@@ -234,6 +234,10 @@ if($note != '') {
                         <i class="fas fa-plus-square"></i>
                         <span>Unfold All Folders</span>
                     </div>
+                    <div class="settings-menu-item" onclick="koFiAction();">
+                        <i class="fas fa-coffee"></i>
+                        <span>Support me</span>
+                    </div>
                     <div class="settings-menu-item deployment-info">
                         <i class="fas fa-rocket"></i>
                         <span>Dernier déploiement<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
@@ -379,6 +383,10 @@ if($note != '') {
                 <div class="settings-menu-item" onclick="unfoldAllFolders();">
                     <i class="fas fa-plus-square"></i>
                     <span>Unfold All Folders</span>
+                </div>
+                <div class="settings-menu-item" onclick="koFiAction();">
+                    <i class="fas fa-coffee"></i>
+                    <span>Support me</span>
                 </div>
                 <div class="settings-menu-item deployment-info">
                     <i class="fas fa-rocket"></i>

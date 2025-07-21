@@ -1280,6 +1280,14 @@ function unfoldAllFolders() {
     document.getElementById('settingsMenu').style.display = 'none';
 }
 
+function koFiAction() {
+    // Ouvrir la page Ko-fi dans un nouvel onglet
+    window.open('https://ko-fi.com/Q5Q61IECOW', '_blank');
+    
+    // Fermer le menu paramètres
+    document.getElementById('settingsMenu').style.display = 'none';
+}
+
 // Function to download a file
 function downloadFile(url, filename) {
     const link = document.createElement('a');

@@ -113,9 +113,15 @@ You can add more tests to `tests.yml` such as:
 
 ## Troubleshooting
 
+### Error "refusing to merge unrelated histories"
+This error occurs when `dev` and `main` branches were created independently:
+- ✅ **This is normal for new repositories** - the workflow handles this automatically
+- ✅ **The system will use `--allow-unrelated-histories`** for the conflict check
+- ✅ **No action needed** - the workflow adapts to this situation
+
 ### Error "Merge conflicts detected"
 This error occurs when your `dev` branch has changes that conflict with `main` during merge:
-- ✅ **First, update your dev branch with latest main**: `git checkout dev && git pull origin main`
+- ✅ **First, update your dev branch with latest main**: `git checkout dev && git pull origin main --allow-unrelated-histories` (add flag if needed)
 - ✅ **Resolve conflicts manually** in your code editor  
 - ✅ **Commit the resolved conflicts**: `git add . && git commit -m "Resolve merge conflicts"`
 - ✅ **Push again**: `git push origin dev`

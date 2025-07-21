@@ -1,1 +1,0 @@
-docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build

@@ -86,6 +86,10 @@ Create temporarily another container to create a dump where you run the command:
 
 Copy all your HTML files to `../ENTRIES_DATA` directory and ensure that both the user and group ownership are set to `www-data` for all html files (chown -R www-data: ENTRIES_DATA)
 
+### Import your attachments ### 
+
+Copy all your attachment files to `../ATTACHMENTS_DATA` directory and ensure that both the user and group ownership are set to `www-data` for all attachment files (chown -R www-data: ATTACHMENTS_DATA)
+
 ### Import your database ### 
 
 There are two ways to import a database dump:

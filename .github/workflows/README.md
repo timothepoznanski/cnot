@@ -115,7 +115,7 @@ The workflow works automatically:
 
 **Result**: After deployment, your local `dev` branch is automatically up to date when you `git pull`!
 
-## Customization
+## Customization 
 
 You can modify the workflows according to your needs:
 - **Add more tests** in `auto-pr-production.yml` (database tests, API tests, etc.)
@@ -147,6 +147,24 @@ You can add more tests to `auto-pr-production.yml` such as:
 - Code quality checks (PHPStan, etc.)
 
 ## Troubleshooting
+
+### Error "divergent branches" during deployment
+This error occurs when the production server's local git state differs from the remote repository:
+- ✅ **Automatic handling**: The workflow now handles this automatically with `git reset --hard origin/main`
+- ✅ **Backup created**: A backup branch is created before resetting (backup-YYYYMMDD-HHMMSS)
+- ✅ **Clean deployment**: Ensures production always matches the exact state of `main` branch
+- ✅ **No manual intervention needed**: The deployment process handles conflicts automatically
+
+### Manual recovery (if needed)
+If you need to recover to a previous state:
+```bash
+# On production server, list backup branches
+git branch | grep backup-
+
+# Restore to a specific backup
+git checkout backup-20250721-214500  # example timestamp
+git checkout -b recovery-branch
+```
 
 ### Error "refusing to merge unrelated histories"
 This error occurs when `dev` and `main` branches were created independently:

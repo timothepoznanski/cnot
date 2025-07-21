@@ -16,7 +16,7 @@ require 'config.php';
 include 'functions.php';
 include 'db_connect.php';
 
-// Vérification et migration des colonnes (seulement à l'ouverture de l'application)
+// Vérification des colonnes (seulement à l'ouverture de l'application)
 $result = $con->query("SHOW COLUMNS FROM entries LIKE 'folder'");
 if ($result->num_rows == 0) {
     $con->query("ALTER TABLE entries ADD COLUMN folder varchar(255) DEFAULT 'Uncategorized'");

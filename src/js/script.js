@@ -1233,6 +1233,12 @@ function toggleSettingsMenu(event) {
     const menuId = isMobile ? 'settingsMenuMobile' : 'settingsMenu';
     const menu = document.getElementById(menuId);
     
+    // Check if menu exists to prevent null reference error
+    if (!menu) {
+        console.error('Settings menu element not found:', menuId);
+        return;
+    }
+    
     if (menu.style.display === 'none' || menu.style.display === '') {
         menu.style.display = 'block';
         

@@ -563,6 +563,7 @@ if($note != '') {
                 
                 // Boutons de formatage de texte (visibles seulement lors de sélection en desktop)
                 $text_format_class = $is_mobile ? '' : ' text-format-btn';
+                $note_action_class = $is_mobile ? '' : ' note-action-btn';
                 echo '<button type="button" class="toolbar-btn btn-bold'.$text_format_class.'" title="Bold" onclick="document.execCommand(\'bold\')"><i class="fas fa-bold"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-italic'.$text_format_class.'" title="Italic" onclick="document.execCommand(\'italic\')"><i class="fas fa-italic"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-underline'.$text_format_class.'" title="Underline" onclick="document.execCommand(\'underline\')"><i class="fas fa-underline"></i></button>';

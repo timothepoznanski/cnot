@@ -1337,13 +1337,27 @@ function initTextSelectionHandlers() {
             const textFormatButtons = document.querySelectorAll('.text-format-btn');
             const noteActionButtons = document.querySelectorAll('.note-action-btn');
             
-            // Vérifier si la sélection contient du texte et est dans une zone éditable
+            // Vérifier si la sélection contient du texte
             if (selection && selection.toString().trim().length > 0) {
                 const range = selection.getRangeAt(0);
                 const container = range.commonAncestorContainer;
-                const editableElement = container.nodeType === Node.TEXT_NODE 
-                    ? container.parentElement.closest('.noteentry, [contenteditable="true"]')
-                    : container.closest('.noteentry, [contenteditable="true"]');
+                
+                // Améliorer la détection de la zone éditable
+                let currentElement = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+                let editableElement = null;
+                
+                // Remonter dans l'arbre DOM pour trouver une zone éditable
+                while (currentElement && currentElement !== document.body) {
+                    if (currentElement.classList && currentElement.classList.contains('noteentry')) {
+                        editableElement = currentElement;
+                        break;
+                    }
+                    if (currentElement.contentEditable === 'true') {
+                        editableElement = currentElement;
+                        break;
+                    }
+                    currentElement = currentElement.parentElement;
+                }
                 
                 if (editableElement) {
                     // Texte sélectionné dans une zone éditable : afficher les boutons de formatage, cacher les actions
@@ -1354,12 +1368,12 @@ function initTextSelectionHandlers() {
                         btn.classList.add('hide-on-selection');
                     });
                 } else {
-                    // Texte sélectionné mais pas dans une zone éditable : afficher les actions, cacher le formatage
+                    // Texte sélectionné mais pas dans une zone éditable : cacher tout
                     textFormatButtons.forEach(btn => {
                         btn.classList.remove('show-on-selection');
                     });
                     noteActionButtons.forEach(btn => {
-                        btn.classList.remove('hide-on-selection');
+                        btn.classList.add('hide-on-selection');
                     });
                 }
             } else {

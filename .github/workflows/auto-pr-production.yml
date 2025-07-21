@@ -1,0 +1,53 @@
+name: Auto PR to Production
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Create Pull Request
+      run: |
+        # Vérifier que le token est configuré
+        if [ -z "$GH_TOKEN" ]; then
+          echo "❌ Erreur: Le secret PAT_TOKEN n'est pas configuré"
+          echo "Ajoutez votre Personal Access Token dans les secrets du repository avec le nom 'PAT_TOKEN'"
+          exit 1
+        fi
+        
+        # Vérifier si une PR existe déjà
+        echo "🔍 Vérification des PR existantes..."
+        existing_pr=$(gh pr list --head dev --base main --json number --jq '.[0].number' 2>/dev/null || echo "null")
+        
+        if [ "$existing_pr" = "null" ] || [ -z "$existing_pr" ]; then
+          echo "📝 Création d'une nouvelle Pull Request..."
+          # Créer une nouvelle PR
+          gh pr create \
+            --base main \
+            --head dev \
+            --title "🚀 Auto-deploy from dev to production" \
+            --body "## Déploiement automatique en production
+
+          Cette PR a été créée automatiquement suite à un push sur la branche \`dev\`.
+
+          ### Changements inclus
+          - Tous les commits récents de la branche \`dev\`
+
+          ### Actions après merge
+          Une fois cette PR mergée, le déploiement en production sera déclenché automatiquement.
+
+          ---
+          _Créé automatiquement par GitHub Actions_"
+          echo "✅ Pull Request créée avec succès !"
+        else
+          echo "ℹ️  Une PR existe déjà (numéro: $existing_pr)"
+          echo "Vous pouvez la consulter sur GitHub pour voir les changements."
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.PAT_TOKEN }}

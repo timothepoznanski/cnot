@@ -1,0 +1,59 @@
+name: Tests
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Test Docker build
+      run: |
+        echo "🏗️ Testing Docker build..."
+        docker build -t cnot-test .
+        echo "✅ Docker build successful"
+    
+    - name: Test Docker Compose
+      run: |
+        echo "🐳 Testing Docker Compose setup..."
+        # Copy env example if it exists
+        if [ -f .env.example ]; then
+          cp .env.example .env
+        fi
+        
+        # Test that compose file is valid
+        docker compose config
+        echo "✅ Docker Compose configuration valid"
+    
+    - name: PHP Syntax Check
+      run: |
+        echo "🔍 Checking PHP syntax..."
+        docker run --rm -v $(pwd)/src:/app php:8.1-cli find /app -name "*.php" -exec php -l {} \;
+        echo "✅ PHP syntax check passed"
+    
+    - name: Check file permissions
+      run: |
+        echo "🔒 Checking file permissions..."
+        # Check that sensitive files are not executable
+        if [ -f src/config.php ]; then
+          if [ -x src/config.php ]; then
+            echo "❌ config.php should not be executable"
+            exit 1
+          fi
+        fi
+        echo "✅ File permissions check passed"
+    
+    - name: Basic API test (if applicable)
+      run: |
+        echo "🌐 Testing basic application structure..."
+        # Check that main files exist
+        test -f src/index.php || (echo "❌ index.php not found" && exit 1)
+        test -f docker-compose.yml || (echo "❌ docker-compose.yml not found" && exit 1)
+        echo "✅ Application structure check passed"

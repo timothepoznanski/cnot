@@ -12,42 +12,148 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
+    - name: Check for merge conflicts
+      run: |
+        echo "🔍 Checking for potential merge conflicts..."
+        
+        # Fetch latest main branch
+        git fetch origin main
+        
+        # Check if branches have common history
+        common_base=$(git merge-base HEAD origin/main 2>/dev/null || echo "none")
+        
+        if [ "$common_base" = "none" ]; then
+          echo "⚠️  Branches have unrelated histories"
+          echo "This is common for new repositories. Proceeding with caution..."
+          
+          # For unrelated histories, we'll do a simple check
+          # Create a temporary branch from main and try to merge dev
+          git checkout -b temp-merge-check origin/main
+          if ! git merge HEAD --allow-unrelated-histories --no-commit --no-ff; then
+            echo "❌ Merge conflicts detected when merging dev into main!"
+            echo "Please resolve conflicts manually before deploying."
+            git merge --abort
+            git checkout dev
+            git branch -D temp-merge-check
+            exit 1
+          fi
+          
+          # Clean up
+          git merge --abort 2>/dev/null || true
+          git checkout dev
+          git branch -D temp-merge-check
+          
+        else
+          # Normal case: branches have common history
+          echo "✅ Branches have common history, checking for conflicts..."
+          
+          # Try to merge dev into main (dry run)
+          git merge-tree $(git merge-base HEAD origin/main) origin/main HEAD > merge_result.txt
+          
+          # Check if there are conflicts
+          if grep -q "<<<<<<< " merge_result.txt; then
+            echo "❌ Merge conflicts detected when trying to merge dev into main!"
+            echo "Please resolve conflicts manually before deploying."
+            echo "Conflicts found in:"
+            grep -B2 -A2 "<<<<<<< " merge_result.txt || true
+            exit 1
+          fi
+          
+          # Alternative check: simulate the actual PR merge
+          git checkout -b temp-merge-check origin/main
+          if ! git merge HEAD --no-commit --no-ff; then
+            echo "❌ Merge conflicts detected when merging dev into main!"
+            git merge --abort
+            git checkout dev
+            git branch -D temp-merge-check
+            exit 1
+          fi
+          
+          # Clean up
+          git merge --abort 2>/dev/null || true
+          git checkout dev
+          git branch -D temp-merge-check
+        fi
+        
+        echo "✅ No merge conflicts detected - dev can be safely merged into main"
+    
+    - name: Wait for tests to complete
+      run: |
+        echo "⏳ Waiting for tests to complete..."
+        # Wait a bit for the test workflow to start
+        sleep 30
+        
+        # Check if tests are passing
+        echo "🔍 Checking test status..."
+        latest_commit=$(git rev-parse HEAD)
+        
+        # Wait for tests to complete (max 5 minutes)
+        for i in {1..10}; do
+          test_status=$(gh run list --commit $latest_commit --workflow=tests.yml --json conclusion --jq '.[0].conclusion' 2>/dev/null || echo "null")
+          
+          if [ "$test_status" = "success" ]; then
+            echo "✅ Tests passed!"
+            break
+          elif [ "$test_status" = "failure" ]; then
+            echo "❌ Tests failed! Stopping deployment."
+            exit 1
+          else
+            echo "⏳ Tests still running... (attempt $i/10)"
+            sleep 30
+          fi
+        done
+        
+        if [ "$test_status" != "success" ]; then
+          echo "⏰ Tests took too long or failed. Stopping deployment."
+          exit 1
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+    
     - name: Create Pull Request
       run: |
-        # Vérifier que le token est configuré
+        # Check if token is configured
         if [ -z "$GH_TOKEN" ]; then
-          echo "❌ Erreur: Le secret PAT_TOKEN n'est pas configuré"
-          echo "Ajoutez votre Personal Access Token dans les secrets du repository avec le nom 'PAT_TOKEN'"
+          echo "❌ Error: PAT_TOKEN secret is not configured"
+          echo "Add your Personal Access Token in repository secrets with name 'PAT_TOKEN'"
           exit 1
         fi
         
-        # Vérifier si une PR existe déjà
-        echo "🔍 Vérification des PR existantes..."
+        # Check if a PR already exists
+        echo "🔍 Checking existing PRs..."
         existing_pr=$(gh pr list --head dev --base main --json number --jq '.[0].number' 2>/dev/null || echo "null")
         
         if [ "$existing_pr" = "null" ] || [ -z "$existing_pr" ]; then
-          echo "📝 Création d'une nouvelle Pull Request..."
-          # Créer une nouvelle PR
-          gh pr create \
+          echo "📝 Creating new Pull Request..."
+          # Create new PR
+          pr_url=$(gh pr create \
             --base main \
             --head dev \
             --title "🚀 Auto-deploy from dev to production" \
-            --body "## Déploiement automatique en production
+            --body "## Automatic production deployment
 
-          Cette PR a été créée automatiquement suite à un push sur la branche \`dev\`.
+          This PR was created automatically following a push to the \`dev\` branch.
 
-          ### Changements inclus
-          - Tous les commits récents de la branche \`dev\`
+          ### Changes included
+          - All recent commits from the \`dev\` branch
 
-          ### Actions après merge
-          Une fois cette PR mergée, le déploiement en production sera déclenché automatiquement.
+          ### Tests status
+          ✅ All tests passed before creating this PR
+
+          ### Actions after merge
+          Once this PR is merged, production deployment will be triggered automatically.
 
           ---
-          _Créé automatiquement par GitHub Actions_"
-          echo "✅ Pull Request créée avec succès !"
+          _Created automatically by GitHub Actions_")
+          echo "✅ Pull Request created successfully!"
+          
+          # Auto-merge the PR immediately (tests already passed)
+          echo "🔄 Auto-merging PR..."
+          gh pr merge --squash --auto
+          echo "✅ PR set to auto-merge!"
         else
-          echo "ℹ️  Une PR existe déjà (numéro: $existing_pr)"
-          echo "Vous pouvez la consulter sur GitHub pour voir les changements."
+          echo "ℹ️  A PR already exists (number: $existing_pr)"
+          echo "You can check it on GitHub to see the changes."
         fi
       env:
         GH_TOKEN: ${{ secrets.PAT_TOKEN }}

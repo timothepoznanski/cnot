@@ -225,7 +225,7 @@ if($note != '') {
                 <div class="settingsbutton" onclick="toggleSettingsMenu(event);" title="Settings">
                     <span><span class="fas fa-cog"></span></span>
                 </div>
-                <div class="settings-menu" id="settingsMenu">
+                <div class="settings-menu" id="settingsMenuMobile">
                     <div class="settings-menu-item" onclick="foldAllFolders();">
                         <i class="fas fa-minus-square"></i>
                         <span>Fold All Folders</span>
@@ -240,7 +240,7 @@ if($note != '') {
                     </div>
                     <div class="settings-menu-item deployment-info">
                         <i class="fas fa-rocket"></i>
-                        <span>Dernier déploiement<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
+                        <span>Last deployment<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
                     </div>
                 </div>
             </div>

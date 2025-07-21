@@ -236,7 +236,7 @@ if($note != '') {
                     </div>
                     <div class="settings-menu-item" onclick="koFiAction();">
                         <i class="fas fa-coffee"></i>
-                        <span>Support me</span>
+                        <span>Support me ☕</span>
                     </div>
                     <div class="settings-menu-item deployment-info">
                         <i class="fas fa-rocket"></i>

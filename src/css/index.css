@@ -1768,7 +1768,7 @@ hr {
     gap: 2px;
     align-items: center;
     margin-left: 8px;
-    margin-right: 8px;
+    /* margin-right: 8px; */
 }
 
 .search-type-btn {

@@ -243,7 +243,7 @@ if($note != '') {
                 <div class="unified-search-container mobile">
                     <div class="searchbar-row searchbar-icon-row">
                         <div class="searchbar-input-wrapper">
-                            <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-mobile" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                            <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-mobile" type="text" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
                             <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                             <?php if (!empty($search) || !empty($tags_search)): ?>
                                 <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
@@ -387,7 +387,7 @@ if($note != '') {
             <div class="unified-search-container">
                 <div class="searchbar-row searchbar-icon-row">
                     <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="text" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
                         <span class="searchbar-icon"><span class="fas fa-search"></span></span>
                         <?php if (!empty($search) || !empty($tags_search)): ?>
                             <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>

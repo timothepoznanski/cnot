@@ -100,17 +100,32 @@ if($note != '') {
     
     <!-- Modal for moving note to folder from toolbar -->
     <div id="moveNoteFolderModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('moveNoteFolderModal')">&times;</span>
+        <div class="modal-content move-folder-modal">
             <h3>Move Note to Folder</h3>
-            <select id="moveNoteFolderSelect" onchange="toggleNewFolderInput()">
-                <option value="Uncategorized">Uncategorized</option>
-            </select>
-            <div id="newFolderInputContainer" style="display: none; margin-top: 10px;">
-                <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            
+            <!-- Search/Filter bar -->
+            <div class="folder-search-section">
+                <input type="text" id="moveFolderFilter" placeholder="Search or select a folder..." oninput="filterMoveFolders()">
             </div>
+            
+            <!-- Folders list (hidden by default) -->
+            <div class="folders-selection-list" id="foldersSelectionList" style="display: none;">
+                <!-- Folders will be loaded here -->
+            </div>
+            
+            <!-- Create new folder section -->
+            <div class="create-folder-section" id="createFolderSection" style="display: none;">
+                <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" maxlength="255">
+                <div class="create-folder-buttons">
+                    <button type="button" onclick="createAndMoveToNewFolder()">Create & Move</button>
+                    <button type="button" onclick="cancelCreateNewFolder()">Cancel</button>
+                </div>
+            </div>
+            
+            <!-- Action buttons -->
             <div class="modal-buttons">
-                <button type="button" onclick="moveCurrentNoteToFolder()">Move</button>
+                <button type="button" onclick="moveNoteToSelectedFolder()">Move</button>
+                <button type="button" id="createNewFolderBtn" onclick="showCreateNewFolderInput()">+ Create New Folder</button>
                 <button type="button" onclick="closeModal('moveNoteFolderModal')">Cancel</button>
             </div>
         </div>

@@ -881,18 +881,127 @@ function emptyFolder(folderName) {
     });
 }
 
-function toggleNewFolderInput() {
-    const select = document.getElementById('moveNoteFolderSelect');
-    const container = document.getElementById('newFolderInputContainer');
-    const input = document.getElementById('moveNewFolderName');
+function filterMoveFolders() {
+    const filterText = document.getElementById('moveFolderFilter').value.toLowerCase();
+    const foldersList = document.getElementById('foldersSelectionList');
+    const folderOptions = document.querySelectorAll('.folder-option');
     
-    if (select.value === '__create_new__') {
-        container.style.display = 'block';
-        input.focus();
+    // Show/hide the folders list based on whether user is typing
+    if (filterText.length === 0) {
+        foldersList.style.display = 'none';
+        return;
     } else {
-        container.style.display = 'none';
-        input.value = '';
+        foldersList.style.display = 'block';
     }
+    
+    let visibleCount = 0;
+    
+    folderOptions.forEach(function(option) {
+        const folderName = option.querySelector('.folder-name').textContent.toLowerCase();
+        if (folderName.includes(filterText)) {
+            option.style.display = 'flex';
+            visibleCount++;
+        } else {
+            option.style.display = 'none';
+        }
+    });
+    
+    // Show "no folders found" message if no folders match
+    let noFoldersMsg = foldersList.querySelector('.no-folders-found');
+    
+    if (visibleCount === 0 && filterText.length > 0) {
+        if (!noFoldersMsg) {
+            noFoldersMsg = document.createElement('div');
+            noFoldersMsg.className = 'no-folders-found';
+            noFoldersMsg.textContent = 'No folders found matching "' + filterText + '"';
+            foldersList.appendChild(noFoldersMsg);
+        } else {
+            noFoldersMsg.textContent = 'No folders found matching "' + filterText + '"';
+            noFoldersMsg.style.display = 'block';
+        }
+    } else if (noFoldersMsg) {
+        noFoldersMsg.style.display = 'none';
+    }
+}
+
+function selectFolderForMove(folderName, element) {
+    // Remove selection from all folders
+    document.querySelectorAll('.folder-option').forEach(opt => opt.classList.remove('selected'));
+    
+    // Select clicked folder
+    element.classList.add('selected');
+    
+    // Store selected folder
+    element.dataset.selectedFolder = folderName;
+    
+    // Update the search input to show the selected folder
+    document.getElementById('moveFolderFilter').value = folderName;
+    
+    // Hide the folders list after selection
+    document.getElementById('foldersSelectionList').style.display = 'none';
+}
+
+function showCreateNewFolderInput() {
+    document.getElementById('createFolderSection').style.display = 'block';
+    document.getElementById('createNewFolderBtn').style.display = 'none';
+    document.getElementById('moveNewFolderName').focus();
+}
+
+function cancelCreateNewFolder() {
+    document.getElementById('createFolderSection').style.display = 'none';
+    document.getElementById('createNewFolderBtn').style.display = 'inline-block';
+    document.getElementById('moveNewFolderName').value = '';
+}
+
+function createAndMoveToNewFolder() {
+    const newFolderName = document.getElementById('moveNewFolderName').value.trim();
+    if (!newFolderName) {
+        alert('Please enter a folder name');
+        return;
+    }
+    
+    // Move note to the new folder
+    moveNoteToSelectedFolder(newFolderName);
+}
+
+function moveNoteToSelectedFolder(targetFolder = null) {
+    let folderToMoveTo = targetFolder;
+    
+    if (!folderToMoveTo) {
+        // Get selected folder from the list
+        const selectedFolder = document.querySelector('.folder-option.selected');
+        if (!selectedFolder) {
+            alert('Please select a folder');
+            return;
+        }
+        folderToMoveTo = selectedFolder.dataset.selectedFolder;
+    }
+    
+    const currentNoteHeading = document.getElementById('inp' + noteid).value;
+    
+    const params = new URLSearchParams({
+        action: 'move_note',
+        note_heading: currentNoteHeading,
+        folder: folderToMoveTo
+    });
+    
+    fetch("folder_operations.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.json())
+    .then(function(data) {
+        if (data.success) {
+            closeModal('moveNoteFolderModal');
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error moving note: ' + error);
+    });
 }
 
 function showMoveFolderDialog(noteId) {
@@ -911,30 +1020,12 @@ function showMoveFolderDialog(noteId) {
     .then(response => response.json())
     .then(function(data) {
         if (data.success) {
-            var select = document.getElementById('moveNoteFolderSelect');
-            select.innerHTML = '';
+            loadFoldersIntoSelectionList(data.folders, noteId);
             
-            // Get current folder of the note
-            var currentFolder = document.getElementById('folder' + noteId).value;
-            
-            data.folders.forEach(function(folder) {
-                var option = document.createElement('option');
-                option.value = folder;
-                option.textContent = folder;
-                if (folder === currentFolder) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-            
-            // Add "Create New Folder" option
-            var createOption = document.createElement('option');
-            createOption.value = '__create_new__';
-            createOption.textContent = '+ Create New Folder';
-            select.appendChild(createOption);
-            
-            // Reset new folder input
-            document.getElementById('newFolderInputContainer').style.display = 'none';
+            // Reset UI state
+            document.getElementById('moveFolderFilter').value = '';
+            document.getElementById('createFolderSection').style.display = 'none';
+            document.getElementById('createNewFolderBtn').style.display = 'inline-block';
             document.getElementById('moveNewFolderName').value = '';
             
             document.getElementById('moveNoteFolderModal').style.display = 'block';
@@ -942,49 +1033,91 @@ function showMoveFolderDialog(noteId) {
     });
 }
 
-function moveCurrentNoteToFolder() {
-    var selectedFolder = document.getElementById('moveNoteFolderSelect').value;
-    var folderToMoveTo;
+function loadFoldersIntoSelectionList(folders, noteId) {
+    const foldersList = document.getElementById('foldersSelectionList');
+    foldersList.innerHTML = '';
     
-    if (selectedFolder === '__create_new__') {
-        var newFolderName = document.getElementById('moveNewFolderName').value.trim();
-        if (!newFolderName) {
-            alert('Please enter a folder name');
-            return;
-        }
-        folderToMoveTo = newFolderName;
-    } else {
-        folderToMoveTo = selectedFolder;
-    }
+    // Get current folder of the note to pre-select it
+    const currentFolder = document.getElementById('folder' + noteId).value;
     
-    var currentNoteHeading = document.getElementById('inp' + noteid).value; // Get the heading of the specific note
-    
-    var params = new URLSearchParams({
-        action: 'move_note',
-        note_heading: currentNoteHeading,
-        folder: folderToMoveTo
-    });
-    
+    // Count notes in each folder for display
     fetch("folder_operations.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString()
+        body: "action=get_folder_counts"
     })
     .then(response => response.json())
-    .then(function(data) {
-        if (data.success) {
-            closeModal('moveNoteFolderModal');
-            // Reload the page to show the note in the new folder
-            location.reload();
-        } else {
-            alert('Error: ' + data.error);
-            closeModal('moveNoteFolderModal');
-        }
+    .then(function(countData) {
+        const folderCounts = countData.success ? countData.counts : {};
+        
+        folders.forEach(function(folder) {
+            const folderOption = document.createElement('div');
+            folderOption.className = 'folder-option';
+            folderOption.dataset.selectedFolder = folder;
+            
+            // Pre-select current folder
+            if (folder === currentFolder) {
+                folderOption.classList.add('selected');
+            }
+            
+            // Add click handler
+            folderOption.onclick = function() {
+                selectFolderForMove(folder, this);
+            };
+            
+            // Create folder icon
+            let folderIcon = 'fas fa-folder';
+            if (folder === 'Favorites') {
+                folderIcon = 'fas fa-star';
+            }
+            
+            // Get note count
+            const noteCount = folderCounts[folder] || 0;
+            
+            folderOption.innerHTML = `
+                <i class="${folderIcon}"></i>
+                <span class="folder-name">${folder}</span>
+                <span class="note-count">(${noteCount})</span>
+            `;
+            
+            foldersList.appendChild(folderOption);
+        });
     })
     .catch(error => {
-        alert('Error moving note: ' + error);
-        closeModal('moveNoteFolderModal');
+        console.error('Error loading folder counts:', error);
+        // Fallback: load folders without counts
+        folders.forEach(function(folder) {
+            const folderOption = document.createElement('div');
+            folderOption.className = 'folder-option';
+            folderOption.dataset.selectedFolder = folder;
+            
+            if (folder === currentFolder) {
+                folderOption.classList.add('selected');
+            }
+            
+            folderOption.onclick = function() {
+                selectFolderForMove(folder, this);
+            };
+            
+            let folderIcon = 'fas fa-folder';
+            if (folder === 'Favorites') {
+                folderIcon = 'fas fa-star';
+            }
+            
+            folderOption.innerHTML = `
+                <i class="${folderIcon}"></i>
+                <span class="folder-name">${folder}</span>
+                <span class="note-count"></span>
+            `;
+            
+            foldersList.appendChild(folderOption);
+        });
     });
+}
+
+function moveCurrentNoteToFolder() {
+    // This function is called by the old interface, redirect to new logic
+    moveNoteToSelectedFolder();
 }
 
 function showMoveNoteDialog(noteHeading) {

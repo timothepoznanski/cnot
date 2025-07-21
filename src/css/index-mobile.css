@@ -366,6 +366,113 @@ a.links_arbo_left.selected-note {
     font-size: 16px !important;
 }
 
+/* MOVE FOLDER MODAL MOBILE STYLES */
+
+.move-folder-modal {
+    margin: 5% auto !important;
+    width: 95% !important;
+    max-width: 350px !important;
+    min-width: unset !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    padding: 20px !important;
+}
+
+.move-folder-modal h3 {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+    text-align: center !important;
+    margin-top: 0 !important;
+}
+
+.folder-search-section {
+    margin-bottom: 15px !important;
+}
+
+.folder-search-section input {
+    font-size: 16px !important;
+    padding: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 8px !important;
+}
+
+.folders-selection-list {
+    max-height: 200px !important;
+    font-size: 15px !important;
+    margin-bottom: 20px !important;
+    border-radius: 8px !important;
+}
+
+.folder-option {
+    padding: 16px 14px !important;
+    font-size: 15px !important;
+    min-height: 50px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.folder-option i {
+    margin-right: 10px !important;
+    font-size: 16px !important;
+    flex-shrink: 0 !important;
+}
+
+.folder-option .folder-name {
+    flex: 1 !important;
+}
+
+.folder-option .note-count {
+    margin-left: 8px !important;
+    font-size: 13px !important;
+}
+
+.create-folder-section {
+    margin-bottom: 20px !important;
+    padding-top: 15px !important;
+}
+
+.create-folder-section input {
+    font-size: 16px !important;
+    padding: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+}
+
+.create-folder-buttons {
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.create-folder-buttons button {
+    width: 100% !important;
+    padding: 14px !important;
+    font-size: 16px !important;
+    min-height: 50px !important;
+    border-radius: 8px !important;
+}
+
+.move-folder-modal .modal-buttons {
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid #e0e0e0 !important;
+}
+
+.move-folder-modal .modal-buttons button {
+    width: 100% !important;
+    padding: 16px !important;
+    font-size: 16px !important;
+    min-height: 52px !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+}
+
 /* ATTACHMENT MOBILE STYLES */
 
 .attachment-modal .modal-content {

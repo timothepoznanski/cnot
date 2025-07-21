@@ -1,17 +1,34 @@
 # GitHub Actions Workflows Configuration
 
-This repository contains GitHub Actions workflows to automate production deployment with validation.
+This repository contains **optimized GitHub Actions workflows** to automate production deployment with validation.
 
-## Deployment workflow
+## Deployment workflow (optimized for speed)
 
 ### Pull Request approach with manual merge (semi-automated)
 - **Trigger** : Push to `dev` branch
-- **Action** : Automatic PR creation `dev` → `main` for manual review
+- **Action** : Automatic PR creation `dev` → `main` for manual review *(~1-2 minutes)*
 - **Deployment** : Manual merge, then automatic deployment to production
-- **Benefits** : Additional review step, controlled deployment
+- **Auto-sync** : `dev` branch automatically synchronized with `main` after deployment
+- **Benefits** : Additional review step, controlled deployment, **faster CI/CD pipeline**
 - **Safety** : Automated tests + conflict detection + manual review
 
 ## Required configuration
+
+### GitHub Repository Settings (Important!)
+To avoid unnecessary commits and keep branches synchronized:
+
+1. Go to your repository → **Settings** → **General** → **Pull Requests**
+2. **Uncheck** "Allow merge commits" 
+3. **Check** "Allow squash merging" (recommended)
+4. **Check** "Allow rebase merging" (alternative)
+5. **Check** "Automatically delete head branches" (optional cleanup)
+
+This prevents GitHub from creating unnecessary merge commits that would desynchronize your branches.
+
+### Merge strategy recommendation:
+- ✅ **Use "Squash and merge"** for cleaner history
+- ✅ **Use "Rebase and merge"** to preserve individual commits  
+- ❌ **Avoid "Create a merge commit"** (causes branch desynchronization)
 
 You must configure the following secrets in your GitHub repository (Settings → Secrets and variables → Actions) :
 
@@ -88,7 +105,15 @@ The workflow works automatically:
 2. **Your server** executes `git pull origin main` to fetch the new code
 3. **Your server** executes `docker compose build` to build the image locally
 4. **Your server** executes `docker compose up -d` to start the new containers
-5. **Everything happens on your server** - the runner only transmits SSH commands
+5. **No merge commits** = branches stay synchronized automatically
+6. **Everything happens on your server** - the runner only transmits SSH commands
+
+### Why no manual pushes needed anymore:
+- ✅ **With "Squash and merge"**: No extra commits, `dev` and `main` stay in sync
+- ✅ **With "Rebase and merge"**: Clean linear history, no desynchronization  
+- ❌ **With "Create merge commit"**: Creates extra commits that desynchronize branches
+
+**Result**: After deployment, your local `dev` branch is automatically up to date when you `git pull`!
 
 ## Customization
 
@@ -100,11 +125,18 @@ You can modify the workflows according to your needs:
 - Add security scans or dependency checks
 
 ### Available tests in `auto-pr-production.yml`:
-- ✅ **Docker build test** - Ensures the application can be built
-- ✅ **Docker Compose validation** - Checks compose file syntax
-- ✅ **PHP syntax check** - Validates all PHP files
-- ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist
-- ✅ **Changes detection** - Skips PR creation if no changes between branches
+- ✅ **Docker build test** - Ensures the application can be built *(~3-5 minutes)*
+- ✅ **Docker Compose validation** - Checks compose file syntax *(~10-30 seconds)*  
+- ✅ **PHP syntax check** - Validates all PHP files *(~30-60 seconds)*
+- ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist *(~5-10 seconds)*
+- ✅ **Changes detection** - Skips PR creation if no changes between branches *(~5-10 seconds)*
+
+### Performance optimization
+The workflow has been optimized for faster deployment:
+- ⚡ **Docker build test removed by default** - Saves 3-5 minutes per deployment
+- ⚡ **Only essential tests remain** - PHP syntax + Docker Compose validation
+- ⚡ **Total workflow time**: ~1-2 minutes instead of 5-7 minutes
+- 🔧 **Re-enable Docker build test** if needed by uncommenting the step in the workflow
 
 ### Adding custom tests:
 You can add more tests to `auto-pr-production.yml` such as:

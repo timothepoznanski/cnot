@@ -1,0 +1,36 @@
+name: Auto PR to Production
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        base: main
+        head: dev
+        title: "🚀 Auto-deploy from dev to production"
+        body: |
+          ## Déploiement automatique en production
+          
+          Cette PR a été créée automatiquement suite à un push sur la branche `dev`.
+          
+          ### Changements inclus
+          - Tous les commits récents de la branche `dev`
+          
+          ### Actions après merge
+          Une fois cette PR mergée, le déploiement en production sera déclenché automatiquement.
+          
+          ---
+          _Créé automatiquement par GitHub Actions_
+        draft: false
+        delete-branch: false

@@ -13,24 +13,30 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v6
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        base: main
-        head: dev
-        title: "🚀 Auto-deploy from dev to production"
-        body: |
-          ## Déploiement automatique en production
-          
-          Cette PR a été créée automatiquement suite à un push sur la branche `dev`.
-          
+      run: |
+        # Vérifier si une PR existe déjà
+        existing_pr=$(gh pr list --head dev --base main --json number --jq '.[0].number')
+        
+        if [ "$existing_pr" = "null" ] || [ -z "$existing_pr" ]; then
+          # Créer une nouvelle PR
+          gh pr create \
+            --base main \
+            --head dev \
+            --title "🚀 Auto-deploy from dev to production" \
+            --body "## Déploiement automatique en production
+
+          Cette PR a été créée automatiquement suite à un push sur la branche \`dev\`.
+
           ### Changements inclus
-          - Tous les commits récents de la branche `dev`
-          
+          - Tous les commits récents de la branche \`dev\`
+
           ### Actions après merge
           Une fois cette PR mergée, le déploiement en production sera déclenché automatiquement.
-          
+
           ---
-          _Créé automatiquement par GitHub Actions_
-        draft: false
-        delete-branch: false
+          _Créé automatiquement par GitHub Actions_"
+        else
+          echo "Une PR existe déjà (numéro: $existing_pr)"
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

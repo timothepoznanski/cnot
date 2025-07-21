@@ -1,4 +1,4 @@
-name: Auto PR to Production
+name: Auto PR Creation for Production
 
 on:
   push:
@@ -129,8 +129,8 @@ jobs:
           pr_url=$(gh pr create \
             --base main \
             --head dev \
-            --title "🚀 Auto-deploy from dev to production" \
-            --body "## Automatic production deployment
+            --title "🚀 Auto-deploy from dev to production - Ready for Review" \
+            --body "## Automatic production deployment PR
 
           This PR was created automatically following a push to the \`dev\` branch.
 
@@ -140,17 +140,14 @@ jobs:
           ### Tests status
           ✅ All tests passed before creating this PR
 
-          ### Actions after merge
+          ### Next steps
+          Please review the changes and merge manually when ready.
           Once this PR is merged, production deployment will be triggered automatically.
 
           ---
           _Created automatically by GitHub Actions_")
           echo "✅ Pull Request created successfully!"
-          
-          # Auto-merge the PR immediately (tests already passed)
-          echo "🔄 Auto-merging PR..."
-          gh pr merge --squash --auto
-          echo "✅ PR set to auto-merge!"
+          echo "ℹ️  PR is ready for manual review and merge."
         else
           echo "ℹ️  A PR already exists (number: $existing_pr)"
           echo "You can check it on GitHub to see the changes."

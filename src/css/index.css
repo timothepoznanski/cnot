@@ -344,7 +344,6 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
     justify-content: center;
 }
 
@@ -401,7 +400,7 @@ body {
         transition: opacity 0.2s ease, visibility 0.2s ease;
         width: auto;
         padding: 6px 8px;
-        margin: 0 2px;
+        margin: 0 9px;
     }
     
     .note-action-btn.hide-on-selection {

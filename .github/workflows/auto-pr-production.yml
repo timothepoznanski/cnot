@@ -5,7 +5,7 @@ on:
     branches: [ dev ]
 
 jobs:
-  create-pr:
+  test-and-create-pr:
     runs-on: ubuntu-latest
     
     steps:
@@ -13,6 +13,24 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    
+    - name: Test Docker build
+      run: |
+        echo "Testing Docker build..."
+        docker build -t cnot-test .
+        echo "Docker build successful"
+    
+    - name: Test Docker Compose
+      run: |
+        echo "Testing Docker Compose configuration..."
+        docker compose config
+        echo "Docker Compose configuration valid"
+    
+    - name: PHP Syntax Check
+      run: |
+        echo "Checking PHP syntax..."
+        docker run --rm -v $(pwd)/src:/app php:8.1-cli find /app -name "*.php" -exec php -l {} \;
+        echo "PHP syntax check passed"
     
     - name: Check for merge conflicts
       run: |

@@ -102,19 +102,11 @@ The workflow works automatically:
 
 ### Production deployment process:
 1. **GitHub Actions runner** connects via SSH to your server (simple relay)
-2. **Your server** creates a backup branch with current state (safety)
-3. **Your server** executes `git fetch origin main` to get latest code
-4. **Your server** executes `git reset --hard origin/main` to ensure clean state
-5. **Your server** executes `docker compose build` to build the image locally
-6. **Your server** executes `docker compose up -d` to start the new containers
-7. **No merge commits** = branches stay synchronized automatically
-8. **Everything happens on your server** - the runner only transmits SSH commands
-
-### Deployment safety features:
-- ✅ **Automatic backup creation** before deployment (backup-YYYYMMDD-HHMMSS branch)
-- ✅ **Hard reset to remote main** ensures clean deployment state
-- ✅ **Handles divergent branches** automatically without conflicts
-- ✅ **Rollback possible** using backup branches if needed
+2. **Your server** executes `git pull origin main` to fetch the new code
+3. **Your server** executes `docker compose build` to build the image locally
+4. **Your server** executes `docker compose up -d` to start the new containers
+5. **No merge commits** = branches stay synchronized automatically
+6. **Everything happens on your server** - the runner only transmits SSH commands
 
 ### Why no manual pushes needed anymore:
 - ✅ **With "Squash and merge"**: No extra commits, `dev` and `main` stay in sync
@@ -123,7 +115,7 @@ The workflow works automatically:
 
 **Result**: After deployment, your local `dev` branch is automatically up to date when you `git pull`!
 
-## Customization
+## Customization 
 
 You can modify the workflows according to your needs:
 - **Add more tests** in `auto-pr-production.yml` (database tests, API tests, etc.)

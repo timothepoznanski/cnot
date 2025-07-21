@@ -1,106 +1,146 @@
-# Configuration des Workflows GitHub Actions
+# GitHub Actions Workflows Configuration
 
-Ce repository contient des workflows GitHub Actions pour automatiser le déploiement en production avec validation.
+This repository contains GitHub Actions workflows to automate production deployment with validation.
 
-## Workflow de déploiement
+## Deployment workflow
 
-### Approche avec Pull Request (sécurisée)
-- **Déclencheur** : Push sur la branche `dev`
-- **Action** : Création automatique d'une PR `dev` → `main`
-- **Déploiement** : Quand la PR est mergée vers `main`
-- **Avantages** : Validation manuelle avant production, historique des déploiements visible
+### Pull Request approach with auto-merge (fully automated)
+- **Trigger** : Push to `dev` branch
+- **Action** : Automatic PR creation `dev` → `main` and immediate auto-merge
+- **Deployment** : Automatic deployment to production
+- **Benefits** : Fully automated process, faster deployment
+- **Safety** : Automated tests + conflict detection prevent problematic deployments
 
-## Configuration requise
+## Required configuration
 
-Vous devez configurer les secrets suivants dans votre repository GitHub (Settings → Secrets and variables → Actions) :
+You must configure the following secrets in your GitHub repository (Settings → Secrets and variables → Actions) :
 
-### Secrets obligatoires
-- `PROD_HOST` : Adresse IP ou nom de domaine du serveur de production
-- `PROD_USERNAME` : Nom d'utilisateur SSH pour la connexion au serveur
-- `PROD_SSH_KEY` : Clé privée SSH pour l'authentification
-- `PROD_SSH_PASSPHRASE` : Passphrase de la clé SSH (si votre clé en a une)
-- `PROD_PORT` : Port SSH (généralement 22)
-- `PROD_PROJECT_PATH` : Chemin absolu vers le projet sur le serveur (ex: `/root/cnot/cnot`)
-- `PAT_TOKEN` : Personal Access Token GitHub pour créer les Pull Requests
+### Required secrets
+- `PROD_HOST` : Production server IP address or domain name
+- `PROD_USERNAME` : SSH username for server connection
+- `PROD_SSH_KEY` : Private SSH key for authentication
+- `PROD_SSH_PASSPHRASE` : SSH key passphrase (if your key has one)
+- `PROD_PORT` : SSH port (usually 22)
+- `PROD_PROJECT_PATH` : Absolute path to project on server (ex: `/root/cnot/cnot`)
+- `PAT_TOKEN` : GitHub Personal Access Token to create Pull Requests
 
-### Configuration SSH
-1. Générer une paire de clés SSH sur votre serveur de production :
+### SSH Configuration
+1. Generate an SSH key pair on your production server:
    ```bash
    ssh-keygen -t rsa -b 4096 -C "github-actions@yourdomain.com"
    ```
 
-2. Ajouter la clé publique au fichier `~/.ssh/authorized_keys` de l'utilisateur cible
+2. Add the public key to the target user's `~/.ssh/authorized_keys` file
 
-3. Copier la clé privée dans le secret `PROD_SSH_KEY`
+3. Copy the private key to the `PROD_SSH_KEY` secret
 
-4. **Si votre clé a une passphrase** : Ajoutez la passphrase dans le secret `PROD_SSH_PASSPHRASE`
+4. **If your key has a passphrase**: Add the passphrase to the `PROD_SSH_PASSPHRASE` secret
 
-### Configuration GitHub Personal Access Token
-1. Allez sur GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
-2. Cliquez sur "Generate new token (classic)"
-3. Donnez un nom au token (ex: "CnoT Auto Deploy")
-4. Sélectionnez les permissions suivantes :
+### GitHub Personal Access Token Configuration
+1. Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Click "Generate new token (classic)"
+3. Give the token a name (ex: "CnoT Auto Deploy")
+4. Select the following permissions:
    - ✅ `repo` (Full control of private repositories)
    - ✅ `workflow` (Update GitHub Action workflows)
-5. Cliquez sur "Generate token"
-6. Copiez le token et ajoutez-le dans le secret `PAT_TOKEN`
+5. Click "Generate token"
+6. Copy the token and add it to the `PAT_TOKEN` secret
 
-### Option alternative : Clé sans passphrase
-Si vous préférez, vous pouvez créer une clé SSH dédiée sans passphrase pour GitHub Actions :
+### Alternative option: Key without passphrase
+If you prefer, you can create a dedicated SSH key without passphrase for GitHub Actions:
 ```bash
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/github_actions_key -N ""
 ```
-Dans ce cas, vous n'avez pas besoin du secret `PROD_SSH_PASSPHRASE`.
+In this case, you don't need the `PROD_SSH_PASSPHRASE` secret.
 
-## Utilisation
+## Usage
 
-Le workflow fonctionne en deux étapes :
+The workflow works automatically:
 
-1. **Push sur `dev`** → Création automatique d'une PR vers `main`
-2. **Merge de la PR** → Déploiement automatique en production
+1. **Push to `dev`** → Automatic PR creation and merge to `main`
+2. **Automatic deployment** to production
 
-### Flux de travail
-1. Développez sur la branche `dev`
-2. Poussez vos changements : `git push origin dev`
-3. Une PR sera automatiquement créée vers `main`
-4. Reviewez la PR et mergez-la quand vous êtes prêt à déployer
-5. Le déploiement se lance automatiquement
+### Workflow process
+1. Develop on the `dev` branch
+2. Push your changes: `git push origin dev`
+3. **Conflict detection** - Checks if dev can merge cleanly into main
+4. **Automated tests run** (PHP syntax, Docker build, etc.)
+5. **If no conflicts AND tests pass**: A PR will be automatically created and merged to `main`
+6. **If conflicts OR tests fail**: No PR is created, deployment is blocked
+7. Deployment starts automatically to production
 
-## Structure des fichiers
+**Note**: The deployment is now fully automated with multiple safety checks: conflict detection + automated testing.
+
+## File structure
 
 ```
 .github/
 └── workflows/
-    ├── auto-pr-production.yml         # Création auto de PR dev → main
-    ├── production-deployment.yml      # Déploiement après merge sur main
-    └── README.md                      # Ce fichier
+    ├── tests.yml                      # Automated tests (PHP, Docker, etc.)
+    ├── auto-pr-production.yml         # Auto PR creation dev → main (after tests pass)
+    ├── production-deployment.yml      # Deployment after merge to main
+    └── README.md                      # This file
 ```
 
-## Personnalisation
+## Customization
 
-Vous pouvez modifier les workflows selon vos besoins :
-- Ajouter des tests automatisés avant le déploiement
-- Modifier les commandes Docker selon votre configuration
-- Ajouter des notifications (Slack, Discord, email)
-- Configurer des environnements de staging
+You can modify the workflows according to your needs:
+- **Add more tests** in `tests.yml` (database tests, API tests, etc.)
+- Modify Docker commands according to your configuration
+- Add notifications (Slack, Discord, email)
+- Configure staging environments
+- Add security scans or dependency checks
 
-## Dépannage
+### Available tests in `tests.yml`:
+- ✅ **Docker build test** - Ensures the application can be built
+- ✅ **Docker Compose validation** - Checks compose file syntax
+- ✅ **PHP syntax check** - Validates all PHP files
+- ✅ **File permissions check** - Security validation
+- ✅ **Application structure check** - Ensures required files exist
 
-### Erreur "invalid header field value for Authorization"
-Cette erreur indique un problème avec le Personal Access Token :
-- ✅ Vérifiez que le secret `PAT_TOKEN` est bien configuré dans votre repository
-- ✅ Assurez-vous que le token n'a pas expiré
-- ✅ Vérifiez que le token a les permissions `repo` et `workflow`
-- ✅ Le token ne doit pas contenir d'espaces ou de caractères spéciaux en début/fin
+### Additional safety checks in `auto-pr-production.yml`:
+- ✅ **Merge conflict detection** - Prevents auto-merge if conflicts exist
+- ✅ **Test completion verification** - Waits for tests to pass before proceeding
+- ✅ **Token validation** - Ensures proper authentication setup
 
-### Erreur de connexion SSH
-- Vérifiez que la clé SSH est correctement configurée
-- Assurez-vous que l'utilisateur a les permissions sudo si nécessaire
+### Adding custom tests:
+You can add more tests to `tests.yml` such as:
+- Database connection tests
+- API endpoint testing
+- Security vulnerability scans
+- Performance tests
+- Code quality checks (PHPStan, etc.)
 
-### Erreur Docker
-- Vérifiez que Docker et Docker Compose sont installés sur le serveur
-- Assurez-vous que l'utilisateur est dans le groupe `docker`
+## Troubleshooting
 
-### Erreur Git
-- Vérifiez que le repository est cloné sur le serveur de production
-- Assurez-vous que la branche `main` existe et est trackée
+### Error "Merge conflicts detected"
+This error occurs when your `dev` branch has changes that conflict with `main`:
+- ✅ **Sync your dev branch**: `git checkout dev && git pull origin main`
+- ✅ **Resolve conflicts manually** in your code editor
+- ✅ **Commit the resolved conflicts**: `git add . && git commit -m "Resolve merge conflicts"`
+- ✅ **Push again**: `git push origin dev`
+
+### Error "invalid header field value for Authorization"
+This error indicates a problem with the Personal Access Token:
+- ✅ Check that the `PAT_TOKEN` secret is properly configured in your repository
+- ✅ Make sure the token hasn't expired
+- ✅ Verify that the token has `repo` and `workflow` permissions
+- ✅ The token should not contain spaces or special characters at the beginning/end
+
+### Tests failing
+If automated tests fail and block deployment:
+- ✅ **Check the Actions tab** on GitHub to see which test failed
+- ✅ **Fix the issue** in your dev branch
+- ✅ **Push the fix**: The workflow will run again automatically
+
+### SSH connection error
+- Check that the SSH key is properly configured
+- Make sure the user has sudo permissions if necessary
+
+### Docker error
+- Check that Docker and Docker Compose are installed on the server
+- Make sure the user is in the `docker` group
+
+### Git error
+- Check that the repository is cloned on the production server
+- Make sure the `main` branch exists and is tracked

@@ -27,8 +27,8 @@ jobs:
     
     - name: Notify deployment success
       if: success()
-      run: echo "🎉 Déploiement en production réussi !"
+      run: echo "🎉 Production deployment successful!"
     
     - name: Notify deployment failure
       if: failure()
-      run: echo "❌ Échec du déploiement en production"
+      run: echo "❌ Production deployment failed"

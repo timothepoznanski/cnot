@@ -19,22 +19,23 @@ jobs:
         # Fetch latest main branch
         git fetch origin main
         
-        # Try to merge main into dev (dry run)
-        git merge-tree $(git merge-base HEAD origin/main) HEAD origin/main > merge_result.txt
+        # Try to merge dev into main (dry run)
+        # This simulates what would happen when the PR is merged
+        git merge-tree $(git merge-base HEAD origin/main) origin/main HEAD > merge_result.txt
         
         # Check if there are conflicts
         if grep -q "<<<<<<< " merge_result.txt; then
-          echo "❌ Merge conflicts detected between dev and main!"
+          echo "❌ Merge conflicts detected when trying to merge dev into main!"
           echo "Please resolve conflicts manually before deploying."
           echo "Conflicts found in:"
           grep -B2 -A2 "<<<<<<< " merge_result.txt || true
           exit 1
         fi
         
-        # Alternative check: try actual merge in a temporary branch
-        git checkout -b temp-merge-check
-        if ! git merge origin/main --no-commit --no-ff; then
-          echo "❌ Merge conflicts detected!"
+        # Alternative check: simulate the actual PR merge
+        git checkout -b temp-merge-check origin/main
+        if ! git merge HEAD --no-commit --no-ff; then
+          echo "❌ Merge conflicts detected when merging dev into main!"
           git merge --abort
           git checkout dev
           git branch -D temp-merge-check
@@ -46,7 +47,7 @@ jobs:
         git checkout dev
         git branch -D temp-merge-check
         
-        echo "✅ No merge conflicts detected"
+        echo "✅ No merge conflicts detected - dev can be safely merged into main"
     
     - name: Wait for tests to complete
       run: |

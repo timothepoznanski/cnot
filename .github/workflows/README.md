@@ -65,7 +65,7 @@ The workflow works automatically:
 2. Push your changes: `git push origin dev`
 3. **Conflict detection** - Checks if dev can merge cleanly into main
 4. **Automated tests run** (PHP syntax, Docker build, etc.)
-5. **If no conflicts AND tests pass**: A PR will be automatically created and merged to `main`
+5. **If no conflicts AND tests pass**: A PR will be automatically created and merged (`dev` → `main`)
 6. **If conflicts OR tests fail**: No PR is created, deployment is blocked
 7. Deployment starts automatically to production
 
@@ -99,7 +99,7 @@ You can modify the workflows according to your needs:
 - ✅ **Application structure check** - Ensures required files exist
 
 ### Additional safety checks in `auto-pr-production.yml`:
-- ✅ **Merge conflict detection** - Prevents auto-merge if conflicts exist
+- ✅ **Merge conflict detection** - Prevents auto-merge if conflicts exist when merging dev → main
 - ✅ **Test completion verification** - Waits for tests to pass before proceeding
 - ✅ **Token validation** - Ensures proper authentication setup
 
@@ -114,11 +114,12 @@ You can add more tests to `tests.yml` such as:
 ## Troubleshooting
 
 ### Error "Merge conflicts detected"
-This error occurs when your `dev` branch has changes that conflict with `main`:
-- ✅ **Sync your dev branch**: `git checkout dev && git pull origin main`
-- ✅ **Resolve conflicts manually** in your code editor
+This error occurs when your `dev` branch has changes that conflict with `main` during merge:
+- ✅ **First, update your dev branch with latest main**: `git checkout dev && git pull origin main`
+- ✅ **Resolve conflicts manually** in your code editor  
 - ✅ **Commit the resolved conflicts**: `git add . && git commit -m "Resolve merge conflicts"`
 - ✅ **Push again**: `git push origin dev`
+- ✅ **The workflow will automatically retry** the merge process
 
 ### Error "invalid header field value for Authorization"
 This error indicates a problem with the Personal Access Token:

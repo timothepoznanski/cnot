@@ -5,49 +5,23 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  notify-deployment:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Deploy to production server
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.PROD_HOST }}
-        username: ${{ secrets.PROD_USERNAME }}
-        key: ${{ secrets.PROD_SSH_KEY }}
-        passphrase: ${{ secrets.PROD_SSH_PASSPHRASE }}
-        port: ${{ secrets.PROD_PORT }}
-        script: |
-          set -e
-          echo "🔄 Starting production deployment..."
-          
-          cd ${{ secrets.PROD_PROJECT_PATH }}
-          echo "📁 Working directory: $(pwd)"
-          
-          echo "� Configuring Git for HTTPS authentication..."
-          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/timothepoznanski/cnot.git
-          
-          echo "�🔄 Switching to main branch..."
-          git checkout main
-          
-          echo "📥 Pulling latest changes from main..."
-          if ! git pull origin main; then
-            echo "❌ Git pull failed! Deployment aborted."
-            echo "This could be due to:"
-            echo "  - Network connectivity issues"
-            echo "  - Authentication problems"
-            echo "  - Local changes conflicting with remote"
-            echo "  - Repository access permissions"
-            echo "Current remote URL: $(git remote get-url origin)"
-            exit 1
-          fi
-          echo "✅ Git pull successful, proceeding with deployment..."
-          
-          echo "🔨 Building Docker images (no cache)..."
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache
-          
-          echo "🚀 Recreating and starting containers..."
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create deployment notification
+      run: |
+        echo "� Main branch updated - ready for deployment!"
+        echo "The code is now available in the main branch."
+        echo "Use your local VS Code task 'Update Production CNOT' to deploy."
+        echo ""
+        echo "Recent changes:"
+        git log --oneline -5
+        echo ""
+        echo "✅ GitHub Actions completed successfully."
           
           echo "↩️  Switching back to dev branch..."
           git checkout dev

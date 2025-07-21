@@ -18,12 +18,37 @@ jobs:
         passphrase: ${{ secrets.PROD_SSH_PASSPHRASE }}
         port: ${{ secrets.PROD_PORT }}
         script: |
+          set -e
+          echo "🔄 Starting production deployment..."
+          
           cd ${{ secrets.PROD_PROJECT_PATH }}
+          echo "📁 Working directory: $(pwd)"
+          
+          echo "🔄 Switching to main branch..."
           git checkout main
-          git pull origin main
+          
+          echo "📥 Pulling latest changes from main..."
+          if ! git pull origin main; then
+            echo "❌ Git pull failed! Deployment aborted."
+            echo "This could be due to:"
+            echo "  - Network connectivity issues"
+            echo "  - Authentication problems"
+            echo "  - Local changes conflicting with remote"
+            echo "  - Repository access permissions"
+            exit 1
+          fi
+          echo "✅ Git pull successful, proceeding with deployment..."
+          
+          echo "🔨 Building Docker images (no cache)..."
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache
+          
+          echo "🚀 Recreating and starting containers..."
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+          
+          echo "↩️  Switching back to dev branch..."
           git checkout dev
+          
+          echo "🎉 Production deployment completed successfully!"
     
     - name: Notify deployment success
       if: success()

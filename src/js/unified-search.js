@@ -1,6 +1,40 @@
 // UNIFIED SEARCH FUNCTIONALITY
 function clearUnifiedSearch() {
-    window.location.href = 'index.php';
+    // Preserve search type preferences by checking current button states
+    const notesActive = document.getElementById('search-notes-btn') && document.getElementById('search-notes-btn').classList.contains('active');
+    const tagsActive = document.getElementById('search-tags-btn') && document.getElementById('search-tags-btn').classList.contains('active');
+    
+    // Check mobile buttons if desktop aren't found
+    const notesMobileActive = document.getElementById('search-notes-btn-mobile') && document.getElementById('search-notes-btn-mobile').classList.contains('active');
+    const tagsMobileActive = document.getElementById('search-tags-btn-mobile') && document.getElementById('search-tags-btn-mobile').classList.contains('active');
+    
+    // Use desktop state if available, otherwise mobile state
+    const preserveNotes = notesActive || notesMobileActive;
+    const preserveTags = tagsActive || tagsMobileActive;
+    
+    // Build URL with preserved preferences
+    let url = 'index.php';
+    const params = new URLSearchParams();
+    
+    // Preserve current folder filter if it exists
+    const currentFolder = new URLSearchParams(window.location.search).get('folder');
+    if (currentFolder) {
+        params.set('folder', currentFolder);
+    }
+    
+    // Add search type indicators to preserve button states
+    if (preserveNotes) {
+        params.set('preserve_notes', '1');
+    }
+    if (preserveTags) {
+        params.set('preserve_tags', '1');
+    }
+    
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    
+    window.location.href = url;
 }
 
 // Handle unified search form submission

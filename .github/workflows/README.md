@@ -4,12 +4,12 @@ This repository contains GitHub Actions workflows to automate production deploym
 
 ## Deployment workflow
 
-### Pull Request approach with auto-merge (fully automated)
+### Pull Request approach with manual merge (semi-automated)
 - **Trigger** : Push to `dev` branch
-- **Action** : Automatic PR creation `dev` → `main` and immediate auto-merge
-- **Deployment** : Automatic deployment to production
-- **Benefits** : Fully automated process, faster deployment
-- **Safety** : Automated tests + conflict detection prevent problematic deployments
+- **Action** : Automatic PR creation `dev` → `main` for manual review
+- **Deployment** : Manual merge, then automatic deployment to production
+- **Benefits** : Additional review step, controlled deployment
+- **Safety** : Automated tests + conflict detection + manual review
 
 ## Required configuration
 
@@ -57,19 +57,19 @@ In this case, you don't need the `PROD_SSH_PASSPHRASE` secret.
 
 The workflow works automatically:
 
-1. **Push to `dev`** → Automatic PR creation and merge to `main`
-2. **Automatic deployment** to production
+1. **Push to `dev`** → Automatic PR creation for manual review
+2. **Manual merge** after review → Automatic deployment to production
 
 ### Workflow process
 1. Develop on the `dev` branch
 2. Push your changes: `git push origin dev`
 3. **Conflict detection** - Checks if dev can merge cleanly into main
 4. **Automated tests run** (PHP syntax, Docker build, etc.)
-5. **If no conflicts AND tests pass**: A PR will be automatically created and merged (`dev` → `main`)
+5. **If no conflicts AND tests pass**: A PR will be automatically created (`dev` → `main`) for manual review
 6. **If conflicts OR tests fail**: No PR is created, deployment is blocked
-7. Deployment starts automatically to production
+7. **Manual merge** of the PR after review triggers automatic deployment to production
 
-**Note**: The deployment is now fully automated with multiple safety checks: conflict detection + automated testing.
+**Note**: The deployment includes multiple safety checks: conflict detection + automated testing + manual review before merge.
 
 ## File structure
 
@@ -77,7 +77,7 @@ The workflow works automatically:
 .github/
 └── workflows/
     ├── tests.yml                      # Automated tests (PHP, Docker, etc.)
-    ├── auto-pr-production.yml         # Auto PR creation dev → main (after tests pass)
+    ├── auto-pr-production.yml         # Auto PR creation dev → main (after tests pass, manual merge)
     ├── production-deployment.yml      # Deployment after merge to main
     └── README.md                      # This file
 ```
@@ -99,8 +99,8 @@ You can modify the workflows according to your needs:
 - ✅ **Application structure check** - Ensures required files exist
 
 ### Additional safety checks in `auto-pr-production.yml`:
-- ✅ **Merge conflict detection** - Prevents auto-merge if conflicts exist when merging dev → main
-- ✅ **Test completion verification** - Waits for tests to pass before proceeding
+- ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist when merging dev → main
+- ✅ **Test completion verification** - Waits for tests to pass before creating PR
 - ✅ **Token validation** - Ensures proper authentication setup
 
 ### Adding custom tests:
@@ -125,7 +125,7 @@ This error occurs when your `dev` branch has changes that conflict with `main` d
 - ✅ **Resolve conflicts manually** in your code editor  
 - ✅ **Commit the resolved conflicts**: `git add . && git commit -m "Resolve merge conflicts"`
 - ✅ **Push again**: `git push origin dev`
-- ✅ **The workflow will automatically retry** the merge process
+- ✅ **The workflow will automatically retry** the PR creation process
 
 ### Error "invalid header field value for Authorization"
 This error indicates a problem with the Personal Access Token:

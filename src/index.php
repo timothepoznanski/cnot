@@ -234,6 +234,10 @@ if($note != '') {
                         <i class="fas fa-plus-square"></i>
                         <span>Unfold All Folders</span>
                     </div>
+                    <div class="settings-menu-item deployment-info">
+                        <i class="fas fa-rocket"></i>
+                        <span>Dernier déploiement<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
+                    </div>
                 </div>
             </div>
             <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
@@ -375,6 +379,10 @@ if($note != '') {
                 <div class="settings-menu-item" onclick="unfoldAllFolders();">
                     <i class="fas fa-plus-square"></i>
                     <span>Unfold All Folders</span>
+                </div>
+                <div class="settings-menu-item deployment-info">
+                    <i class="fas fa-rocket"></i>
+                    <span>Last deployment<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
                 </div>
             </div>
         </div>
@@ -646,11 +654,6 @@ if($note != '') {
     
     <!-- RIGHT COLUMN -->	
     <div id="right_col">
-    
-        <!-- Validation déploiement -->
-        <div style="position: absolute; top: 10px; right: 20px; background: rgba(0, 125, 184, 0.1); color: #007DB8; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; z-index: 100; border: 1px solid rgba(0, 125, 184, 0.2);">
-            🚀 Déploiement actif - <?php echo date('d/m/Y H:i'); ?>
-        </div>
     
         <!-- Barre de recherche supprimée de la colonne de droite (desktop) -->
         

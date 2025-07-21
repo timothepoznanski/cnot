@@ -18,6 +18,7 @@ Vous devez configurer les secrets suivants dans votre repository GitHub (Setting
 - `PROD_HOST` : Adresse IP ou nom de domaine du serveur de production
 - `PROD_USERNAME` : Nom d'utilisateur SSH pour la connexion au serveur
 - `PROD_SSH_KEY` : Clé privée SSH pour l'authentification
+- `PROD_SSH_PASSPHRASE` : Passphrase de la clé SSH (si votre clé en a une)
 - `PROD_PORT` : Port SSH (généralement 22)
 - `PROD_PROJECT_PATH` : Chemin absolu vers le projet sur le serveur (ex: `/root/cnot/cnot`)
 
@@ -30,6 +31,15 @@ Vous devez configurer les secrets suivants dans votre repository GitHub (Setting
 2. Ajouter la clé publique au fichier `~/.ssh/authorized_keys` de l'utilisateur cible
 
 3. Copier la clé privée dans le secret `PROD_SSH_KEY`
+
+4. **Si votre clé a une passphrase** : Ajoutez la passphrase dans le secret `PROD_SSH_PASSPHRASE`
+
+### Option alternative : Clé sans passphrase
+Si vous préférez, vous pouvez créer une clé SSH dédiée sans passphrase pour GitHub Actions :
+```bash
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/github_actions_key -N ""
+```
+Dans ce cas, vous n'avez pas besoin du secret `PROD_SSH_PASSPHRASE`.
 
 ## Utilisation
 

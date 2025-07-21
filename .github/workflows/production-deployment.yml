@@ -24,7 +24,10 @@ jobs:
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
           echo "Pulling latest changes..."
-          git pull origin main
+          # Fetch and reset to remote main
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
           
           echo "Building and deploying..."
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache

@@ -1227,7 +1227,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // Settings menu functions
 function toggleSettingsMenu(event) {
     event.stopPropagation();
-    const menu = document.getElementById('settingsMenu');
+    
+    // Détecter si on est en mode mobile
+    const isMobile = window.innerWidth <= 800;
+    const menuId = isMobile ? 'settingsMenuMobile' : 'settingsMenu';
+    const menu = document.getElementById(menuId);
     
     if (menu.style.display === 'none' || menu.style.display === '') {
         menu.style.display = 'block';
@@ -1259,8 +1263,11 @@ function foldAllFolders() {
         icon.classList.add('fa-chevron-right');
     });
     
-    // Close settings menu
-    document.getElementById('settingsMenu').style.display = 'none';
+    // Close settings menu (both mobile and desktop)
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsMenuMobile = document.getElementById('settingsMenuMobile');
+    if (settingsMenu) settingsMenu.style.display = 'none';
+    if (settingsMenuMobile) settingsMenuMobile.style.display = 'none';
 }
 
 function unfoldAllFolders() {
@@ -1276,8 +1283,22 @@ function unfoldAllFolders() {
         icon.classList.add('fa-chevron-down');
     });
     
-    // Close settings menu
-    document.getElementById('settingsMenu').style.display = 'none';
+    // Close settings menu (both mobile and desktop)
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsMenuMobile = document.getElementById('settingsMenuMobile');
+    if (settingsMenu) settingsMenu.style.display = 'none';
+    if (settingsMenuMobile) settingsMenuMobile.style.display = 'none';
+}
+
+function koFiAction() {
+    // Ouvrir la page Ko-fi dans un nouvel onglet
+    window.open('https://ko-fi.com/Q5Q61IECOW', '_blank');
+    
+    // Fermer le menu paramètres (both mobile and desktop)
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsMenuMobile = document.getElementById('settingsMenuMobile');
+    if (settingsMenu) settingsMenu.style.display = 'none';
+    if (settingsMenuMobile) settingsMenuMobile.style.display = 'none';
 }
 
 // Function to download a file

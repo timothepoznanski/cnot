@@ -1,6 +1,40 @@
 // UNIFIED SEARCH FUNCTIONALITY
 function clearUnifiedSearch() {
-    window.location.href = 'index.php';
+    // Preserve search type preferences by checking current button states
+    const notesActive = document.getElementById('search-notes-btn') && document.getElementById('search-notes-btn').classList.contains('active');
+    const tagsActive = document.getElementById('search-tags-btn') && document.getElementById('search-tags-btn').classList.contains('active');
+    
+    // Check mobile buttons if desktop aren't found
+    const notesMobileActive = document.getElementById('search-notes-btn-mobile') && document.getElementById('search-notes-btn-mobile').classList.contains('active');
+    const tagsMobileActive = document.getElementById('search-tags-btn-mobile') && document.getElementById('search-tags-btn-mobile').classList.contains('active');
+    
+    // Use desktop state if available, otherwise mobile state
+    const preserveNotes = notesActive || notesMobileActive;
+    const preserveTags = tagsActive || tagsMobileActive;
+    
+    // Build URL with preserved preferences
+    let url = 'index.php';
+    const params = new URLSearchParams();
+    
+    // Preserve current folder filter if it exists
+    const currentFolder = new URLSearchParams(window.location.search).get('folder');
+    if (currentFolder) {
+        params.set('folder', currentFolder);
+    }
+    
+    // Add search type indicators to preserve button states
+    if (preserveNotes) {
+        params.set('preserve_notes', '1');
+    }
+    if (preserveTags) {
+        params.set('preserve_tags', '1');
+    }
+    
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    
+    window.location.href = url;
 }
 
 // Handle unified search form submission
@@ -190,54 +224,26 @@ function updateHiddenInputs(isMobile) {
     const notesCheckHidden = document.getElementById('search-in-notes' + suffix);
     const tagsCheckHidden = document.getElementById('search-in-tags' + suffix);
     
-    console.log('DEBUG: updateHiddenInputs called with isMobile:', isMobile);
-    console.log('DEBUG: Elements found:', {
-        notesBtn: !!notesBtn,
-        tagsBtn: !!tagsBtn,
-        searchInput: !!searchInput,
-        notesHidden: !!notesHidden,
-        tagsHidden: !!tagsHidden,
-        notesCheckHidden: !!notesCheckHidden,
-        tagsCheckHidden: !!tagsCheckHidden
-    });
-    
     if (!notesBtn || !tagsBtn || !searchInput || !notesHidden || !tagsHidden) return;
     
     const searchValue = searchInput.value.trim();
     const hasNotesActive = notesBtn.classList.contains('active');
     const hasTagsActive = tagsBtn.classList.contains('active');
     
-    console.log('DEBUG: Button states and search value:', {
-        hasNotesActive,
-        hasTagsActive,
-        searchValue
-    });
-    
     // Update hidden inputs based on button states
     if (hasNotesActive) {
         notesHidden.value = searchValue;
         if (notesCheckHidden) notesCheckHidden.value = '1';
-        console.log('DEBUG: Set notes search to:', searchValue);
     } else {
         notesHidden.value = '';
         if (notesCheckHidden) notesCheckHidden.value = '';
-        console.log('DEBUG: Cleared notes search');
     }
     
     if (hasTagsActive) {
         tagsHidden.value = searchValue;
         if (tagsCheckHidden) tagsCheckHidden.value = '1';
-        console.log('DEBUG: Set tags search to:', searchValue);
     } else {
         tagsHidden.value = '';
         if (tagsCheckHidden) tagsCheckHidden.value = '';
-        console.log('DEBUG: Cleared tags search');
     }
-    
-    console.log('DEBUG: Final hidden input values:', {
-        notesHidden: notesHidden.value,
-        tagsHidden: tagsHidden.value,
-        notesCheckHidden: notesCheckHidden ? notesCheckHidden.value : 'null',
-        tagsCheckHidden: tagsCheckHidden ? tagsCheckHidden.value : 'null'
-    });
 }

@@ -101,6 +101,8 @@ You can modify the workflows according to your needs:
 ### Additional safety checks in `auto-pr-production.yml`:
 - ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist when merging dev → main
 - ✅ **Test completion verification** - Waits for tests to pass before creating PR
+- ✅ **Test completion verification** - Waits for tests to pass before proceeding
+>>>>>>> origin/main
 - ✅ **Token validation** - Ensures proper authentication setup
 
 ### Adding custom tests:

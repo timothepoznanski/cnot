@@ -5,33 +5,28 @@ on:
     branches: [ main ]
 
 jobs:
-  notify-deployment:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Create deployment notification
-      run: |
-        echo "� Main branch updated - ready for deployment!"
-        echo "The code is now available in the main branch."
-        echo "Use your local VS Code task 'Update Production CNOT' to deploy."
-        echo ""
-        echo "Recent changes:"
-        git log --oneline -5
-        echo ""
-        echo "✅ GitHub Actions completed successfully."
+    - name: Deploy to production server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.PROD_HOST }}
+        username: ${{ secrets.PROD_USERNAME }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        port: ${{ secrets.PROD_PORT || 22 }}
+        script: |
+          set -e
+          echo "🚀 Starting production deployment..."
           
-          echo "↩️  Switching back to dev branch..."
-          git checkout dev
+          cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
-          echo "🎉 Production deployment completed successfully!"
-    
-    - name: Notify deployment success
-      if: success()
-      run: echo "🎉 Production deployment successful!"
-    
-    - name: Notify deployment failure
-      if: failure()
-      run: echo "❌ Production deployment failed"
+          echo "📥 Pulling latest changes..."
+          git pull origin main
+          
+          echo "🔨 Building and deploying..."
+          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache
+          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+          
+          echo "✅ Production deployment completed!"

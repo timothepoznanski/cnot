@@ -15,19 +15,18 @@ jobs:
         host: ${{ secrets.PROD_HOST }}
         username: ${{ secrets.PROD_USERNAME }}
         key: ${{ secrets.PROD_SSH_KEY }}
-        passphrase: ${{ secrets.PROD_SSH_PASSPHRASE }}
         port: ${{ secrets.PROD_PORT || 22 }}
         script: |
           set -e
-          echo "Starting production deployment..."
+          echo "🚀 Starting production deployment..."
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
-          echo "Pulling latest changes..."
+          echo "📥 Pulling latest changes..."
           git pull origin main
           
-          echo "Building and deploying..."
+          echo "🔨 Building and deploying..."
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
           
-          echo "Production deployment completed!"
+          echo "✅ Production deployment completed!"

@@ -1,8 +1,8 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
@@ -35,11 +35,19 @@ if ($result->num_rows == 0) {
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
 
+// Track if we're using unified search
+$using_unified_search = false;
+
 // Handle unified search
 if (!empty($_POST['unified_search'])) {
     $unified_search = $_POST['unified_search'];
-    $search_in_notes = isset($_POST['search_in_notes']);
-    $search_in_tags = isset($_POST['search_in_tags']);
+    $search_in_notes = isset($_POST['search_in_notes']) && $_POST['search_in_notes'] !== '';
+    $search_in_tags = isset($_POST['search_in_tags']) && $_POST['search_in_tags'] !== '';
+    
+    $using_unified_search = true;
+    
+    // Debug output (remove in production)
+    // Debugging removed - search working correctly
     
     // Only proceed if at least one option is selected
     if ($search_in_notes || $search_in_tags) {
@@ -277,22 +285,55 @@ if($note != '') {
     <?php
     // Build search conditions for notes and tags séparément
     $search_condition = '';
-    if (!empty($search)) {
-        $terms = explode(' ', trim($search));
-        foreach ($terms as $term) {
-            if (!empty(trim($term))) {
-                $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
+    
+    if ($using_unified_search) {
+        // For unified search, only search in selected areas
+        if (!empty($search) && !empty($tags_search)) {
+            // Both selected: search in notes OR tags (broader search)
+            $terms = explode(' ', trim($search)); // Using $search since both contain the same value
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND ((heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%') OR tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        } else if (!empty($search)) {
+            // Only notes selected
+            $terms = explode(' ', trim($search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND (heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        } else if (!empty($tags_search)) {
+            // Only tags selected
+            $terms = explode(' ', trim($tags_search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%'";
+                }
+            }
+        }
+    } else {
+        // For separate searches, search in both areas if either is present (legacy behavior)
+        if (!empty($search)) {
+            $terms = explode(' ', trim($search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND (heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        }
+        if (!empty($tags_search)) {
+            $terms = explode(' ', trim($tags_search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%'";
+                }
             }
         }
     }
-    if (!empty($tags_search)) {
-        $terms = explode(' ', trim($tags_search));
-        foreach ($terms as $term) {
-            if (!empty(trim($term))) {
-                $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
-            }
-        }
-    }
+    
+    // Debug removed - search working correctly
     
     // Add folder filter condition
     $folder_condition = '';

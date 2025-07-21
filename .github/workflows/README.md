@@ -76,37 +76,38 @@ The workflow works automatically:
 ```
 .github/
 └── workflows/
-    ├── tests.yml                      # Automated tests (PHP, Docker, etc.)
-    ├── auto-pr-production.yml         # Auto PR creation dev → main (after tests pass, manual merge)
+    ├── auto-pr-production.yml         # Tests + Auto PR creation dev → main
     ├── production-deployment.yml      # Deployment after merge to main
     └── README.md                      # This file
 ```
 
+## What actually happens
+
+### Production deployment process:
+1. **GitHub Actions runner** connects via SSH to your server (simple relay)
+2. **Your server** executes `git pull origin main` to fetch the new code
+3. **Your server** executes `docker compose build` to build the image locally
+4. **Your server** executes `docker compose up -d` to start the new containers
+5. **Everything happens on your server** - the runner only transmits SSH commands
+
 ## Customization
 
 You can modify the workflows according to your needs:
-- **Add more tests** in `tests.yml` (database tests, API tests, etc.)
+- **Add more tests** in `auto-pr-production.yml` (database tests, API tests, etc.)
 - Modify Docker commands according to your configuration
 - Add notifications (Slack, Discord, email)
 - Configure staging environments
 - Add security scans or dependency checks
 
-### Available tests in `tests.yml`:
+### Available tests in `auto-pr-production.yml`:
 - ✅ **Docker build test** - Ensures the application can be built
 - ✅ **Docker Compose validation** - Checks compose file syntax
 - ✅ **PHP syntax check** - Validates all PHP files
-- ✅ **File permissions check** - Security validation
-- ✅ **Application structure check** - Ensures required files exist
-
-### Additional safety checks in `auto-pr-production.yml`:
-- ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist when merging dev → main
-- ✅ **Test completion verification** - Waits for tests to pass before creating PR
-- ✅ **Test completion verification** - Waits for tests to pass before proceeding
->>>>>>> origin/main
-- ✅ **Token validation** - Ensures proper authentication setup
+- ✅ **Merge conflict detection** - Prevents PR creation if conflicts exist
+- ✅ **Changes detection** - Skips PR creation if no changes between branches
 
 ### Adding custom tests:
-You can add more tests to `tests.yml` such as:
+You can add more tests to `auto-pr-production.yml` such as:
 - Database connection tests
 - API endpoint testing
 - Security vulnerability scans

@@ -24,7 +24,10 @@ jobs:
           cd ${{ secrets.PROD_PROJECT_PATH }}
           echo "📁 Working directory: $(pwd)"
           
-          echo "🔄 Switching to main branch..."
+          echo "� Configuring Git for HTTPS authentication..."
+          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/timothepoznanski/cnot.git
+          
+          echo "�🔄 Switching to main branch..."
           git checkout main
           
           echo "📥 Pulling latest changes from main..."
@@ -35,6 +38,7 @@ jobs:
             echo "  - Authentication problems"
             echo "  - Local changes conflicting with remote"
             echo "  - Repository access permissions"
+            echo "Current remote URL: $(git remote get-url origin)"
             exit 1
           fi
           echo "✅ Git pull successful, proceeding with deployment..."

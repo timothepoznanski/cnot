@@ -86,6 +86,13 @@ Vous pouvez modifier les workflows selon vos besoins :
 
 ## Dépannage
 
+### Erreur "invalid header field value for Authorization"
+Cette erreur indique un problème avec le Personal Access Token :
+- ✅ Vérifiez que le secret `PAT_TOKEN` est bien configuré dans votre repository
+- ✅ Assurez-vous que le token n'a pas expiré
+- ✅ Vérifiez que le token a les permissions `repo` et `workflow`
+- ✅ Le token ne doit pas contenir d'espaces ou de caractères spéciaux en début/fin
+
 ### Erreur de connexion SSH
 - Vérifiez que la clé SSH est correctement configurée
 - Assurez-vous que l'utilisateur a les permissions sudo si nécessaire

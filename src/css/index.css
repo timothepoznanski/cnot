@@ -587,6 +587,7 @@ a.links_arbo_left.selected-note {
 .searchbar-input-wrapper {
     position: relative;
     width: 100%;
+    flex: 1;
 }
 
 .searchbar-input {
@@ -595,13 +596,19 @@ a.links_arbo_left.selected-note {
     border: 1px solid #e0e0e0;
     background: #fff;
     font-size: 0.95em;
-    transition: box-shadow 0.2s, border-color 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     outline: none;
     width: 100%;
     min-width: 0;
     font-family: 'Inter', sans-serif !important;
     color: #868484b9 
+}
+
+.searchbar-input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
 }
 
 .searchbar-input::placeholder {
@@ -634,10 +641,7 @@ a.links_arbo_left.selected-note {
 }
 
 .searchbar-clear-outer {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
     background: none !important;
     border: none;
     color: #bbb;
@@ -665,6 +669,16 @@ a.links_arbo_left.selected-note {
     background: none;
     border-radius: 0;
     box-shadow: none;
+}
+
+/* Folder filter container styling */
+.folder-filter-container {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.folder-filter-container .searchbar-row {
+    margin-bottom: 0;
 }
 
 .searchbar-row {
@@ -1450,6 +1464,10 @@ hr {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
 }
 
 .modal-buttons button {
@@ -1495,4 +1513,330 @@ hr {
 .close:focus {
     color: #333;
     text-decoration: none;
+}
+
+/* Existing folders section in modals */
+.existing-folders-section {
+    margin-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+}
+
+.existing-folders-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+}
+
+.folders-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fafafa;
+    margin-top: 8px;
+}
+
+.folder-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.folder-item:last-child {
+    border-bottom: none;
+}
+
+.folder-item:hover {
+    background-color: #f0f0f0;
+}
+
+.folder-item i {
+    margin-right: 8px;
+    color: #666;
+    width: 12px;
+}
+
+.no-folders-message {
+    padding: 15px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    font-size: 13px;
+}
+
+/* Move folder modal specific styles */
+.move-folder-modal {
+    min-width: 400px;
+    max-width: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 5% auto !important;
+}
+
+.folder-search-section {
+    margin-bottom: 20px;
+}
+
+.folder-search-section input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.folder-search-section input:focus {
+    outline: none;
+    border-color: #007DB8;
+    box-shadow: 0 0 0 3px rgba(0, 125, 184, 0.1);
+}
+
+.folders-selection-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+    flex-shrink: 0;
+}
+
+.folder-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    color: #333;
+}
+
+.folder-option:last-child {
+    border-bottom: none;
+}
+
+.folder-option:hover {
+    background-color: #f0f6ff;
+}
+
+.folder-option.selected {
+    background-color: #007DB8;
+    color: white;
+}
+
+.folder-option.selected:hover {
+    background-color: #005a8a;
+}
+
+.folder-option i {
+    margin-right: 10px;
+    width: 16px;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.folder-option.selected i {
+    color: white;
+}
+
+.folder-option .folder-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.folder-option .note-count {
+    color: #888;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.folder-option.selected .note-count {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.create-folder-section {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+    margin-bottom: 20px;
+}
+
+.create-folder-section input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.create-folder-section input:focus {
+    outline: none;
+    border-color: #007DB8;
+    box-shadow: 0 0 0 3px rgba(0, 125, 184, 0.1);
+}
+
+.create-folder-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.create-folder-buttons button {
+    flex: 1;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s;
+}
+
+.create-folder-buttons button:first-child {
+    background-color: #28a745;
+    color: white;
+}
+
+.create-folder-buttons button:first-child:hover {
+    background-color: #218838;
+}
+
+.create-folder-buttons button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.create-folder-buttons button:last-child:hover {
+    background-color: #5a6268;
+}
+
+.no-folders-found {
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+/* Update modal buttons for new design */
+#moveNoteFolderModal .modal-buttons {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+#moveNoteFolderModal .modal-buttons button:first-child {
+    background-color: #007DB8;
+    color: white;
+    flex: 1;
+}
+
+#moveNoteFolderModal .modal-buttons button:first-child:hover {
+    background-color: #005a8a;
+}
+
+#moveNoteFolderModal .modal-buttons button:nth-child(2) {
+    background-color: #28a745;
+    color: white;
+    flex: 1;
+}
+
+#moveNoteFolderModal .modal-buttons button:nth-child(2):hover {
+    background-color: #218838;
+}
+
+/* UNIFIED SEARCH STYLES */
+.unified-search-container {
+    width: 100%;
+}
+
+.search-type-buttons {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    margin-left: 8px;
+    /* margin-right: 8px; */
+}
+
+.search-type-btn {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #6c757d;
+    font-size: 0.9em;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-type-btn:hover {
+    color: #495057;
+}
+
+.search-type-btn.active {
+    color: #007DB8;
+}
+
+.search-type-btn.active:hover {
+    color: #0056b3;
+}
+
+.searchbar-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Search validation error styles */
+.search-validation-error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    margin: 8px 0 4px 0;
+    border-left: 3px solid #d32f2f;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-type-btn-error {
+    animation: shake 0.5s ease-in-out;
+    border-color: #d32f2f !important;
+    background-color: #ffebee !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
 }

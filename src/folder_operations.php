@@ -134,6 +134,28 @@ switch($action) {
         echo json_encode(['success' => true, 'folders' => $folders]);
         break;
         
+    case 'get_folder_counts':
+        // Get note counts for each folder
+        $query = "SELECT folder, COUNT(*) as count FROM entries WHERE trash = 0 GROUP BY folder";
+        $result = $con->query($query);
+        
+        $counts = [];
+        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $folder = $row['folder'] ?: 'Uncategorized';
+            $counts[$folder] = (int)$row['count'];
+        }
+        
+        // Get favorite count
+        $favoriteQuery = "SELECT COUNT(*) as count FROM entries WHERE trash = 0 AND favorite = 1";
+        $favoriteResult = $con->query($favoriteQuery);
+        if ($favoriteResult) {
+            $favoriteData = $favoriteResult->fetch_assoc();
+            $counts['Favorites'] = (int)$favoriteData['count'];
+        }
+        
+        echo json_encode(['success' => true, 'counts' => $counts]);
+        break;
+        
     case 'empty_folder':
         $folderName = $_POST['folder_name'] ?? '';
         

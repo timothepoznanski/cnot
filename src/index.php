@@ -1,8 +1,8 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
@@ -34,6 +34,39 @@ if ($result->num_rows == 0) {
 
 $search = $_POST['search'] ?? $_GET['search'] ?? '';
 $tags_search = $_POST['tags_search'] ?? $_GET['tags_search'] ?? $_GET['tags_search_from_list'] ?? '';
+
+// Track if we're using unified search
+$using_unified_search = false;
+
+// Handle unified search
+if (!empty($_POST['unified_search'])) {
+    $unified_search = $_POST['unified_search'];
+    $search_in_notes = isset($_POST['search_in_notes']) && $_POST['search_in_notes'] !== '';
+    $search_in_tags = isset($_POST['search_in_tags']) && $_POST['search_in_tags'] !== '';
+    
+    $using_unified_search = true;
+    
+    // Debug output (remove in production)
+    // Debugging removed - search working correctly
+    
+    // Only proceed if at least one option is selected
+    if ($search_in_notes || $search_in_tags) {
+        // Set search values based on selected options
+        if ($search_in_notes) {
+            $search = $unified_search;
+        } else {
+            $search = '';
+        }
+        
+        if ($search_in_tags) {
+            $tags_search = $unified_search;
+        } else {
+            $tags_search = '';
+        }
+    }
+    // If no options are selected, ignore the search (keep existing search state)
+}
+
 $note = $_GET['note'] ?? '';
 $folder_filter = $_GET['folder'] ?? '';
 
@@ -100,17 +133,32 @@ if($note != '') {
     
     <!-- Modal for moving note to folder from toolbar -->
     <div id="moveNoteFolderModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('moveNoteFolderModal')">&times;</span>
+        <div class="modal-content move-folder-modal">
             <h3>Move Note to Folder</h3>
-            <select id="moveNoteFolderSelect" onchange="toggleNewFolderInput()">
-                <option value="Uncategorized">Uncategorized</option>
-            </select>
-            <div id="newFolderInputContainer" style="display: none; margin-top: 10px;">
-                <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            
+            <!-- Search/Filter bar -->
+            <div class="folder-search-section">
+                <input type="text" id="moveFolderFilter" placeholder="Search or select a folder..." oninput="filterMoveFolders()">
             </div>
+            
+            <!-- Folders list (hidden by default) -->
+            <div class="folders-selection-list" id="foldersSelectionList" style="display: none;">
+                <!-- Folders will be loaded here -->
+            </div>
+            
+            <!-- Create new folder section -->
+            <div class="create-folder-section" id="createFolderSection" style="display: none;">
+                <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" maxlength="255">
+                <div class="create-folder-buttons">
+                    <button type="button" onclick="createAndMoveToNewFolder()">Create & Move</button>
+                    <button type="button" onclick="cancelCreateNewFolder()">Cancel</button>
+                </div>
+            </div>
+            
+            <!-- Action buttons -->
             <div class="modal-buttons">
-                <button type="button" onclick="moveCurrentNoteToFolder()">Move</button>
+                <button type="button" onclick="moveNoteToSelectedFolder()">Move</button>
+                <button type="button" id="createNewFolderBtn" onclick="showCreateNewFolderInput()">+ Create New Folder</button>
                 <button type="button" onclick="closeModal('moveNoteFolderModal')">Cancel</button>
             </div>
         </div>
@@ -191,28 +239,42 @@ if($note != '') {
         <!-- Deux barres de recherche pour mobile -->
         <?php if ($is_mobile): ?>
         <div class="mobile-search-container">
-            <form id="search-notes-form-mobile" action="index.php" method="POST">
-                <div class="searchbar-row searchbar-icon-row">
-                    <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes-mobile" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in all notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
-                        <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+            <form id="unified-search-form-mobile" action="index.php" method="POST">
+                <div class="unified-search-container mobile">
+                    <div class="searchbar-row searchbar-icon-row">
+                        <div class="searchbar-input-wrapper">
+                            <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-mobile" type="text" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                            <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                            <?php if (!empty($search) || !empty($tags_search)): ?>
+                                <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                            <?php endif; ?>
+                        </div>
+                        <div class="search-type-buttons">
+                            <button type="button" class="search-type-btn" id="search-notes-btn-mobile" title="Search in notes" data-type="notes">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                            <button type="button" class="search-type-btn" id="search-tags-btn-mobile" title="Search in tags" data-type="tags">
+                                <i class="fas fa-tags"></i>
+                            </button>
+                        </div>
                     </div>
-                    <?php if (!empty($search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                    <?php endif; ?>
+                    <!-- Hidden inputs to maintain compatibility -->
+                    <input type="hidden" id="search-notes-hidden-mobile" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
+                    <input type="hidden" id="search-tags-hidden-mobile" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
+                    <input type="hidden" id="search-in-notes-mobile" name="search_in_notes" value="<?php echo !empty($search) ? '1' : ''; ?>">
+                    <input type="hidden" id="search-in-tags-mobile" name="search_in_tags" value="<?php echo !empty($tags_search) ? '1' : ''; ?>">
                 </div>
             </form>
-            <form id="search-tags-form-mobile" action="index.php" method="POST">
+            <!-- Barre de filtre des dossiers pour mobile -->
+            <div class="folder-filter-container">
                 <div class="searchbar-row searchbar-icon-row">
                     <div class="searchbar-input-wrapper">
-                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags-mobile" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in all tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
-                        <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-mobile" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
+                        <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
                     </div>
-                    <?php if (!empty($tags_search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                    <?php endif; ?>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-mobile" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
                 </div>
-            </form>
+            </div>
         </div>
         <?php endif; ?>
         
@@ -223,22 +285,55 @@ if($note != '') {
     <?php
     // Build search conditions for notes and tags séparément
     $search_condition = '';
-    if (!empty($search)) {
-        $terms = explode(' ', trim($search));
-        foreach ($terms as $term) {
-            if (!empty(trim($term))) {
-                $search_condition .= " AND (heading LIKE '%" . trim($term) . "%' OR entry LIKE '%" . trim($term) . "%')";
+    
+    if ($using_unified_search) {
+        // For unified search, only search in selected areas
+        if (!empty($search) && !empty($tags_search)) {
+            // Both selected: search in notes OR tags (broader search)
+            $terms = explode(' ', trim($search)); // Using $search since both contain the same value
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND ((heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%') OR tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        } else if (!empty($search)) {
+            // Only notes selected
+            $terms = explode(' ', trim($search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND (heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        } else if (!empty($tags_search)) {
+            // Only tags selected
+            $terms = explode(' ', trim($tags_search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%'";
+                }
+            }
+        }
+    } else {
+        // For separate searches, search in both areas if either is present (legacy behavior)
+        if (!empty($search)) {
+            $terms = explode(' ', trim($search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND (heading LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%' OR entry LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%')";
+                }
+            }
+        }
+        if (!empty($tags_search)) {
+            $terms = explode(' ', trim($tags_search));
+            foreach ($terms as $term) {
+                if (!empty(trim($term))) {
+                    $search_condition .= " AND tags LIKE '%" . mysqli_real_escape_string($con, trim($term)) . "%'";
+                }
             }
         }
     }
-    if (!empty($tags_search)) {
-        $terms = explode(' ', trim($tags_search));
-        foreach ($terms as $term) {
-            if (!empty(trim($term))) {
-                $search_condition .= " AND tags LIKE '%" . trim($term) . "%'";
-            }
-        }
-    }
+    
+    // Debug removed - search working correctly
     
     // Add folder filter condition
     $folder_condition = '';
@@ -288,28 +383,42 @@ if($note != '') {
     
     <?php if (!$is_mobile): ?>
     <div class="contains_forms_search searchbar-desktop">
-        <form id="search-notes-form" action="index.php" method="POST">
-            <div class="searchbar-row searchbar-icon-row">
-                <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-notes" type="search" name="search" class="search form-control searchbar-input" placeholder="Search words in all notes" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+        <form id="unified-search-form" action="index.php" method="POST">
+            <div class="unified-search-container">
+                <div class="searchbar-row searchbar-icon-row">
+                    <div class="searchbar-input-wrapper">
+                        <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="text" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
+                        <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                        <?php if (!empty($search) || !empty($tags_search)): ?>
+                            <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                        <?php endif; ?>
+                    </div>
+                    <div class="search-type-buttons">
+                        <button type="button" class="search-type-btn" id="search-notes-btn" title="Search in notes" data-type="notes">
+                            <i class="fas fa-file-alt"></i>
+                        </button>
+                        <button type="button" class="search-type-btn" id="search-tags-btn" title="Search in tags" data-type="tags">
+                            <i class="fas fa-tags"></i>
+                        </button>
+                    </div>
                 </div>
-                <?php if (!empty($search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                <?php endif; ?>
+                <!-- Hidden inputs to maintain compatibility -->
+                <input type="hidden" id="search-notes-hidden" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
+                <input type="hidden" id="search-tags-hidden" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
+                <input type="hidden" id="search-in-notes" name="search_in_notes" value="<?php echo !empty($search) ? '1' : ''; ?>">
+                <input type="hidden" id="search-in-tags" name="search_in_tags" value="<?php echo !empty($tags_search) ? '1' : ''; ?>">
             </div>
         </form>
-        <form id="search-tags-form" action="index.php" method="POST">
+        <!-- Barre de filtre des dossiers pour desktop -->
+        <div class="folder-filter-container">
             <div class="searchbar-row searchbar-icon-row">
                 <div class="searchbar-input-wrapper">
-                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="search-tags" type="search" name="tags_search" class="search form-control searchbar-input" placeholder="Search words in all tags" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>" />
-                    <span class="searchbar-icon"><span class="fas fa-tags"></span></span>
+                    <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-desktop" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
+                    <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
                 </div>
-                <?php if (!empty($tags_search)): ?>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear tag search" onclick="window.location='index.php'; return false;"><span class="fas fa-times-circle"></span></button>
-                <?php endif; ?>
+                <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-desktop" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
             </div>
-        </form>
+        </div>
     </div>
     <?php endif; ?>
         
@@ -665,5 +774,6 @@ if($note != '') {
     </div>
 </body>
 <script src="js/script.js"></script>
+<script src="js/unified-search.js"></script>
 
 </html>

@@ -1293,15 +1293,12 @@ function downloadFile(url, filename) {
 // Function to add copy buttons to code blocks
 function addCopyButtonsToCodeBlocks() {
     const codeBlocks = document.querySelectorAll('.code-block, pre.code-block, .noteentry pre');
-    console.log('Found code blocks:', codeBlocks.length); // Debug log
     
     codeBlocks.forEach(codeBlock => {
         // Check if copy button already exists
         if (codeBlock.querySelector('.copy-code-btn')) {
             return;
         }
-        
-        console.log('Adding copy button to code block'); // Debug log
         
         // Create copy button
         const copyBtn = document.createElement('button');
@@ -1313,7 +1310,6 @@ function addCopyButtonsToCodeBlocks() {
         copyBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Copy button event triggered'); // Debug log
             copyCodeToClipboard(codeBlock, copyBtn);
         });
         
@@ -1408,12 +1404,10 @@ function showCopyError(button) {
 
 // Initialize copy buttons when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded - initializing copy buttons'); // Debug log
     addCopyButtonsToCodeBlocks();
     
     // Also try after a short delay to catch any dynamically loaded content
     setTimeout(() => {
-        console.log('Delayed copy button initialization'); // Debug log
         addCopyButtonsToCodeBlocks();
     }, 1000);
     

@@ -931,6 +931,31 @@ img {
     color: #007DB8;
 }
 
+.settings-menu-item.deployment-info {
+    /* border-top: 1px solid rgba(0,0,0,0.1); */
+    margin-top: 5px;
+    padding-top: 8px;
+    cursor: default;
+    /* opacity: 0.7; */
+}
+
+.settings-menu-item.deployment-info:hover {
+    background-color: transparent;
+    color: #333;
+}
+
+.settings-menu-item.deployment-info i {
+    color: #007DB8;
+}
+
+.settings-menu-item.deployment-info span {
+    font-size: 1em;
+}
+
+.settings-menu-item.deployment-info small {
+    display: block;
+}
+
 .search:focus{
     border-bottom: 1px solid #32a1ce;
 }

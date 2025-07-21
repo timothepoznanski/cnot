@@ -165,7 +165,7 @@ function updateSearchPlaceholder(isMobile) {
     let placeholder = 'Select search options first...';
     
     if (hasNotesActive && hasTagsActive) {
-        placeholder = 'Search in notes and tags...';
+        placeholder = 'Search in both...';
     } else if (hasNotesActive) {
         placeholder = 'Search in notes...';
     } else if (hasTagsActive) {

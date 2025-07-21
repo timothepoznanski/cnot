@@ -245,6 +245,9 @@ if($note != '') {
                         <div class="searchbar-input-wrapper">
                             <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search-mobile" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
                             <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                            <?php if (!empty($search) || !empty($tags_search)): ?>
+                                <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                            <?php endif; ?>
                         </div>
                         <div class="search-type-buttons">
                             <button type="button" class="search-type-btn" id="search-notes-btn-mobile" title="Search in notes" data-type="notes">
@@ -254,9 +257,6 @@ if($note != '') {
                                 <i class="fas fa-tags"></i>
                             </button>
                         </div>
-                        <?php if (!empty($search) || !empty($tags_search)): ?>
-                            <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
-                        <?php endif; ?>
                     </div>
                     <!-- Hidden inputs to maintain compatibility -->
                     <input type="hidden" id="search-notes-hidden-mobile" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
@@ -389,6 +389,9 @@ if($note != '') {
                     <div class="searchbar-input-wrapper">
                         <input autocomplete="off" autocapitalize="off" spellcheck="false" id="unified-search" type="search" name="unified_search" class="search form-control searchbar-input" placeholder="Select search options first..." value="<?php echo htmlspecialchars(($search ?: $tags_search) ?? '', ENT_QUOTES); ?>" />
                         <span class="searchbar-icon"><span class="fas fa-search"></span></span>
+                        <?php if (!empty($search) || !empty($tags_search)): ?>
+                            <button type="button" class="searchbar-clear" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
+                        <?php endif; ?>
                     </div>
                     <div class="search-type-buttons">
                         <button type="button" class="search-type-btn" id="search-notes-btn" title="Search in notes" data-type="notes">
@@ -398,9 +401,6 @@ if($note != '') {
                             <i class="fas fa-tags"></i>
                         </button>
                     </div>
-                    <?php if (!empty($search) || !empty($tags_search)): ?>
-                        <button type="button" class="searchbar-clear searchbar-clear-outer" title="Clear search" onclick="clearUnifiedSearch(); return false;"><span class="fas fa-times-circle"></span></button>
-                    <?php endif; ?>
                 </div>
                 <!-- Hidden inputs to maintain compatibility -->
                 <input type="hidden" id="search-notes-hidden" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">

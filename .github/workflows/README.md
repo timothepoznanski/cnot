@@ -21,6 +21,7 @@ Vous devez configurer les secrets suivants dans votre repository GitHub (Setting
 - `PROD_SSH_PASSPHRASE` : Passphrase de la clé SSH (si votre clé en a une)
 - `PROD_PORT` : Port SSH (généralement 22)
 - `PROD_PROJECT_PATH` : Chemin absolu vers le projet sur le serveur (ex: `/root/cnot/cnot`)
+- `PAT_TOKEN` : Personal Access Token GitHub pour créer les Pull Requests
 
 ### Configuration SSH
 1. Générer une paire de clés SSH sur votre serveur de production :
@@ -33,6 +34,16 @@ Vous devez configurer les secrets suivants dans votre repository GitHub (Setting
 3. Copier la clé privée dans le secret `PROD_SSH_KEY`
 
 4. **Si votre clé a une passphrase** : Ajoutez la passphrase dans le secret `PROD_SSH_PASSPHRASE`
+
+### Configuration GitHub Personal Access Token
+1. Allez sur GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Cliquez sur "Generate new token (classic)"
+3. Donnez un nom au token (ex: "CnoT Auto Deploy")
+4. Sélectionnez les permissions suivantes :
+   - ✅ `repo` (Full control of private repositories)
+   - ✅ `workflow` (Update GitHub Action workflows)
+5. Cliquez sur "Generate token"
+6. Copiez le token et ajoutez-le dans le secret `PAT_TOKEN`
 
 ### Option alternative : Clé sans passphrase
 Si vous préférez, vous pouvez créer une clé SSH dédiée sans passphrase pour GitHub Actions :

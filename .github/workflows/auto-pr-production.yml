@@ -39,4 +39,4 @@ jobs:
           echo "Une PR existe déjà (numéro: $existing_pr)"
         fi
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.PAT_TOKEN }}

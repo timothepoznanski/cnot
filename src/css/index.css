@@ -326,7 +326,7 @@ body {
     z-index: 10;
     background: #fff;
     padding-top: 10px;
-    /* padding-bottom: 10px; */
+    padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
     box-sizing: border-box;
@@ -989,7 +989,8 @@ div[contentEditable=true]:empty:before {
 }
 
 .notecard{
-    margin: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
     margin-bottom:20px;
     background: white;
     border-radius: 5px;
@@ -998,7 +999,7 @@ div[contentEditable=true]:empty:before {
 
 .innernote{
     padding-left: 2%;
-    padding-top: 5px;
+    padding-top: 0px;
     padding-right: 2%;
     padding-bottom: 5px;
     font-family: 'Inter', sans-serif;

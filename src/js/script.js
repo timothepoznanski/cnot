@@ -49,7 +49,7 @@ function showNoteInfo(noteId, created, updated) {
     const createdDate = new Date(created).toLocaleString();
     const updatedDate = new Date(updated).toLocaleString();
     const message = `Note ID: ${noteId}\nCréée le: ${createdDate}\nDernière modification: ${updatedDate}`;
-    alert(message);
+    showNotificationPopup(message);
 }
 
 // Function to toggle the vertical toolbar menu (legacy - keeping for compatibility)

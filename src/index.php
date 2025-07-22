@@ -123,7 +123,7 @@ if($note != '') {
     <div id="moveNoteModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('moveNoteModal')">&times;</span>
-            <h3>Move Note to Folder</h3>
+            <h3>Change folder</h3>
             <p>Move "<span id="moveNoteTitle"></span>" to:</p>
             <select id="moveNoteFolder">
                 <option value="Uncategorized">Uncategorized</option>
@@ -138,7 +138,7 @@ if($note != '') {
     <!-- Modal for moving note to folder from toolbar -->
     <div id="moveNoteFolderModal" class="modal">
         <div class="modal-content move-folder-modal">
-            <h3>Move Note to Folder</h3>
+            <h3>Change Folder</h3>
             
             <!-- Search/Filter bar -->
             <div class="folder-search-section">
@@ -147,7 +147,6 @@ if($note != '') {
             
             <!-- Suggested folders (always visible) -->
             <div class="suggested-folders-section" id="suggestedFoldersSection">
-                <div class="suggested-folders-title">Quick Access:</div>
                 <div class="suggested-folders-list" id="suggestedFoldersList">
                     <!-- Suggested folders will be loaded here -->
                 </div>

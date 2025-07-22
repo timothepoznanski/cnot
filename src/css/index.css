@@ -754,6 +754,18 @@ img {
     z-index: 1000;
     font-size: 1.5em;
     text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#notificationPopup.notification-success {
+    background-color: #28a745;
+    border-color: #1e7e34;
+}
+
+#notificationPopup.notification-error {
+    background-color: #dc3545;
+    border-color: #bd2130;
 }
 
 /* MENU RIGHT */
@@ -1604,7 +1616,7 @@ hr {
 }
 
 .folder-search-section {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .folder-search-section input {
@@ -1626,15 +1638,6 @@ hr {
 
 .suggested-folders-section {
     margin-bottom: 15px;
-}
-
-.suggested-folders-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .suggested-folders-list {

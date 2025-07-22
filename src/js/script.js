@@ -8,6 +8,7 @@ var lastudpdate;
 var noteid=-1;
 var updateNoteEnCours = 0;
 var selectedFolder = 'Uncategorized'; // Track currently selected folder
+var currentNoteFolder = null; // Track current folder of note being moved
 var currentNoteIdForAttachments = null; // Track current note for attachments
 
 // Function to toggle the note settings dropdown menu
@@ -116,12 +117,12 @@ function uploadAttachment() {
     const file = fileInput.files[0];
     
     if (!file) {
-        alert('Please select a file');
+        showNotificationPopup('Please select a file', 'error');
         return;
     }
     
     if (!currentNoteIdForAttachments) {
-        alert('No note selected');
+        showNotificationPopup('No note selected', 'error');
         return;
     }
     
@@ -140,13 +141,14 @@ function uploadAttachment() {
             fileInput.value = ''; // Clear input
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
+            showNotificationPopup('File uploaded successfully');
         } else {
-            alert('Upload failed: ' + data.message);
+            showNotificationPopup('Upload failed: ' + data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Upload failed');
+        showNotificationPopup('Upload failed', 'error');
     });
 }
 
@@ -202,7 +204,7 @@ function displayAttachments(attachments) {
 
 function downloadAttachment(attachmentId) {
     if (!currentNoteIdForAttachments) {
-        alert('No note selected');
+        showNotificationPopup('No note selected', 'error');
         return;
     }
     window.open(`api_attachments.php?action=download&note_id=${currentNoteIdForAttachments}&attachment_id=${attachmentId}`, '_blank');
@@ -210,7 +212,7 @@ function downloadAttachment(attachmentId) {
 
 function deleteAttachment(attachmentId) {
     if (!currentNoteIdForAttachments) {
-        alert('No note selected');
+        showNotificationPopup('No note selected', 'error');
         return;
     }
     
@@ -228,13 +230,14 @@ function deleteAttachment(attachmentId) {
         if (data.success) {
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
+            showNotificationPopup('Attachment deleted successfully');
         } else {
-            alert('Delete failed: ' + data.message);
+            showNotificationPopup('Delete failed: ' + data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Delete failed');
+        showNotificationPopup('Delete failed', 'error');
     });
 }
 
@@ -453,10 +456,10 @@ function newnote(){
                 window.scrollTo(0, 0);
                 window.location.href = "index.php?note=" + encodeURIComponent(res.heading);
             } else {
-                alert(res.error || data);
+                showNotificationPopup(res.error || data, 'error');
             }
         } catch(e) {
-            alert('Erreur lors de la création de la note: ' + data);
+            showNotificationPopup('Erreur lors de la création de la note: ' + data, 'error');
         }
     });
 }
@@ -471,9 +474,10 @@ function deleteNote(iid){
     .then(response => response.text())
     .then(function(data) {
         if(data=='1') {
+            showNotificationPopup('Note deleted successfully');
             window.location.href = "index.php";
         } else {
-            alert(data);
+            showNotificationPopup(data, 'error');
         }
     });
 }
@@ -642,9 +646,20 @@ function saveFocusedNoteJS(){
     }
 }
 
-function showNotificationPopup(message) {
+function showNotificationPopup(message, type = 'success') {
     var popup = document.getElementById('notificationPopup');
     popup.innerText = message;
+    
+    // Remove existing type classes
+    popup.classList.remove('notification-success', 'notification-error');
+    
+    // Add appropriate type class
+    if (type === 'error') {
+        popup.classList.add('notification-error');
+    } else {
+        popup.classList.add('notification-success');
+    }
+    
     popup.style.display = 'block';
 
     // Hide the popup after a certain amount of time
@@ -662,7 +677,7 @@ function newFolder() {
 function createFolder() {
     var folderName = document.getElementById('newFolderName').value.trim();
     if (!folderName) {
-        alert('Please enter a folder name');
+        showNotificationPopup('Please enter a folder name', 'error');
         return;
     }
     
@@ -685,12 +700,12 @@ function createFolder() {
             showNotificationPopup('Folder "' + folderName + '" created successfully');
             location.reload();
         } else {
-            alert('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error, 'error');
         }
     })
     .catch(error => {
         console.error('Error creating folder:', error);
-        alert('Error creating folder: ' + error);
+        showNotificationPopup('Error creating folder: ' + error, 'error');
     });
 }
 
@@ -736,7 +751,7 @@ function saveFolderName() {
     var oldName = document.getElementById('editFolderName').dataset.oldName;
     
     if (!newName) {
-        alert('Please enter a folder name');
+        showNotificationPopup('Please enter a folder name', 'error');
         return;
     }
     
@@ -760,13 +775,14 @@ function saveFolderName() {
     .then(function(data) {
         if (data.success) {
             closeModal('editFolderModal');
+            showNotificationPopup('Folder renamed successfully');
             location.reload();
         } else {
-            alert('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error, 'error');
         }
     })
     .catch(error => {
-        alert('Error renaming folder: ' + error);
+        showNotificationPopup('Error renaming folder: ' + error, 'error');
     });
 }
 
@@ -803,13 +819,14 @@ function deleteFolder(folderName) {
                 .then(response => response.json())
                 .then(function(data) {
                     if (data.success) {
+                        showNotificationPopup('Folder deleted successfully');
                         location.reload();
                     } else {
-                        alert('Error: ' + data.error);
+                        showNotificationPopup('Error: ' + data.error, 'error');
                     }
                 })
                 .catch(error => {
-                    alert('Error deleting folder: ' + error);
+                    showNotificationPopup('Error deleting folder: ' + error, 'error');
                 });
                 return;
             }
@@ -835,20 +852,21 @@ function deleteFolder(folderName) {
             .then(response => response.json())
             .then(function(data) {
                 if (data.success) {
+                    showNotificationPopup('Folder deleted successfully');
                     location.reload();
                 } else {
-                    alert('Error: ' + data.error);
+                    showNotificationPopup('Error: ' + data.error, 'error');
                 }
             })
             .catch(error => {
-                alert('Error deleting folder: ' + error);
+                showNotificationPopup('Error deleting folder: ' + error, 'error');
             });
         } else {
-            alert('Error checking folder contents: ' + data.error);
+            showNotificationPopup('Error checking folder contents: ' + data.error, 'error');
         }
     })
     .catch(error => {
-        alert('Error checking folder contents: ' + error);
+        showNotificationPopup('Error checking folder contents: ' + error, 'error');
     });
 }
 
@@ -870,14 +888,14 @@ function emptyFolder(folderName) {
     .then(response => response.json())
     .then(function(data) {
         if (data.success) {
-            location.reload();
             showNotificationPopup(`All notes moved to trash from folder: ${folderName}`);
+            location.reload();
         } else {
-            alert('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error, 'error');
         }
     })
     .catch(error => {
-        alert('Error emptying folder: ' + error);
+        showNotificationPopup('Error emptying folder: ' + error, 'error');
     });
 }
 
@@ -898,6 +916,14 @@ function filterMoveFolders() {
     
     folderOptions.forEach(function(option) {
         const folderName = option.querySelector('.folder-name').textContent.toLowerCase();
+        const actualFolderName = option.querySelector('.folder-name').textContent;
+        
+        // Skip the current folder of the note
+        if (actualFolderName === currentNoteFolder) {
+            option.style.display = 'none';
+            return;
+        }
+        
         if (folderName.includes(filterText)) {
             option.style.display = 'flex';
             visibleCount++;
@@ -957,7 +983,7 @@ function cancelCreateNewFolder() {
 function createAndMoveToNewFolder() {
     const newFolderName = document.getElementById('moveNewFolderName').value.trim();
     if (!newFolderName) {
-        alert('Please enter a folder name');
+        showNotificationPopup('Please enter a folder name', 'error');
         return;
     }
     
@@ -968,7 +994,7 @@ function createAndMoveToNewFolder() {
 function moveNoteToSelectedFolder(targetFolder = null) {
     // Check if a valid note is selected
     if (!noteid || noteid == -1 || noteid == '' || noteid == null) {
-        alert('Please select a note first before moving it to a folder.');
+        showNotificationPopup('Please select a note first before moving it to a folder.');
         return;
     }
     
@@ -978,7 +1004,7 @@ function moveNoteToSelectedFolder(targetFolder = null) {
         // Get selected folder from either suggested or regular list
         const selectedFolder = document.querySelector('.folder-option.selected, .suggested-folder-option.selected');
         if (!selectedFolder) {
-            alert('Please select a folder');
+            showNotificationPopup('Please select a folder from the suggestions above or search for one.');
             return;
         }
         folderToMoveTo = selectedFolder.dataset.selectedFolder;
@@ -999,24 +1025,28 @@ function moveNoteToSelectedFolder(targetFolder = null) {
     .then(function(data) {
         if (data.success) {
             closeModal('moveNoteFolderModal');
+            showNotificationPopup(`Note moved to "${folderToMoveTo}" successfully!`);
             location.reload();
         } else {
-            alert('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error);
         }
     })
     .catch(error => {
-        alert('Error moving note: ' + error);
+        showNotificationPopup('Error moving note: ' + error);
     });
 }
 
 function showMoveFolderDialog(noteId) {
     // Check if a valid note is selected
     if (!noteId || noteId == -1 || noteId == '' || noteId == null) {
-        alert('Please select a note first before moving it to a folder.');
+        showNotificationPopup('Please select a note first before moving it to a folder.');
         return;
     }
     
     noteid = noteId; // Set the current note ID
+    
+    // Get and store the current folder of the note
+    currentNoteFolder = document.getElementById('folder' + noteId).value;
     
     // Load folders
     var params = new URLSearchParams({
@@ -1063,14 +1093,14 @@ function loadFoldersIntoSelectionList(folders, noteId) {
         const folderCounts = countData.success ? countData.counts : {};
         
         folders.forEach(function(folder) {
+            // Skip the current folder of the note
+            if (folder === currentFolder) {
+                return;
+            }
+            
             const folderOption = document.createElement('div');
             folderOption.className = 'folder-option';
             folderOption.dataset.selectedFolder = folder;
-            
-            // Pre-select current folder
-            if (folder === currentFolder) {
-                folderOption.classList.add('selected');
-            }
             
             // Add click handler
             folderOption.onclick = function() {
@@ -1131,7 +1161,7 @@ function loadSuggestedFolders(noteId) {
     const suggestedFoldersList = document.getElementById('suggestedFoldersList');
     suggestedFoldersList.innerHTML = '';
     
-    // Get current folder of the note to pre-select it
+    // Get current folder of the note to exclude it from suggestions
     const currentFolder = document.getElementById('folder' + noteId).value;
     
     // Load suggested folders
@@ -1144,14 +1174,14 @@ function loadSuggestedFolders(noteId) {
     .then(function(data) {
         if (data.success) {
             data.folders.forEach(function(folder) {
+                // Skip the current folder
+                if (folder === currentFolder) {
+                    return;
+                }
+                
                 const suggestedOption = document.createElement('div');
                 suggestedOption.className = 'suggested-folder-option';
                 suggestedOption.dataset.selectedFolder = folder;
-                
-                // Pre-select current folder
-                if (folder === currentFolder) {
-                    suggestedOption.classList.add('selected');
-                }
                 
                 // Add click handler
                 suggestedOption.onclick = function() {
@@ -1191,7 +1221,7 @@ function showMoveNoteDialog(noteHeading) {
     
     // Check if a valid note heading is provided
     if (!noteHeading || noteHeading.trim() === '' || noteHeading === 'Untitled note') {
-        alert('Please select a note first before moving it to a folder.');
+        showNotificationPopup('Please select a note first before moving it to a folder.');
         return;
     }
     
@@ -1243,13 +1273,14 @@ function moveNoteToFolder() {
     .then(function(data) {
         if (data.success) {
             closeModal('moveNoteModal');
+            showNotificationPopup(`Note moved to "${targetFolder}" successfully!`);
             location.reload();
         } else {
-            alert('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error);
         }
     })
     .catch(error => {
-        alert('Error moving note: ' + error);
+        showNotificationPopup('Error moving note: ' + error);
     });
 }
 
@@ -1663,14 +1694,14 @@ window.testCopyFunction = function(text) {
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             console.log('Copy test successful');
-            alert('Copy test successful!');
+            showNotificationPopup('Copy test successful!');
         }).catch((err) => {
             console.log('Copy test failed:', err);
-            alert('Copy test failed: ' + err);
+            showNotificationPopup('Copy test failed: ' + err, 'error');
         });
     } else {
         console.log('Clipboard API not available');
-        alert('Clipboard API not available');
+        showNotificationPopup('Clipboard API not available', 'error');
     }
 };
 

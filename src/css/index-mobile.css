@@ -395,7 +395,7 @@ a.links_arbo_left.selected-note {
 }
 
 .folder-search-section {
-    margin-bottom: 15px !important;
+    margin-bottom: 0px !important;
 }
 
 .folder-search-section input {
@@ -408,11 +408,6 @@ a.links_arbo_left.selected-note {
 
 .suggested-folders-section {
     margin-bottom: 15px !important;
-}
-
-.suggested-folders-title {
-    font-size: 13px !important;
-    margin-bottom: 10px !important;
 }
 
 .suggested-folders-list {

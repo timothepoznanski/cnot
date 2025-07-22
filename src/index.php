@@ -123,7 +123,7 @@ if($note != '') {
     <div id="moveNoteModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('moveNoteModal')">&times;</span>
-            <h3>Move Note to Folder</h3>
+            <h3>Change folder</h3>
             <p>Move "<span id="moveNoteTitle"></span>" to:</p>
             <select id="moveNoteFolder">
                 <option value="Uncategorized">Uncategorized</option>
@@ -138,11 +138,18 @@ if($note != '') {
     <!-- Modal for moving note to folder from toolbar -->
     <div id="moveNoteFolderModal" class="modal">
         <div class="modal-content move-folder-modal">
-            <h3>Move Note to Folder</h3>
+            <h3>Change Folder</h3>
             
             <!-- Search/Filter bar -->
             <div class="folder-search-section">
                 <input type="text" id="moveFolderFilter" placeholder="Search or select a folder..." oninput="filterMoveFolders()">
+            </div>
+            
+            <!-- Suggested folders (always visible) -->
+            <div class="suggested-folders-section" id="suggestedFoldersSection">
+                <div class="suggested-folders-list" id="suggestedFoldersList">
+                    <!-- Suggested folders will be loaded here -->
+                </div>
             </div>
             
             <!-- Folders list (hidden by default) -->
@@ -164,6 +171,11 @@ if($note != '') {
                 <button type="button" onclick="moveNoteToSelectedFolder()">Move</button>
                 <button type="button" id="createNewFolderBtn" onclick="showCreateNewFolderInput()">+ Create New Folder</button>
                 <button type="button" onclick="closeModal('moveNoteFolderModal')">Cancel</button>
+            </div>
+            
+            <!-- Error message display -->
+            <div id="moveFolderErrorMessage" class="modal-error-message" style="display: none;">
+                Please select a folder
             </div>
         </div>
     </div>

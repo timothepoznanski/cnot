@@ -395,7 +395,7 @@ a.links_arbo_left.selected-note {
 }
 
 .folder-search-section {
-    margin-bottom: 15px !important;
+    margin-bottom: 0px !important;
 }
 
 .folder-search-section input {
@@ -404,6 +404,29 @@ a.links_arbo_left.selected-note {
     width: 100% !important;
     box-sizing: border-box !important;
     border-radius: 8px !important;
+}
+
+.suggested-folders-section {
+    margin-bottom: 15px !important;
+}
+
+.suggested-folders-list {
+    gap: 10px !important;
+}
+
+.suggested-folder-option {
+    padding: 10px 16px !important;
+    font-size: 15px !important;
+    border-radius: 25px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
+
+.suggested-folder-option i {
+    margin-right: 8px !important;
+    font-size: 14px !important;
 }
 
 .folders-selection-list {
@@ -480,6 +503,20 @@ a.links_arbo_left.selected-note {
     margin: 0 !important;
     border-radius: 8px !important;
     font-weight: 500 !important;
+}
+
+/* Modal error message styles for mobile */
+.modal-error-message {
+    text-align: center !important;
+    color: #dc3545 !important;
+    font-size: 15px !important;
+    margin-top: 15px !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    background-color: #f8d7da !important;
+    border: 1px solid #f5c6cb !important;
+    display: none !important;
+    box-sizing: border-box !important;
 }
 
 /* ATTACHMENT MOBILE STYLES */

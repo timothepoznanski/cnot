@@ -754,6 +754,18 @@ img {
     z-index: 1000;
     font-size: 1.5em;
     text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#notificationPopup.notification-success {
+    background-color: #28a745;
+    border-color: #1e7e34;
+}
+
+#notificationPopup.notification-error {
+    background-color: #dc3545;
+    border-color: #bd2130;
 }
 
 /* MENU RIGHT */
@@ -1604,7 +1616,7 @@ hr {
 }
 
 .folder-search-section {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .folder-search-section input {
@@ -1622,6 +1634,47 @@ hr {
     outline: none;
     border-color: #007DB8;
     box-shadow: 0 0 0 3px rgba(0, 125, 184, 0.1);
+}
+
+.suggested-folders-section {
+    margin-bottom: 15px;
+}
+
+.suggested-folders-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.suggested-folder-option {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.suggested-folder-option:hover {
+    background-color: #007DB8;
+    color: white;
+    border-color: #007DB8;
+}
+
+.suggested-folder-option.selected {
+    background-color: #007DB8;
+    color: white;
+    border-color: #007DB8;
+}
+
+.suggested-folder-option i {
+    margin-right: 6px;
+    font-size: 12px;
 }
 
 .folders-selection-list {
@@ -1780,6 +1833,19 @@ hr {
 
 #moveNoteFolderModal .modal-buttons button:nth-child(2):hover {
     background-color: #218838;
+}
+
+/* Modal error message styles */
+.modal-error-message {
+    text-align: center;
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    display: none;
 }
 
 /* UNIFIED SEARCH STYLES */

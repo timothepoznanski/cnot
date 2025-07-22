@@ -172,6 +172,11 @@ if($note != '') {
                 <button type="button" id="createNewFolderBtn" onclick="showCreateNewFolderInput()">+ Create New Folder</button>
                 <button type="button" onclick="closeModal('moveNoteFolderModal')">Cancel</button>
             </div>
+            
+            <!-- Error message display -->
+            <div id="moveFolderErrorMessage" class="modal-error-message" style="display: none;">
+                Please select a folder
+            </div>
         </div>
     </div>
     

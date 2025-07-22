@@ -966,6 +966,9 @@ function selectFolderForMove(folderName, element) {
     
     // Hide the folders list after selection
     document.getElementById('foldersSelectionList').style.display = 'none';
+    
+    // Hide any error message
+    hideMoveFolderError();
 }
 
 function showCreateNewFolderInput() {
@@ -1004,7 +1007,7 @@ function moveNoteToSelectedFolder(targetFolder = null) {
         // Get selected folder from either suggested or regular list
         const selectedFolder = document.querySelector('.folder-option.selected, .suggested-folder-option.selected');
         if (!selectedFolder) {
-            showNotificationPopup('Please select a folder from the suggestions above or search for one.');
+            showMoveFolderError('Please select a folder from the suggestions above or search for one.');
             return;
         }
         folderToMoveTo = selectedFolder.dataset.selectedFolder;
@@ -1025,10 +1028,9 @@ function moveNoteToSelectedFolder(targetFolder = null) {
     .then(function(data) {
         if (data.success) {
             closeModal('moveNoteFolderModal');
-            showNotificationPopup(`Note moved to "${folderToMoveTo}" successfully!`);
             location.reload();
         } else {
-            showNotificationPopup('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error, 'error');
         }
     })
     .catch(error => {
@@ -1070,9 +1072,24 @@ function showMoveFolderDialog(noteId) {
             document.getElementById('createNewFolderBtn').style.display = 'inline-block';
             document.getElementById('moveNewFolderName').value = '';
             
+            // Hide any error message
+            hideMoveFolderError();
+            
             document.getElementById('moveNoteFolderModal').style.display = 'block';
         }
     });
+}
+
+// Functions to handle folder selection error messages
+function showMoveFolderError(message) {
+    const errorElement = document.getElementById('moveFolderErrorMessage');
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+}
+
+function hideMoveFolderError() {
+    const errorElement = document.getElementById('moveFolderErrorMessage');
+    errorElement.style.display = 'none';
 }
 
 function loadFoldersIntoSelectionList(folders, noteId) {
@@ -1273,10 +1290,9 @@ function moveNoteToFolder() {
     .then(function(data) {
         if (data.success) {
             closeModal('moveNoteModal');
-            showNotificationPopup(`Note moved to "${targetFolder}" successfully!`);
             location.reload();
         } else {
-            showNotificationPopup('Error: ' + data.error);
+            showNotificationPopup('Error: ' + data.error, 'error');
         }
     })
     .catch(error => {

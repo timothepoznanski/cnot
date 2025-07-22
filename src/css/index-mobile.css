@@ -505,6 +505,20 @@ a.links_arbo_left.selected-note {
     font-weight: 500 !important;
 }
 
+/* Modal error message styles for mobile */
+.modal-error-message {
+    text-align: center !important;
+    color: #dc3545 !important;
+    font-size: 15px !important;
+    margin-top: 15px !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    background-color: #f8d7da !important;
+    border: 1px solid #f5c6cb !important;
+    display: none !important;
+    box-sizing: border-box !important;
+}
+
 /* ATTACHMENT MOBILE STYLES */
 
 .attachment-modal .modal-content {

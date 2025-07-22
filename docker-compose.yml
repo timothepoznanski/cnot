@@ -5,7 +5,7 @@ services:
     build:
       context: . # Use the current directory as the build context
       dockerfile: Dockerfile # Specify the Dockerfile to use
-    restart: unless-stopped      
+    restart: always      
     depends_on:
       database:
         condition: service_healthy
@@ -26,7 +26,7 @@ services:
   # DATABASE
   database:
     image: mysql:9.3.0
-    restart: unless-stopped
+    restart: always
     volumes:
       - "${DB_DATA_PATH}:/var/lib/mysql"
     environment:
@@ -52,4 +52,4 @@ services:
       UPLOAD_LIMIT: 250M
     ports:
       - "${HTTP_PMA_PORT}:80"
-    restart: unless-stopped
+    restart: always

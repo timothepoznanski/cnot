@@ -406,6 +406,34 @@ a.links_arbo_left.selected-note {
     border-radius: 8px !important;
 }
 
+.suggested-folders-section {
+    margin-bottom: 15px !important;
+}
+
+.suggested-folders-title {
+    font-size: 13px !important;
+    margin-bottom: 10px !important;
+}
+
+.suggested-folders-list {
+    gap: 10px !important;
+}
+
+.suggested-folder-option {
+    padding: 10px 16px !important;
+    font-size: 15px !important;
+    border-radius: 25px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
+
+.suggested-folder-option i {
+    margin-right: 8px !important;
+    font-size: 14px !important;
+}
+
 .folders-selection-list {
     max-height: 200px !important;
     font-size: 15px !important;

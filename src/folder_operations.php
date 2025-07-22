@@ -84,15 +84,24 @@ switch($action) {
         break;
         
     case 'move_note':
+        // Support both note_id (new) and note_heading (legacy) formats
+        $noteId = $_POST['note_id'] ?? '';
         $noteHeading = $_POST['note_heading'] ?? '';
-        $targetFolder = $_POST['folder'] ?? 'Uncategorized';
         
-        if (empty($noteHeading)) {
-            echo json_encode(['success' => false, 'error' => 'Note heading is required']);
+        // Support both folder and target_folder parameters
+        $targetFolder = $_POST['folder'] ?? $_POST['target_folder'] ?? 'Uncategorized';
+        
+        if (!empty($noteId)) {
+            // New ID-based approach
+            $query = "UPDATE entries SET folder = '" . mysqli_real_escape_string($con, $targetFolder) . "' WHERE id = " . intval($noteId);
+        } elseif (!empty($noteHeading)) {
+            // Legacy heading-based approach
+            $query = "UPDATE entries SET folder = '" . mysqli_real_escape_string($con, $targetFolder) . "' WHERE heading = '" . mysqli_real_escape_string($con, $noteHeading) . "'";
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Note ID or heading is required']);
             exit;
         }
         
-        $query = "UPDATE entries SET folder = '" . mysqli_real_escape_string($con, $targetFolder) . "' WHERE heading = '" . mysqli_real_escape_string($con, $noteHeading) . "'";
         if ($con->query($query)) {
             echo json_encode(['success' => true]);
         } else {
@@ -132,6 +141,35 @@ switch($action) {
         });
         
         echo json_encode(['success' => true, 'folders' => $folders]);
+        break;
+        
+    case 'get_suggested_folders':
+        // Get the most recently used folders and always include Uncategorized
+        $recentQuery = "SELECT folder, MAX(updated) as last_used FROM entries WHERE folder IS NOT NULL AND folder != '' AND trash = 0 GROUP BY folder ORDER BY last_used DESC LIMIT 3";
+        $recentResult = $con->query($recentQuery);
+        
+        $suggestedFolders = ['Uncategorized']; // Always include Uncategorized first
+        
+        // Add recent folders
+        while($row = mysqli_fetch_array($recentResult, MYSQLI_ASSOC)) {
+            if ($row['folder'] !== 'Uncategorized' && !in_array($row['folder'], $suggestedFolders)) {
+                $suggestedFolders[] = $row['folder'];
+            }
+        }
+        
+        // If we don't have enough, add some popular folders
+        if (count($suggestedFolders) < 4) {
+            $popularQuery = "SELECT folder, COUNT(*) as count FROM entries WHERE folder IS NOT NULL AND folder != '' AND folder != 'Uncategorized' AND trash = 0 GROUP BY folder ORDER BY count DESC LIMIT 3";
+            $popularResult = $con->query($popularQuery);
+            
+            while($row = mysqli_fetch_array($popularResult, MYSQLI_ASSOC)) {
+                if (!in_array($row['folder'], $suggestedFolders) && count($suggestedFolders) < 4) {
+                    $suggestedFolders[] = $row['folder'];
+                }
+            }
+        }
+        
+        echo json_encode(['success' => true, 'folders' => $suggestedFolders]);
         break;
         
     case 'get_folder_counts':

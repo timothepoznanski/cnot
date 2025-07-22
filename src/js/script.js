@@ -925,8 +925,9 @@ function filterMoveFolders() {
 }
 
 function selectFolderForMove(folderName, element) {
-    // Remove selection from all folders
+    // Remove selection from all folders (both regular and suggested)
     document.querySelectorAll('.folder-option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelectorAll('.suggested-folder-option').forEach(opt => opt.classList.remove('selected'));
     
     // Select clicked folder
     element.classList.add('selected');
@@ -965,11 +966,17 @@ function createAndMoveToNewFolder() {
 }
 
 function moveNoteToSelectedFolder(targetFolder = null) {
+    // Check if a valid note is selected
+    if (!noteid || noteid == -1 || noteid == '' || noteid == null) {
+        alert('Please select a note first before moving it to a folder.');
+        return;
+    }
+    
     let folderToMoveTo = targetFolder;
     
     if (!folderToMoveTo) {
-        // Get selected folder from the list
-        const selectedFolder = document.querySelector('.folder-option.selected');
+        // Get selected folder from either suggested or regular list
+        const selectedFolder = document.querySelector('.folder-option.selected, .suggested-folder-option.selected');
         if (!selectedFolder) {
             alert('Please select a folder');
             return;
@@ -977,11 +984,9 @@ function moveNoteToSelectedFolder(targetFolder = null) {
         folderToMoveTo = selectedFolder.dataset.selectedFolder;
     }
     
-    const currentNoteHeading = document.getElementById('inp' + noteid).value;
-    
     const params = new URLSearchParams({
         action: 'move_note',
-        note_heading: currentNoteHeading,
+        note_id: noteid,
         folder: folderToMoveTo
     });
     
@@ -1005,6 +1010,12 @@ function moveNoteToSelectedFolder(targetFolder = null) {
 }
 
 function showMoveFolderDialog(noteId) {
+    // Check if a valid note is selected
+    if (!noteId || noteId == -1 || noteId == '' || noteId == null) {
+        alert('Please select a note first before moving it to a folder.');
+        return;
+    }
+    
     noteid = noteId; // Set the current note ID
     
     // Load folders
@@ -1021,6 +1032,7 @@ function showMoveFolderDialog(noteId) {
     .then(function(data) {
         if (data.success) {
             loadFoldersIntoSelectionList(data.folders, noteId);
+            loadSuggestedFolders(noteId);
             
             // Reset UI state
             document.getElementById('moveFolderFilter').value = '';
@@ -1115,6 +1127,59 @@ function loadFoldersIntoSelectionList(folders, noteId) {
     });
 }
 
+function loadSuggestedFolders(noteId) {
+    const suggestedFoldersList = document.getElementById('suggestedFoldersList');
+    suggestedFoldersList.innerHTML = '';
+    
+    // Get current folder of the note to pre-select it
+    const currentFolder = document.getElementById('folder' + noteId).value;
+    
+    // Load suggested folders
+    fetch("folder_operations.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "action=get_suggested_folders"
+    })
+    .then(response => response.json())
+    .then(function(data) {
+        if (data.success) {
+            data.folders.forEach(function(folder) {
+                const suggestedOption = document.createElement('div');
+                suggestedOption.className = 'suggested-folder-option';
+                suggestedOption.dataset.selectedFolder = folder;
+                
+                // Pre-select current folder
+                if (folder === currentFolder) {
+                    suggestedOption.classList.add('selected');
+                }
+                
+                // Add click handler
+                suggestedOption.onclick = function() {
+                    selectFolderForMove(folder, this);
+                };
+                
+                // Create folder icon
+                let folderIcon = 'fas fa-folder';
+                if (folder === 'Favorites') {
+                    folderIcon = 'fas fa-star';
+                } else if (folder === 'Uncategorized') {
+                    folderIcon = 'fas fa-folder-open';
+                }
+                
+                suggestedOption.innerHTML = `
+                    <i class="${folderIcon}"></i>
+                    <span class="folder-name">${folder}</span>
+                `;
+                
+                suggestedFoldersList.appendChild(suggestedOption);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error loading suggested folders:', error);
+    });
+}
+
 function moveCurrentNoteToFolder() {
     // This function is called by the old interface, redirect to new logic
     moveNoteToSelectedFolder();
@@ -1123,6 +1188,12 @@ function moveCurrentNoteToFolder() {
 function showMoveNoteDialog(noteHeading) {
     event.preventDefault();
     event.stopPropagation();
+    
+    // Check if a valid note heading is provided
+    if (!noteHeading || noteHeading.trim() === '' || noteHeading === 'Untitled note') {
+        alert('Please select a note first before moving it to a folder.');
+        return;
+    }
     
     document.getElementById('moveNoteTitle').textContent = noteHeading;
     document.getElementById('moveNoteModal').dataset.noteHeading = noteHeading;

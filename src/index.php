@@ -145,6 +145,14 @@ if($note != '') {
                 <input type="text" id="moveFolderFilter" placeholder="Search or select a folder..." oninput="filterMoveFolders()">
             </div>
             
+            <!-- Suggested folders (always visible) -->
+            <div class="suggested-folders-section" id="suggestedFoldersSection">
+                <div class="suggested-folders-title">Quick Access:</div>
+                <div class="suggested-folders-list" id="suggestedFoldersList">
+                    <!-- Suggested folders will be loaded here -->
+                </div>
+            </div>
+            
             <!-- Folders list (hidden by default) -->
             <div class="folders-selection-list" id="foldersSelectionList" style="display: none;">
                 <!-- Folders will be loaded here -->

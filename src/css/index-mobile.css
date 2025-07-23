@@ -15,6 +15,7 @@
 /* Mobile content spacing */
 .mobile-search-container {
     margin-bottom: 15px !important;
+    margin-top: 8px !important;
 }
 
 /* Folder filter spacing on mobile */
@@ -693,25 +694,66 @@ a.links_arbo_left.selected-note {
 }
 
 /* UNIFIED SEARCH MOBILE STYLES */
+
+/* Mobile searchbar input adjustments */
+.searchbar-input {
+    padding: 8px 70px 8px 40px !important;
+    font-size: 16px !important; /* Prevent zoom on iOS */
+}
+
+/* When clear button is present on mobile, add more padding */
+.searchbar-input-wrapper.has-clear-button .searchbar-input {
+    padding-right: 110px !important;
+}
+
+/* Mobile clear button positioning */
+.searchbar-clear {
+    right: 70px !important;
+    height: 32px !important;
+    width: 32px !important;
+}
+
 .search-type-buttons {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
     gap: 1px;
-    margin-left: 6px;
-    margin-right: 6px;
+    align-items: center;
+    z-index: 4;
 }
 
 .search-type-btn {
     background: transparent;
     border: none;
-    padding: 5px 6px;
-    font-size: 0.85em;
-    min-width: 28px;
-    height: 28px;
+    padding: 4px 5px;
+    font-size: 0.8em;
+    min-width: 26px;
+    height: 26px;
     color: #6c757d;
     transition: all 0.2s ease;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.search-type-btn.active {
+.search-type-btn:hover {
+    background: rgba(0, 125, 184, 0.1);
+}
+
+.search-type-btn:hover i {
     color: #007DB8;
+}
+
+.search-type-btn.active i {
+    color: #007DB8 !important;
+}
+
+.search-type-btn.active:hover i {
+    color: #007DB8 !important;
 }
 
 /* Mobile search validation error styles */

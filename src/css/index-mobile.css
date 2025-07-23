@@ -720,3 +720,14 @@ a.links_arbo_left.selected-note {
     margin: 6px 0 2px 0;
     padding: 6px 10px;
 }
+
+/* MOBILE NOTIFICATION POPUP STYLES */
+#notificationPopup {
+    padding: 12px 20px !important;
+    font-size: 0.9em !important;
+    max-width: 90% !important;
+    min-width: 250px !important;
+    left: 50% !important;
+    top: 30% !important;
+    transform: translate(-50%, -50%) !important;
+}

@@ -230,6 +230,7 @@ function deleteAttachment(attachmentId) {
         if (data.success) {
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
+            showNotificationPopup('Attachment deleted successfully');
         } else {
             showNotificationPopup('Delete failed: ' + data.message, 'error');
         }

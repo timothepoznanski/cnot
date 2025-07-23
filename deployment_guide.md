@@ -2,6 +2,47 @@
 
 Guide for deploying and managing the CnoT application.
 
+## 🏗️ Development vs Production Architecture
+
+### Development Workflow (Branch: `dev`)
+The development environment uses a **live reload** approach:
+
+1. **Base Image**: The Dockerfile always copies code into the image:
+   ```dockerfile
+   COPY src/ /var/www/html/
+   ```
+   → This ensures correct permissions (www-data) and file structure
+
+2. **Volume Override**: The volume `./src:/var/www/html` **OVERWRITES** the copied content:
+   → Local code replaces the image code
+   → Any local modification is **IMMEDIATELY** visible in the container
+   → No rebuild needed: edit file → refresh browser!
+
+3. **Live Development**:
+   ```bash
+   # Start dev environment
+   docker compose -p cnot-dev --env-file .env.dev -f docker-compose.yml -f docker-compose-dev.yml up -d
+   
+   # Edit files in ./src → changes are instant!
+   ```
+
+### Production Workflow (Branch: `main`)
+The production environment uses **immutable images**:
+
+1. **Image Build**: Code is permanently copied into the Docker image
+2. **Registry Push**: Immutable image pushed to Docker Hub (`timpoz/cnot`)
+3. **Production Deploy**: Fixed, versioned, secure image deployed
+
+### Key Differences:
+- **DEV**: Local code mounted as volume (live reload)
+- **PROD**: Code frozen in image (immutable, secure)
+
+### Benefits:
+- ✅ **Correct permissions** (thanks to initial copy)
+- ✅ **Instant live reload** (thanks to volume override)
+- ✅ **Same environment** dev/prod (same Dockerfile)
+- ✅ **Production security** (immutable images)
+
 ## 📦 Installation
 
 ### Production (Registry)

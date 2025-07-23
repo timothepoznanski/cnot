@@ -71,6 +71,140 @@
 .welcome-message-full {
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    min-height: 600px;
+    padding: 2rem;
+}
+
+.welcome-content {
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem 0;
+}
+
+.welcome-icon {
+    font-size: 4rem;
+    color: #007DB8;
+    margin-bottom: 1.5rem;
+}
+
+.cnot-logo {
+    position: relative;
+    display: inline-block;
+}
+
+.cnot-favicon {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+}
+
+.cnot-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #37352F;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.welcome-description {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.welcome-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.welcome-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.welcome-btn-primary {
+    background: #007DB8;
+    color: white;
+}
+
+.welcome-btn-primary:hover {
+    background: #005c8a;
+    transform: translateY(-1px);
+}
+
+.welcome-btn-secondary {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 1px solid #e9ecef;
+}
+
+.welcome-btn-secondary:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+/* Responsive design for welcome page */
+@media (max-width: 768px) {
+    .welcome-message-full {
+        padding: 1rem;
+        min-height: 500px;
+    }
+    
+    .welcome-content {
+        padding: 1rem 0;
+    }
+    
+    .welcome-title {
+        font-size: 2rem;
+    }
+    
+    .welcome-description {
+        font-size: 1rem;
+    }
+    
+    .welcome-actions {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .welcome-btn {
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 @font-face {
@@ -381,6 +515,55 @@ body {
     border-right: 1px solid #ddd;
     padding: 16px;
     box-sizing: border-box;
+}
+
+/* LEFT HEADER */
+
+.left-header {
+    text-align: center;
+    padding: 12px 0 20px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.left-header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.left-header-logo:hover {
+    background-color: rgba(0, 125, 184, 0.1);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: inherit;
+}
+
+.left-header-logo:visited,
+.left-header-logo:link,
+.left-header-logo:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.left-header-favicon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.left-header-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #007DB8;
+    letter-spacing: 0.5px;
 }
 
 /* RIGHT COLUMN */

@@ -130,6 +130,27 @@ function toggleSearchType(type, isMobile) {
     // Update search input state and placeholder
     updateSearchPlaceholder(isMobile);
     updateHiddenInputs(isMobile);
+    
+    // Get search input to check for content
+    const searchInput = document.getElementById('unified-search' + suffix);
+    
+    // If there's content in the search input, trigger search automatically
+    if (searchInput && searchInput.value.trim() !== '') {
+        // Update hidden inputs with current search value before submitting
+        updateHiddenInputs(isMobile);
+        
+        // Submit the form to trigger the search
+        const formId = isMobile ? 'unified-search-form-mobile' : 'unified-search-form';
+        const form = document.getElementById(formId);
+        if (form) {
+            form.submit();
+        }
+    } else {
+        // If no content, just focus the search input to encourage typing
+        if (searchInput) {
+            searchInput.focus();
+        }
+    }
 }
 
 function handleUnifiedSearchSubmit(e, isMobile) {

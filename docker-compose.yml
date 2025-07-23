@@ -2,8 +2,9 @@ services:
   
   # WEB      
   webserver:       
+    image: ${DOCKER_IMAGE:-cnot:latest}  # Use registry image in prod, build locally in dev
     build:
-      context: . # Use the current directory as the build context
+      context: . # Use the current directory as the build context (only for dev)
       dockerfile: Dockerfile # Specify the Dockerfile to use
     restart: always      
     depends_on:

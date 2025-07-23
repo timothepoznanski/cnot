@@ -227,6 +227,12 @@ if($note != '') {
 
         <!-- Menu pour mobile -->
         <?php if ($is_mobile): ?>
+        <div class="left-header">
+            <a href="https://timpoz.com" target="_blank" class="left-header-logo">
+                <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
+                <span class="left-header-text">CnoT</span>
+            </a>
+        </div>
         <div class="containbuttons">
             <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
             <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
@@ -377,6 +383,12 @@ if($note != '') {
     <!-- MENU -->
 
     <?php if (!$is_mobile): ?>
+    <div class="left-header">
+        <a href="https://timpoz.com" target="_blank" class="left-header-logo">
+            <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
+            <span class="left-header-text">CnoT</span>
+        </a>
+    </div>
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
         <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
@@ -798,8 +810,24 @@ if($note != '') {
                 echo '</div>';
             }
         } else {
-            // Display welcome message when no note is selected - page blanche
-            echo '<div class="welcome-message welcome-message-full"></div>';
+            // Display welcome message when no note is selected
+            echo '<div class="welcome-message welcome-message-full">';
+            echo '    <div class="welcome-content">';
+            echo '        <div class="welcome-icon">';
+            echo '            <div class="cnot-logo">';
+            echo '                <img src="favicon.ico" alt="CnoT" class="cnot-favicon">';
+            echo '            </div>';
+            echo '        </div>';
+            echo '        <h2 class="welcome-title">CnoT</h2>';
+            echo '        <p class="welcome-description">Create your first note to get started</p>';
+            echo '        <div class="welcome-actions">';
+            echo '            <button class="welcome-btn welcome-btn-primary" onclick="createFirstNote()">';
+            echo '                <i class="fas fa-plus"></i>';
+            echo '                Create your first note';
+            echo '            </button>';
+            echo '        </div>';
+            echo '    </div>';
+            echo '</div>';
         }
         ?>        
     </div>
@@ -808,5 +836,6 @@ if($note != '') {
 </body>
 <script src="js/script.js"></script>
 <script src="js/unified-search.js"></script>
+<script src="js/welcome.js"></script>
 
 </html>

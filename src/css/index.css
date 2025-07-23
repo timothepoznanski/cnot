@@ -855,7 +855,7 @@ a.links_arbo_left.selected-note {
 }
 
 .searchbar-input {
-    padding: 6px 40px 6px 38px;
+    padding: 6px 80px 6px 38px;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
     background: #fff;
@@ -867,6 +867,11 @@ a.links_arbo_left.selected-note {
     min-width: 0;
     font-family: 'Inter', sans-serif !important;
     color: #868484b9 
+}
+
+/* When clear button is present, add more padding to avoid overlap */
+.searchbar-input-wrapper.has-clear-button .searchbar-input {
+    padding-right: 120px;
 }
 
 .searchbar-input:disabled {
@@ -962,7 +967,7 @@ a.links_arbo_left.selected-note {
 
 .searchbar-clear {
     position: absolute;
-    right: 10px;
+    right: 80px;
     top: 50%;
     transform: translateY(-50%);
     background: none !important;
@@ -2153,10 +2158,14 @@ hr {
 }
 
 .search-type-buttons {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     gap: 2px;
     align-items: center;
-    margin-left: 8px;
+    z-index: 4;
     /* margin-right: 8px; */
 }
 
@@ -2164,27 +2173,31 @@ hr {
     background: transparent;
     border: none;
     border-radius: 4px;
-    padding: 6px 8px;
+    padding: 4px 6px;
     cursor: pointer;
     transition: all 0.2s ease;
     color: #6c757d;
-    font-size: 0.9em;
-    min-width: 32px;
-    height: 32px;
+    font-size: 0.85em;
+    min-width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .search-type-btn:hover {
-    color: #6c757d;
+    background: rgba(0, 125, 184, 0.1);
 }
 
-.search-type-btn.active {
+.search-type-btn:hover i {
     color: #007DB8;
 }
 
-.search-type-btn.active:hover {
+.search-type-btn.active i {
+    color: #007DB8;
+}
+
+.search-type-btn.active:hover i {
     color: #007DB8;
 }
 

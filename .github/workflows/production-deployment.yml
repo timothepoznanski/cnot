@@ -27,8 +27,8 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/cnot:latest
           ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/cnot:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -47,24 +47,21 @@ jobs:
         port: ${{ secrets.PROD_PORT || 22 }}
         script: |
           set -e
-          echo "🚀 Starting professional production deployment..."
+          echo "🚀 Starting production deployment..."
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
           # Pull the new image
-          echo "📥 Pulling new Docker image..."
-          docker pull ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}"
+          echo "📥 Pulling new Docker image: $IMAGE_TAG"
+          docker pull $IMAGE_TAG
           
-          # Tag as latest for compose
-          docker tag ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }} cnot:latest
-          
-          echo "🔄 Updating services..."
-          # Update docker-compose with new image
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml pull || true
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+          # Deploy to production
+          echo "🔄 Updating production services..."
+          DOCKER_IMAGE=$IMAGE_TAG docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
           
           echo "🧹 Cleaning up old images..."
           docker image prune -f
           
-          echo "✅ Professional deployment completed!"
+          echo "✅ Production deployment completed!"
           echo "📊 Deployed version: ${{ github.sha }}"

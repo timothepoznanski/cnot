@@ -228,10 +228,10 @@ if($note != '') {
         <!-- Menu pour mobile -->
         <?php if ($is_mobile): ?>
         <div class="left-header">
-            <div class="left-header-logo">
+            <a href="https://timpoz.com" target="_blank" class="left-header-logo">
                 <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
                 <span class="left-header-text">CnoT</span>
-            </div>
+            </a>
         </div>
         <div class="containbuttons">
             <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
@@ -384,10 +384,10 @@ if($note != '') {
 
     <?php if (!$is_mobile): ?>
     <div class="left-header">
-        <div class="left-header-logo">
+        <a href="https://timpoz.com" target="_blank" class="left-header-logo">
             <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
             <span class="left-header-text">CnoT</span>
-        </div>
+        </a>
     </div>
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>

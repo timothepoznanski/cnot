@@ -531,6 +531,25 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.left-header-logo:hover {
+    background-color: rgba(0, 125, 184, 0.1);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: inherit;
+}
+
+.left-header-logo:visited,
+.left-header-logo:link,
+.left-header-logo:active {
+    text-decoration: none;
+    color: inherit;
 }
 
 .left-header-favicon {

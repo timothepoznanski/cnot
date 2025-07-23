@@ -7,9 +7,12 @@ Ce guide t'aide à éviter les conflits lors de la création de Pull Requests (P
 
 Les conflits surviennent quand :
 1. ✅ Tu travailles sur la branche `dev`
-2. 🔄 Pendant ce temps, la branche `main` reçoit de nouveaux commits (merges d'autres PRs)
-3. 📝 Tu modifies les mêmes fichiers que ceux modifiés dans `main`
-4. ⚠️ Quand tu crées une PR, Git ne peut pas automatiquement merger les changements
+2. 🔄 Tu crées une PR et elle est mergée dans `main`
+3. 🤖 **Le workflow de déploiement automatique modifie `main`** lors du processus
+4. 📝 GitHub peut consolider/reformater tes commits différemment lors du merge
+5. ⚠️ Quand tu crées ta prochaine PR, Git voit une divergence même si c'est le même contenu
+
+**Note importante:** Même si tu es seul sur le repo, les **workflows automatiques** (GitHub Actions, déploiements) peuvent modifier `main` et créer ces divergences.
 
 ## 🛠️ Solution recommandée
 
@@ -42,7 +45,7 @@ git push origin dev
 
 ### ✅ Fais-le systématiquement :
 - **Avant** de créer une PR
-- **Après** que des PRs ont été mergées dans `main`
+- **Après** qu'une PR a été mergée dans `main` (même la tienne!)
 - **Au début** de chaque session de travail
 
 ### ⚠️ Attention :
@@ -63,12 +66,13 @@ Quand des conflits apparaissent :
    <<<<<<< HEAD
    Ton code (dev)
    =======
-   Code de main
+   Code de main (souvent identique mais reformaté)
    >>>>>>> origin/main
    ```
 
 3. **Décide quoi garder** :
-   - Généralement, garde les améliorations de `dev`
+   - **Généralement, garde les améliorations de `dev`**
+   - Les conflits sont souvent dus à des reformatages automatiques
    - Assure-toi que le code final fonctionne
 
 4. **Supprime les marqueurs** et garde le code final
@@ -84,27 +88,35 @@ Quand des conflits apparaissent :
    git push origin dev
    ```
 
-## 🎯 Bonnes pratiques pour l'équipe
+## 🤖 Pourquoi ça arrive avec les workflows automatiques ?
+
+Ton setup a des **GitHub Actions** qui :
+1. Créent automatiquement des PRs de `dev` vers `main`
+2. Déploient automatiquement quand `main` change
+3. **Peuvent modifier légèrement les commits** lors du processus
+
+**Exemple :** Le commit sur `main` peut grouper plusieurs de tes commits `dev` en un seul, créant une divergence.
+
+## 🎯 Bonnes pratiques pour ton workflow automatique
 
 ### Pour éviter les conflits futurs :
-1. **Communiquez** sur les fichiers que vous modifiez
-2. **Synchronisez régulièrement** avec main
-3. **Créez des PRs plus petites** et plus fréquentes
-4. **Mergez rapidement** les PRs approuvées
+1. **Synchronise systématiquement** après chaque merge
+2. **Utilise le script** avant chaque nouveau développement
+3. **Ne modifie jamais `main` directement**
 
-### Workflow recommandé :
+### Workflow recommandé avec automation :
 ```
-dev (votre travail) ← sync régulière ← main (production)
-     ↓ PR
-   main (après review)
+dev (ton travail) → PR automatique → main (après merge) → déploiement auto
+     ↑                                  ↓
+     ← sync régulière avec script ←←←←←←←
 ```
 
-## 🚀 Automatisation
+## 🚀 Optimisation future
 
-Pour l'avenir, considérez :
-- **GitHub Actions** pour auto-sync
-- **Branch protection rules** sur main
-- **Pre-commit hooks** pour vérifications
+Pour améliorer ton workflow :
+- **Squash merge** dans GitHub pour des commits plus propres
+- **Rebase** automatique dans les workflows
+- **Protection branch** sur main avec review obligatoire
 
 ## ❓ En cas de problème
 

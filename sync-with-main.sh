@@ -36,6 +36,7 @@ if [ "$main_commits" -eq 0 ]; then
 fi
 
 echo "📊 $main_commits nouveaux commits trouvés sur main"
+echo "ℹ️  Note: Ces commits peuvent être des versions consolidées de tes propres changements"
 
 # Merger main dans dev
 echo "🔄 Merge de main dans dev..."
@@ -52,6 +53,9 @@ else
     echo "   2. Utilisez 'git add <fichier>' pour marquer chaque conflit comme résolu"
     echo "   3. Exécutez 'git commit' pour finaliser le merge"
     echo "   4. Puis 'git push origin dev' pour pousser les changements"
+    echo ""
+    echo "💡 Conseil: Les conflits sont probablement dus aux commits de déploiement"
+    echo "   qui consolident tes changements différemment. Garde tes améliorations de dev."
     exit 1
 fi
 

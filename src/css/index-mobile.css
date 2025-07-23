@@ -15,6 +15,7 @@
 /* Mobile content spacing */
 .mobile-search-container {
     margin-bottom: 15px !important;
+    margin-top: 8px !important;
 }
 
 /* Folder filter spacing on mobile */

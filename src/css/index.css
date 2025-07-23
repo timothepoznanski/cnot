@@ -1146,8 +1146,8 @@ img {
 
 .containbuttons{
     text-align: center;
-    /* padding-bottom: 15px; */
-    /* padding-top: 11px; */
+    /* padding-top: 8px; */
+    /* padding-bottom: 8px; */
 }
 
 .newbutton[style], .list_tags[style] {

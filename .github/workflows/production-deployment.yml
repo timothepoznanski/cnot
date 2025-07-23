@@ -28,8 +28,7 @@ jobs:
         push: true
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.ref_name }}-${{ github.sha }}
-          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.ref_name }}-latest
-          ${{ github.ref_name == 'main' && format('{0}/cnot:latest', secrets.DOCKER_USERNAME) || '' }}
+          ${{ github.ref_name == 'main' && format('{0}/cnot:latest', secrets.DOCKER_USERNAME) || format('{0}/cnot:{1}-latest', secrets.DOCKER_USERNAME, github.ref_name) }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 

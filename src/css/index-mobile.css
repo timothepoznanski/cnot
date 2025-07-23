@@ -722,6 +722,10 @@ a.links_arbo_left.selected-note {
 }
 
 /* MOBILE NOTIFICATION POPUP STYLES */
+.notification-overlay {
+    z-index: 999 !important;
+}
+
 #notificationPopup {
     padding: 12px 20px !important;
     font-size: 0.9em !important;
@@ -730,4 +734,5 @@ a.links_arbo_left.selected-note {
     left: 50% !important;
     top: 30% !important;
     transform: translate(-50%, -50%) !important;
+    z-index: 1000 !important;
 }

@@ -104,6 +104,7 @@ if($note != '') {
 
 
     <!-- Notification popup -->
+    <div id="notificationOverlay" class="notification-overlay"></div>
     <div id="notificationPopup"></div>
     
     <!-- Modal for creating new folder -->

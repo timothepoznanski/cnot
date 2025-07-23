@@ -648,6 +648,7 @@ function saveFocusedNoteJS(){
 
 function showNotificationPopup(message, type = 'success') {
     var popup = document.getElementById('notificationPopup');
+    var overlay = document.getElementById('notificationOverlay');
     popup.innerText = message;
     
     // Remove existing type classes
@@ -660,12 +661,22 @@ function showNotificationPopup(message, type = 'success') {
         popup.classList.add('notification-success');
     }
     
+    // Show overlay and popup
+    overlay.style.display = 'block';
     popup.style.display = 'block';
 
-    // Hide the popup after a certain amount of time
-    setTimeout(function() {
+    // Function to hide notification
+    function hideNotification() {
         popup.style.display = 'none';
-    }, 4000); // Hide after 4 seconds.
+        overlay.style.display = 'none';
+        overlay.removeEventListener('click', hideNotification);
+    }
+
+    // Allow closing by clicking on overlay
+    overlay.addEventListener('click', hideNotification);
+
+    // Hide the popup and overlay after a certain amount of time
+    setTimeout(hideNotification, 4000); // Hide after 4 seconds.
 }
 
 // Folder management functions

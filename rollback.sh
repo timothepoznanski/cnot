@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Professional rollback script
+# Professional rollback script - v1.0 (Testing professional workflow)
 # Usage: ./rollback.sh [version_sha]
 
 set -e

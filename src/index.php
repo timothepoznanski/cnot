@@ -386,7 +386,7 @@ if($note != '') {
     <div class="left-header">
         <a href="https://timpoz.com" target="_blank" class="left-header-logo">
             <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
-            <span class="left-header-text">CnoT</span>
+            <span class="left-header-text">CnoT Pro</span>
         </a>
     </div>
     <div class="containbuttons">
@@ -818,7 +818,7 @@ if($note != '') {
             echo '                <img src="favicon.ico" alt="CnoT" class="cnot-favicon">';
             echo '            </div>';
             echo '        </div>';
-            echo '        <h2 class="welcome-title">CnoT</h2>';
+            echo '        <h2 class="welcome-title">CnoT Pro</h2>';
             echo '        <p class="welcome-description">Create your first note to get started</p>';
             echo '        <div class="welcome-actions">';
             echo '            <button class="welcome-btn welcome-btn-primary" onclick="createFirstNote()">';

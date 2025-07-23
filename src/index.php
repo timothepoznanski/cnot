@@ -227,6 +227,12 @@ if($note != '') {
 
         <!-- Menu pour mobile -->
         <?php if ($is_mobile): ?>
+        <div class="left-header">
+            <div class="left-header-logo">
+                <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
+                <span class="left-header-text">CnoT</span>
+            </div>
+        </div>
         <div class="containbuttons">
             <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
             <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
@@ -377,6 +383,12 @@ if($note != '') {
     <!-- MENU -->
 
     <?php if (!$is_mobile): ?>
+    <div class="left-header">
+        <div class="left-header-logo">
+            <img src="favicon.ico" alt="CnoT" class="left-header-favicon">
+            <span class="left-header-text">CnoT</span>
+        </div>
+    </div>
     <div class="containbuttons">
         <div class="newbutton" onclick="newnote();"><span><span title="Create a new note" class="fas fa-file-medical"></span></span></div>
         <div class="newfolderbutton" onclick="newFolder();"><span><span title="Create a new folder" class="fas fa-folder-plus"></span></span></div>
@@ -802,53 +814,17 @@ if($note != '') {
             echo '<div class="welcome-message welcome-message-full">';
             echo '    <div class="welcome-content">';
             echo '        <div class="welcome-icon">';
-            echo '            <i class="fas fa-sticky-note"></i>';
+            echo '            <div class="cnot-logo">';
+            echo '                <img src="favicon.ico" alt="CnoT" class="cnot-favicon">';
+            echo '            </div>';
             echo '        </div>';
-            echo '        <h1 class="welcome-title">Bienvenue dans votre carnet de notes !</h1>';
-            echo '        <p class="welcome-description">Commencez à organiser vos idées, vos pensées et vos projets dans un espace personnel et privé.</p>';
+            echo '        <h2 class="welcome-title">CnoT</h2>';
+            echo '        <p class="welcome-description">Create your first note to get started</p>';
             echo '        <div class="welcome-actions">';
             echo '            <button class="welcome-btn welcome-btn-primary" onclick="createFirstNote()">';
             echo '                <i class="fas fa-plus"></i>';
-            echo '                Créer ma première note';
+            echo '                Create your first note';
             echo '            </button>';
-            echo '            <button class="welcome-btn welcome-btn-secondary" onclick="showWelcomeFeatures()">';
-            echo '                <i class="fas fa-lightbulb"></i>';
-            echo '                Découvrir les fonctionnalités';
-            echo '            </button>';
-            echo '        </div>';
-            echo '        <div class="welcome-features" id="welcome-features" style="display: none;">';
-            echo '            <div class="features-grid">';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-edit"></i>';
-            echo '                    <h3>Édition riche</h3>';
-            echo '                    <p>Formatez votre texte avec gras, italique, listes et bien plus encore</p>';
-            echo '                </div>';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-folder"></i>';
-            echo '                    <h3>Organisation</h3>';
-            echo '                    <p>Organisez vos notes dans des dossiers personnalisables</p>';
-            echo '                </div>';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-star"></i>';
-            echo '                    <h3>Favoris</h3>';
-            echo '                    <p>Marquez vos notes importantes comme favoris pour un accès rapide</p>';
-            echo '                </div>';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-search"></i>';
-            echo '                    <h3>Recherche</h3>';
-            echo '                    <p>Trouvez rapidement vos notes par contenu ou par tags</p>';
-            echo '                </div>';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-paperclip"></i>';
-            echo '                    <h3>Pièces jointes</h3>';
-            echo '                    <p>Ajoutez des images et fichiers à vos notes</p>';
-            echo '                </div>';
-            echo '                <div class="feature-item">';
-            echo '                    <i class="fas fa-tags"></i>';
-            echo '                    <h3>Tags</h3>';
-            echo '                    <p>Catégorisez vos notes avec des étiquettes</p>';
-            echo '                </div>';
-            echo '            </div>';
             echo '        </div>';
             echo '    </div>';
             echo '</div>';

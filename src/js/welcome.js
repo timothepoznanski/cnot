@@ -1,23 +1,36 @@
 // Welcome page functions
 function createFirstNote() {
-    // Redirect to create new note page or trigger new note creation
-    window.location.href = 'insertnew.php';
-}
-
-function showWelcomeFeatures() {
-    const featuresDiv = document.getElementById('welcome-features');
-    const button = event.target.closest('.welcome-btn-secondary');
-    
-    if (featuresDiv.style.display === 'none' || featuresDiv.style.display === '') {
-        featuresDiv.style.display = 'block';
-        button.innerHTML = '<i class="fas fa-times"></i> Masquer les fonctionnalités';
-        
-        // Smooth scroll to features
-        setTimeout(() => {
-            featuresDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-    } else {
-        featuresDiv.style.display = 'none';
-        button.innerHTML = '<i class="fas fa-lightbulb"></i> Découvrir les fonctionnalités';
-    }
+    // Create a new note using the same logic as newnote() function
+    var params = new URLSearchParams({
+        now: (new Date().getTime()/1000)-new Date().getTimezoneOffset()*60,
+        folder: 'Uncategorized' // Default folder for first note
+    });
+    fetch("insertnew.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(response => response.text())
+    .then(function(data) {
+        try {
+            var res = typeof data === 'string' ? JSON.parse(data) : data;
+            if(res.status === 1) {
+                window.scrollTo(0, 0);
+                window.location.href = "index.php?note=" + encodeURIComponent(res.heading);
+            } else {
+                console.error('Error creating note:', res.error || data);
+                // Fallback: just redirect to index page
+                window.location.href = "index.php";
+            }
+        } catch(e) {
+            console.error('Error parsing response:', e, data);
+            // Fallback: just redirect to index page
+            window.location.href = "index.php";
+        }
+    })
+    .catch(function(error) {
+        console.error('Network error:', error);
+        // Fallback: just redirect to index page
+        window.location.href = "index.php";
+    });
 }

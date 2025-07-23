@@ -73,6 +73,7 @@ jobs:
           # Create version file
           echo "📝 Creating version file..."
           echo "${{ steps.timestamp.outputs.timestamp }}" > src/version.txt
+          echo "📋 Version: ${{ steps.timestamp.outputs.timestamp }}"
           
           # Deploy to production
           echo "🔄 Updating production services..."

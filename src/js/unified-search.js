@@ -70,12 +70,21 @@ function initializeSearchButtons(isMobile) {
     
     if (!notesBtn || !tagsBtn || !searchInput) return;
     
-    // Always respect the hidden input values to preserve search type preferences
-    if (notesHidden && notesHidden.value === '1') {
+    // Check if there are existing search preferences from hidden inputs
+    const hasNotesPreference = notesHidden && notesHidden.value === '1';
+    const hasTagsPreference = tagsHidden && tagsHidden.value === '1';
+    
+    // Respect existing search type preferences
+    if (hasNotesPreference) {
         notesBtn.classList.add('active');
-    }
-    if (tagsHidden && tagsHidden.value === '1') {
+        tagsBtn.classList.remove('active');
+    } else if (hasTagsPreference) {
         tagsBtn.classList.add('active');
+        notesBtn.classList.remove('active');
+    } else {
+        // Default state: activate notes search
+        notesBtn.classList.add('active');
+        tagsBtn.classList.remove('active');
     }
     
     // Add click handlers
@@ -93,12 +102,27 @@ function initializeSearchButtons(isMobile) {
 
 function toggleSearchType(type, isMobile) {
     const suffix = isMobile ? '-mobile' : '';
-    const notesBtn = document.getElementById('search-notes-btn' + suffix);
-    const tagsBtn = document.getElementById('search-tags-btn' + suffix);
-    const btn = type === 'notes' ? notesBtn : tagsBtn;
+    const btn = document.getElementById('search-' + type + '-btn' + suffix);
     
-    // Toggle the button state
-    btn.classList.toggle('active');
+    if (!btn) return;
+    
+    // Determine the other button type
+    const otherType = type === 'notes' ? 'tags' : 'notes';
+    const otherBtn = document.getElementById('search-' + otherType + '-btn' + suffix);
+    
+    // If button is already active, activate the other one instead
+    if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        if (otherBtn) {
+            otherBtn.classList.add('active');
+        }
+    } else {
+        // Activate this button and deactivate the other
+        btn.classList.add('active');
+        if (otherBtn) {
+            otherBtn.classList.remove('active');
+        }
+    }
     
     // Remove error styling
     hideSearchValidationError(isMobile);
@@ -125,13 +149,28 @@ function handleUnifiedSearchSubmit(e, isMobile) {
         return;
     }
     
-    // Check if at least one option is selected
+    // Check button states (there should always be exactly one active)
     const hasNotesActive = notesBtn.classList.contains('active');
     const hasTagsActive = tagsBtn.classList.contains('active');
     
+    // Safety check: ensure exactly one is active (shouldn't happen with new logic)
+    if (hasNotesActive && hasTagsActive) {
+        e.preventDefault();
+        // Reset to notes only as default
+        notesBtn.classList.add('active');
+        tagsBtn.classList.remove('active');
+        updateSearchPlaceholder(isMobile);
+        updateHiddenInputs(isMobile);
+        return;
+    }
+    
+    // Another safety check: ensure at least one is active
     if (!hasNotesActive && !hasTagsActive) {
         e.preventDefault();
-        showSearchValidationError(isMobile);
+        // Activate notes as default
+        notesBtn.classList.add('active');
+        updateSearchPlaceholder(isMobile);
+        updateHiddenInputs(isMobile);
         return;
     }
     
@@ -196,11 +235,9 @@ function updateSearchPlaceholder(isMobile) {
     const hasNotesActive = notesBtn.classList.contains('active');
     const hasTagsActive = tagsBtn.classList.contains('active');
     
-    let placeholder = 'Select search options first...';
+    let placeholder = 'Search in notes...'; // Default placeholder
     
-    if (hasNotesActive && hasTagsActive) {
-        placeholder = 'Search in both...';
-    } else if (hasNotesActive) {
+    if (hasNotesActive) {
         placeholder = 'Search in notes...';
     } else if (hasTagsActive) {
         placeholder = 'Search in tags...';
@@ -208,10 +245,9 @@ function updateSearchPlaceholder(isMobile) {
     
     searchInput.placeholder = placeholder;
     
-    // Disable/enable search input based on button selection
-    const hasSelection = hasNotesActive || hasTagsActive;
-    searchInput.disabled = !hasSelection;
-    searchInput.style.opacity = hasSelection ? '1' : '0.6';
+    // Always enable search input since there's always a selection
+    searchInput.disabled = false;
+    searchInput.style.opacity = '1';
 }
 
 function updateHiddenInputs(isMobile) {

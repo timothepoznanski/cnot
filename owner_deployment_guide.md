@@ -45,31 +45,6 @@ The production environment uses **immutable images**:
 
 ## 📦 Installation
 
-### ⏰ Timezone Configuration
-
-Before deploying, configure the timezone in your `.env` file:
-
-```bash
-# For Europe (Paris timezone)
-APP_TIMEZONE=Europe/Paris
-
-# For USA East Coast (New York timezone)
-APP_TIMEZONE=America/New_York
-
-# For USA West Coast (Los Angeles timezone)
-APP_TIMEZONE=America/Los_Angeles
-
-# For Asia (Tokyo timezone)
-APP_TIMEZONE=Asia/Tokyo
-```
-
-**Available timezones**: See [PHP Timezones](https://www.php.net/manual/en/timezones.php) for the complete list.
-
-The timezone affects:
-- 📅 Deployment timestamps in the UI
-- 🕒 All date/time displays throughout the application
-- 📝 Note creation and modification timestamps
-
 ### Production (Registry)
 ```bash
 DOCKER_IMAGE=timpoz/cnot:latest docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d

@@ -2,6 +2,8 @@
 
 I created CnoT as a simple, self-hosted, open-source, full-responsive, note-taking tool with powerful search and full control over your data. 🤩
 
+<img width="1810" height="851" alt="capture" src="https://github.com/user-attachments/assets/0b7f187c-7757-436a-8ccc-55db9b6e8d89" />
+
 CnoT runs in Docker and works seamlessly on both Windows and Linux. The interface is fully responsive across all devices.
 
 ⚠️ If you run the app online, make sure to secure it properly by handling access control and HTTPS yourself. Personally, I use Nginx Proxy Manager with its Access List and SSL certificate features (https://nginxproxymanager.com).

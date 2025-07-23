@@ -1,8 +1,6 @@
 name: Production Deployment
 
 on:
-  push:
-    branches: [ main ]
   release:
     types: [ published ]
 
@@ -20,11 +18,7 @@ jobs:
     - name: Get version tag
       id: version
       run: |
-        if [[ $GITHUB_EVENT_NAME == "release" ]]; then
-          VERSION=${{ github.event.release.tag_name }}
-        else
-          VERSION=${{ github.sha }}
-        fi
+        VERSION=${{ github.event.release.tag_name }}
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Using version: $VERSION"
     
@@ -55,11 +49,7 @@ jobs:
     - name: Get version tag
       id: version
       run: |
-        if [[ $GITHUB_EVENT_NAME == "release" ]]; then
-          VERSION=${{ github.event.release.tag_name }}
-        else
-          VERSION=${{ github.sha }}
-        fi
+        VERSION=${{ github.event.release.tag_name }}
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Using version: $VERSION"
     

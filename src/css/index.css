@@ -47,6 +47,14 @@ a:active { color: #2E8CFA; } */
 
 .attachment-modal {
     z-index: 1001;
+    margin: 5% auto !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Specific styling for attachment modal */
+#attachmentModal .modal-content {
+    margin: 5% auto !important;
 }
 
 .attachment-upload {

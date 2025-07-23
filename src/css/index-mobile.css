@@ -378,13 +378,25 @@ a.links_arbo_left.selected-note {
 /* MOVE FOLDER MODAL MOBILE STYLES */
 
 .move-folder-modal {
-    margin: 5% auto !important;
-    width: 95% !important;
-    max-width: 350px !important;
+    margin: 5% 5% !important;
+    width: calc(100% - 40px) !important;
+    max-width: 90% !important;
     min-width: unset !important;
     max-height: 90vh !important;
     overflow-y: auto !important;
     padding: 20px !important;
+}
+
+/* Override general modal styles for move folder modal */
+#moveNoteFolderModal .modal-content.move-folder-modal {
+    position: fixed !important;
+    top: 5% !important;
+    left: 20px !important;
+    right: 20px !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
 }
 
 .move-folder-modal h3 {

@@ -154,12 +154,12 @@ if($note != '') {
             </div>
             
             <!-- Folders list (hidden by default) -->
-            <div class="folders-selection-list" id="foldersSelectionList" style="display: none;">
+            <div class="folders-selection-list" id="foldersSelectionList">
                 <!-- Folders will be loaded here -->
             </div>
             
             <!-- Create new folder section -->
-            <div class="create-folder-section" id="createFolderSection" style="display: none;">
+            <div class="create-folder-section" id="createFolderSection">
                 <input type="text" id="moveNewFolderName" placeholder="Enter new folder name" maxlength="255">
                 <div class="create-folder-buttons">
                     <button type="button" onclick="createAndMoveToNewFolder()">Create & Move</button>
@@ -175,7 +175,7 @@ if($note != '') {
             </div>
             
             <!-- Error message display -->
-            <div id="moveFolderErrorMessage" class="modal-error-message" style="display: none;">
+            <div id="moveFolderErrorMessage" class="modal-error-message">
                 Please select a folder
             </div>
         </div>
@@ -201,14 +201,14 @@ if($note != '') {
             <h3>Manage Attachments</h3>
             <div class="attachment-upload">
                 <div class="file-input-container">
-                    <label for="attachmentFile" style="display: block; width: 160px; margin: 0 auto; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px; text-align: center; cursor: pointer; position: relative; z-index: 1;">
+                    <label for="attachmentFile" class="file-input-label">
                         Choose a file
-                        <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar" style="display:none;">
+                        <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar" class="file-input-hidden">
                     </label>
-                    <div id="acceptedTypes" style="font-size: 0.85em; color: #888; text-align: center; margin-top: 4px;">pdf, doc, docx, txt, jpg, jpeg, png, gif, zip, rar</div>
+                    <div id="acceptedTypes" class="accepted-types">pdf, doc, docx, txt, jpg, jpeg, png, gif, zip, rar</div>
                 </div>
-                <div style="height: 18px;"></div>
-                <div id="selectedFileName" style="margin: 0 0 18px 0; font-size: 0.95em; color: #444; text-align:center; min-height: 1.5em;">No file chosen</div>
+                <div class="spacer-18"></div>
+                <div id="selectedFileName" class="selected-filename">No file chosen</div>
                 <div class="upload-button-container">
                     <button onclick="uploadAttachment()">Upload File</button>
                 </div>
@@ -297,7 +297,7 @@ if($note != '') {
                         <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-mobile" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
                         <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
                     </div>
-                    <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-mobile" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
+                    <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-mobile" title="Clear folder filter" onclick="clearFolderFilter()"><span class="fas fa-times-circle"></span></button>
                 </div>
             </div>
         </div>
@@ -449,7 +449,7 @@ if($note != '') {
                     <input autocomplete="off" autocapitalize="off" spellcheck="false" id="folder-filter-desktop" type="search" class="search form-control searchbar-input" placeholder="Filter folders..." oninput="filterFolders()" />
                     <span class="searchbar-icon"><span class="fas fa-folder"></span></span>
                 </div>
-                <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-desktop" title="Clear folder filter" onclick="clearFolderFilter()" style="display: none;"><span class="fas fa-times-circle"></span></button>
+                <button type="button" class="searchbar-clear searchbar-clear-outer" id="folder-filter-clear-desktop" title="Clear folder filter" onclick="clearFolderFilter()"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
     </div>
@@ -622,7 +622,7 @@ if($note != '') {
                 
                 // Icône spéciale pour le dossier Favorites
                 if ($folderName === 'Favorites') {
-                    echo "<i class='fas fa-star folder-name-icon' style='color:#007DB8;'></i>";
+                    echo "<i class='fas fa-star folder-name-icon folder-star-icon'></i>";
                 } else {
                     echo "<i class='fas fa-folder folder-name-icon'></i>";
                 }
@@ -712,8 +712,8 @@ if($note != '') {
                 echo '<button type="button" class="toolbar-btn btn-strikethrough'.$text_format_class.'" title="Strikethrough" onclick="document.execCommand(\'strikeThrough\')"><i class="fas fa-strikethrough"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-link'.$text_format_class.'" title="Link" onclick="addLinkToNote()"><i class="fas fa-link"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-unlink'.$text_format_class.'" title="Remove link" onclick="document.execCommand(\'unlink\')"><i class="fas fa-unlink"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-color'.$text_format_class.'" title="Text color" onclick="toggleRedColor()"><i class="fas fa-palette" style="color:#ff2222;"></i></button>';
-                echo '<button type="button" class="toolbar-btn btn-highlight'.$text_format_class.'" title="Highlight" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip" style="color:#ffe066;"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-color'.$text_format_class.'" title="Text color" onclick="toggleRedColor()"><i class="fas fa-palette"></i></button>';
+                echo '<button type="button" class="toolbar-btn btn-highlight'.$text_format_class.'" title="Highlight" onclick="toggleYellowHighlight()"><i class="fas fa-fill-drip"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-list-ul'.$text_format_class.'" title="Bullet list" onclick="document.execCommand(\'insertUnorderedList\')"><i class="fas fa-list-ul"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-list-ol'.$text_format_class.'" title="Numbered list" onclick="document.execCommand(\'insertOrderedList\')"><i class="fas fa-list-ol"></i></button>';
                 echo '<button type="button" class="toolbar-btn btn-text-height'.$text_format_class.'" title="Font size" onclick="changeFontSize()"><i class="fas fa-text-height"></i></button>';
@@ -741,7 +741,7 @@ if($note != '') {
                     $is_favorite = $row['favorite'] ?? 0;
                     $star_class = $is_favorite ? 'fas' : 'far';
                     $favorite_title = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
-                    echo '<button type="button" class="toolbar-btn btn-favorite'.$note_action_class.'" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-favorite'.$note_action_class.'" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star star-icon"></i></button>';
                     
                     echo '<button type="button" class="toolbar-btn btn-folder'.$note_action_class.'" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                     echo '<button type="button" class="toolbar-btn btn-attachment'.$note_action_class.($attachments_count > 0 ? ' has-attachments' : '').'" title="Attachments ('.$attachments_count.')" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
@@ -767,7 +767,7 @@ if($note != '') {
                     $is_favorite = $row['favorite'] ?? 0;
                     $star_class = $is_favorite ? 'fas' : 'far';
                     $favorite_title = $is_favorite ? 'Remove from favorites' : 'Add to favorites';
-                    echo '<button type="button" class="toolbar-btn btn-favorite" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star" style="color:#007DB8;"></i></button>';
+                    echo '<button type="button" class="toolbar-btn btn-favorite" title="'.$favorite_title.'" onclick="toggleFavorite(\''.$row['id'].'\')"><i class="'.$star_class.' fa-star star-icon"></i></button>';
                     
                     echo '<button type="button" class="toolbar-btn btn-folder" title="Move to folder" onclick="showMoveFolderDialog(\''.$row['id'].'\')"><i class="fas fa-folder"></i></button>';
                     echo '<button type="button" class="toolbar-btn btn-attachment'.($attachments_count > 0 ? ' has-attachments' : '').'" title="Attachments" onclick="showAttachmentDialog(\''.$row['id'].'\')"><i class="fas fa-paperclip"></i></button>';
@@ -799,7 +799,7 @@ if($note != '') {
             }
         } else {
             // Display welcome message when no note is selected - page blanche
-            echo '<div class="welcome-message" style="height: 100%; width: 100%;"></div>';
+            echo '<div class="welcome-message welcome-message-full"></div>';
         }
         ?>        
     </div>

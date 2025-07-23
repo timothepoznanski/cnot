@@ -6,19 +6,16 @@ include 'db_connect.php';
 ?>
 
 <html>
-<style type="text/css">
-* {
-    font-family: 'Calibri';
-}
-</style>
-
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
 	<title><?php echo JOURNAL_NAME;?></title>
+	<style>
+		* { font-family: 'Calibri', sans-serif; }
+	</style>
 </head>
-<body>
+<body class="font-calibri">
             
         <?php
             $rootPath = realpath('entries');

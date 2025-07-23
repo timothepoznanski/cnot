@@ -286,8 +286,8 @@ if($note != '') {
                     <!-- Hidden inputs to maintain compatibility -->
                     <input type="hidden" id="search-notes-hidden-mobile" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
                     <input type="hidden" id="search-tags-hidden-mobile" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
-                    <input type="hidden" id="search-in-notes-mobile" name="search_in_notes" value="<?php echo (!empty($search) || $preserve_notes) ? '1' : ''; ?>">
-                    <input type="hidden" id="search-in-tags-mobile" name="search_in_tags" value="<?php echo (!empty($tags_search) || $preserve_tags) ? '1' : ''; ?>">
+                    <input type="hidden" id="search-in-notes-mobile" name="search_in_notes" value="<?php echo ($using_unified_search && !empty($_POST['search_in_notes'])) || (!$using_unified_search && (!empty($search) || $preserve_notes)) ? '1' : ((!$using_unified_search && empty($search) && empty($tags_search)) ? '1' : ''); ?>">
+                    <input type="hidden" id="search-in-tags-mobile" name="search_in_tags" value="<?php echo ($using_unified_search && !empty($_POST['search_in_tags'])) || (!$using_unified_search && (!empty($tags_search) || $preserve_tags)) ? '1' : ((!$using_unified_search && empty($search) && empty($tags_search)) ? '1' : ''); ?>">
                 </div>
             </form>
             <!-- Barre de filtre des dossiers pour mobile -->
@@ -438,8 +438,8 @@ if($note != '') {
                 <!-- Hidden inputs to maintain compatibility -->
                 <input type="hidden" id="search-notes-hidden" name="search" value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES); ?>">
                 <input type="hidden" id="search-tags-hidden" name="tags_search" value="<?php echo htmlspecialchars($tags_search ?? '', ENT_QUOTES); ?>">
-                <input type="hidden" id="search-in-notes" name="search_in_notes" value="<?php echo (!empty($search) || $preserve_notes) ? '1' : ''; ?>">
-                <input type="hidden" id="search-in-tags" name="search_in_tags" value="<?php echo (!empty($tags_search) || $preserve_tags) ? '1' : ''; ?>">
+                <input type="hidden" id="search-in-notes" name="search_in_notes" value="<?php echo ($using_unified_search && !empty($_POST['search_in_notes'])) || (!$using_unified_search && (!empty($search) || $preserve_notes)) ? '1' : ((!$using_unified_search && empty($search) && empty($tags_search)) ? '1' : ''); ?>">
+                <input type="hidden" id="search-in-tags" name="search_in_tags" value="<?php echo ($using_unified_search && !empty($_POST['search_in_tags'])) || (!$using_unified_search && (!empty($tags_search) || $preserve_tags)) ? '1' : ((!$using_unified_search && empty($search) && empty($tags_search)) ? '1' : ''); ?>">
             </div>
         </form>
         <!-- Barre de filtre des dossiers pour desktop -->

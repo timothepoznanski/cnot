@@ -48,7 +48,7 @@ function toggleNoteMenu(noteId) {
 function showNoteInfo(noteId, created, updated) {
     const createdDate = new Date(created).toLocaleString();
     const updatedDate = new Date(updated).toLocaleString();
-    const message = `Note ID: ${noteId}\nCreated on: ${createdDate}\nLast modified: ${updatedDate}`;
+    const message = `Note ID: ${noteId}\nCréée le: ${createdDate}\nDernière modification: ${updatedDate}`;
     showNotificationPopup(message);
 }
 
@@ -474,7 +474,6 @@ function deleteNote(iid){
     .then(response => response.text())
     .then(function(data) {
         if(data=='1') {
-            showNotificationPopup('Note deleted successfully');
             window.location.href = "index.php";
         } else {
             showNotificationPopup(data, 'error');
@@ -670,12 +669,13 @@ function showNotificationPopup(message, type = 'success') {
         popup.style.display = 'none';
         overlay.style.display = 'none';
         overlay.removeEventListener('click', hideNotification);
-        popup.removeEventListener('click', hideNotification);
     }
 
-    // Allow closing by clicking on overlay OR on the popup itself
+    // Allow closing by clicking on overlay
     overlay.addEventListener('click', hideNotification);
-    popup.addEventListener('click', hideNotification);
+
+    // Hide the popup and overlay after a certain amount of time
+    setTimeout(hideNotification, 4000); // Hide after 4 seconds.
 }
 
 // Folder management functions

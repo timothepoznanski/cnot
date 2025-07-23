@@ -4,6 +4,48 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+ob_start();
+require 'config.php';
+
+// Fonction pour obtenir la version du déploiement
+function getDeploymentVersion() {
+    // Priorité 1: Fichier .version créé par le Dockerfile
+    $version_file = '/var/www/html/.version';
+    if (file_exists($version_file)) {
+        $version = trim(file_get_contents($version_file));
+        if (!empty($version) && $version !== 'dev') {
+            return $version;
+        }
+    }
+    
+    // Priorité 2: Variable d'environnement DOCKER_TAG
+    if (defined('DOCKER_TAG') && !empty(DOCKER_TAG) && DOCKER_TAG !== 'latest') {
+        // Ignorer les valeurs par défaut de docker-compose comme "cnot:dev"
+        if (!preg_match('/^[^:]+:(dev|latest)$/', DOCKER_TAG)) {
+            return DOCKER_TAG;
+        }
+    }
+    
+    // Priorité 3: Git tag local (si dans un repo git)
+    if (is_dir('.git')) {
+        $tag = trim(shell_exec('git describe --tags --abbrev=0 2>/dev/null') ?: '');
+        if ($tag) return $tag;
+    }
+    
+    // Priorité 4: Hash du commit Git (si disponible)
+    if (is_dir('.git')) {
+        $commit = trim(shell_exec('git rev-parse --short HEAD 2>/dev/null') ?: '');
+        if ($commit) return "commit-{$commit}";
+    }
+    
+    // Priorité 5: Date de build/déploiement
+    $build_date = date('Y.m.d');
+    return "build-{$build_date}";
+    
+    // Fallback ultime: Version de développement
+    // return 'dev';
+}
+
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -11,8 +53,6 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
     $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent) ? true : false;
 }
 
-ob_start();
-require 'config.php';
 include 'functions.php';
 include 'db_connect.php';
 
@@ -92,7 +132,7 @@ if($note != '') {
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'development') ? ' - DEV MODE' : ''; ?></title>
+    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'dev') ? ' - DEV MODE' : ''; ?></title>
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />

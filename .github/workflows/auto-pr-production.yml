@@ -58,6 +58,62 @@ jobs:
         
         echo "No conflicts detected"
     
+    - name: Generate Next Version
+      id: version
+      run: |
+        echo "Getting latest release version..."
+        latest_tag=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
+        
+        if [ -z "$latest_tag" ] || [ "$latest_tag" = "null" ]; then
+          echo "No previous releases found. Starting with v1.0.0"
+          new_version="v1.0.0"
+        else
+          echo "Latest version: $latest_tag"
+          # Extract version numbers (remove 'v' prefix)
+          version_num=${latest_tag#v}
+          IFS='.' read -r major minor patch <<< "$version_num"
+          
+          # Increment patch version
+          new_patch=$((patch + 1))
+          new_version="v${major}.${minor}.${new_patch}"
+        fi
+        
+        echo "Next version will be: $new_version"
+        echo "version=$new_version" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+    
+    - name: Create Release
+      run: |
+        echo "Creating release ${{ steps.version.outputs.version }}..."
+        
+        # Generate changelog from commits since last release
+        latest_release=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
+        if [ -n "$latest_release" ] && [ "$latest_release" != "null" ]; then
+          changelog=$(git log --pretty=format:"- %s" ${latest_release}..HEAD 2>/dev/null || echo "- Initial release")
+        else
+          changelog="- Initial release"
+        fi
+        
+        # Create release notes file
+        cat > release_notes.md << 'EOF'
+        ## Changes
+        EOF
+        echo "$changelog" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "## Deployment" >> release_notes.md
+        echo "This release will be automatically deployed to production." >> release_notes.md
+        
+        # Create the release
+        gh release create "${{ steps.version.outputs.version }}" \
+          --title "Release ${{ steps.version.outputs.version }}" \
+          --notes-file release_notes.md \
+          --target dev
+        
+        echo "Release ${{ steps.version.outputs.version }} created successfully!"
+      env:
+        GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+    
     - name: Create Pull Request
       run: |
         echo "Checking for existing PRs..."

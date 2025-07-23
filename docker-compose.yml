@@ -17,6 +17,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       JOURNAL_NAME: ${JOURNAL_NAME}
       APP_ENV: ${APP_ENV}
+      DOCKER_TAG: ${DOCKER_IMAGE:-cnot:dev}
     ports:
       - "${HTTP_WEB_PORT}:80"
     volumes:

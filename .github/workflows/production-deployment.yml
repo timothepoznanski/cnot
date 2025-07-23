@@ -33,4 +33,6 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml build --no-cache
           docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
           
+          git checkout dev
+
           echo "Production deployment completed!"

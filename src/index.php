@@ -259,7 +259,10 @@ if($note != '') {
                     </div>
                     <div class="settings-menu-item deployment-info">
                         <i class="fas fa-rocket"></i>
-                        <span>Last deployment<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
+                        <?php 
+                        $deploymentInfo = getDeploymentVersion(); 
+                        ?>
+                        <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
                     </div>
                 </div>
             </div>
@@ -415,7 +418,10 @@ if($note != '') {
                 </div>
                 <div class="settings-menu-item deployment-info">
                     <i class="fas fa-rocket"></i>
-                    <span>Last deployment<br><small><?php echo date('d/m/Y H:i'); ?></small></span>
+                    <?php 
+                    $deploymentInfo = getDeploymentVersion(); 
+                    ?>
+                    <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
                 </div>
             </div>
         </div>

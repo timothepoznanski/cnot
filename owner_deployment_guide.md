@@ -2,7 +2,16 @@
 
 Guide for deploying and managing the CnoT application.
 
-## 🏗️ Development vs Production Architecture
+## �️ Automatic Versioning System
+
+When a push is made to the `main` branch, GitHub Actions automatically:
+
+1. **Generates a timestamp** in `YYYYMMDDHHMM` format (e.g., `202501241530` for January 24, 2025 at 3:30 PM)
+2. **Tags the Docker image** with this timestamp instead of the Git SHA
+3. **Deploys the application** with the new version
+4. **Creates a `version.txt` file** containing the timestamp on the server
+
+## �🏗️ Development vs Production Architecture
 
 ### Development Workflow (Branch: `dev`)
 The development environment uses a **live reload** approach:
@@ -64,8 +73,8 @@ DOCKER_IMAGE=timpoz/cnot:latest docker compose -f docker-compose.yml -f docker-c
 
 ### Option 2: Specific version
 ```bash
-# Replace SHA_HERE with the desired commit SHA
-DOCKER_IMAGE=timpoz/cnot:SHA_HERE docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+# Replace TIMESTAMP_HERE with the desired timestamp (YYYYMMDDHHMM format)
+DOCKER_IMAGE=timpoz/cnot:TIMESTAMP_HERE docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
 ```
 
 ### Option 3: Build from source (backup method)
@@ -87,7 +96,7 @@ git checkout dev
 
 ### Rollback to specific version
 ```bash
-./rollback.sh <SHA_COMMIT>
+./rollback.sh <TIMESTAMP>
 ```
 
 ## 📋 Image Management
@@ -126,13 +135,15 @@ docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml ps
 
 ## 🏷️ Image Tags
 
-### Tag structure (updated)
-- **Production only**: `timpoz/cnot:SHA` and `timpoz/cnot:latest`
+### Tag structure (updated with versioning system)
+- **Production**: `timpoz/cnot:TIMESTAMP` and `timpoz/cnot:latest`
+- **Timestamp format**: `YYYYMMDDHHMM` (e.g., `202501241530`)
 
 ### Examples
 ```bash
-# Production images (only ones created)
-timpoz/cnot:9476d1a
+# Production images with timestamp versioning
+timpoz/cnot:202501241530
+timpoz/cnot:202501251045
 timpoz/cnot:latest
 ```
 
@@ -158,12 +169,13 @@ docker exec cnot-webserver-1 ping cnot-database-1
 ## 📚 GitHub Actions Workflows
 
 - **Push to `dev`** → Creates PR to `main` (no image build)
-- **Merge to `main`** → Build image `SHA` + `latest` + Automatic production deployment
+- **Merge to `main`** → Build image with `TIMESTAMP` + `latest` tags + Automatic production deployment
 
 ### Workflow optimization
+- **Timestamp versioning**: Images tagged with `YYYYMMDDHHMM` format for easy identification
 - **No more dev images**: Saves GitHub Actions minutes and Docker Hub storage
 - **Production only**: Images are built only when code is ready for production
-- **Simplified tags**: Only SHA and latest tags for cleaner registry
+- **Version tracking**: Automatic version display in the application interface
 
 ---
 

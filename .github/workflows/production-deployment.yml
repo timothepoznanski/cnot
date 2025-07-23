@@ -12,6 +12,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
+    - name: Generate deployment timestamp
+      id: timestamp
+      run: |
+        TIMESTAMP=$(date +"%Y%m%d%H%M")
+        echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+        echo "Generated timestamp: $TIMESTAMP"
+    
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     
@@ -27,7 +34,7 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ steps.timestamp.outputs.timestamp }}
           ${{ secrets.DOCKER_USERNAME }}/cnot:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
@@ -37,6 +44,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Generate deployment timestamp
+      id: timestamp
+      run: |
+        TIMESTAMP=$(date +"%Y%m%d%H%M")
+        echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+        echo "Generated timestamp: $TIMESTAMP"
+    
     - name: Deploy to production server
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -52,9 +66,13 @@ jobs:
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
           # Pull the new image
-          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}"
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ steps.timestamp.outputs.timestamp }}"
           echo "📥 Pulling new Docker image: $IMAGE_TAG"
           docker pull $IMAGE_TAG
+          
+          # Create version file
+          echo "📝 Creating version file..."
+          echo "${{ steps.timestamp.outputs.timestamp }}" > src/version.txt
           
           # Deploy to production
           echo "🔄 Updating production services..."
@@ -64,4 +82,4 @@ jobs:
           docker image prune -f
           
           echo "✅ Production deployment completed!"
-          echo "📊 Deployed version: ${{ github.sha }}"
+          echo "📊 Deployed version: ${{ steps.timestamp.outputs.timestamp }}"

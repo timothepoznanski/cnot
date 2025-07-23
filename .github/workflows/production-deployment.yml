@@ -2,7 +2,7 @@ name: Production Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev, main ]
 
 jobs:
   build-and-push:
@@ -27,8 +27,9 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/cnot:latest
-          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.ref_name }}-${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.ref_name }}-latest
+          ${{ github.ref_name == 'main' && format('{0}/cnot:latest', secrets.DOCKER_USERNAME) || '' }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -47,24 +48,29 @@ jobs:
         port: ${{ secrets.PROD_PORT || 22 }}
         script: |
           set -e
-          echo "🚀 Starting professional production deployment..."
+          echo "🚀 Starting professional ${{ github.ref_name }} deployment..."
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
+          # Determine image tag based on branch
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.ref_name }}-${{ github.sha }}"
+          
           # Pull the new image
-          echo "📥 Pulling new Docker image..."
-          docker pull ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
+          echo "📥 Pulling new Docker image: $IMAGE_TAG"
+          docker pull $IMAGE_TAG
           
-          # Tag as latest for compose
-          docker tag ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }} cnot:latest
+          # Deploy only to production if main branch
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "🔄 Updating production services..."
+            DOCKER_IMAGE=$IMAGE_TAG docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+            
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f
+            
+            echo "✅ Production deployment completed!"
+          else
+            echo "📦 Dev image built and pushed: $IMAGE_TAG"
+            echo "ℹ️  Use this image for dev testing"
+          fi
           
-          echo "🔄 Updating services..."
-          # Update docker-compose with new image
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml pull || true
-          docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
-          
-          echo "🧹 Cleaning up old images..."
-          docker image prune -f
-          
-          echo "✅ Professional deployment completed!"
           echo "📊 Deployed version: ${{ github.sha }}"

@@ -2,6 +2,77 @@
 .name_tags input::placeholder {
     color: #bababa;
 }
+
+/* Font families */
+.font-calibri {
+    font-family: 'Calibri', sans-serif;
+}
+
+/* Hidden elements */
+.hidden {
+    display: none;
+}
+
+/* Specific hidden elements */
+.folders-selection-list,
+.create-folder-section,
+.modal-error-message {
+    display: none;
+}
+
+/* File upload styling */
+.file-input-label {
+    display: block;
+    width: 160px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+.accepted-types {
+    font-size: 0.85em;
+    color: #888;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.spacer-18 {
+    height: 18px;
+}
+
+.selected-filename {
+    margin: 0 0 18px 0;
+    font-size: 0.95em;
+    color: #444;
+    text-align: center;
+    min-height: 1.5em;
+}
+
+/* Folder icons */
+.folder-star-icon {
+    color: #007DB8;
+}
+
+.star-icon {
+    color: #007DB8;
+}
+
+/* Welcome message */
+.welcome-message-full {
+    height: 100%;
+    width: 100%;
+}
+
 @font-face {
     font-family: 'Inter';
     src: url('../webfonts/Inter/static/Inter_24pt-Regular.ttf') format('truetype');
@@ -700,6 +771,12 @@ a.links_arbo_left.selected-note {
     margin-bottom: 8px;
 }
 
+/* Folder filter clear buttons (hidden by default) */
+#folder-filter-clear-mobile,
+#folder-filter-clear-desktop {
+    display: none;
+}
+
 .searchbar-clear {
     position: absolute;
     right: 10px;
@@ -1313,6 +1390,15 @@ hr {
 .toolbar-btn i.fas.fa-palette,
 .toolbar-btn i.fas.fa-fill-drip {
     color: inherit !important;
+}
+
+/* Couleurs par défaut des icônes */
+.toolbar-btn i.fas.fa-palette {
+    color: #ff2222;
+}
+
+.toolbar-btn i.fas.fa-fill-drip {
+    color: #ffe066;
 }
 
 /* Couleurs spécifiques au hover pour les boutons de couleur */

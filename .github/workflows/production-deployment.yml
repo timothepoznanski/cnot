@@ -7,6 +7,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.timestamp.outputs.timestamp }}
     
     steps:
     - name: Checkout code
@@ -46,13 +48,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Generate deployment timestamp
-      id: timestamp
-      run: |
-        TIMESTAMP=$(date +"%Y%m%d%H%M")
-        echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
-        echo "Generated timestamp: $TIMESTAMP"
-    
     - name: Deploy to production server
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -68,14 +63,14 @@ jobs:
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
           # Pull the new image
-          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ steps.timestamp.outputs.timestamp }}"
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ needs.build-and-push.outputs.timestamp }}"
           echo "📥 Pulling new Docker image: $IMAGE_TAG"
           docker pull $IMAGE_TAG
           
           # Create version file
           echo "📝 Creating version file..."
-          echo "${{ steps.timestamp.outputs.timestamp }}" > src/version.txt
-          echo "📋 Version: ${{ steps.timestamp.outputs.timestamp }}"
+          echo "${{ needs.build-and-push.outputs.timestamp }}" > src/version.txt
+          echo "📋 Version: ${{ needs.build-and-push.outputs.timestamp }}"
           
           # Deploy to production
           echo "🔄 Updating production services..."
@@ -85,4 +80,4 @@ jobs:
           docker image prune -f
           
           echo "✅ Production deployment completed!"
-          echo "📊 Deployed version: ${{ steps.timestamp.outputs.timestamp }}"
+          echo "📊 Deployed version: ${{ needs.build-and-push.outputs.timestamp }}"

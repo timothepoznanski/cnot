@@ -521,7 +521,7 @@ body {
 
 .left-header {
     text-align: center;
-    padding: 12px 0 20px 0;
+    padding: 0px 0px 13px 0px;
     margin-bottom: 15px;
     border-bottom: 1px solid #e9ecef;
 }
@@ -1141,8 +1141,8 @@ img {
 
 .containbuttons{
     text-align: center;
-    padding-bottom: 15px;
-    padding-top: 11px;
+    /* padding-bottom: 15px; */
+    /* padding-top: 11px; */
 }
 
 .newbutton[style], .list_tags[style] {

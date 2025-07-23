@@ -1,6 +1,6 @@
 # 🚀 CnoT Deployment Commands
 
-Guide des commandes pour déployer et gérer l'application CnoT.
+Guide for deploying and managing the CnoT application.
 
 ## 📦 Installation
 
@@ -9,25 +9,25 @@ Guide des commandes pour déployer et gérer l'application CnoT.
 DOCKER_IMAGE=timpoz/cnot:latest docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d
 ```
 
-### Développement
+### Development
 ```bash
 docker compose -p cnot-dev --env-file .env.dev -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-reverse-proxy-dev.yml up -d --build
 ```
 
-## 🔄 Mise à jour Production
+## 🔄 Production Updates
 
-### Option 1: Dernière version stable
+### Option 1: Latest stable version
 ```bash
 DOCKER_IMAGE=timpoz/cnot:latest docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
 ```
 
-### Option 2: Version spécifique
+### Option 2: Specific version
 ```bash
-# Remplacer SHA_HERE par le commit SHA désiré
-DOCKER_IMAGE=timpoz/cnot:main-SHA_HERE docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
+# Replace SHA_HERE with the desired commit SHA
+DOCKER_IMAGE=timpoz/cnot:SHA_HERE docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
 ```
 
-### Option 3: Build depuis les sources (méthode de secours)
+### Option 3: Build from source (backup method)
 ```bash
 git checkout main
 cd /root/cnot/cnot
@@ -39,91 +39,91 @@ git checkout dev
 
 ## ⏪ Rollback
 
-### Rollback automatique
+### Automatic rollback
 ```bash
 ./rollback.sh
 ```
 
-### Rollback vers une version spécifique
+### Rollback to specific version
 ```bash
 ./rollback.sh <SHA_COMMIT>
 ```
 
-## 📋 Gestion des images
+## 📋 Image Management
 
-### Lister les images disponibles sur Docker Hub
+### List available images on Docker Hub
 ```bash
 curl -s "https://hub.docker.com/v2/repositories/timpoz/cnot/tags/" | jq -r '.results[] | .name' | head -10
 ```
 
-### Lister les images locales
+### List local images
 ```bash
 docker images | grep cnot
 ```
 
-### Nettoyer les images non utilisées
+### Clean up unused images
 ```bash
 docker image prune -f
 ```
 
 ## 🔍 Monitoring
 
-### Voir les conteneurs en cours
+### View running containers
 ```bash
 docker ps | grep cnot
 ```
 
-### Voir les logs du webserver
+### View webserver logs
 ```bash
 docker logs cnot-webserver-1 -f
 ```
 
-### Vérifier l'état des services
+### Check service status
 ```bash
 docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml ps
 ```
 
-## 🏷️ Tags des images
+## 🏷️ Image Tags
 
-### Structure des tags
-- **Dev**: `timpoz/cnot:dev-SHA` et `timpoz/cnot:dev-latest`
-- **Production**: `timpoz/cnot:main-SHA` et `timpoz/cnot:latest`
+### Tag structure (updated)
+- **Production only**: `timpoz/cnot:SHA` and `timpoz/cnot:latest`
 
-### Exemples
+### Examples
 ```bash
-# Image de développement
-timpoz/cnot:dev-19cfb81
-timpoz/cnot:dev-latest
-
-# Image de production
-timpoz/cnot:main-abc123  
+# Production images (only ones created)
+timpoz/cnot:9476d1a
 timpoz/cnot:latest
 ```
 
-## 🔧 Dépannage
+## 🔧 Troubleshooting
 
-### Forcer la récupération d'une nouvelle image
+### Force pull new image
 ```bash
 docker pull timpoz/cnot:latest
 DOCKER_IMAGE=timpoz/cnot:latest docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --force-recreate
 ```
 
-### Reconstruire complètement
+### Complete rebuild
 ```bash
 docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml down
 docker compose -f docker-compose.yml -f docker-compose-reverse-proxy.yml up -d --build --force-recreate
 ```
 
-### Vérifier la connectivité à la base de données
+### Check database connectivity
 ```bash
 docker exec cnot-webserver-1 ping cnot-database-1
 ```
 
-## 📚 Workflows GitHub Actions
+## 📚 GitHub Actions Workflows
 
-- **Push sur `dev`** → Build image `dev-SHA` + Création PR vers `main`
-- **Merge vers `main`** → Build image `main-SHA` + Déploiement automatique en production
+- **Push to `dev`** → Creates PR to `main` (no image build)
+- **Merge to `main`** → Build image `SHA` + `latest` + Automatic production deployment
+
+### Workflow optimization
+- **No more dev images**: Saves GitHub Actions minutes and Docker Hub storage
+- **Production only**: Images are built only when code is ready for production
+- **Simplified tags**: Only SHA and latest tags for cleaner registry
 
 ---
 
-> 💡 **Astuce**: Utilisez toujours `DOCKER_IMAGE=` pour spécifier l'image du registry, sinon Docker Compose utilisera l'image locale.
+> 💡 **Tip**: Always use `DOCKER_IMAGE=` to specify the registry image, otherwise Docker Compose will use the local image.

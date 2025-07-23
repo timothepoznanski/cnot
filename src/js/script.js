@@ -474,7 +474,6 @@ function deleteNote(iid){
     .then(response => response.text())
     .then(function(data) {
         if(data=='1') {
-            showNotificationPopup('Note deleted successfully');
             window.location.href = "index.php";
         } else {
             showNotificationPopup(data, 'error');

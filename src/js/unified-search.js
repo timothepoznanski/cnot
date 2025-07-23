@@ -70,7 +70,7 @@ function initializeSearchButtons(isMobile) {
     
     if (!notesBtn || !tagsBtn || !searchInput) return;
     
-    // Set initial state based on current search
+    // Always respect the hidden input values to preserve search type preferences
     if (notesHidden && notesHidden.value === '1') {
         notesBtn.classList.add('active');
     }

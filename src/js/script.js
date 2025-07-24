@@ -105,11 +105,38 @@ document.addEventListener('DOMContentLoaded', function() {
 function showAttachmentDialog(noteId) {
     currentNoteIdForAttachments = noteId;
     document.getElementById('attachmentModal').style.display = 'block';
+    hideAttachmentError(); // Clear any previous error messages
     loadAttachments(noteId);
+}
+
+// Functions to handle attachment modal error messages
+function showAttachmentError(message) {
+    const errorElement = document.getElementById('attachmentErrorMessage');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+function hideAttachmentError() {
+    const errorElement = document.getElementById('attachmentErrorMessage');
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
 }
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
+    
+    // Clear error messages when closing attachment modal
+    if (modalId === 'attachmentModal') {
+        hideAttachmentError();
+        // Also reset the file input display
+        const fileInput = document.getElementById('attachmentFile');
+        const fileNameDiv = document.getElementById('selectedFileName');
+        if (fileInput) fileInput.value = '';
+        if (fileNameDiv) fileNameDiv.textContent = 'No file chosen';
+    }
 }
 
 function uploadAttachment() {
@@ -117,14 +144,17 @@ function uploadAttachment() {
     const file = fileInput.files[0];
     
     if (!file) {
-        showNotificationPopup('Please select a file', 'error');
+        showAttachmentError('Please select a file');
         return;
     }
     
     if (!currentNoteIdForAttachments) {
-        showNotificationPopup('No note selected', 'error');
+        showAttachmentError('No note selected');
         return;
     }
+    
+    // Clear any previous error messages
+    hideAttachmentError();
     
     const formData = new FormData();
     formData.append('action', 'upload');
@@ -139,16 +169,17 @@ function uploadAttachment() {
     .then(data => {
         if (data.success) {
             fileInput.value = ''; // Clear input
+            document.getElementById('selectedFileName').textContent = 'No file chosen'; // Reset filename display
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
-            showNotificationPopup('File uploaded successfully');
+            // showNotificationPopup('File uploaded successfully'); // Removed notification
         } else {
-            showNotificationPopup('Upload failed: ' + data.message, 'error');
+            showAttachmentError('Upload failed: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showNotificationPopup('Upload failed', 'error');
+        showAttachmentError('Upload failed');
     });
 }
 
@@ -230,7 +261,7 @@ function deleteAttachment(attachmentId) {
         if (data.success) {
             loadAttachments(currentNoteIdForAttachments); // Reload list
             updateAttachmentCountInMenu(currentNoteIdForAttachments); // Update count in menu
-            showNotificationPopup('Attachment deleted successfully');
+            // showNotificationPopup('Attachment deleted successfully'); // Removed notification
         } else {
             showNotificationPopup('Delete failed: ' + data.message, 'error');
         }

@@ -213,6 +213,7 @@ if($note != '') {
                 <div class="upload-button-container">
                     <button onclick="uploadAttachment()">Upload File</button>
                 </div>
+                <div id="attachmentErrorMessage" class="modal-error-message" style="display: none;"></div>
             </div>
             <div id="attachmentsList" class="attachments-list">
                 <!-- Attachments will be loaded here -->

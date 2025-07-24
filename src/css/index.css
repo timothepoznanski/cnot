@@ -2242,3 +2242,28 @@ hr {
     25% { transform: translateX(-3px); }
     75% { transform: translateX(3px); }
 }
+
+/* CACHER LES BARRES DE SCROLL */
+
+/* Cacher la barre de scroll pour Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Cacher la barre de scroll pour Firefox */
+* {
+    scrollbar-width: none;
+}
+
+/* Alternative pour cacher toutes les barres de scroll */
+html, body, #left_col, #right_col {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar, 
+#left_col::-webkit-scrollbar, 
+#right_col::-webkit-scrollbar {
+    display: none;
+}

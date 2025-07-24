@@ -58,7 +58,7 @@ jobs:
         port: ${{ secrets.PROD_PORT || 22 }}
         script: |
           set -e
-          echo "🚀 Starting production deployment..."
+          echo "🚀 Starting production deployment.."
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           

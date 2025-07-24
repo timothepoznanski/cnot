@@ -7,19 +7,10 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    outputs:
-      timestamp: ${{ steps.timestamp.outputs.timestamp }}
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Generate deployment timestamp
-      id: timestamp
-      run: |
-        TIMESTAMP=$(date +"%Y%m%d%H%M")
-        echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
-        echo "Generated timestamp: $TIMESTAMP"
     
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -35,10 +26,8 @@ jobs:
       with:
         context: .
         push: true
-        build-args: |
-          DOCKER_TAG=${{ steps.timestamp.outputs.timestamp }}
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ steps.timestamp.outputs.timestamp }}
+          ${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}
           ${{ secrets.DOCKER_USERNAME }}/cnot:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
@@ -62,15 +51,10 @@ jobs:
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
-          # Pull the new image with timestamp
-          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ needs.build-and-push.outputs.timestamp }}"
+          # Pull the new image
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ github.sha }}"
           echo "📥 Pulling new Docker image: $IMAGE_TAG"
           docker pull $IMAGE_TAG
-          
-          # Create version file with timestamp
-          echo "📝 Creating version file..."
-          echo "${{ needs.build-and-push.outputs.timestamp }}" > src/version.txt
-          echo "📋 Version: ${{ needs.build-and-push.outputs.timestamp }}"
           
           # Deploy to production
           echo "🔄 Updating production services..."
@@ -80,4 +64,4 @@ jobs:
           docker image prune -f
           
           echo "✅ Production deployment completed!"
-          echo "📊 Deployed version: ${{ needs.build-and-push.outputs.timestamp }}"
+          echo "📊 Deployed version: ${{ github.sha }}"

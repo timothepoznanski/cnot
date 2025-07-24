@@ -1,5 +1,5 @@
 function addLinkToNote() {
-  const url = prompt('Entrer l\'URL du lien:', 'https://');
+  const url = prompt('Enter the link URL:', 'https://');
   if (url && url.trim() !== '' && url !== 'https://') {
     document.execCommand('createLink', false, url);
   }

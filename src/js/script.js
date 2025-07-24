@@ -48,7 +48,7 @@ function toggleNoteMenu(noteId) {
 function showNoteInfo(noteId, created, updated) {
     const createdDate = new Date(created).toLocaleString();
     const updatedDate = new Date(updated).toLocaleString();
-    const message = `Note ID: ${noteId}\nCréée le: ${createdDate}\nDernière modification: ${updatedDate}`;
+    const message = `Note ID: ${noteId}\nCreated: ${createdDate}\nLast modified: ${updatedDate}`;
     showNotificationPopup(message);
 }
 
@@ -88,7 +88,7 @@ function toggleToolbarMenu(noteId) {
 }
 
 // Add attachment functionality
-// Affiche le nom du fichier choisi sous le bouton dans la modal d'attachement
+// Display the chosen file name below the button in the attachment modal
 document.addEventListener('DOMContentLoaded', function() {
     var fileInput = document.getElementById('attachmentFile');
     var fileNameDiv = document.getElementById('selectedFileName');
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fileInput.files && fileInput.files.length > 0) {
                 fileNameDiv.textContent = fileInput.files[0].name;
             } else {
-                fileNameDiv.textContent = 'Aucun fichier choisi';
+                fileNameDiv.textContent = 'No file chosen';
             }
         });
     }
@@ -350,10 +350,10 @@ function toggleFavorite(noteId) {
                     // Refresh to update favorites folder (no notification)
                     window.location.reload();
                 } else {
-                    showNotificationPopup('Erreur: ' + response.message);
+                    showNotificationPopup('Error: ' + response.message);
                 }
             } catch (e) {
-                showNotificationPopup('Erreur lors de la mise à jour des favoris');
+                showNotificationPopup('Error updating favorites');
             }
         }
     };
@@ -459,7 +459,7 @@ function newnote(){
                 showNotificationPopup(res.error || data, 'error');
             }
         } catch(e) {
-            showNotificationPopup('Erreur lors de la création de la note: ' + data, 'error');
+            showNotificationPopup('Error creating note: ' + data, 'error');
         }
     });
 }
@@ -669,13 +669,12 @@ function showNotificationPopup(message, type = 'success') {
         popup.style.display = 'none';
         overlay.style.display = 'none';
         overlay.removeEventListener('click', hideNotification);
+        popup.removeEventListener('click', hideNotification);
     }
 
-    // Allow closing by clicking on overlay
+    // Allow closing by clicking on overlay or popup
     overlay.addEventListener('click', hideNotification);
-
-    // Hide the popup and overlay after a certain amount of time
-    setTimeout(hideNotification, 4000); // Hide after 4 seconds.
+    popup.addEventListener('click', hideNotification);
 }
 
 // Folder management functions

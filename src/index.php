@@ -258,10 +258,10 @@ if($note != '') {
                         <span>Support me</span>
                     </div>
                     <div class="settings-menu-item deployment-info">
+                        <i class="fas fa-rocket"></i>
                         <?php 
                         $deploymentInfo = getDeploymentVersion(); 
                         ?>
-                        <i class="fas fa-rocket"></i>
                         <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
                     </div>
                 </div>
@@ -417,10 +417,10 @@ if($note != '') {
                     <span>Support me</span>
                 </div>
                 <div class="settings-menu-item deployment-info">
+                    <i class="fas fa-rocket"></i>
                     <?php 
                     $deploymentInfo = getDeploymentVersion(); 
                     ?>
-                    <i class="fas fa-rocket"></i>
                     <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
                 </div>
             </div>

@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'is_favorite' => $newFavorite
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour']);
+            echo json_encode(['success' => false, 'message' => 'Error updating database']);
         }
         
         $stmt->close();

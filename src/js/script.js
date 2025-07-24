@@ -738,10 +738,10 @@ function toggleFolder(folderId) {
 
 function selectFolder(folderName, element) {
     // Remove previous selection
-    document.querySelectorAll('.folder-header').forEach(el => el.classList.remove('selected-folder'));
+    // document.querySelectorAll('.folder-header').forEach(el => el.classList.remove('selected-folder'));
     
     // Add selection to clicked folder
-    element.classList.add('selected-folder');
+    // element.classList.add('selected-folder');
     
     // Update selected folder
     selectedFolder = folderName;

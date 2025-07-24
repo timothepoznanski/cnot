@@ -1610,7 +1610,7 @@ hr {
 }
 
 .folder-header.selected-folder {
-    background-color: rgba(0, 125, 184, 0.15);
+    background-color: transparent;
 }
 
 .folder-toggle {
@@ -1627,7 +1627,7 @@ hr {
 }
 
 .folder-toggle:hover {
-    background-color: rgba(0, 125, 184, 0.1);
+    background-color: transparent;
 }
 
 .folder-icon {

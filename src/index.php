@@ -258,13 +258,6 @@ if($note != '') {
                         <i class="fas fa-coffee"></i>
                         <span>Support me</span>
                     </div>
-                    <div class="settings-menu-item deployment-info">
-                        <i class="fas fa-rocket"></i>
-                        <?php 
-                        $deploymentInfo = getDeploymentVersion(); 
-                        ?>
-                        <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
-                    </div>
                 </div>
             </div>
             <div class="trashnotebutton" onclick="window.location = 'trash.php';"><span><span title="Go to the trash" class="fas fa-trash-alt"></span></span></div>
@@ -416,13 +409,6 @@ if($note != '') {
                 <div class="settings-menu-item" onclick="koFiAction();">
                     <i class="fas fa-coffee"></i>
                     <span>Support me</span>
-                </div>
-                <div class="settings-menu-item deployment-info">
-                    <i class="fas fa-rocket"></i>
-                    <?php 
-                    $deploymentInfo = getDeploymentVersion(); 
-                    ?>
-                    <span>Version<br><small><?php echo htmlspecialchars($deploymentInfo['formatted']); ?></small></span>
                 </div>
             </div>
         </div>

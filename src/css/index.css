@@ -2256,14 +2256,36 @@ hr {
 }
 
 /* Alternative pour cacher toutes les barres de scroll */
-html, body, #left_col, #right_col {
+html, body, #left_col {
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox */
 }
 
+#right_col {
+    -ms-overflow-style: auto;  /* Internet Explorer 10+ */
+    scrollbar-width: auto;  /* Firefox */
+}
+
 html::-webkit-scrollbar, 
 body::-webkit-scrollbar, 
-#left_col::-webkit-scrollbar, 
-#right_col::-webkit-scrollbar {
+#left_col::-webkit-scrollbar {
     display: none;
+}
+
+#right_col::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+}
+
+#right_col::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#right_col::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#right_col::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }

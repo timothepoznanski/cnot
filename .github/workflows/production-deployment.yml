@@ -62,12 +62,12 @@ jobs:
           
           cd ${{ secrets.PROD_PROJECT_PATH || '/root/cnot/cnot' }}
           
-          # Pull the new image
+          # Pull the new image with timestamp
           IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/cnot:${{ needs.build-and-push.outputs.timestamp }}"
           echo "📥 Pulling new Docker image: $IMAGE_TAG"
           docker pull $IMAGE_TAG
           
-          # Create version file
+          # Create version file with timestamp
           echo "📝 Creating version file..."
           echo "${{ needs.build-and-push.outputs.timestamp }}" > src/version.txt
           echo "📋 Version: ${{ needs.build-and-push.outputs.timestamp }}"

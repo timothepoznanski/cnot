@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Generate timestamp
+    - name: Generate deployment timestamp
       id: timestamp
       run: |
         TIMESTAMP=$(date +"%Y%m%d%H%M")
@@ -35,6 +35,8 @@ jobs:
       with:
         context: .
         push: true
+        build-args: |
+          DOCKER_TAG=${{ steps.timestamp.outputs.timestamp }}
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/cnot:${{ steps.timestamp.outputs.timestamp }}
           ${{ secrets.DOCKER_USERNAME }}/cnot:latest

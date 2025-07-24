@@ -4,6 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+ob_start();
+require 'config.php';
+
 // Détection mobile par user agent (doit être fait AVANT tout output et ne jamais être redéfini)
 $is_mobile = false;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -11,8 +14,6 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
     $is_mobile = preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/', $user_agent) ? true : false;
 }
 
-ob_start();
-require 'config.php';
 include 'functions.php';
 include 'db_connect.php';
 
@@ -92,7 +93,7 @@ if($note != '') {
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'development') ? ' - DEV MODE' : ''; ?></title>
+    <title><?php echo JOURNAL_NAME; ?><?php echo (APP_ENV === 'dev') ? ' - DEV MODE' : ''; ?></title>
     <link type="text/css" rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/index-mobile.css" media="(max-width: 800px)">
     <link rel="stylesheet" href="css/font-awesome.css" />
